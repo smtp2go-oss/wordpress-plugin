@@ -137,11 +137,11 @@ class Smtp2goWordpressPluginAdmin
 
         add_settings_field(
             'smtp2go_custom_headers',
-            __('&nbsp;', $this->plugin_name),
+            false,
             [$this, 'customHeaders'],
             $this->plugin_name,
             'smtp2go_custom_headers_section',
-            array()
+            array('class' => 'smtp2go_hide_title')
         );
     }
 
@@ -153,7 +153,6 @@ class Smtp2goWordpressPluginAdmin
     public function customHeaders()
     {
         $custom_headers = get_option('smtp2go_custom_headers');
-        $existing_fields = '';
         if (!empty($custom_headers['header'])) {
             foreach ($custom_headers['header'] as $index => $existing_custom_header) {
                 $existing_fields .=
@@ -166,12 +165,12 @@ class Smtp2goWordpressPluginAdmin
 
         echo '<table class="smtp2go_custom_headers">'
             . '<tr>'
-            . '<th>Header</th>'
-            . '<th>Value</th>'
+            . '<th class="heading">Header</th>'
+            . '<th class="heading">Value</th>'
             . $existing_fields
             . '<tr>'
-            . '<td><input type="text" name="smtp2go_custom_headers[header][]"/></td>'
-            . '<td><input type="text" name="smtp2go_custom_headers[value][]"/></td>'
+            . '<td><input type="text" placeholder="Enter New Header Key" name="smtp2go_custom_headers[header][]"/></td>'
+            . '<td><input type="text" placeholder="Enter New Header Value" name="smtp2go_custom_headers[value][]"/></td>'
             . '</tr>';
     }
 
