@@ -1,25 +1,25 @@
 <?php
 
-    /**
-     * The admin-specific functionality of the plugin.
-     *
-     * @link       https://thefold.nz
-     * @since      1.0.0
-     *
-     * @package    Smtp2go_Wordpress_Plugin
-     * @subpackage Smtp2go_Wordpress_Plugin/admin
-     */
+/**
+ * The admin-specific functionality of the plugin.
+ *
+ * @link       https://thefold.nz
+ * @since      1.0.0
+ *
+ * @package    Smtp2go_Wordpress_Plugin
+ * @subpackage Smtp2go_Wordpress_Plugin/admin
+ */
 
-    /**
-     * The admin-specific functionality of the plugin.
-     *
-     * Defines the plugin name, version, and two examples hooks for how to
-     * enqueue the admin-specific stylesheet and JavaScript.
-     *
-     * @package    Smtp2go_Wordpress_Plugin
-     * @subpackage Smtp2go_Wordpress_Plugin/admin
-     * @author     The Fold <hello@thefold.co.nz>
-     */
+/**
+ * The admin-specific functionality of the plugin.
+ *
+ * Defines the plugin name, version, and two examples hooks for how to
+ * enqueue the admin-specific stylesheet and JavaScript.
+ *
+ * @package    Smtp2go_Wordpress_Plugin
+ * @subpackage Smtp2go_Wordpress_Plugin/admin
+ * @author     The Fold <hello@thefold.co.nz>
+ */
 class Smtp2goWordpressPluginAdmin
 {
     /**
@@ -58,56 +58,146 @@ class Smtp2goWordpressPluginAdmin
      * @since 1.0.0
      * @return void
      */
-    public function updateOptions()
-    {
+    // public function updateOptions()
+    // {
+    //     wp_redirect('/wp-admin/tools.php?page=' . $this->plugin_name);
+    // }
 
-        // status_header(200);
-        // die("Server received '{$_POST['data']}' from your browser.");
-        //request handlers should die() when they complete their task
-        wp_redirect('/wp-admin/tools.php?page=' . $this->plugin_name);
-    }
-
+    /**
+     * Register all settings fields for the admin page
+     *
+     * @since 1.0.0
+     * @return void
+     */
     public function registerSettings()
     {
-        register_setting(
-            'api_settings',
-            'smtp2go_api_key'
-        );
         add_settings_section(
             'smtp2go_settings_section',
-            'SMTP2Go Settings Section',
+            'General',
             array($this, 'settingsSection'),
             $this->plugin_name
         );
 
+        add_settings_section(
+            'smtp2go_custom_headers_section',
+            'Custom Headers',
+            array($this, 'settingsSection'),
+            $this->plugin_name
+        );
 
+        /** api key field */
+        register_setting(
+            'api_settings',
+            'smtp2go_api_key',
+            array($this, 'validateApiKey')
+        );
 
-        // register a new section in the "reading" page
-
- 
-        // register a new field in the "wporg_settings_section" section, inside the "reading" page
         add_settings_field(
             'smtp2go_api_key',
-            __('API Key', $this->plugin_name),
-            [$this, 'apiKeyField'],
+            __('API Key *', $this->plugin_name),
+            array($this, 'textField'),
             $this->plugin_name,
-            'smtp2go_settings_section'
+            'smtp2go_settings_section',
+            array('name' => 'smtp2go_api_key', 'required' => true)
         );
+        /** from email address field */
+
+        register_setting(
+            'api_settings',
+            'smtp2go_from_address'
+        );
+
+        add_settings_field(
+            'smtp2go_from_address',
+            __('From Email Address *', $this->plugin_name),
+            [$this, 'textField'],
+            $this->plugin_name,
+            'smtp2go_settings_section',
+            array('name' => 'smtp2go_from_address', 'type' => 'email', 'required' => true)
+        );
+
+        register_setting(
+            'api_settings',
+            'smtp2go_from_name'
+        );
+
+        add_settings_field(
+            'smtp2go_from_name',
+            __('From Email Name *', $this->plugin_name),
+            [$this, 'textField'],
+            $this->plugin_name,
+            'smtp2go_settings_section',
+            array('name' => 'smtp2go_from_name', 'required' => true)
+        );
+
+        register_setting(
+            'api_settings',
+            'smtp2go_custom_headers'
+        );
+
+        add_settings_field(
+            'smtp2go_custom_headers',
+            __('&nbsp;', $this->plugin_name),
+            [$this, 'customHeaders'],
+            $this->plugin_name,
+            'smtp2go_custom_headers_section',
+            array()
+        );
+    }
+
+    /**
+     * Output the html for managing custom headers
+     *
+     * @return void
+     */
+    public function customHeaders()
+    {
+        $custom_headers = get_option('smtp2go_custom_headers');
+        $existing_fields = '';
+        if (!empty($custom_headers['header'])) {
+            foreach ($custom_headers['header'] as $index => $existing_custom_header) {
+                $existing_fields .=
+                    '<tr>'
+                    . '<td><input type="text" name="smtp2go_custom_headers[header][]" value="' . $existing_custom_header . '"/></td>'
+                    . '<td><input type="text" name="smtp2go_custom_headers[value][]" value="' . $custom_headers['value'][$index] . '"/></td>'
+                    . '</tr>';
+            }
+        }
+
+        echo '<table class="smtp2go_custom_headers">'
+            . '<tr>'
+            . '<th>Header</th>'
+            . '<th>Value</th>'
+            . $existing_fields
+            . '<tr>'
+            . '<td><input type="text" name="smtp2go_custom_headers[header][]"/></td>'
+            . '<td><input type="text" name="smtp2go_custom_headers[value][]"/></td>'
+            . '</tr>';
     }
 
     public function settingsSection()
     {
-        // echo '<h3>Settings</h3>';
     }
 
-    public function apiKeyField($args)
+    public function textField($args)
     {
-        // print_r($args);
-        $setting = get_option('smtp2go_api_key');
+        $field_name = $args['name'];
+
+        $setting = get_option($field_name);
+
         if (empty($setting)) {
             $setting = '';
         }
-        echo '<input name="smtp2go_api_key" value="' . esc_attr($setting) . '"/> ';
+        $required = '';
+        if (!empty($args['required'])) {
+            $required = 'required="required"';
+        }
+
+        $type = 'text';
+        if (!empty($args['type'])) {
+            $type = $args['type'];
+        }
+        echo '<input type="' . $type . '"' . $required . ' class="smtp2go_text_input" name="' . $field_name . '" value="' . esc_attr($setting) . '"/> ';
     }
 
     public function addSubmenuPage()
@@ -124,7 +214,7 @@ class Smtp2goWordpressPluginAdmin
     public function renderManagementPage()
     {
         //fetch all the options
-        
+
         //display the page
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-admin-display.php';
     }
@@ -135,20 +225,7 @@ class Smtp2goWordpressPluginAdmin
      */
     public function enqueueStyles()
     {
-        /**
-         * This function is provided for demonstration purposes only.
-         *
-         * An instance of this class should be passed to the run() function
-         * defined in Smtp2go_Wordpress_Plugin_Loader as all of the hooks are defined
-         * in that particular class.
-         *
-         * The Smtp2go_Wordpress_Plugin_Loader will then create the relationship
-         * between the defined hooks and the functions defined in this
-         * class.
-         */
-
         wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/smtp2go-wordpress-plugin-admin.css', array(), $this->version, 'all');
-
     }
 
     /**
@@ -158,20 +235,23 @@ class Smtp2goWordpressPluginAdmin
      */
     public function enqueueScripts()
     {
-        /**
-         * This function is provided for demonstration purposes only.
-         *
-         * An instance of this class should be passed to the run() function
-         * defined in Smtp2go_Wordpress_Plugin_Loader as all of the hooks are defined
-         * in that particular class.
-         *
-         * The Smtp2go_Wordpress_Plugin_Loader will then create the relationship
-         * between the defined hooks and the functions defined in this
-         * class.
-         */
-
         wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/smtp2go-wordpress-plugin-admin.js', array('jquery'), $this->version, false);
-
     }
 
+    /** input validations */
+
+    /**
+     * Validate the api key
+     *
+     * @param string $input
+     * @return string
+     */
+    public function validateApiKey($input)
+    {
+        if (empty($input) || strpos($input, 'api-') !== 0) {
+            add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid Api key entered.', SMTP_TEXT_DOMAIN));
+            return get_option('smtp2go_api_key');
+        }
+        return sanitize_text_field($input);
+    }
 }

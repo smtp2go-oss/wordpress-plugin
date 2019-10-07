@@ -154,12 +154,12 @@ class Smtp2goWordpressPlugin
     {
         $plugin_admin = new Smtp2goWordpressPluginAdmin($this->getPluginName(), $this->getVersion());
 
-        // add_submenu_page();
+        
         $this->loader->addAction('admin_menu', $plugin_admin, 'addSubmenuPage');
 
         $this->loader->addAction('admin_init', $plugin_admin, 'registerSettings');
 
-        $this->loader->addAction('admin_post_manage_smtp2go_options', $plugin_admin, 'updateOptions');
+        //$this->loader->addAction('admin_post_manage_smtp2go_options', $plugin_admin, 'updateOptions');
 
         $this->loader->addAction('admin_enqueue_scripts', $plugin_admin, 'enqueueStyles');
         $this->loader->addAction('admin_enqueue_scripts', $plugin_admin, 'enqueueScripts');

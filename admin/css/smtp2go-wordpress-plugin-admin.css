@@ -2,11 +2,17 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
- .smtp2go_wide_input {
-     width:300px;
+ .smtp2go_text_input {
+     width:320px;
  }
  .smtp2go_help_text {
      font-style: italic;
      display: block;
      margin:0.2rem 0;
+ }
+ .smtp2go_custom_headers th {
+    padding-top: 0;
+}
+ .smtp2go_custom_headers td {
+     padding-left: 0;
  }
