@@ -77,7 +77,7 @@ require plugin_dir_path(__FILE__) . 'includes/class-smtp2go-wordpress-plugin.php
  */
 function run_smtp2go_wordpress_plugin()
 {
-    $plugin = new Smtp2go_Wordpress_Plugin();
+    $plugin = new Smtp2goWordpressPlugin();
     $plugin->run();
 }
 

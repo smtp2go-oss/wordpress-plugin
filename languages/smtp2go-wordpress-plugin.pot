@@ -1,0 +1,2 @@
+msgid "Settings"
+msgstr "Settings!"

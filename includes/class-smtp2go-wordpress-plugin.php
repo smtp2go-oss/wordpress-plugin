@@ -27,7 +27,7 @@
  * @subpackage Smtp2go_Wordpress_Plugin/includes
  * @author     The Fold <hello@thefold.co.nz>
  */
-class Smtp2go_Wordpress_Plugin
+class Smtp2goWordpressPlugin
 {
     /**
      * The loader that's responsible for maintaining and registering all hooks that power
@@ -75,11 +75,10 @@ class Smtp2go_Wordpress_Plugin
         }
         $this->plugin_name = 'smtp2go-wordpress-plugin';
 
-        $this->load_dependencies();
-        $this->set_locale();
-        $this->define_admin_hooks();
-        $this->define_public_hooks();
-
+        $this->loadDependencies();
+        $this->setLocale();
+        $this->defineAdminHooks();
+        $this->definePublicHooks();
     }
 
     /**
@@ -98,7 +97,7 @@ class Smtp2go_Wordpress_Plugin
      * @since    1.0.0
      * @access   private
      */
-    private function load_dependencies()
+    private function loadDependencies()
     {
         /**
          * The class responsible for orchestrating the actions and filters of the
@@ -123,7 +122,7 @@ class Smtp2go_Wordpress_Plugin
          */
         require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-smtp2go-wordpress-plugin-public.php';
 
-        $this->loader = new Smtp2go_Wordpress_Plugin_Loader();
+        $this->loader = new Smtp2goWordpressPluginLoader();
 
     }
 
@@ -136,11 +135,11 @@ class Smtp2go_Wordpress_Plugin
      * @since    1.0.0
      * @access   private
      */
-    private function set_locale()
+    private function setLocale()
     {
-        $plugin_i18n = new Smtp2go_Wordpress_Plugin_i18n();
+        $plugin_i18n = new Smtp2goWordpressPlugini18n();
 
-        $this->loader->add_action('plugins_loaded', $plugin_i18n, 'load_plugin_textdomain');
+        $this->loader->addAction('plugins_loaded', $plugin_i18n, 'loadPluginTextdomain');
 
     }
 
@@ -151,18 +150,18 @@ class Smtp2go_Wordpress_Plugin
      * @since    1.0.0
      * @access   private
      */
-    private function define_admin_hooks()
+    private function defineAdminHooks()
     {
-        $plugin_admin = new Smtp2go_Wordpress_Plugin_Admin($this->get_plugin_name(), $this->get_version());
+        $plugin_admin = new Smtp2goWordpressPluginAdmin($this->getPluginName(), $this->getVersion());
 
 		// add_submenu_page();
 		
-		$this->loader->add_action('admin_menu', $plugin_admin, 'add_submenu_page');
+		$this->loader->addAction('admin_menu', $plugin_admin, 'addSubmenuPage');
 
-		$this->loader->add_action('admin_post_manage_smtp2go_options', $plugin_admin, 'update_options');
+		$this->loader->addAction('admin_post_manage_smtp2go_options', $plugin_admin, 'updateOptions');
 
-        $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
-        $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
+        $this->loader->addAction('admin_enqueue_scripts', $plugin_admin, 'enqueueStyles');
+        $this->loader->addAction('admin_enqueue_scripts', $plugin_admin, 'enqueueScripts');
 
     }
 
@@ -173,12 +172,12 @@ class Smtp2go_Wordpress_Plugin
      * @since    1.0.0
      * @access   private
      */
-    private function define_public_hooks()
+    private function definePublicHooks()
     {
-        $plugin_public = new Smtp2go_Wordpress_Plugin_Public($this->get_plugin_name(), $this->get_version());
+        $plugin_public = new Smtp2go_Wordpress_Plugin_Public($this->getPluginName(), $this->getVersion());
 
-        $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
-        $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
+        $this->loader->addAction('wp_enqueue_scripts', $plugin_public, 'enqueueStyles');
+        $this->loader->addAction('wp_enqueue_scripts', $plugin_public, 'enqueueScripts');
 
     }
 
@@ -199,7 +198,7 @@ class Smtp2go_Wordpress_Plugin
      * @since     1.0.0
      * @return    string    The name of the plugin.
      */
-    public function get_plugin_name()
+    public function getPluginName()
     {
         return $this->plugin_name;
     }
@@ -210,7 +209,7 @@ class Smtp2go_Wordpress_Plugin
      * @since     1.0.0
      * @return    Smtp2go_Wordpress_Plugin_Loader    Orchestrates the hooks of the plugin.
      */
-    public function get_loader()
+    public function getLoader()
     {
         return $this->loader;
     }
@@ -221,7 +220,7 @@ class Smtp2go_Wordpress_Plugin
      * @since     1.0.0
      * @return    string    The version number of the plugin.
      */
-    public function get_version()
+    public function getVersion()
     {
         return $this->version;
     }

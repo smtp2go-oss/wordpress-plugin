@@ -20,7 +20,7 @@
  * @subpackage Smtp2go_Wordpress_Plugin/admin
  * @author     The Fold <hello@thefold.co.nz>
  */
-class Smtp2go_Wordpress_Plugin_Admin
+class Smtp2goWordpressPluginAdmin
 {
     /**
      * The ID of this plugin.
@@ -54,35 +54,43 @@ class Smtp2go_Wordpress_Plugin_Admin
 
     }
 
-    public function update_options()
+    /**
+     * Save the options from the admin page
+     * @since 1.0.0
+     * @return void
+     */
+    public function updateOptions()
     {
+		
         // status_header(200);
         // die("Server received '{$_POST['data']}' from your browser.");
-		//request handlers should die() when they complete their task
-		wp_redirect('/wp-admin/tools.php?page=' . $this->plugin_name);
+        //request handlers should die() when they complete their task
+        wp_redirect('/wp-admin/tools.php?page=' . $this->plugin_name);
     }
 
-    public function add_submenu_page()
+    public function addSubmenuPage()
     {
         add_management_page(
             $this->plugin_name . ' Options',
             $this->plugin_name . ' Options',
             'manage_options',
             $this->plugin_name,
-            [$this, 'render_management_page']
+            [$this, 'renderManagementPage']
         );
     }
-    public function render_management_page()
+    public function renderManagementPage()
     {
+		//fetch all the options
+		
+		//display the page
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-admin-display.php';
-
     }
     /**
      * Register the stylesheets for the admin area.
      *
      * @since    1.0.0
      */
-    public function enqueue_styles()
+    public function enqueueStyles()
     {
         /**
          * This function is provided for demonstration purposes only.
@@ -105,7 +113,7 @@ class Smtp2go_Wordpress_Plugin_Admin
      *
      * @since    1.0.0
      */
-    public function enqueue_scripts()
+    public function enqueueScripts()
     {
         /**
          * This function is provided for demonstration purposes only.
