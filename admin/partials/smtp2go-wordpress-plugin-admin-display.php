@@ -14,3 +14,11 @@
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
+<div class="wrap">
+    Hello World
+    <form action="/wp-admin/admin-post.php" method="post">
+  <input type="hidden" name="action" value="manage_smtp2go_options">
+  <input type="hidden" name="data" value="foobarid">
+  <input type="submit" value="Submit">
+</form>
+</div>
