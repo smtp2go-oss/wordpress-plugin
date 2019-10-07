@@ -104,6 +104,9 @@ class Smtp2goWordpressPluginAdmin
     {
         // print_r($args);
         $setting = get_option('smtp2go_api_key');
+        if (empty($setting)) {
+            $setting = '';
+        }
         echo '<input name="smtp2go_api_key" value="' . esc_attr($setting) . '"/> ';
     }
 
