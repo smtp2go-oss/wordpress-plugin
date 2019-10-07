@@ -1,25 +1,25 @@
 <?php
 
-/**
- * The admin-specific functionality of the plugin.
- *
- * @link       https://thefold.nz
- * @since      1.0.0
- *
- * @package    Smtp2go_Wordpress_Plugin
- * @subpackage Smtp2go_Wordpress_Plugin/admin
- */
+    /**
+     * The admin-specific functionality of the plugin.
+     *
+     * @link       https://thefold.nz
+     * @since      1.0.0
+     *
+     * @package    Smtp2go_Wordpress_Plugin
+     * @subpackage Smtp2go_Wordpress_Plugin/admin
+     */
 
-/**
- * The admin-specific functionality of the plugin.
- *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the admin-specific stylesheet and JavaScript.
- *
- * @package    Smtp2go_Wordpress_Plugin
- * @subpackage Smtp2go_Wordpress_Plugin/admin
- * @author     The Fold <hello@thefold.co.nz>
- */
+    /**
+     * The admin-specific functionality of the plugin.
+     *
+     * Defines the plugin name, version, and two examples hooks for how to
+     * enqueue the admin-specific stylesheet and JavaScript.
+     *
+     * @package    Smtp2go_Wordpress_Plugin
+     * @subpackage Smtp2go_Wordpress_Plugin/admin
+     * @author     The Fold <hello@thefold.co.nz>
+     */
 class Smtp2goWordpressPluginAdmin
 {
     /**
@@ -51,7 +51,6 @@ class Smtp2goWordpressPluginAdmin
     {
         $this->plugin_name = $plugin_name;
         $this->version     = $version;
-
     }
 
     /**
@@ -61,28 +60,69 @@ class Smtp2goWordpressPluginAdmin
      */
     public function updateOptions()
     {
-		
+
         // status_header(200);
         // die("Server received '{$_POST['data']}' from your browser.");
         //request handlers should die() when they complete their task
         wp_redirect('/wp-admin/tools.php?page=' . $this->plugin_name);
     }
 
+    public function registerSettings()
+    {
+        register_setting(
+            'api_settings',
+            'smtp2go_api_key'
+        );
+        add_settings_section(
+            'smtp2go_settings_section',
+            'SMTP2Go Settings Section',
+            array($this, 'settingsSection'),
+            $this->plugin_name
+        );
+
+
+
+        // register a new section in the "reading" page
+
+ 
+        // register a new field in the "wporg_settings_section" section, inside the "reading" page
+        add_settings_field(
+            'smtp2go_api_key',
+            __('API Key', $this->plugin_name),
+            [$this, 'apiKeyField'],
+            $this->plugin_name,
+            'smtp2go_settings_section'
+        );
+    }
+
+    public function settingsSection()
+    {
+        // echo '<h3>Settings</h3>';
+    }
+
+    public function apiKeyField($args)
+    {
+        // print_r($args);
+        $setting = get_option('smtp2go_api_key');
+        echo '<input name="smtp2go_api_key" value="' . esc_attr($setting) . '"/> ';
+    }
+
     public function addSubmenuPage()
     {
-        add_management_page(
-            $this->plugin_name . ' Options',
-            $this->plugin_name . ' Options',
+        add_menu_page(
+            'SMTP2Go',
+            'SMTP2Go',
             'manage_options',
             $this->plugin_name,
             [$this, 'renderManagementPage']
         );
     }
+
     public function renderManagementPage()
     {
-		//fetch all the options
-		
-		//display the page
+        //fetch all the options
+        
+        //display the page
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-admin-display.php';
     }
     /**
