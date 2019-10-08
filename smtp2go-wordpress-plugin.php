@@ -98,7 +98,7 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     $smtp2goapi = new Smtp2goApi($to, $subject, $message, $headers, $attachments);
     
     $smtp2goapi->initFromOptions();
-    $smtp2goapi->send();
+    $smtp2goapi->send(new WP_Http);
 }
 
 run_smtp2go_wordpress_plugin();

@@ -20,7 +20,7 @@ class Smtp2GoApi
     protected $custom_headers;
 
     /**
-     * Sender in the form "John Smith john@example.com"
+     * Sender RFC-822 formatted email "John Smith <john@example.com>"
      *
      * @var string
      */
@@ -86,8 +86,8 @@ class Smtp2GoApi
     public function initFromOptions()
     {
         $this->setApiKey(get_option('smtp2go_api_key'));
-        $this->setSender(get_option('smtp2go_from_name') . get_option('smtp2go_from_address'));
-
+        $this->setSender(get_option('smtp2go_from_name') . '<' . get_option('smtp2go_from_address') . '>');
+        $this->setCustomHeaders(get_option('smtp2go_custom_headers'));
     }
 
     /**
@@ -96,9 +96,9 @@ class Smtp2GoApi
      * @since 1.0.0
      * @return Wp_Error|array
      */
-    public function send()
+    public function send(WP_Http $http)
     {
-        return wp_remote_post($this->endpoint, $this->buildRequest());
+        return $http->post($this->endpoint, $this->buildRequest());
     }
 
     public function buildRequest()
@@ -106,13 +106,13 @@ class Smtp2GoApi
         /** the body of the request which will be sent as json */
         $body = array();
 
-        $body['api_key']   = $this->getApiKey();
-        $body['to']        = $this->buildRecipientsArray();
-        $body['sender']    = $this->getSender();
-        $body['html_body'] = $this->getMessage();
-        $body['headers']   = $this->buildCustomHeadersArray();
-        $body['subject']   = $this->getSubject();
-        $request_headers = array(array('Content-Type' => 'application/json'));
+        $body['api_key']        = $this->getApiKey();
+        $body['to']             = $this->buildRecipientsArray();
+        $body['sender']         = $this->getSender();
+        $body['html_body']      = $this->getMessage();
+        $body['custom_headers'] = $this->buildCustomHeadersArray();
+        $body['subject']        = $this->getSubject();
+        $request_headers        = array(array('Content-Type' => 'application/json'));
 
         return array(
             'headers' => $request_headers,
@@ -160,11 +160,12 @@ class Smtp2GoApi
                 if (!empty($header) && !empty($raw_custom_headers['value'][$index])) {
                     $custom_headers[] = array(
                         'header' => $header,
-                        'value'  => $raw_custom_headers['value'][$index]
+                        'value'  => $raw_custom_headers['value'][$index],
                     );
                 }
             }
         }
+        return $custom_headers;
     }
     /**
      * create an array of recipients to send to the api
@@ -181,7 +182,7 @@ class Smtp2GoApi
         } else {
             foreach ($this->recipients as $recipient_item) {
                 //@todo check how these are formatted and parse appropriately
-                $recipients[] = $recipient_item;
+                $recipients[] = trim($recipient_item);
             }
         }
         return $recipients;
@@ -260,7 +261,7 @@ class Smtp2GoApi
     }
 
     /**
-     * Get sender in the form "John Smith john@example.com"
+     * Get sender
      *
      * @return  string
      */
@@ -270,9 +271,9 @@ class Smtp2GoApi
     }
 
     /**
-     * Set sender in the form "John Smith john@example.com"
+     * Set sender as RFC-822 formatted email "John Smith <john@example.com>"
      *
-     * @param string  $sender  Sender in the form "John Smith john@example.com"
+     * @param string  $sender RFC-822 formatted email "John Smith <john@example.com>"
      *
      * @return self
      */
@@ -311,7 +312,7 @@ class Smtp2GoApi
      * Get the email message
      *
      * @return  string
-     */ 
+     */
     public function getMessage()
     {
         return $this->message;
@@ -323,10 +324,34 @@ class Smtp2GoApi
      * @param  string  $message  The email message
      *
      * @return  self
-     */ 
+     */
     public function setMessage(string $message)
     {
         $this->message = $message;
+
+        return $this;
+    }
+
+    /**
+     * Get the email recipients
+     *
+     * @return  string|array
+     */
+    public function getRecipients()
+    {
+        return $this->recipients;
+    }
+
+    /**
+     * Set the email recipients
+     *
+     * @param  string|array  $recipients  the email recipients
+     *
+     * @return  self
+     */
+    public function setRecipients($recipients)
+    {
+        $this->recipients = $recipients;
 
         return $this;
     }
