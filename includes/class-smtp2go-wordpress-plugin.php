@@ -155,15 +155,14 @@ class Smtp2goWordpressPlugin
         $plugin_admin = new Smtp2goWordpressPluginAdmin($this->getPluginName(), $this->getVersion());
 
         
-        $this->loader->addAction('admin_menu', $plugin_admin, 'addSubmenuPage');
+        $this->loader->addAction('admin_menu', $plugin_admin, 'addMenuPage');
 
         $this->loader->addAction('admin_init', $plugin_admin, 'registerSettings');
 
-        //$this->loader->addAction('admin_post_manage_smtp2go_options', $plugin_admin, 'updateOptions');
+        $this->loader->addAction('admin_post_send_smtp2go_email', $plugin_admin, 'sendTestEmail');
 
         $this->loader->addAction('admin_enqueue_scripts', $plugin_admin, 'enqueueStyles');
         $this->loader->addAction('admin_enqueue_scripts', $plugin_admin, 'enqueueScripts');
-
     }
 
     /**
@@ -208,7 +207,7 @@ class Smtp2goWordpressPlugin
      * The reference to the class that orchestrates the hooks with the plugin.
      *
      * @since     1.0.0
-     * @return    Smtp2go_Wordpress_Plugin_Loader    Orchestrates the hooks of the plugin.
+     * @return    Smtp2goWordpressPluginLoader    Orchestrates the hooks of the plugin.
      */
     public function getLoader()
     {

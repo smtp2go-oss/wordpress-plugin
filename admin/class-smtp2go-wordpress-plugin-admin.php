@@ -71,17 +71,18 @@ class Smtp2goWordpressPluginAdmin
      */
     public function registerSettings()
     {
+        /** add sections */
         add_settings_section(
             'smtp2go_settings_section',
             'General',
-            array($this, 'settingsSection'),
+            array($this, 'generalSection'),
             $this->plugin_name
         );
 
         add_settings_section(
             'smtp2go_custom_headers_section',
             'Custom Headers',
-            array($this, 'settingsSection'),
+            array($this, 'customHeadersSection'),
             $this->plugin_name
         );
 
@@ -95,13 +96,13 @@ class Smtp2goWordpressPluginAdmin
         add_settings_field(
             'smtp2go_api_key',
             __('API Key *', $this->plugin_name),
-            array($this, 'textField'),
+            array($this, 'outputTextFieldHtml'),
             $this->plugin_name,
             'smtp2go_settings_section',
             array('name' => 'smtp2go_api_key', 'required' => true)
         );
-        /** from email address field */
 
+        /** from email address field */
         register_setting(
             'api_settings',
             'smtp2go_from_address'
@@ -110,12 +111,13 @@ class Smtp2goWordpressPluginAdmin
         add_settings_field(
             'smtp2go_from_address',
             __('From Email Address *', $this->plugin_name),
-            [$this, 'textField'],
+            [$this, 'outputTextFieldHtml'],
             $this->plugin_name,
             'smtp2go_settings_section',
             array('name' => 'smtp2go_from_address', 'type' => 'email', 'required' => true)
         );
 
+        /** from name field */
         register_setting(
             'api_settings',
             'smtp2go_from_name'
@@ -124,12 +126,13 @@ class Smtp2goWordpressPluginAdmin
         add_settings_field(
             'smtp2go_from_name',
             __('From Email Name *', $this->plugin_name),
-            [$this, 'textField'],
+            [$this, 'outputTextFieldHtml'],
             $this->plugin_name,
             'smtp2go_settings_section',
             array('name' => 'smtp2go_from_name', 'required' => true)
         );
 
+        /**custom headers in own section */
         register_setting(
             'api_settings',
             'smtp2go_custom_headers'
@@ -138,47 +141,92 @@ class Smtp2goWordpressPluginAdmin
         add_settings_field(
             'smtp2go_custom_headers',
             false,
-            [$this, 'customHeaders'],
+            [$this, 'outputCustomHeadersHtml'],
             $this->plugin_name,
             'smtp2go_custom_headers_section',
             array('class' => 'smtp2go_hide_title')
         );
+
+        add_filter('pre_update_option_smtp2go_custom_headers', array($this, 'cleanCustomHeaderOptions'));
+    }
+
+    /**
+     * Clean empty values out of the custom header options $_POST
+     *
+     * @since 1.0.0
+     * @param array $options
+     * @return array
+     */
+    public function cleanCustomHeaderOptions($options)
+    {
+        $final = array('header' => array(), 'value' => array());
+
+        if (!empty($options['header'])) {
+            foreach ($options['header'] as $index => $value) {
+                if (!empty($value) && !empty($options['value'][$index])) {
+                    $final['header'][] = $value;
+                    $final['value'][] = $options['value'][$index];
+                }
+            }
+        }
+
+        return $final;
+
     }
 
     /**
      * Output the html for managing custom headers
      *
+     * @since 1.0.0
      * @return void
      */
-    public function customHeaders()
+    public function outputCustomHeadersHtml()
     {
+        $existing_fields = '';
+
         $custom_headers = get_option('smtp2go_custom_headers');
+
         if (!empty($custom_headers['header'])) {
             foreach ($custom_headers['header'] as $index => $existing_custom_header) {
                 $existing_fields .=
                     '<tr>'
-                    . '<td><input type="text" name="smtp2go_custom_headers[header][]" value="' . $existing_custom_header . '"/></td>'
-                    . '<td><input type="text" name="smtp2go_custom_headers[value][]" value="' . $custom_headers['value'][$index] . '"/></td>'
+                    . '<td><input  class="smtp2go_text_input" type="text" name="smtp2go_custom_headers[header][]" value="' . $existing_custom_header . '"/></td>'
+                    . '<td><input  class="smtp2go_text_input" type="text" name="smtp2go_custom_headers[value][]" value="' . $custom_headers['value'][$index] . '"/></td>'
                     . '</tr>';
             }
         }
 
         echo '<table class="smtp2go_custom_headers">'
-            . '<tr>'
-            . '<th class="heading">Header</th>'
-            . '<th class="heading">Value</th>'
-            . $existing_fields
-            . '<tr>'
-            . '<td><input type="text" placeholder="Enter New Header Key" name="smtp2go_custom_headers[header][]"/></td>'
-            . '<td><input type="text" placeholder="Enter New Header Value" name="smtp2go_custom_headers[value][]"/></td>'
+        . '<tr>'
+        . '<th class="heading">' . __('Header', $this->plugin_name) . '</th>'
+        . '<th class="heading">' . __('Value', $this->plugin_name) . '</th>'
+        . $existing_fields
+        . '<tr>'
+        . '<td><input class="smtp2go_text_input" type="text" placeholder="' . __('Enter New Header Key', $this->plugin_name) . '" name="smtp2go_custom_headers[header][]"/></td>'
+        . '<td><input  class="smtp2go_text_input" type="text" placeholder="' . __('Enter New Header Value', $this->plugin_name) . '" name="smtp2go_custom_headers[value][]"/></td>'
             . '</tr>';
     }
 
-    public function settingsSection()
+    public function generalSection()
     {
+        return;
     }
 
-    public function textField($args)
+
+    public function customHeadersSection()
+    {
+        echo '<small class="smtp2go_help_text">'
+        . __('To remove a header, simply clear one of the values and save', SMTP_TEXT_DOMAIN) 
+        . '</small>';
+    }
+
+    /**
+     * Output Text Field Html
+     *
+     * @param array $args
+     * @return void
+     */
+    public function outputTextFieldHtml($args)
     {
         $field_name = $args['name'];
 
@@ -199,7 +247,12 @@ class Smtp2goWordpressPluginAdmin
         echo '<input type="' . $type . '"' . $required . ' class="smtp2go_text_input" name="' . $field_name . '" value="' . esc_attr($setting) . '"/> ';
     }
 
-    public function addSubmenuPage()
+    /**
+     * Add Menu Page
+     *
+     * @return void
+     */
+    public function addMenuPage()
     {
         add_menu_page(
             'SMTP2Go',
