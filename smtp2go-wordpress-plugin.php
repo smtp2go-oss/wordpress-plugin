@@ -66,6 +66,8 @@ register_deactivation_hook(__FILE__, 'deactivate_smtp2go_wordpress_plugin');
  */
 require plugin_dir_path(__FILE__) . 'includes/class-smtp2go-wordpress-plugin.php';
 
+require_once plugin_dir_path(__FILE__) . 'includes/class-smtp2go-api.php';
+
 /**
  * Begins execution of the plugin.
  *
@@ -79,6 +81,24 @@ function run_smtp2go_wordpress_plugin()
 {
     $plugin = new Smtp2goWordpressPlugin();
     $plugin->run();
+}
+
+/**
+ * Override the built in wp_mail function so we can send via the smtp2go api
+ *
+ * @param string|array $to
+ * @param string $subject
+ * @param string $message
+ * @param string|array $headers
+ * @param string|array $attachments
+ * @return bool
+ */
+function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
+{
+    $smtp2goapi = new Smtp2goApi($to, $subject, $message, $headers, $attachments);
+    
+    $smtp2goapi->initFromOptions();
+    $smtp2goapi->send();
 }
 
 run_smtp2go_wordpress_plugin();

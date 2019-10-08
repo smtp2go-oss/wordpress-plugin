@@ -165,7 +165,7 @@ class Smtp2goWordpressPluginAdmin
             foreach ($options['header'] as $index => $value) {
                 if (!empty($value) && !empty($options['value'][$index])) {
                     $final['header'][] = $value;
-                    $final['value'][] = $options['value'][$index];
+                    $final['value'][]  = $options['value'][$index];
                 }
             }
         }
@@ -212,12 +212,11 @@ class Smtp2goWordpressPluginAdmin
         return;
     }
 
-
     public function customHeadersSection()
     {
         echo '<small class="smtp2go_help_text">'
-        . __('To remove a header, simply clear one of the values and save', SMTP_TEXT_DOMAIN) 
-        . '</small>';
+        . __('To remove a header, simply clear one of the values and save', SMTP_TEXT_DOMAIN)
+            . '</small>';
     }
 
     /**
