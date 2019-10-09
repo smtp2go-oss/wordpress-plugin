@@ -166,13 +166,41 @@ class Smtp2GoApi
      * Send the request to the api via a WP_HTTP instance
      *
      * @since 1.0.0
-     * @return Wp_Error|array
+     * @return string
      */
-    public function send(WP_Http $http)
+    public function send()
     {
-        return $http->post($this->endpoint, $this->buildRequest());
+        $request = $this->buildRequest();
+
+        $options = array();
+
+        $options['http']['method']        = $request['method'];
+        $options['http']['header']        = array("Content-Type: application/json");
+        $options['http']['content']       = $request['body'];
+        //we want to get the api response if it errors so we can log what went wrong
+        $options['http']['ignore_errors'] = true;
+
+        $context = stream_context_create($options);
+
+        $stream = fopen($this->endpoint, 'r', false, $context);
+
+        $meta = stream_get_meta_data($stream);
+        
+        $response = stream_get_contents($stream);
+        
+        
+        $response = json_decode($response);
+        
+        fclose($stream);
+        
+        return empty($response->data->field_validation_errors);
     }
 
+    /**
+     * Builds the JSON to send to the Smtp2go API
+     *
+     * @return void
+     */
     public function buildRequest()
     {
         /** the body of the request which will be sent as json */
@@ -191,9 +219,9 @@ class Smtp2GoApi
         $body['attachments']    = $this->buildAttachmentsArray();
 
         return array(
-            'headers' => array(array('Content-Type' => 'application/json')),
-            'method'  => 'POST',
-            'body'    => json_encode(array_filter($body)),
+            // 'headers' => array(array('Content-Type' => 'application/json')),
+            'method' => 'POST',
+            'body'   => json_encode(array_filter($body), JSON_UNESCAPED_SLASHES),
         );
     }
 
@@ -424,13 +452,11 @@ class Smtp2GoApi
      */
     public function setSender($email, $name = '')
     {
-        //normalise input
-        $email = str_replace(['<', '>'], '', $email);
-
         if (!empty($name)) {
+            $email        = str_replace(['<', '>'], '', $email);
             $this->sender = "$name <$email>";
         } else {
-            $this->sender = "<$email>";
+            $this->sender = "$email";
         }
 
         return $this;
