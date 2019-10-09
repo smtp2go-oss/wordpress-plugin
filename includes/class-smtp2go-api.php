@@ -2,6 +2,11 @@
 
 /**
  * Facilitates communication with the Smtp2Go api
+ *
+ * @link       https://thefold.nz
+ * @since      1.0.0
+ * @package    Smtp2go_Wordpress_Plugin
+ * @subpackage Smtp2go_Wordpress_Plugin/include
  */
 class Smtp2GoApi
 {
@@ -34,6 +39,20 @@ class Smtp2GoApi
     protected $recipients;
 
     /**
+     * The CC'd recipients
+     *
+     * @var string|array
+     */
+    protected $cc;
+
+    /**
+     * The BCC'd recipients
+     *
+     * @var string|array
+     */
+    protected $bcc;
+
+    /**
      * The email subject
      *
      * @var string
@@ -55,6 +74,13 @@ class Smtp2GoApi
     protected $headers;
 
     /**
+     * The data parsed from the $wp_headers
+     *
+     * @var array
+     */
+    private $parsed_headers;
+
+    /**
      * Attachments
      *
      * @var string|array
@@ -68,13 +94,39 @@ class Smtp2GoApi
      */
     protected $endpoint = 'https://api.smtp2go.com/v3/email/send';
 
-    public function __construct($recipients, $subject, $message, $headers = '', $attachments = array())
+    /**
+     * Create instance - arguments mirror those of the wp_mail function
+     *
+     * @param mixed $wp_recipients
+     * @param mixed $wp_subject
+     * @param mixed $wp_message
+     * @param mixed $wp_headers
+     * @param mixed $wp_attachments
+     */
+    public function __construct($wp_recipients, $wp_subject, $wp_message, $wp_headers = '', $wp_attachments = array())
     {
-        $this->recipients  = $recipients;
-        $this->subject     = $subject;
-        $this->message     = $message;
-        $this->headers     = $headers;
-        $this->attachments = $attachments;
+        $this->setRecipients($wp_recipients)->setSubject($wp_subject)->setMessage($wp_message);
+
+        $this->processWpHeaders($wp_headers);
+
+        //@todo - these need to be processed in the same way that wp_mail does them
+        // make a compatability class to handle this stuff
+        $this->attachments = $wp_attachments;
+    }
+
+    /**
+     * Process the headers passed in from wordpress
+     *
+     * @param mixed $wp_headers
+     * @return void
+     */
+    protected function processWpHeaders($wp_headers)
+    {
+        require_once dirname(__FILE__) . '/class-smtp2go-wpmail-compat.php';
+
+        $compat = new Smtp2GoWpmailCompat;
+
+        $this->parsed_headers = $compat->processHeaders($wp_headers);
     }
 
     /**
@@ -106,47 +158,72 @@ class Smtp2GoApi
         /** the body of the request which will be sent as json */
         $body = array();
 
-        $body['api_key']        = $this->getApiKey();
-        $body['to']             = $this->buildRecipientsArray();
+        $body['api_key'] = $this->getApiKey();
+
+        //the recipients need to be iterated over and sent to individually
+        $body['to']  = $this->buildRecipientsArray();
+        $body['cc']  = $this->buildCCArray();
+        $body['bcc'] = $this->buildBCCArray();
+
         $body['sender']         = $this->getSender();
         $body['html_body']      = $this->getMessage();
         $body['custom_headers'] = $this->buildCustomHeadersArray();
         $body['subject']        = $this->getSubject();
-        $request_headers        = array(array('Content-Type' => 'application/json'));
 
         return array(
-            'headers' => $request_headers,
+            'headers' => array(array('Content-Type' => 'application/json')),
             'method'  => 'POST',
-            'body'    => json_encode($body),
+            'body'    => json_encode(array_filter($body)),
         );
-
-        /*
-    {
-    "api_key": "api-40246460336B11E6AA53F23C91285F72",
-    "to": ["Test Person <test@example.com>"],
-    "sender": "Test Persons Friend <test2@example.com>",
-    "subject": "Hello Test Person",
-    "text_body": "You're my favorite test person ever",
-    "html_body": "<h1>You're my favorite test person ever</h1>",
-    "custom_headers": [
-    {
-    "header": "Reply-To",
-    "value": "Actual Person <test3@example.com>"
-    }
-    ],
-    "attachments": [
-    {
-    "filename": "test.pdf",
-    "fileblob": "--base64-data--",
-    "mimetype": "application/pdf"
-    },
-    {
-    "filename": "test.txt",
-    "fileblob": "--base64-data--",
-    "mimetype": "text/plain"
     }
 
+    /**
+     * Build an array of bcc recipients by combining ones natively set
+     * or passed through the $wp_headers constructor variable
+     *
+     * @since 1.0.0
+     * @return array
      */
+
+    public function buildCCArray()
+    {
+        $cc_recipients = array();
+        foreach ((array) $this->cc as $cc_recipient) {
+            $cc_recipients[] = $this->rfc822($cc_recipient);
+        }
+        foreach ($this->parsed_headers['cc'] as $cc_recipient) {
+            $cc_recipients[] = $this->rfc822($cc_recipient);
+        }
+        return $cc_recipients;
+    }
+
+    /**
+     * Build an array of bcc recipients by combining ones natively set
+     * or passed through the $wp_headers constructor variable
+     *
+     * @since 1.0.0
+     * @return array
+     */
+    public function buildBCCArray()
+    {
+        $bcc_recipients = array();
+        foreach ((array) $this->bcc as $bcc_recipient) {
+            $cc_recipients[] = $this->rfc822($bcc_recipient);
+        }
+        foreach ($this->parsed_headers['bcc'] as $bcc_recipient) {
+            $bcc_recipients[] = $this->rfc822($bcc_recipient);
+        }
+        return $bcc_recipients;
+    }
+
+    private function rfc822($email)
+    {
+        //if its just a plain old email wrap it up
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return '<' . $email . '>';
+        }
+        //pray for good things
+        return $email;
     }
 
     public function buildCustomHeadersArray()
@@ -165,6 +242,22 @@ class Smtp2GoApi
                 }
             }
         }
+        if (!empty($this->parsed_headers['headers'])) {
+            foreach ((array) $this->parsed_headers['headers'] as $name => $content) {
+                $custom_headers[] = array(
+                    'header' => $name,
+                    'value'  => $content,
+                );
+            }
+            //not sure we want this?
+            if (false !== stripos($this->parsed_headers['content_type'], 'multipart') && !empty($this->parsed_headers['boundary'])) {
+                $custom_headers[] = array(
+                    'header'  => 'Content-Type: ' . $this->parsed_headers['content_type'],
+                    'content' => 'boundary="' . $this->parsed_headers['boundary'] . '"',
+                );
+            }
+        }
+
         return $custom_headers;
     }
     /**
@@ -237,7 +330,8 @@ class Smtp2GoApi
     }
 
     /**
-     * Get custom headers
+     * Get custom headers - expected format is the unserialized array
+     * from the stored smtp2go_custom_headers option
      *
      * @return  array
      */
@@ -247,7 +341,8 @@ class Smtp2GoApi
     }
 
     /**
-     * Set custom headers
+     * Set custom headers - expected format is the unserialized array
+     * from the stored smtp2go_custom_headers option
      *
      * @param  array  $custom_headers  Custom headers
      *
@@ -273,13 +368,21 @@ class Smtp2GoApi
     /**
      * Set sender as RFC-822 formatted email "John Smith <john@example.com>"
      *
-     * @param string  $sender RFC-822 formatted email "John Smith <john@example.com>"
+     * @param string $email
+     * @param string $name
      *
      * @return self
      */
-    public function setSender(string $sender)
+    public function setSender($email, $name = '')
     {
-        $this->sender = $sender;
+        //normalise input
+        $email = str_replace(['<', '>'], '', $email);
+
+        if (!empty($name)) {
+            $this->sender = "$name <$email>";
+        } else {
+            $this->sender = "<$email>";
+        }
 
         return $this;
     }
@@ -351,7 +454,57 @@ class Smtp2GoApi
      */
     public function setRecipients($recipients)
     {
-        $this->recipients = $recipients;
+        if (is_string($recipients)) {
+            $this->recipients = $recipients;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get the BCC'd recipients
+     *
+     * @return  string|array
+     */
+    public function getBcc()
+    {
+        return $this->bcc;
+    }
+
+    /**
+     * Set the BCC'd recipients
+     *
+     * @param  string|array  $bcc  The BCC'd recipients
+     *
+     * @return  self
+     */
+    public function setBcc($bcc)
+    {
+        $this->bcc = $bcc;
+
+        return $this;
+    }
+
+    /**
+     * Get the CC'd recipients
+     *
+     * @return  string|array
+     */
+    public function getCc()
+    {
+        return $this->cc;
+    }
+
+    /**
+     * Set the CC'd recipients
+     *
+     * @param  string|array  $cc  The CC'd recipients
+     *
+     * @return  self
+     */
+    public function setCc($cc)
+    {
+        $this->cc = $cc;
 
         return $this;
     }

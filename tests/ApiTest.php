@@ -21,7 +21,7 @@ class ApiTest extends TestCase
 
         $api->setCustomHeaders($raw_headers);
 
-        $api->setSender('Unit Test <unit@test.fake>');
+        $api->setSender('unit@test.fake', 'Unit Test');
 
         return $api;
     }
@@ -68,9 +68,5 @@ class ApiTest extends TestCase
         $this->assertArrayHasKey('method', $request_data);
 
         $this->assertJsonStringEqualsJsonString($expected_json_body_string, $request_data['body']);
-
-
-        
-        
     }
 }
