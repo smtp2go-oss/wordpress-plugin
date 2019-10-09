@@ -81,7 +81,14 @@ class Smtp2GoApi
     private $parsed_headers;
 
     /**
-     * Attachments
+     * The data parsed from the $wp_attachments
+     *
+     * @var array
+     */
+    private $parsed_attachments;
+
+    /**
+     * Attachments not added through the $wp_attachments variable
      *
      * @var string|array
      */
@@ -109,9 +116,7 @@ class Smtp2GoApi
 
         $this->processWpHeaders($wp_headers);
 
-        //@todo - these need to be processed in the same way that wp_mail does them
-        // make a compatability class to handle this stuff
-        $this->attachments = $wp_attachments;
+        $this->processWpAttachments($wp_attachments);
     }
 
     /**
@@ -127,6 +132,21 @@ class Smtp2GoApi
         $compat = new Smtp2GoWpmailCompat;
 
         $this->parsed_headers = $compat->processHeaders($wp_headers);
+    }
+
+    /**
+     * Process the attachments passed in from wordpress
+     *
+     * @param mixed $wp_attachments
+     * @return void
+     */
+    protected function processWpAttachments($wp_attachments)
+    {
+        require_once dirname(__FILE__) . '/class-smtp2go-wpmail-compat.php';
+
+        $compat = new Smtp2GoWpmailCompat;
+
+        $this->parsed_attachments = $compat->processAttachments($wp_attachments);
     }
 
     /**
@@ -160,7 +180,6 @@ class Smtp2GoApi
 
         $body['api_key'] = $this->getApiKey();
 
-        //the recipients need to be iterated over and sent to individually
         $body['to']  = $this->buildRecipientsArray();
         $body['cc']  = $this->buildCCArray();
         $body['bcc'] = $this->buildBCCArray();
@@ -169,6 +188,7 @@ class Smtp2GoApi
         $body['html_body']      = $this->getMessage();
         $body['custom_headers'] = $this->buildCustomHeadersArray();
         $body['subject']        = $this->getSubject();
+        $body['attachments']    = $this->buildAttachmentsArray();
 
         return array(
             'headers' => array(array('Content-Type' => 'application/json')),
@@ -177,6 +197,30 @@ class Smtp2GoApi
         );
     }
 
+    public function buildAttachmentsArray()
+    {
+        require_once dirname(__FILE__) . '/class-smtp2go-mimetype-helper.php';
+
+        $helper = new Smtp2GoMimetypeHelper;
+
+        $attachments = array();
+
+        foreach ((array) $this->attachments as $path) {
+            $attachments[] = array(
+                'filename' => basename($path),
+                'fileblob' => base64_encode(file_get_contents($path)),
+                'mimetype' => $helper->getMimeType($path),
+            );
+        }
+        foreach ($this->parsed_attachments as $path) {
+            $attachments[] = array(
+                'filename' => basename($path),
+                'fileblob' => base64_encode(file_get_contents($path)),
+                'mimetype' => $helper->getMimeType($path),
+            );
+        }
+        return $attachments;
+    }
     /**
      * Build an array of bcc recipients by combining ones natively set
      * or passed through the $wp_headers constructor variable
@@ -208,7 +252,7 @@ class Smtp2GoApi
     {
         $bcc_recipients = array();
         foreach ((array) $this->bcc as $bcc_recipient) {
-            $cc_recipients[] = $this->rfc822($bcc_recipient);
+            $bcc_recipients[] = $this->rfc822($bcc_recipient);
         }
         foreach ($this->parsed_headers['bcc'] as $bcc_recipient) {
             $bcc_recipients[] = $this->rfc822($bcc_recipient);
@@ -258,6 +302,13 @@ class Smtp2GoApi
             }
         }
 
+        if (!empty($this->parsed_headers['reply-to'])) {
+            $custom_headers[] = array(
+                'header' => 'Reply-To',
+                'value'  => $this->parsed_headers['reply-to'],
+            );
+        }
+
         return $custom_headers;
     }
     /**
@@ -269,13 +320,11 @@ class Smtp2GoApi
     {
         $recipients = array();
 
-        //parse the way wp_email gets data into the "fname lname email"  format;
         if (!is_array($this->recipients)) {
-            $recipients[] = $this->recipients;
+            $recipients[] = $this->rfc822($this->recipients);
         } else {
             foreach ($this->recipients as $recipient_item) {
-                //@todo check how these are formatted and parse appropriately
-                $recipients[] = trim($recipient_item);
+                $recipients[] = $this->rfc822($recipient_item);
             }
         }
         return $recipients;
@@ -505,6 +554,30 @@ class Smtp2GoApi
     public function setCc($cc)
     {
         $this->cc = $cc;
+
+        return $this;
+    }
+
+    /**
+     * Get attachments not added through the $wp_attachments variable
+     *
+     * @return  string|array
+     */
+    public function getAttachments()
+    {
+        return $this->attachments;
+    }
+
+    /**
+     * Set attachments not added through the $wp_attachments variable
+     *
+     * @param  string|array  $attachments Attachments not added through the $wp_attachments variable
+     *
+     * @return  self
+     */
+    public function setAttachments($attachments)
+    {
+        $this->attachments = $attachments;
 
         return $this;
     }

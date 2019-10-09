@@ -17,3 +17,4 @@ phpunit.phar
 /readme.html
 /sitemap.xml
 /sitemap.xml.gz
+phpunit.xml

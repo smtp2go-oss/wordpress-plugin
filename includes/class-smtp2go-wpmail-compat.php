@@ -108,49 +108,21 @@ class Smtp2GoWpmailCompat
 
         return $parsed_header_data;
     }
-
-    /*
-    public function processAddresses($to, $cc, $bcc, $reply_to)
+    /**
+     * Process wp_mail attachments which are either a string filepath
+     * or an array of file paths
+     *
+     * @param string|array $wp_attachments
+     * @return void
+     */
+    public function processAttachments($wp_attachments)
     {
-        $address_headers = compact('to', 'cc', 'bcc', 'reply_to');
+        $attachments = array();
 
-        foreach ($address_headers as $address_header => $addresses) {
-            if (empty($addresses)) {
-                continue;
-            }
-
-            foreach ((array) $addresses as $address) {
-                try {
-                    // Break $recipient into name and address parts if in the format "Foo <bar@baz.com>"
-                    $recipient_name = '';
-
-                    if (preg_match('/(.*)<(.+)>/', $address, $matches)) {
-                        if (count($matches) == 3) {
-                            $recipient_name = $matches[1];
-                            $address        = $matches[2];
-                        }
-                    }
-
-                    switch ($address_header) {
-                        case 'to':
-                            $phpmailer->addAddress($address, $recipient_name);
-                            break;
-                        case 'cc':
-                            $phpmailer->addCc($address, $recipient_name);
-                            break;
-                        case 'bcc':
-                            $phpmailer->addBcc($address, $recipient_name);
-                            break;
-                        case 'reply_to':
-                            $phpmailer->addReplyTo($address, $recipient_name);
-                            break;
-                    }
-                } catch (phpmailerException $e) {
-                    continue;
-                }
-            }
+        if (!is_array($wp_attachments)) {
+            $attachments = explode("\n", str_replace("\r\n", "\n", $attachments));
         }
-    }
-    */
 
+        return $attachments;
+    }
 }
