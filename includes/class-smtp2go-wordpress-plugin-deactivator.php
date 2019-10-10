@@ -1,4 +1,5 @@
 <?php
+namespace Smtp2Go;
 
 /**
  * Fired during plugin deactivation
@@ -20,17 +21,16 @@
  * @subpackage Smtp2go_Wordpress_Plugin/includes
  * @author     The Fold <hello@thefold.co.nz>
  */
-class Smtp2go_Wordpress_Plugin_Deactivator {
-
-	/**
-	 * Short Description. (use period)
-	 *
-	 * Long Description.
-	 *
-	 * @since    1.0.0
-	 */
-	public static function deactivate() {
-
-	}
-
+class Smtp2goWordpressPluginDeactivator
+{
+    /**
+     * Short Description. (use period)
+     *
+     * Long Description.
+     *
+     * @since    1.0.0
+     */
+    public static function deactivate()
+    {
+    }
 }

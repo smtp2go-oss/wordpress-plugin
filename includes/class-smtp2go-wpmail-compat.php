@@ -1,4 +1,5 @@
 <?php
+namespace Smtp2Go;
 
 /**
  * provides wp_mail compatible functionality using sections of code from

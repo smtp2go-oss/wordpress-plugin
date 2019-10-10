@@ -1,4 +1,5 @@
 <?php
+namespace Smtp2Go;
 
 /**
  * Used for determining mime types for files, code from PHPMailer
@@ -10,7 +11,6 @@ class Smtp2GoMimetypeHelper
 {
     public function getMimeType($filepath)
     {
-
         if (false !== ($qpos = strpos($filepath, '?'))) {
             $filepath = substr($filepath, 0, $qpos);
         }

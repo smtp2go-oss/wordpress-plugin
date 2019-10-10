@@ -1,4 +1,5 @@
 <?php
+namespace Smtp2Go;
 
 /**
  * Register all actions and filters for the plugin

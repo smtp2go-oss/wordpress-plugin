@@ -1,4 +1,5 @@
 <?php
+namespace Smtp2Go;
 
 /**
  * The admin-specific functionality of the plugin.

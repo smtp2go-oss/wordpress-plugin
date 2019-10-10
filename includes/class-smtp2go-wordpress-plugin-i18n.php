@@ -1,4 +1,5 @@
 <?php
+namespace Smtp2Go;
 
 /**
  * Define the internationalization functionality

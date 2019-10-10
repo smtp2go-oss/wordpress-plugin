@@ -1,4 +1,5 @@
 <?php
+namespace Smtp2Go;
 
 /**
  * The file that defines the core plugin class
@@ -35,7 +36,7 @@ class Smtp2goWordpressPlugin
      *
      * @since    1.0.0
      * @access   protected
-     * @var      Smtp2go_Wordpress_Plugin_Loader    $loader    Maintains and registers all hooks for the plugin.
+     * @var      Smtp2goWordpressPluginLoader    $loader    Maintains and registers all hooks for the plugin.
      */
     protected $loader;
 
@@ -78,7 +79,6 @@ class Smtp2goWordpressPlugin
         $this->loadDependencies();
         $this->setLocale();
         $this->defineAdminHooks();
-        $this->definePublicHooks();
     }
 
     /**
@@ -116,11 +116,6 @@ class Smtp2goWordpressPlugin
          */
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-smtp2go-wordpress-plugin-admin.php';
 
-        /**
-         * The class responsible for defining all actions that occur in the public-facing
-         * side of the site.
-         */
-        require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-smtp2go-wordpress-plugin-public.php';
 
         $this->loader = new Smtp2goWordpressPluginLoader();
 
@@ -163,22 +158,6 @@ class Smtp2goWordpressPlugin
 
         $this->loader->addAction('admin_enqueue_scripts', $plugin_admin, 'enqueueStyles');
         $this->loader->addAction('admin_enqueue_scripts', $plugin_admin, 'enqueueScripts');
-    }
-
-    /**
-     * Register all of the hooks related to the public-facing functionality
-     * of the plugin.
-     *
-     * @since    1.0.0
-     * @access   private
-     */
-    private function definePublicHooks()
-    {
-        $plugin_public = new Smtp2go_Wordpress_Plugin_Public($this->getPluginName(), $this->getVersion());
-
-        $this->loader->addAction('wp_enqueue_scripts', $plugin_public, 'enqueueStyles');
-        $this->loader->addAction('wp_enqueue_scripts', $plugin_public, 'enqueueScripts');
-
     }
 
     /**

@@ -1,5 +1,5 @@
 <?php
-
+namespace Smtp2Go;
 /**
  * Fired during plugin activation
  *
@@ -20,17 +20,17 @@
  * @subpackage Smtp2go_Wordpress_Plugin/includes
  * @author     The Fold <hello@thefold.co.nz>
  */
-class Smtp2go_Wordpress_Plugin_Activator {
-
-	/**
-	 * Short Description. (use period)
-	 *
-	 * Long Description.
-	 *
-	 * @since    1.0.0
-	 */
-	public static function activate() {
-
-	}
+class Smtp2goWordpressPluginActivator
+{
+    /**
+     * Short Description. (use period)
+     *
+     * Long Description.
+     *
+     * @since    1.0.0
+     */
+    public static function activate()
+    {
+    }
 
 }

@@ -1,4 +1,5 @@
 <?php
+namespace Smtp2Go;
 
 /**
  * The plugin bootstrap file
@@ -25,6 +26,9 @@
  * Domain Path:       /languages
  */
 
+use Smtp2Go\Smtp2goWordpressPluginActivator;
+use Smtp2Go\Smtp2goWordpressPluginDeactivator;
+
 // If this file is called directly, abort.
 if (!defined('WPINC')) {
     die;
@@ -44,7 +48,7 @@ define('SMTP2GO_WORDPRESS_PLUGIN_VERSION', '1.0.0');
 function activate_smtp2go_wordpress_plugin()
 {
     require_once plugin_dir_path(__FILE__) . 'includes/class-smtp2go-wordpress-plugin-activator.php';
-    Smtp2go_Wordpress_Plugin_Activator::activate();
+    Smtp2goWordpressPluginActivator::activate();
 }
 
 /**
@@ -54,7 +58,7 @@ function activate_smtp2go_wordpress_plugin()
 function deactivate_smtp2go_wordpress_plugin()
 {
     require_once plugin_dir_path(__FILE__) . 'includes/class-smtp2go-wordpress-plugin-deactivator.php';
-    Smtp2go_Wordpress_Plugin_Deactivator::deactivate();
+    Smtp2goWordpressPluginDeactivator::deactivate();
 }
 
 register_activation_hook(__FILE__, 'activate_smtp2go_wordpress_plugin');
@@ -66,6 +70,10 @@ register_deactivation_hook(__FILE__, 'deactivate_smtp2go_wordpress_plugin');
  */
 require plugin_dir_path(__FILE__) . 'includes/class-smtp2go-wordpress-plugin.php';
 
+
+require_once plugin_dir_path(__FILE__) . 'includes/interface-smtp2go-api-requestable.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-smtp2go-wpmail-compat.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-smtp2go-mimetype-helper.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-smtp2go-api-message.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-smtp2go-api-request.php';
 
@@ -95,16 +103,16 @@ function run_smtp2go_wordpress_plugin()
  * @return bool
  */
 
- //if the plugin isn't activated, this function will exist
+//if the plugin isn't activated, this function will exist
 if (!function_exists('wp_mail')) {
     function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     {
         $smtp2gomessage = new Smtp2GoApiMessage($to, $subject, $message, $headers, $attachments);
 
         $smtp2gomessage->initFromOptions();
-        
+
         $request = new Smtp2GoApiRequest;
-        
+
         $request->send($smtp2gomessage);
     }
 }

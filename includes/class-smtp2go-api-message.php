@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . '/interface-smtp2go-api-requestable.php';
+namespace Smtp2Go;
 
 /**
  * Creates an email message payload to send through the request api
@@ -128,7 +128,6 @@ class Smtp2GoApiMessage implements SmtpApi2GoRequestable
      */
     protected function processWpHeaders($wp_headers)
     {
-        require_once dirname(__FILE__) . '/class-smtp2go-wpmail-compat.php';
 
         $compat = new Smtp2GoWpmailCompat;
 
@@ -143,7 +142,6 @@ class Smtp2GoApiMessage implements SmtpApi2GoRequestable
      */
     protected function processWpAttachments($wp_attachments)
     {
-        require_once dirname(__FILE__) . '/class-smtp2go-wpmail-compat.php';
 
         $compat = new Smtp2GoWpmailCompat;
 
@@ -158,7 +156,6 @@ class Smtp2GoApiMessage implements SmtpApi2GoRequestable
      */
     public function initFromOptions()
     {
-        $this->setApiKey(get_option('smtp2go_api_key'));
         $this->setSender(get_option('smtp2go_from_name'), get_option('smtp2go_from_address'));
         $this->setCustomHeaders(get_option('smtp2go_custom_headers'));
     }
@@ -174,7 +171,7 @@ class Smtp2GoApiMessage implements SmtpApi2GoRequestable
         /** the body of the request which will be sent as json */
         $body = array();
 
-        $body['api_key'] = $this->getApiKey();
+        // $body['api_key'] = $this->getApiKey();
 
         $body['to']  = $this->buildRecipientsArray();
         $body['cc']  = $this->buildCCArray();
@@ -182,12 +179,13 @@ class Smtp2GoApiMessage implements SmtpApi2GoRequestable
 
         $body['sender']         = $this->getSender();
 
-        //check if it's just plain text
-        if (strip_tags($this->getMessage()) === $this->getMessage()) {
-            $body['text_body']      = $this->getMessage();
-        } else {
-            $body['html_body']      = $this->getMessage();
-        }
+        //@todo handle these better
+        
+        $body['text_body']      = $this->getMessage();
+        
+        //nl2br if no tags maybe?
+        $body['html_body']      = $this->getMessage();
+        
 
         $body['custom_headers'] = $this->buildCustomHeadersArray();
         $body['subject']        = $this->getSubject();
@@ -195,13 +193,12 @@ class Smtp2GoApiMessage implements SmtpApi2GoRequestable
 
         return array(
             'method' => 'POST',
-            'body'   => json_encode(array_filter($body), JSON_UNESCAPED_SLASHES),
+            'body'   => $body,
         );
     }
 
     public function buildAttachmentsArray()
     {
-        require_once dirname(__FILE__) . '/class-smtp2go-mimetype-helper.php';
 
         $helper = new Smtp2GoMimetypeHelper;
 

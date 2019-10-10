@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . '/interface-smtp2go-api-requestable.php';
+namespace Smtp2Go;
 
 /**
  * Makes http requests to the smtp2go api
@@ -28,6 +28,16 @@ class Smtp2GoApiRequest
      */
     protected $last_meta;
 
+    protected $api_key;
+
+    public function __construct($api_key = '')
+    {
+        if (empty($api_key)) {
+            $this->setApiKey(get_option('smtp2go_api_key'));
+        } else {
+            $this->setApiKey($api_key);
+        }
+    }
     /**
      * Send the request to the api via php stream
      *
@@ -40,15 +50,19 @@ class Smtp2GoApiRequest
         $payload  = $request->buildRequestPayload();
         $options  = array();
 
+        $payload['body']['api_key'] = $this->api_key;
+
         $options['http']['method']  = $payload['method'];
         $options['http']['header']  = array("Content-Type: application/json");
-        $options['http']['content'] = $payload['body'];
-        //we want to get the api response if not a 200 response so we can log what went wrong
+        $options['http']['content'] = json_encode(array_filter($payload['body']), JSON_UNESCAPED_SLASHES);
+        
+        //we want to get the api response if not a 200 response so we can examine
+        //the api response
         $options['http']['ignore_errors'] = true;
 
         $options['ssl']['verify_peer'] = true;
-        $options['ssl']['CN_match']           = 'smtp2go.com';
-        $options['ssl']['cafile']             = dirname(__FILE__, 5) . '/wp-includes/certificates/ca-bundle.crt';
+        $options['ssl']['CN_match']    = 'smtp2go.com';
+        $options['ssl']['cafile']      = dirname(__FILE__, 5) . '/wp-includes/certificates/ca-bundle.crt';
 
         $context = stream_context_create($options);
 
@@ -85,5 +99,17 @@ class Smtp2GoApiRequest
     public function getLastMeta()
     {
         return $this->last_meta;
+    }
+
+    /**
+     * Set the value of the api key
+     *
+     * @return  self
+     */
+    public function setApiKey($api_key)
+    {
+        $this->api_key = $api_key;
+
+        return $this;
     }
 }
