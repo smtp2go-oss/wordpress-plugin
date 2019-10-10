@@ -86,5 +86,4 @@ class Smtp2GoApiRequest
     {
         return $this->last_meta;
     }
-
 }

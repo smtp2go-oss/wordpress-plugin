@@ -181,7 +181,14 @@ class Smtp2GoApiMessage implements SmtpApi2GoRequestable
         $body['bcc'] = $this->buildBCCArray();
 
         $body['sender']         = $this->getSender();
-        $body['html_body']      = $this->getMessage();
+
+        //check if it's just plain text
+        if (strip_tags($this->getMessage()) === $this->getMessage()) {
+            $body['text_body']      = $this->getMessage();
+        } else {
+            $body['html_body']      = $this->getMessage();
+        }
+
         $body['custom_headers'] = $this->buildCustomHeadersArray();
         $body['subject']        = $this->getSubject();
         $body['attachments']    = $this->buildAttachmentsArray();
