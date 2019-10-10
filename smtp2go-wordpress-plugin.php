@@ -94,6 +94,8 @@ function run_smtp2go_wordpress_plugin()
  * @param string|array $attachments
  * @return bool
  */
+
+ //if the plugin isn't activated, this function will exist
 if (!function_exists('wp_mail')) {
     function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     {

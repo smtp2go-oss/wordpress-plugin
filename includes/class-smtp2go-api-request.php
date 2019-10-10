@@ -46,6 +46,10 @@ class Smtp2GoApiRequest
         //we want to get the api response if not a 200 response so we can log what went wrong
         $options['http']['ignore_errors'] = true;
 
+        $options['ssl']['verify_peer'] = true;
+        $options['ssl']['CN_match']           = 'smtp2go.com';
+        $options['ssl']['cafile']             = dirname(__FILE__, 5) . '/wp-includes/certificates/ca-bundle.crt';
+
         $context = stream_context_create($options);
 
         $stream = fopen($this->url . $endpoint, 'r', false, $context);
@@ -82,6 +86,5 @@ class Smtp2GoApiRequest
     {
         return $this->last_meta;
     }
-
 
 }
