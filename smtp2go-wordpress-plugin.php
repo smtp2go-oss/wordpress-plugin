@@ -66,7 +66,8 @@ register_deactivation_hook(__FILE__, 'deactivate_smtp2go_wordpress_plugin');
  */
 require plugin_dir_path(__FILE__) . 'includes/class-smtp2go-wordpress-plugin.php';
 
-require_once plugin_dir_path(__FILE__) . 'includes/class-smtp2go-api.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-smtp2go-api-message.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-smtp2go-api-request.php';
 
 /**
  * Begins execution of the plugin.
@@ -96,10 +97,13 @@ function run_smtp2go_wordpress_plugin()
 if (!function_exists('wp_mail')) {
     function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     {
-        $smtp2goapi = new Smtp2goApi($to, $subject, $message, $headers, $attachments);
+        $smtp2gomessage = new Smtp2GoApiMessage($to, $subject, $message, $headers, $attachments);
 
-        $smtp2goapi->initFromOptions();
-        $smtp2goapi->send();
+        $smtp2gomessage->initFromOptions();
+        
+        $request = new Smtp2GoApiRequest;
+        
+        $request->send($smtp2gomessage);
     }
 }
 run_smtp2go_wordpress_plugin();
