@@ -1,14 +1,15 @@
 <?php
+require_once dirname(__FILE__) . '/interface-smtp2go-api-requestable.php';
 
 /**
- * Facilitates communication with the Smtp2Go api
+ * Creates an email message payload to send through the request api
  *
  * @link       https://thefold.nz
  * @since      1.0.0
  * @package    Smtp2go_Wordpress_Plugin
  * @subpackage Smtp2go_Wordpress_Plugin/include
  */
-class Smtp2GoApi
+class Smtp2GoApiMessage implements SmtpApi2GoRequestable
 {
     /**
      * The api key
@@ -99,7 +100,7 @@ class Smtp2GoApi
      *
      * @var string
      */
-    protected $endpoint = 'https://api.smtp2go.com/v3/email/send';
+    protected $endpoint = 'email/send';
 
     /**
      * Create instance - arguments mirror those of the wp_mail function
@@ -158,50 +159,17 @@ class Smtp2GoApi
     public function initFromOptions()
     {
         $this->setApiKey(get_option('smtp2go_api_key'));
-        $this->setSender(get_option('smtp2go_from_name') . '<' . get_option('smtp2go_from_address') . '>');
+        $this->setSender(get_option('smtp2go_from_name'), get_option('smtp2go_from_address'));
         $this->setCustomHeaders(get_option('smtp2go_custom_headers'));
     }
 
-    /**
-     * Send the request to the api via a WP_HTTP instance
-     *
-     * @since 1.0.0
-     * @return string
-     */
-    public function send()
-    {
-        $request = $this->buildRequest();
-
-        $options = array();
-
-        $options['http']['method']        = $request['method'];
-        $options['http']['header']        = array("Content-Type: application/json");
-        $options['http']['content']       = $request['body'];
-        //we want to get the api response if it errors so we can log what went wrong
-        $options['http']['ignore_errors'] = true;
-
-        $context = stream_context_create($options);
-
-        $stream = fopen($this->endpoint, 'r', false, $context);
-
-        $meta = stream_get_meta_data($stream);
-        
-        $response = stream_get_contents($stream);
-        
-        
-        $response = json_decode($response);
-        
-        fclose($stream);
-        
-        return empty($response->data->field_validation_errors);
-    }
 
     /**
      * Builds the JSON to send to the Smtp2go API
      *
      * @return void
      */
-    public function buildRequest()
+    public function buildRequestPayload()
     {
         /** the body of the request which will be sent as json */
         $body = array();
@@ -219,7 +187,6 @@ class Smtp2GoApi
         $body['attachments']    = $this->buildAttachmentsArray();
 
         return array(
-            // 'headers' => array(array('Content-Type' => 'application/json')),
             'method' => 'POST',
             'body'   => json_encode(array_filter($body), JSON_UNESCAPED_SLASHES),
         );

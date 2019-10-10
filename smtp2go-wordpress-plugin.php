@@ -99,7 +99,7 @@ if (!function_exists('wp_mail')) {
         $smtp2goapi = new Smtp2goApi($to, $subject, $message, $headers, $attachments);
 
         $smtp2goapi->initFromOptions();
-        $smtp2goapi->send(new WP_Http);
+        $smtp2goapi->send();
     }
 }
 run_smtp2go_wordpress_plugin();
