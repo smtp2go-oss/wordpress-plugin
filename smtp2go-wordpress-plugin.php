@@ -1,6 +1,4 @@
 <?php
-namespace Smtp2Go;
-
 /**
  * The plugin bootstrap file
  *
@@ -88,7 +86,7 @@ require_once plugin_dir_path(__FILE__) . 'includes/class-smtp2go-api-request.php
  */
 function run_smtp2go_wordpress_plugin()
 {
-    $plugin = new Smtp2goWordpressPlugin();
+    $plugin = new Smtp2Go\Smtp2goWordpressPlugin();
     $plugin->run();
 }
 
@@ -105,13 +103,16 @@ function run_smtp2go_wordpress_plugin()
 
 //if the plugin isn't activated, this function will exist
 if (!function_exists('wp_mail')) {
+    // exit('2');
+    
     function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     {
-        $smtp2gomessage = new Smtp2GoApiMessage($to, $subject, $message, $headers, $attachments);
+        
+        $smtp2gomessage = new Smtp2Go\Smtp2GoApiMessage($to, $subject, $message, $headers, $attachments);
 
         $smtp2gomessage->initFromOptions();
 
-        $request = new Smtp2GoApiRequest;
+        $request = new Smtp2Go\Smtp2GoApiRequest;
 
         $request->send($smtp2gomessage);
     }

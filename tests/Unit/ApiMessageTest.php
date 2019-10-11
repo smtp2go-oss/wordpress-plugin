@@ -1,10 +1,16 @@
 <?php
 declare(strict_types=1);
 
+require_once 'includes/interface-smtp2go-api-requestable.php';
+
 require_once 'includes/class-smtp2go-api-message.php';
+require_once 'includes/class-smtp2go-wpmail-compat.php';
+require_once 'includes/class-smtp2go-mimetype-helper.php';
+
 
 use PHPUnit\Framework\TestCase;
-
+use Smtp2Go\Smtp2GoApiMessage;
+use Smtp2Go\Smtp2GoWpmailCompat;
 class ApiMessageTest extends TestCase
 {
 
@@ -16,7 +22,7 @@ class ApiMessageTest extends TestCase
     private function createTestInstance()
     {
         $message = new Smtp2GoApiMessage(['Test User <mail@example.local>'], 'Test Message', '');
-
+        
         $raw_headers = unserialize('a:2:{s:6:"header";a:1:{i:0;s:13:"X-Test-Header";}s:5:"value";a:1:{i:0;s:7:"Testing";}}');
 
         $message->setCustomHeaders($raw_headers);
@@ -65,21 +71,37 @@ class ApiMessageTest extends TestCase
         $this->assertArrayHasKey('value', $formatted_headers[0]);
     }
 
-    public function testbuildRequestPayload()
+    public function testbuildRequestPayloadWithHTMLMessage()
     {
-        $expected_json_body_string = '{"api_key":"api-fake-key","to":["Test Recipient <test@example.fake>"],"sender":"Unit Test <unit@test.fake>","html_body":"<h1>Heading<\/h1><div>This is the message<\/div>","custom_headers":[{"header":"X-Test-Header","value":"Testing"}],"subject":"Test Message"}';
+        $expected_json_body_string = '{"to":["Test Recipient <test@example.fake>"],"sender":"Unit Test <unit@test.fake>","html_body":"<html><body><h1>Heading<\/h1><div>This is the message<\/div><\/body><\/html>","custom_headers":[{"header":"X-Test-Header","value":"Testing"}],"subject":"Test Message"}';
         $message = $this->createTestInstance();
 
         $message->setSubject('Test Message');
-        $message->setMessage('<h1>Heading</h1><div>This is the message</div>');
+        $message->setMessage('<html><body><h1>Heading</h1><div>This is the message</div></body></html>');
         $message->setRecipients('Test Recipient <test@example.fake>');
-        $message->setApiKey('api-fake-key');
 
         $request_data = $message->buildRequestPayload();
 
         $this->assertArrayHasKey('body', $request_data);
         $this->assertArrayHasKey('method', $request_data);
 
-        $this->assertJsonStringEqualsJsonString($expected_json_body_string, $request_data['body']);
+        $this->assertJsonStringEqualsJsonString($expected_json_body_string, json_encode(array_filter($request_data['body'])));
     }
+
+    public function testbuildRequestPayloadWithTextMessage()
+    {
+        $expected_json_body_string = '{"to":["Test Recipient <test@example.fake>"],"sender":"Unit Test <unit@test.fake>","text_body":"This is the message","custom_headers":[{"header":"X-Test-Header","value":"Testing"}],"subject":"Test Message"}';
+        $message = $this->createTestInstance();
+
+        $message->setSubject('Test Message');
+        $message->setMessage('This is the message');
+        $message->setRecipients('Test Recipient <test@example.fake>');
+
+        $request_data = $message->buildRequestPayload();
+
+        $this->assertArrayHasKey('body', $request_data);
+        $this->assertArrayHasKey('method', $request_data);
+
+        $this->assertJsonStringEqualsJsonString($expected_json_body_string, json_encode(array_filter($request_data['body'])));
+    }    
 }

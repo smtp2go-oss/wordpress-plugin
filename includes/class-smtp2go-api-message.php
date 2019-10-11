@@ -1,6 +1,8 @@
 <?php
 namespace Smtp2Go;
 
+use Smtp2Go\Smtp2GoWpmailCompat;
+
 /**
  * Creates an email message payload to send through the request api
  *
@@ -181,11 +183,11 @@ class Smtp2GoApiMessage implements SmtpApi2GoRequestable
 
         //@todo handle these better
         
-        $body['text_body']      = $this->getMessage();
-        
-        //nl2br if no tags maybe?
-        $body['html_body']      = $this->getMessage();
-        
+        if (false !== strpos($this->getMessage(), '<html')) {
+            $body['html_body']      = $this->getMessage();
+        } else {
+            $body['text_body']      = $this->getMessage();
+        }
 
         $body['custom_headers'] = $this->buildCustomHeadersArray();
         $body['subject']        = $this->getSubject();
@@ -353,29 +355,6 @@ class Smtp2GoApiMessage implements SmtpApi2GoRequestable
         return $this;
     }
 
-    /**
-     * Get the api key
-     *
-     * @return  string
-     */
-    public function getApiKey()
-    {
-        return $this->api_key;
-    }
-
-    /**
-     * Set the api key
-     *
-     * @param  string  $api_key  The api key
-     *
-     * @return  self
-     */
-    public function setApiKey(string $api_key)
-    {
-        $this->api_key = $api_key;
-
-        return $this;
-    }
 
     /**
      * Get custom headers - expected format is the unserialized array
