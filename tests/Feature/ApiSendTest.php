@@ -1,8 +1,12 @@
 <?php
 declare (strict_types = 1);
 
+require_once 'includes/interface-smtp2go-api-requestable.php';
 require_once 'includes/class-smtp2go-api-message.php';
 require_once 'includes/class-smtp2go-api-request.php';
+require_once 'includes/class-smtp2go-mimetype-helper.php';
+require_once 'includes/class-smtp2go-wpmail-compat.php';
+
 
 use PHPUnit\Framework\TestCase;
 
@@ -20,24 +24,39 @@ class ApiSendTest extends TestCase
 
     private function createTestMessageInstance()
     {
-        $message = new Smtp2GoApiMessage(SMTP2GO_TEST_RECIPIENT, 'Test Message', '');
-
-        $message->setApiKey(SMTP2GO_API_KEY);
+        $message = new Smtp2Go\Smtp2GoApiMessage(SMTP2GO_TEST_RECIPIENT, 'Test Message', '');
 
         $message->setSender(SMTP2GO_TEST_SENDER);
 
         return $message;
     }
 
-    public function testSendEmailThroughApiWithValidPayloadReturnsTrue()
+    public function testSendHtmlEmailThroughApiWithValidPayloadReturnsTrue()
     {
         $email = $this->createTestMessageInstance();
 
-        $email->setMessage('<h1>Hell\'o World</h1><p>Meet my cat.</p>');
+        $email->setMessage('<html><body><h1>Hello World</h1><p>Cat.</p></body></html>');
 
-        $email->setAttachments(dirname(dirname(__FILE__)) . '/Attachments/cat.jpg');
+        $email->setAttachments(dirname(__FILE__, 2) . '/Attachments/cat.jpg');
 
-        $api_request = new Smtp2GoApiRequest;
+        $api_request = new Smtp2Go\Smtp2GoApiRequest(SMTP2GO_API_KEY);
+
+        $api_request->setApiKey(SMTP2GO_API_KEY);
+
+        $this->assertTrue($api_request->send($email));
+    }
+
+    public function testSendPlainTextEmailThroughApiWithValidPayloadReturnsTrue()
+    {
+        $email = $this->createTestMessageInstance();
+
+        $email->setMessage('This is a plain text email' . str_repeat(PHP_EOL, 5));
+
+        $email->setAttachments(dirname(__FILE__, 2) . '/Attachments/cat.jpg');
+
+        $api_request = new Smtp2Go\Smtp2GoApiRequest(SMTP2GO_API_KEY);
+
+        $api_request->setApiKey(SMTP2GO_API_KEY);
 
         $this->assertTrue($api_request->send($email));
     }
@@ -48,7 +67,7 @@ class ApiSendTest extends TestCase
 
         $email->setMessage('');
 
-        $api_request = new Smtp2GoApiRequest;
+        $api_request = new Smtp2Go\Smtp2GoApiRequest(SMTP2GO_API_KEY);
 
         $this->assertFalse($api_request->send($email));
     }

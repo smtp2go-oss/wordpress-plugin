@@ -75,7 +75,7 @@ class Smtp2GoApiRequest
 
         //maybe log this if a debug mode is turned on?
         $this->last_response = json_decode($response);
-
+        
         fclose($stream);
 
         return empty($this->last_response->data->error_code);

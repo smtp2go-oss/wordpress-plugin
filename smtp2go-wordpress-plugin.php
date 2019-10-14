@@ -68,7 +68,6 @@ register_deactivation_hook(__FILE__, 'deactivate_smtp2go_wordpress_plugin');
  */
 require plugin_dir_path(__FILE__) . 'includes/class-smtp2go-wordpress-plugin.php';
 
-
 require_once plugin_dir_path(__FILE__) . 'includes/interface-smtp2go-api-requestable.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-smtp2go-wpmail-compat.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-smtp2go-mimetype-helper.php';
@@ -103,11 +102,39 @@ function run_smtp2go_wordpress_plugin()
 
 //if the plugin isn't activated, this function will exist
 if (!function_exists('wp_mail')) {
-    // exit('2');
-    
     function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     {
-        
+        //let other plugins modify the arguments as the native wp mail does
+        $atts = apply_filters('wp_mail', compact('to', 'subject', 'message', 'headers', 'attachments'));
+
+        if (isset($atts['to'])) {
+            $to = $atts['to'];
+        }
+
+        if (!is_array($to)) {
+            $to = explode(',', $to);
+        }
+
+        if (isset($atts['subject'])) {
+            $subject = $atts['subject'];
+        }
+
+        if (isset($atts['message'])) {
+            $message = $atts['message'];
+        }
+
+        if (isset($atts['headers'])) {
+            $headers = $atts['headers'];
+        }
+
+        if (isset($atts['attachments'])) {
+            $attachments = $atts['attachments'];
+        }
+
+        if (!is_array($attachments)) {
+            $attachments = explode("\n", str_replace("\r\n", "\n", $attachments));
+        }
+
         $smtp2gomessage = new Smtp2Go\Smtp2GoApiMessage($to, $subject, $message, $headers, $attachments);
 
         $smtp2gomessage->initFromOptions();

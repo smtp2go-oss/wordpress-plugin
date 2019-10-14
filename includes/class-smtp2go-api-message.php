@@ -151,14 +151,14 @@ class Smtp2GoApiMessage implements SmtpApi2GoRequestable
     }
 
     /**
-     * initial the instance with values from the plugin options page
+     * initialise the instance with values from the plugin options page
      *
      * @since 1.0.0
      * @return void
      */
     public function initFromOptions()
     {
-        $this->setSender(get_option('smtp2go_from_name'), get_option('smtp2go_from_address'));
+        $this->setSender(get_option('smtp2go_from_address'), get_option('smtp2go_from_name'));
         $this->setCustomHeaders(get_option('smtp2go_custom_headers'));
     }
 
@@ -181,9 +181,7 @@ class Smtp2GoApiMessage implements SmtpApi2GoRequestable
 
         $body['sender']         = $this->getSender();
 
-        //@todo handle these better
-        
-        if (false !== strpos($this->getMessage(), '<html')) {
+        if (preg_match('#(\<(/?[^\>]+)\>)#', $this->getMessage())) {
             $body['html_body']      = $this->getMessage();
         } else {
             $body['text_body']      = $this->getMessage();
@@ -402,13 +400,14 @@ class Smtp2GoApiMessage implements SmtpApi2GoRequestable
      */
     public function setSender($email, $name = '')
     {
+       
         if (!empty($name)) {
             $email        = str_replace(['<', '>'], '', $email);
             $this->sender = "$name <$email>";
         } else {
             $this->sender = "$email";
         }
-
+       
         return $this;
     }
 
@@ -479,7 +478,7 @@ class Smtp2GoApiMessage implements SmtpApi2GoRequestable
      */
     public function setRecipients($recipients)
     {
-        if (is_string($recipients)) {
+        if (is_string($recipients) || is_array($recipients)) {
             $this->recipients = $recipients;
         }
 
