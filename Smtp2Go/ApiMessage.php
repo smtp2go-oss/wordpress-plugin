@@ -1,7 +1,7 @@
 <?php
 namespace Smtp2Go;
 
-use Smtp2Go\Smtp2GoWpmailCompat;
+use Smtp2Go\WpmailCompat;
 
 /**
  * Creates an email message payload to send through the request api
@@ -11,7 +11,7 @@ use Smtp2Go\Smtp2GoWpmailCompat;
  * @package    Smtp2go_Wordpress_Plugin
  * @subpackage Smtp2go_Wordpress_Plugin/include
  */
-class Smtp2GoApiMessage implements SmtpApi2GoRequestable
+class ApiMessage implements Requestable
 {
     /**
      * The api key
@@ -37,9 +37,9 @@ class Smtp2GoApiMessage implements SmtpApi2GoRequestable
     /**
      * the email recipients
      *
-     * @var string|array
+     * @var array
      */
-    protected $recipients;
+    protected $recipients = array();
 
     /**
      * The CC'd recipients
@@ -131,7 +131,7 @@ class Smtp2GoApiMessage implements SmtpApi2GoRequestable
     protected function processWpHeaders($wp_headers)
     {
 
-        $compat = new Smtp2GoWpmailCompat;
+        $compat = new WpmailCompat;
 
         $this->parsed_headers = $compat->processHeaders($wp_headers);
     }
@@ -145,7 +145,7 @@ class Smtp2GoApiMessage implements SmtpApi2GoRequestable
     protected function processWpAttachments($wp_attachments)
     {
 
-        $compat = new Smtp2GoWpmailCompat;
+        $compat = new WpmailCompat;
 
         $this->parsed_attachments = $compat->processAttachments($wp_attachments);
     }
@@ -200,7 +200,7 @@ class Smtp2GoApiMessage implements SmtpApi2GoRequestable
     public function buildAttachmentsArray()
     {
 
-        $helper = new Smtp2GoMimetypeHelper;
+        $helper = new MimetypeHelper;
 
         $attachments = array();
 
@@ -462,7 +462,7 @@ class Smtp2GoApiMessage implements SmtpApi2GoRequestable
     /**
      * Get the email recipients
      *
-     * @return  string|array
+     * @return  array
      */
     public function getRecipients()
     {
@@ -478,11 +478,25 @@ class Smtp2GoApiMessage implements SmtpApi2GoRequestable
      */
     public function setRecipients($recipients)
     {
-        if (is_string($recipients) || is_array($recipients)) {
-            $this->recipients = $recipients;
+        if (!empty($recipients)) {
+            if (is_string($recipients)) {
+                $this->recipients = array($recipients);
+            } else {
+                $this->recipients = $recipients;
+            }
         }
 
         return $this;
+    }
+
+    public function addRecipient($email, $name = '')
+    {
+        if (!empty($name)) {
+            $email        = str_replace(['<', '>'], '', $email);
+            $this->recipients[] = "$name <$email>";
+        } else {
+            $this->recipients[] = "$email";
+        }
     }
 
     /**

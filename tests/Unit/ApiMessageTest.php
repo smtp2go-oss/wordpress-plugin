@@ -1,19 +1,12 @@
 <?php
-declare(strict_types=1);
+namespace Tests\Unit;
 
-require_once 'includes/interface-smtp2go-api-requestable.php';
-
-require_once 'includes/class-smtp2go-api-message.php';
-require_once 'includes/class-smtp2go-wpmail-compat.php';
-require_once 'includes/class-smtp2go-mimetype-helper.php';
-
-
+require_once 'smtp2go-class-loader.php';
 use PHPUnit\Framework\TestCase;
-use Smtp2Go\Smtp2GoApiMessage;
-use Smtp2Go\Smtp2GoWpmailCompat;
+use Smtp2Go\ApiMessage;
+
 class ApiMessageTest extends TestCase
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -21,8 +14,8 @@ class ApiMessageTest extends TestCase
 
     private function createTestInstance()
     {
-        $message = new Smtp2GoApiMessage(['Test User <mail@example.local>'], 'Test Message', '');
-        
+        $message = new ApiMessage(['Test User <mail@example.local>'], 'Test Message', '');
+
         $raw_headers = unserialize('a:2:{s:6:"header";a:1:{i:0;s:13:"X-Test-Header";}s:5:"value";a:1:{i:0;s:7:"Testing";}}');
 
         $message->setCustomHeaders($raw_headers);
@@ -49,7 +42,7 @@ class ApiMessageTest extends TestCase
     public function testMessageBodyIsSet()
     {
         $test_string = '<h1>Hello World</h1>';
-        $message = $this->createTestInstance();
+        $message     = $this->createTestInstance();
         $message->setMessage($test_string);
         $this->assertEquals($message->getMessage(), $test_string);
     }
@@ -74,7 +67,7 @@ class ApiMessageTest extends TestCase
     public function testbuildRequestPayloadWithHTMLMessage()
     {
         $expected_json_body_string = '{"to":["Test Recipient <test@example.fake>"],"sender":"Unit Test <unit@test.fake>","html_body":"<html><body><h1>Heading<\/h1><div>This is the message<\/div><\/body><\/html>","custom_headers":[{"header":"X-Test-Header","value":"Testing"}],"subject":"Test Message"}';
-        $message = $this->createTestInstance();
+        $message                   = $this->createTestInstance();
 
         $message->setSubject('Test Message');
         $message->setMessage('<html><body><h1>Heading</h1><div>This is the message</div></body></html>');
@@ -91,7 +84,7 @@ class ApiMessageTest extends TestCase
     public function testbuildRequestPayloadWithTextMessage()
     {
         $expected_json_body_string = '{"to":["Test Recipient <test@example.fake>"],"sender":"Unit Test <unit@test.fake>","text_body":"This is the message","custom_headers":[{"header":"X-Test-Header","value":"Testing"}],"subject":"Test Message"}';
-        $message = $this->createTestInstance();
+        $message                   = $this->createTestInstance();
 
         $message->setSubject('Test Message');
         $message->setMessage('This is the message');
@@ -103,5 +96,5 @@ class ApiMessageTest extends TestCase
         $this->assertArrayHasKey('method', $request_data);
 
         $this->assertJsonStringEqualsJsonString($expected_json_body_string, json_encode(array_filter($request_data['body'])));
-    }    
+    }
 }

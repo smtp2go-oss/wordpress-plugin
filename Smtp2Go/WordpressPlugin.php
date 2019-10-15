@@ -28,7 +28,7 @@ namespace Smtp2Go;
  * @subpackage Smtp2go_Wordpress_Plugin/includes
  * @author     The Fold <hello@thefold.co.nz>
  */
-class Smtp2goWordpressPlugin
+class WordpressPlugin
 {
     /**
      * The loader that's responsible for maintaining and registering all hooks that power
@@ -103,21 +103,20 @@ class Smtp2goWordpressPlugin
          * The class responsible for orchestrating the actions and filters of the
          * core plugin.
          */
-        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-smtp2go-wordpress-plugin-loader.php';
+        #require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-smtp2go-wordpress-plugin-loader.php';
 
         /**
          * The class responsible for defining internationalization functionality
          * of the plugin.
          */
-        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-smtp2go-wordpress-plugin-i18n.php';
+        #require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-smtp2go-wordpress-plugin-i18n.php';
 
         /**
          * The class responsible for defining all actions that occur in the admin area.
          */
-        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-smtp2go-wordpress-plugin-admin.php';
+        #require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-smtp2go-wordpress-plugin-admin.php';
 
-
-        $this->loader = new Smtp2goWordpressPluginLoader();
+        $this->loader = new WordpressPluginLoader();
 
     }
 
@@ -132,7 +131,7 @@ class Smtp2goWordpressPlugin
      */
     private function setLocale()
     {
-        $plugin_i18n = new Smtp2goWordpressPlugini18n();
+        $plugin_i18n = new WordpressPlugini18n();
 
         $this->loader->addAction('plugins_loaded', $plugin_i18n, 'loadPluginTextdomain');
 
@@ -147,17 +146,19 @@ class Smtp2goWordpressPlugin
      */
     private function defineAdminHooks()
     {
-        $plugin_admin = new Smtp2goWordpressPluginAdmin($this->getPluginName(), $this->getVersion());
+        $plugin_admin = new WordpressPluginAdmin($this->getPluginName(), $this->getVersion());
 
-        
         $this->loader->addAction('admin_menu', $plugin_admin, 'addMenuPage');
 
         $this->loader->addAction('admin_init', $plugin_admin, 'registerSettings');
 
-        $this->loader->addAction('admin_post_send_smtp2go_email', $plugin_admin, 'sendTestEmail');
+        // $this->loader->addAction('admin_post_send_smtp2go_email', $plugin_admin, 'sendTestEmail');
 
         $this->loader->addAction('admin_enqueue_scripts', $plugin_admin, 'enqueueStyles');
         $this->loader->addAction('admin_enqueue_scripts', $plugin_admin, 'enqueueScripts');
+
+        $this->loader->addAction('wp_ajax_smtp2go_send_email', $plugin_admin, 'sendTestEmail');
+
     }
 
     /**

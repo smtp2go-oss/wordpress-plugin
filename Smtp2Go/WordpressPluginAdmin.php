@@ -21,7 +21,7 @@ namespace Smtp2Go;
  * @subpackage Smtp2go_Wordpress_Plugin/admin
  * @author     The Fold <hello@thefold.co.nz>
  */
-class Smtp2goWordpressPluginAdmin
+class WordpressPluginAdmin
 {
     /**
      * The ID of this plugin.
@@ -277,7 +277,7 @@ class Smtp2goWordpressPluginAdmin
      */
     public function enqueueStyles()
     {
-        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/smtp2go-wordpress-plugin-admin.css', array(), $this->version, 'all');
+        wp_enqueue_style($this->plugin_name, dirname(plugin_dir_url(__FILE__)) . '/admin/css/smtp2go-wordpress-plugin-admin.css', array(), $this->version, 'all');
     }
 
     /**
@@ -287,7 +287,37 @@ class Smtp2goWordpressPluginAdmin
      */
     public function enqueueScripts()
     {
-        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/smtp2go-wordpress-plugin-admin.js', array('jquery'), $this->version, false);
+        wp_enqueue_script($this->plugin_name, dirname(plugin_dir_url(__FILE__)) . '/admin/js/smtp2go-wordpress-plugin-admin.js', array('jquery'), $this->version, false);
+    }
+
+    public function sendTestEmail()
+    {
+        $to_email = $to_name = null;
+
+        if (!empty($_POST['to_email']) && filter_var($_POST['to_email'], FILTER_VALIDATE_EMAIL)) {
+            $to_email = $_POST['to_email'];
+        }
+        if (!empty($_POST['to_name'])) {
+            $to_name = $_POST['to_name'];
+            $to_email = $to_name . '<' . $to_email . '>';
+        }
+        if (empty($to_email)) {
+            wp_die('Invalid recipient specified');
+        }
+        $body = '<h1>Success!</h1><p>You have successfully set up your Smtp2Go Wordpress Plugin</p>';
+        
+        
+
+        $message = new ApiMessage($to_email, 'Test Email Via Smtp2Go Wordpress Plugin', $body);
+
+
+        $message->initFromOptions();
+
+        $request = new ApiRequest(get_option('smtp2go_api_key'));
+
+        $success = $request->send($message);
+
+        wp_die('Success?: ' . intval($success));
     }
 
     /** input validations */

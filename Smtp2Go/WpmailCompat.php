@@ -5,7 +5,7 @@ namespace Smtp2Go;
  * provides wp_mail compatible functionality using sections of code from
  * the original function
  */
-class Smtp2GoWpmailCompat
+class WpmailCompat
 {
     public function processHeaders($headers)
     {
@@ -13,6 +13,8 @@ class Smtp2GoWpmailCompat
         $cc = $bcc = $reply_to = array();
 
         $parsed_header_data = array();
+
+        $from_email = $from_name = null;
 
         if (empty($headers)) {
             $headers = array();
@@ -99,6 +101,8 @@ class Smtp2GoWpmailCompat
             }
         }
 
+        $parsed_header_data['from_name']    = $from_name;
+        $parsed_header_data['from_email']   = $from_email;
         $parsed_header_data['cc']           = $cc;
         $parsed_header_data['bcc']          = $bcc;
         $parsed_header_data['reply-to']     = $reply_to;

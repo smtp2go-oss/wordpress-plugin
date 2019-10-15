@@ -24,8 +24,8 @@
  * Domain Path:       /languages
  */
 
-use Smtp2Go\Smtp2goWordpressPluginActivator;
-use Smtp2Go\Smtp2goWordpressPluginDeactivator;
+use Smtp2Go\WordpressPluginActivator;
+use Smtp2Go\WordpressPluginDeactivator;
 
 // If this file is called directly, abort.
 if (!defined('WPINC')) {
@@ -45,8 +45,7 @@ define('SMTP2GO_WORDPRESS_PLUGIN_VERSION', '1.0.0');
  */
 function activate_smtp2go_wordpress_plugin()
 {
-    require_once plugin_dir_path(__FILE__) . 'includes/class-smtp2go-wordpress-plugin-activator.php';
-    Smtp2goWordpressPluginActivator::activate();
+    WordpressPluginActivator::activate();
 }
 
 /**
@@ -55,8 +54,7 @@ function activate_smtp2go_wordpress_plugin()
  */
 function deactivate_smtp2go_wordpress_plugin()
 {
-    require_once plugin_dir_path(__FILE__) . 'includes/class-smtp2go-wordpress-plugin-deactivator.php';
-    Smtp2goWordpressPluginDeactivator::deactivate();
+    WordpressPluginDeactivator::deactivate();
 }
 
 register_activation_hook(__FILE__, 'activate_smtp2go_wordpress_plugin');
@@ -66,13 +64,7 @@ register_deactivation_hook(__FILE__, 'deactivate_smtp2go_wordpress_plugin');
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path(__FILE__) . 'includes/class-smtp2go-wordpress-plugin.php';
 
-require_once plugin_dir_path(__FILE__) . 'includes/interface-smtp2go-api-requestable.php';
-require_once plugin_dir_path(__FILE__) . 'includes/class-smtp2go-wpmail-compat.php';
-require_once plugin_dir_path(__FILE__) . 'includes/class-smtp2go-mimetype-helper.php';
-require_once plugin_dir_path(__FILE__) . 'includes/class-smtp2go-api-message.php';
-require_once plugin_dir_path(__FILE__) . 'includes/class-smtp2go-api-request.php';
 
 /**
  * Begins execution of the plugin.
@@ -85,7 +77,7 @@ require_once plugin_dir_path(__FILE__) . 'includes/class-smtp2go-api-request.php
  */
 function run_smtp2go_wordpress_plugin()
 {
-    $plugin = new Smtp2Go\Smtp2goWordpressPlugin();
+    $plugin = new Smtp2Go\WordpressPlugin();
     $plugin->run();
 }
 
@@ -135,13 +127,15 @@ if (!function_exists('wp_mail')) {
             $attachments = explode("\n", str_replace("\r\n", "\n", $attachments));
         }
 
-        $smtp2gomessage = new Smtp2Go\Smtp2GoApiMessage($to, $subject, $message, $headers, $attachments);
+        $smtp2gomessage = new Smtp2Go\ApiMessage($to, $subject, $message, $headers, $attachments);
 
         $smtp2gomessage->initFromOptions();
 
-        $request = new Smtp2Go\Smtp2GoApiRequest;
+        $request = new Smtp2Go\ApiRequest;
 
         $request->send($smtp2gomessage);
     }
 }
+require_once dirname(__FILE__) . '/smtp2go-class-loader.php';
+
 run_smtp2go_wordpress_plugin();

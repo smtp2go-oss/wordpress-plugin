@@ -5,7 +5,7 @@ namespace Smtp2Go;
  * Makes http requests to the smtp2go api
  * @since 1.0.0
  */
-class Smtp2GoApiRequest
+class ApiRequest
 {
     /**
      * the "base" url for the api
@@ -44,12 +44,12 @@ class Smtp2GoApiRequest
      * @since 1.0.0
      * @return bool
      */
-    public function send(SmtpApi2GoRequestable $request)
+    public function send(Requestable $request)
     {
         $endpoint = $request->getEndpoint();
         $payload  = $request->buildRequestPayload();
         $options  = array();
-
+        error_log(print_r($payload,1));
         $payload['body']['api_key'] = $this->api_key;
 
         $options['http']['method']  = $payload['method'];
@@ -77,7 +77,9 @@ class Smtp2GoApiRequest
         $this->last_response = json_decode($response);
         
         fclose($stream);
-
+        if (!empty($this->last_response->data->error_code)) {
+            error_log(print_r($this->last_response, 1));
+        }
         return empty($this->last_response->data->error_code);
     }
 

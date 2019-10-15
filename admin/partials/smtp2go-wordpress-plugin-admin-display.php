@@ -38,15 +38,15 @@ submit_button('Save Settings');
     </form>
 
     <h3><?php _e('Send Test Email', SMTP_TEXT_DOMAIN)?></h3>
-    <form action="/wp-admin/admin-post.php">
+    <form class="js-send-test-email-form" action="javascript:;">
     <table class="form-table">
         <tr>
             <td><?php _e('To Email', SMTP_TEXT_DOMAIN)?></td>
-            <td><input type="text" name="smtp2go_to_email"></td>
+            <td><input type="email" name="smtp2go_to_email" id="smtp2go_to_email"></td>
         </tr>
         <tr>
             <td><?php _e('To Name', SMTP_TEXT_DOMAIN)?></td>
-            <td><input type="text" name="smtp2go_to_name"></td>
+            <td><input type="text" name="smtp2go_to_name" id="smtp2go_to_name"></td>
         </tr>
     <tr>
         <td>

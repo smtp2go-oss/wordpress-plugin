@@ -7,7 +7,7 @@ namespace Smtp2Go;
  * @see PhpMailer
  * @since 1.0.0
  */
-class Smtp2GoMimetypeHelper
+class MimetypeHelper
 {
     public function getMimeType($filepath)
     {

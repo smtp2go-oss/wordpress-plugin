@@ -25,7 +25,7 @@ namespace Smtp2Go;
  * @subpackage Smtp2go_Wordpress_Plugin/includes
  * @author     The Fold <hello@thefold.co.nz>
  */
-class Smtp2goWordpressPlugini18n
+class WordpressPlugini18n
 {
     /**
      * Load the plugin text domain for translation.

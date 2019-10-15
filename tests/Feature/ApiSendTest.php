@@ -1,14 +1,11 @@
 <?php
-declare (strict_types = 1);
+namespace Tests\Feature;
 
-require_once 'includes/interface-smtp2go-api-requestable.php';
-require_once 'includes/class-smtp2go-api-message.php';
-require_once 'includes/class-smtp2go-api-request.php';
-require_once 'includes/class-smtp2go-mimetype-helper.php';
-require_once 'includes/class-smtp2go-wpmail-compat.php';
-
+require_once 'smtp2go-class-loader.php';
 
 use PHPUnit\Framework\TestCase;
+use Smtp2Go\ApiMessage;
+use Smtp2Go\ApiRequest;
 
 /**
  * The constants used in these tests must be declared in your phpunit.xml
@@ -24,7 +21,7 @@ class ApiSendTest extends TestCase
 
     private function createTestMessageInstance()
     {
-        $message = new Smtp2Go\Smtp2GoApiMessage(SMTP2GO_TEST_RECIPIENT, 'Test Message', '');
+        $message = new ApiMessage(SMTP2GO_TEST_RECIPIENT, 'Test Message', '');
 
         $message->setSender(SMTP2GO_TEST_SENDER);
 
@@ -39,7 +36,7 @@ class ApiSendTest extends TestCase
 
         $email->setAttachments(dirname(__FILE__, 2) . '/Attachments/cat.jpg');
 
-        $api_request = new Smtp2Go\Smtp2GoApiRequest(SMTP2GO_API_KEY);
+        $api_request = new ApiRequest(SMTP2GO_API_KEY);
 
         $api_request->setApiKey(SMTP2GO_API_KEY);
 
@@ -54,7 +51,7 @@ class ApiSendTest extends TestCase
 
         $email->setAttachments(dirname(__FILE__, 2) . '/Attachments/cat.jpg');
 
-        $api_request = new Smtp2Go\Smtp2GoApiRequest(SMTP2GO_API_KEY);
+        $api_request = new ApiRequest(SMTP2GO_API_KEY);
 
         $api_request->setApiKey(SMTP2GO_API_KEY);
 
@@ -67,7 +64,7 @@ class ApiSendTest extends TestCase
 
         $email->setMessage('');
 
-        $api_request = new Smtp2Go\Smtp2GoApiRequest(SMTP2GO_API_KEY);
+        $api_request = new ApiRequest(SMTP2GO_API_KEY);
 
         $this->assertFalse($api_request->send($email));
     }
