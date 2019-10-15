@@ -20,5 +20,18 @@
   display: none;
 }
 .smtp2go_hide_title th.heading {
-    display: table-cell;
-  }
+  display: table-cell;
+}
+.smtp2go-error-message,.smtp2go-success-message {
+  padding:5px;
+  margin:5px 0;
+  border:1px solid black;
+  border-left:5px solid red;
+  background-color:#fff;
+}
+.smtp2go-success-message {
+
+  border-left:5px solid green;
+  
+}
+

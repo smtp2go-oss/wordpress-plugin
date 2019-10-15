@@ -40,9 +40,18 @@
           to_name: $("#smtp2go_to_name").val()
         },
         function(response) {
-          console.log(response);
+          if (response.success) {
+            $(".smtp2go-js-failure").hide();
+            $(".smtp2go-js-success").show();
+          } else {
+            $(".smtp2go-js-failure")
+              .html(response.reason)
+              .show();
+            $(".smtp2go-js-success").hide();
+          }
         }
-      );
+      ),
+        "jSON";
       return false;
     });
   });

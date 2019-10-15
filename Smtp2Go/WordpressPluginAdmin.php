@@ -298,26 +298,31 @@ class WordpressPluginAdmin
             $to_email = $_POST['to_email'];
         }
         if (!empty($_POST['to_name'])) {
-            $to_name = $_POST['to_name'];
+            $to_name  = $_POST['to_name'];
             $to_email = $to_name . '<' . $to_email . '>';
         }
         if (empty($to_email)) {
-            wp_die('Invalid recipient specified');
+            wp_send_json(array('success' => 0, 'reason' => 'Invalid recipient specified'));
         }
         $body = '<h1>Success!</h1><p>You have successfully set up your Smtp2Go Wordpress Plugin</p>';
-        
-        
 
         $message = new ApiMessage($to_email, 'Test Email Via Smtp2Go Wordpress Plugin', $body);
-
 
         $message->initFromOptions();
 
         $request = new ApiRequest(get_option('smtp2go_api_key'));
 
         $success = $request->send($message);
-
-        wp_die('Success?: ' . intval($success));
+        $reason = '';
+        if (empty($success)) {
+            $response = $request->getLastResponse();
+            if (!empty($response->data->field_validation_errors->message)) {
+                $reason = $response->data->field_validation_errors->message;
+            } elseif (!empty($response->data->error)) {
+                $reason = $response->data->error;
+            }
+        }
+        wp_send_json(array('success' => intval($success), 'reason' => $reason));
     }
 
     /** input validations */

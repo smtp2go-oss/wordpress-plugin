@@ -38,6 +38,9 @@ submit_button('Save Settings');
     </form>
 
     <h3><?php _e('Send Test Email', SMTP_TEXT_DOMAIN)?></h3>
+    <div class="smtp2go-js-success smtp2go-success-message" style="display:none">Success! The test message was sent.</div>
+    <div class="smtp2go-js-failure smtp2go-error-message" style="display:none"></div>
+
     <form class="js-send-test-email-form" action="javascript:;">
     <table class="form-table">
         <tr>
