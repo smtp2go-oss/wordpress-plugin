@@ -5,7 +5,6 @@ function smtp2GoClassLoader($className)
     $fileName  = '';
     $namespace = '';
 
-    // Sets the include path as the "src" directory
     $includePath = dirname(__FILE__) . DIRECTORY_SEPARATOR;
 
     if (false !== ($lastNsPos = strripos($className, '\\'))) {
@@ -13,13 +12,16 @@ function smtp2GoClassLoader($className)
         $className = substr($className, $lastNsPos + 1);
         $fileName  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
     }
+    if ($namespace !== 'Smtp2Go') {
+        return true;
+    }
     $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
     $fullFileName = $includePath . DIRECTORY_SEPARATOR . $fileName;
 
     if (file_exists($fullFileName)) {
         require $fullFileName;
     } else {
-        echo 'Class "' . $className . '" does not exist.';
+        exit('Class "' . $className . '" does not exist.');
     }
 }
-spl_autoload_register('smtp2GoClassLoader'); // Registers the autoloader
+spl_autoload_register('smtp2GoClassLoader');

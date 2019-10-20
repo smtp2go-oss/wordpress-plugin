@@ -7,7 +7,7 @@ namespace Smtp2Go;
  * @link       https://thefold.nz
  * @since      1.0.0
  *
- * @package    Smtp2go_Wordpress_Plugin
+ * @package    Smtp2go\WordpressPlugin
  * @subpackage Smtp2go_Wordpress_Plugin/includes
  */
 
@@ -18,8 +18,7 @@ namespace Smtp2Go;
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    Smtp2go_Wordpress_Plugin
- * @subpackage Smtp2go_Wordpress_Plugin/includes
+ * @package    Smtp2go\WordpressPlugin
  * @author     The Fold <hello@thefold.co.nz>
  */
 class WordpressPluginLoader
@@ -109,7 +108,6 @@ class WordpressPluginLoader
         );
 
         return $hooks;
-
     }
 
     /**
@@ -126,7 +124,5 @@ class WordpressPluginLoader
         foreach ($this->actions as $hook) {
             add_action($hook['hook'], array($hook['component'], $hook['callback']), $hook['priority'], $hook['accepted_args']);
         }
-
     }
-
 }

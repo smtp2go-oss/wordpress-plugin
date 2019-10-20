@@ -6,6 +6,8 @@ namespace Smtp2Go;
  *
  * @see PhpMailer
  * @since 1.0.0
+ * @package    Smtp2go\WordpressPlugin
+ * 
  */
 class MimetypeHelper
 {

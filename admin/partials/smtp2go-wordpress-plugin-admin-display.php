@@ -27,17 +27,19 @@ settings_errors('smtp2go_messages');
     <h1><?php _e('Smtp2Go Settings', SMTP_TEXT_DOMAIN)?></h1>
     <form action="options.php" method="post">
     <?php
-// output security fields for the registered setting "smtp2go"
-settings_fields('api_settings');
-// output setting sections and their fields
-// (sections are registered for "smtp2go", each field is registered to a specific section)
-do_settings_sections('smtp2go-wordpress-plugin');
-// output save settings button
-submit_button('Save Settings');
-?>
+        // output security fields for the registered setting "smtp2go"
+        settings_fields('api_settings');
+        // output setting sections and their fields
+        // (sections are registered for "smtp2go", each field is registered to a specific section)
+        do_settings_sections('smtp2go-wordpress-plugin');
+        // output save settings button
+        submit_button('Save Settings');
+    ?>
     </form>
 
     <h3><?php _e('Send Test Email', SMTP_TEXT_DOMAIN)?></h3>
+    <p><?php _e('This will send a simple message to the recipient specified below, using the settings above.
+     Please save any settings changes before sending the test.', SMTP_TEXT_DOMAIN);?></p>
     <div class="smtp2go-js-success smtp2go-success-message" style="display:none">Success! The test message was sent.</div>
     <div class="smtp2go-js-failure smtp2go-error-message" style="display:none"></div>
 

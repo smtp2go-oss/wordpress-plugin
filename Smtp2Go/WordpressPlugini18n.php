@@ -10,8 +10,8 @@ namespace Smtp2Go;
  * @link       https://thefold.nz
  * @since      1.0.0
  *
- * @package    Smtp2go_Wordpress_Plugin
- * @subpackage Smtp2go_Wordpress_Plugin/includes
+ * @package    Smtp2go\WordpressPlugin
+
  */
 
 /**
@@ -21,8 +21,7 @@ namespace Smtp2Go;
  * so that it is ready for translation.
  *
  * @since      1.0.0
- * @package    Smtp2go_Wordpress_Plugin
- * @subpackage Smtp2go_Wordpress_Plugin/includes
+ * @package    Smtp2go\WordpressPlugin
  * @author     The Fold <hello@thefold.co.nz>
  */
 class WordpressPlugini18n
@@ -39,7 +38,5 @@ class WordpressPlugini18n
             false,
             dirname(dirname(plugin_basename(__FILE__))) . '/languages/'
         );
-
     }
-
 }

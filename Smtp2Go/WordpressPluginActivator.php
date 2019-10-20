@@ -32,5 +32,4 @@ class WordpressPluginActivator
     public static function activate()
     {
     }
-
 }

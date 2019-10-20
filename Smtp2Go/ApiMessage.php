@@ -8,8 +8,7 @@ use Smtp2Go\WpmailCompat;
  *
  * @link       https://thefold.nz
  * @since      1.0.0
- * @package    Smtp2go_Wordpress_Plugin
- * @subpackage Smtp2go_Wordpress_Plugin/include
+ * @package    Smtp2go\WordpressPlugin
  */
 class ApiMessage implements Requestable
 {
@@ -98,6 +97,13 @@ class ApiMessage implements Requestable
     protected $attachments;
 
     /**
+     * Inline attachments, only supported through this class
+     *
+     * @var string|array
+     */
+    protected $inlines;
+
+    /**
      * endpoint to send to
      *
      * @var string
@@ -130,7 +136,6 @@ class ApiMessage implements Requestable
      */
     protected function processWpHeaders($wp_headers)
     {
-
         $compat = new WpmailCompat;
 
         $this->parsed_headers = $compat->processHeaders($wp_headers);
@@ -144,7 +149,6 @@ class ApiMessage implements Requestable
      */
     protected function processWpAttachments($wp_attachments)
     {
-
         $compat = new WpmailCompat;
 
         $this->parsed_attachments = $compat->processAttachments($wp_attachments);
@@ -162,7 +166,6 @@ class ApiMessage implements Requestable
         $this->setCustomHeaders(get_option('smtp2go_custom_headers'));
     }
 
-
     /**
      * Builds the JSON to send to the Smtp2go API
      *
@@ -175,21 +178,22 @@ class ApiMessage implements Requestable
 
         // $body['api_key'] = $this->getApiKey();
 
-        $body['to']  = $this->buildRecipientsArray();
-        $body['cc']  = $this->buildCCArray();
-        $body['bcc'] = $this->buildBCCArray();
+        $body['to']  = $this->buildRecipients();
+        $body['cc']  = $this->buildCC();
+        $body['bcc'] = $this->buildBCC();
 
-        $body['sender']         = $this->getSender();
+        $body['sender'] = $this->getSender();
 
         if (preg_match('#(\<(/?[^\>]+)\>)#', $this->getMessage())) {
-            $body['html_body']      = $this->getMessage();
+            $body['html_body'] = $this->getMessage();
         } else {
-            $body['text_body']      = $this->getMessage();
+            $body['text_body'] = $this->getMessage();
         }
 
-        $body['custom_headers'] = $this->buildCustomHeadersArray();
+        $body['custom_headers'] = $this->buildCustomHeaders();
         $body['subject']        = $this->getSubject();
-        $body['attachments']    = $this->buildAttachmentsArray();
+        $body['attachments']    = $this->buildAttachments();
+        $body['inlines']        = $this->buildInlines();
 
         return array(
             'method' => 'POST',
@@ -197,9 +201,8 @@ class ApiMessage implements Requestable
         );
     }
 
-    public function buildAttachmentsArray()
+    public function buildAttachments()
     {
-
         $helper = new MimetypeHelper;
 
         $attachments = array();
@@ -220,6 +223,23 @@ class ApiMessage implements Requestable
         }
         return $attachments;
     }
+
+    public function buildInlines()
+    {
+        $helper = new MimetypeHelper;
+
+        $inlines = array();
+
+        foreach ((array) $this->inlines as $path) {
+            $inlines[] = array(
+                'filename' => basename($path),
+                'fileblob' => base64_encode(file_get_contents($path)),
+                'mimetype' => $helper->getMimeType($path),
+            );
+        }
+        return $inlines;
+    }
+
     /**
      * Build an array of bcc recipients by combining ones natively set
      * or passed through the $wp_headers constructor variable
@@ -228,7 +248,7 @@ class ApiMessage implements Requestable
      * @return array
      */
 
-    public function buildCCArray()
+    public function buildCC()
     {
         $cc_recipients = array();
         foreach ((array) $this->cc as $cc_recipient) {
@@ -247,7 +267,7 @@ class ApiMessage implements Requestable
      * @since 1.0.0
      * @return array
      */
-    public function buildBCCArray()
+    public function buildBCC()
     {
         $bcc_recipients = array();
         foreach ((array) $this->bcc as $bcc_recipient) {
@@ -265,11 +285,10 @@ class ApiMessage implements Requestable
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return '<' . $email . '>';
         }
-        //pray for good things
         return $email;
     }
 
-    public function buildCustomHeadersArray()
+    public function buildCustomHeaders()
     {
         $raw_custom_headers = $this->getCustomHeaders();
 
@@ -292,7 +311,7 @@ class ApiMessage implements Requestable
                     'value'  => $content,
                 );
             }
-            //not sure we want this?
+            //not sure if this is required but is native functionality
             if (false !== stripos($this->parsed_headers['content_type'], 'multipart') && !empty($this->parsed_headers['boundary'])) {
                 $custom_headers[] = array(
                     'header'  => 'Content-Type: ' . $this->parsed_headers['content_type'],
@@ -315,7 +334,7 @@ class ApiMessage implements Requestable
      * @todo check how these are formatted and parse appropriately
      * @return void
      */
-    public function buildRecipientsArray()
+    public function buildRecipients()
     {
         $recipients = array();
 
@@ -352,7 +371,6 @@ class ApiMessage implements Requestable
 
         return $this;
     }
-
 
     /**
      * Get custom headers - expected format is the unserialized array
@@ -400,14 +418,13 @@ class ApiMessage implements Requestable
      */
     public function setSender($email, $name = '')
     {
-       
         if (!empty($name)) {
             $email        = str_replace(['<', '>'], '', $email);
             $this->sender = "$name <$email>";
         } else {
             $this->sender = "$email";
         }
-       
+
         return $this;
     }
 
@@ -492,7 +509,7 @@ class ApiMessage implements Requestable
     public function addRecipient($email, $name = '')
     {
         if (!empty($name)) {
-            $email        = str_replace(['<', '>'], '', $email);
+            $email              = str_replace(['<', '>'], '', $email);
             $this->recipients[] = "$name <$email>";
         } else {
             $this->recipients[] = "$email";
@@ -567,6 +584,30 @@ class ApiMessage implements Requestable
     public function setAttachments($attachments)
     {
         $this->attachments = $attachments;
+
+        return $this;
+    }
+
+    /**
+     * Get inline attachments
+     *
+     * @return  string|array
+     */
+    public function getInlines()
+    {
+        return $this->inlines;
+    }
+
+    /**
+     * Set inline attachments, only supported through this class
+     *
+     * @param  string|array  $inlines  Inline attachments
+     *
+     * @return  self
+     */
+    public function setInlines($inlines)
+    {
+        $this->inlines = $inlines;
 
         return $this;
     }

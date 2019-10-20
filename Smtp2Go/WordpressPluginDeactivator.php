@@ -7,8 +7,8 @@ namespace Smtp2Go;
  * @link       https://thefold.nz
  * @since      1.0.0
  *
- * @package    Smtp2go_Wordpress_Plugin
- * @subpackage Smtp2go_Wordpress_Plugin/includes
+ * @package    Smtp2go\WordpressPlugin
+
  */
 
 /**

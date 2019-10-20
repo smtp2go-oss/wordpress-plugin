@@ -10,8 +10,7 @@ namespace Smtp2Go;
  * @link       https://thefold.nz
  * @since      1.0.0
  *
- * @package    Smtp2go_Wordpress_Plugin
- * @subpackage Smtp2go_Wordpress_Plugin/includes
+ * @package    Smtp2go\WordpressPlugin
  */
 
 /**
@@ -24,8 +23,7 @@ namespace Smtp2Go;
  * version of the plugin.
  *
  * @since      1.0.0
- * @package    Smtp2go_Wordpress_Plugin
- * @subpackage Smtp2go_Wordpress_Plugin/includes
+ * @package    Smtp2go\WordpressPlugin
  * @author     The Fold <hello@thefold.co.nz>
  */
 class WordpressPlugin
@@ -99,25 +97,7 @@ class WordpressPlugin
      */
     private function loadDependencies()
     {
-        /**
-         * The class responsible for orchestrating the actions and filters of the
-         * core plugin.
-         */
-        #require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-smtp2go-wordpress-plugin-loader.php';
-
-        /**
-         * The class responsible for defining internationalization functionality
-         * of the plugin.
-         */
-        #require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-smtp2go-wordpress-plugin-i18n.php';
-
-        /**
-         * The class responsible for defining all actions that occur in the admin area.
-         */
-        #require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-smtp2go-wordpress-plugin-admin.php';
-
         $this->loader = new WordpressPluginLoader();
-
     }
 
     /**
@@ -134,7 +114,6 @@ class WordpressPlugin
         $plugin_i18n = new WordpressPlugini18n();
 
         $this->loader->addAction('plugins_loaded', $plugin_i18n, 'loadPluginTextdomain');
-
     }
 
     /**
@@ -151,8 +130,6 @@ class WordpressPlugin
         $this->loader->addAction('admin_menu', $plugin_admin, 'addMenuPage');
 
         $this->loader->addAction('admin_init', $plugin_admin, 'registerSettings');
-
-        // $this->loader->addAction('admin_post_send_smtp2go_email', $plugin_admin, 'sendTestEmail');
 
         $this->loader->addAction('admin_enqueue_scripts', $plugin_admin, 'enqueueStyles');
         $this->loader->addAction('admin_enqueue_scripts', $plugin_admin, 'enqueueScripts');
@@ -204,5 +181,4 @@ class WordpressPlugin
     {
         return $this->version;
     }
-
 }
