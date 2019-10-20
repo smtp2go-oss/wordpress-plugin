@@ -30,6 +30,11 @@ class ApiRequest
      */
     protected $last_meta;
 
+    /**
+     * Api key for the api service
+     *
+     * @var string
+     */
     protected $api_key;
 
     /**
@@ -197,7 +202,7 @@ class ApiRequest
     /**
      * Set determines the mechanism used to make the request. Default is Curl, falls back to streams
      *
-     * @param  string  $send_method  Determines the mechanism used to make the request. Default is Curl, falls back to streams
+     * @param  string  $send_method  The mechanism used to make the request. Accepted values are 'curl', 'stream'
      *
      * @return  self
      */

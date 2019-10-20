@@ -40,7 +40,7 @@ settings_errors('smtp2go_messages');
     <h3><?php _e('Send Test Email', SMTP_TEXT_DOMAIN)?></h3>
     <p><?php _e('This will send a simple message to the recipient specified below, using the settings above.
      Please save any settings changes before sending the test.', SMTP_TEXT_DOMAIN);?></p>
-    <div class="smtp2go-js-success smtp2go-success-message" style="display:none">Success! The test message was sent.</div>
+    <div class="smtp2go-js-success smtp2go-success-message" style="display:none"><?php _e('Success! The test message was sent.', SMTP_TEXT_DOMAIN) ?></div>
     <div class="smtp2go-js-failure smtp2go-error-message" style="display:none"></div>
 
     <form class="js-send-test-email-form" action="javascript:;">
