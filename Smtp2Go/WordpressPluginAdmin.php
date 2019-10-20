@@ -259,8 +259,20 @@ class WordpressPluginAdmin
             'SMTP2Go',
             'manage_options',
             $this->plugin_name,
-            [$this, 'renderManagementPage']
+            array($this, 'renderManagementPage')
         );
+        add_submenu_page($this->plugin_name, 'Stats', 'SMTP2Go Stats', 'manage_options', 'smtp2go-summary-stats', array($this, 'renderStatsPage'));
+    }
+    
+    public function renderStatsPage()
+    {
+        $summary = new ApiSummary;
+        $request = new ApiRequest(get_option('smtp2go_api_key'));
+        $stats = null;
+        if ($request->send($summary)) {
+            $stats = $request->getLastResponse()->data;
+        }
+        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-stats-display.php';
     }
 
     public function renderManagementPage()

@@ -34,4 +34,10 @@
   border-left:5px solid green;
   
 }
+.smtp2go-datalist {
+  display:flex;
+}
 
+.smtp2go-datalist dt {
+  font-weight: 700;
+}

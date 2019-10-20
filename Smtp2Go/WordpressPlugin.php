@@ -128,6 +128,7 @@ class WordpressPlugin
         $plugin_admin = new WordpressPluginAdmin($this->getPluginName(), $this->getVersion());
 
         $this->loader->addAction('admin_menu', $plugin_admin, 'addMenuPage');
+        
 
         $this->loader->addAction('admin_init', $plugin_admin, 'registerSettings');
 
