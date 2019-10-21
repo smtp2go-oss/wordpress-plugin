@@ -34,11 +34,10 @@ class ApiSendTest extends TestCase
 
         $email->setMessage('<html><body><h1>Hello World</h1><p>Cat.</p></body></html>');
 
-        $email->setAttachments(dirname(__FILE__, 2) . '/Attachments/cat.jpg');
+        $email->setInlines(dirname(__FILE__, 2) . '/Attachments/cat.jpg');
 
         $api_request = new ApiRequest(SMTP2GO_API_KEY);
 
-        $api_request->setApiKey(SMTP2GO_API_KEY);
 
         $this->assertTrue($api_request->send($email));
     }
@@ -53,7 +52,6 @@ class ApiSendTest extends TestCase
 
         $api_request = new ApiRequest(SMTP2GO_API_KEY);
 
-        $api_request->setApiKey(SMTP2GO_API_KEY);
 
         $this->assertTrue($api_request->send($email));
     }
@@ -62,11 +60,10 @@ class ApiSendTest extends TestCase
     {
         $email = $this->createTestMessageInstance();
 
-        $email->setMessage('');
+        $email->setMessage('');//invalid, must have a message
 
         $api_request = new ApiRequest(SMTP2GO_API_KEY);
 
         $this->assertFalse($api_request->send($email));
     }
-
 }
