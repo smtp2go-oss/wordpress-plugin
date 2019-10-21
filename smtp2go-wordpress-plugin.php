@@ -14,7 +14,7 @@
  * @wordpress-plugin
  * Plugin Name:       smtp2go wordpress plugin
  * Plugin URI:        https://github.com/thefold/smtp2go-wordpress-plugin
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       Send all email from WordPress via SMTP2GO, Scalable, reliable email delivery.
  * Version:           1.0.0
  * Author:            The Fold
  * Author URI:        https://thefold.nz
