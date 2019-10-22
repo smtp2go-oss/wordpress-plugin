@@ -57,7 +57,7 @@ submit_button('Save Settings');
 <?php if (!empty(smtp2go_tab_active('test'))): ?>
 
     <h1><?php _e('Send Test Email', $this->plugin_name)?></h1>
-    <p><?php _e('This will send a simple message to the recipient specified below, using the settings above.
+    <p><?php _e('This will send a simple message to the recipient specified below, using the settings you have provided.
      Please save any settings changes before sending the test.', $this->plugin_name);?></p>
     <div class="smtp2go-js-success smtp2go-success-message" style="display:none"><?php _e('Success! The test message was sent.', $this->plugin_name)?></div>
     <div class="smtp2go-js-failure smtp2go-error-message" style="display:none"></div>
