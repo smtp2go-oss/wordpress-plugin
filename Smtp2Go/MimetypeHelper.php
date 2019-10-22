@@ -1,12 +1,12 @@
 <?php
-namespace Smtp2Go;
+namespace SMTP2GO;
 
 /**
  * Used for determining mime types for files, code from PHPMailer
  *
  * @see PhpMailer
  * @since 1.0.0
- * @package    Smtp2go\WordpressPlugin
+ * @package    SMTP2GO\WordpressPlugin
  * 
  */
 class MimetypeHelper

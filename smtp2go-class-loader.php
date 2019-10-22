@@ -1,6 +1,6 @@
 <?php
 
-function smtp2GoClassLoader($className)
+function SMTP2GOClassLoader($className)
 {
     $fileName  = '';
     $namespace = '';
@@ -12,7 +12,7 @@ function smtp2GoClassLoader($className)
         $className = substr($className, $lastNsPos + 1);
         $fileName  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
     }
-    if ($namespace !== 'Smtp2Go') {
+    if ($namespace !== 'SMTP2GO') {
         return true;
     }
     $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
@@ -24,4 +24,4 @@ function smtp2GoClassLoader($className)
         exit('Class "' . $className . '" does not exist.');
     }
 }
-spl_autoload_register('smtp2GoClassLoader');
+spl_autoload_register('SMTP2GOClassLoader');

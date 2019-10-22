@@ -1,5 +1,5 @@
 <?php
-namespace Smtp2Go;
+namespace SMTP2GO;
 
 /**
  * The admin-specific functionality of the plugin.
@@ -7,8 +7,8 @@ namespace Smtp2Go;
  * @link       https://thefold.nz
  * @since      1.0.0
  *
- * @package    Smtp2go_Wordpress_Plugin
- * @subpackage Smtp2go_Wordpress_Plugin/admin
+ * @package    SMTP2GO\WordpressPlugin
+ * @subpackage SMTP2GO\WordpressPlugin/admin
  */
 
 /**
@@ -17,8 +17,8 @@ namespace Smtp2Go;
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    Smtp2go_Wordpress_Plugin
- * @subpackage Smtp2go_Wordpress_Plugin/admin
+ * @package    SMTP2GO\WordpressPlugin
+ * @subpackage SMTP2GO\WordpressPlugin/admin
  * @author     The Fold <hello@thefold.co.nz>
  */
 class WordpressPluginAdmin
@@ -306,9 +306,9 @@ class WordpressPluginAdmin
             wp_send_json(array('success' => 0, 'reason' => 'Invalid recipient specified'));
         }
         $body = '<h1>' . __('Success!', $this->plugin_name) . '</h1>';
-        $body .= '<p>' . __('You have successfully set up your Smtp2Go Wordpress Plugin', $this->plugin_name) . '</p>';
+        $body .= '<p>' . __('You have successfully set up your SMTP2GO Wordpress Plugin', $this->plugin_name) . '</p>';
 
-        $message = new ApiMessage($to_email, __('Test Email Via Smtp2Go Wordpress Plugin', $this->plugin_name), $body);
+        $message = new ApiMessage($to_email, __('Test Email Via SMTP2GO Wordpress Plugin', $this->plugin_name), $body);
 
         $message->initFromOptions();
 

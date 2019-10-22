@@ -1,5 +1,5 @@
 <?php
-namespace Smtp2Go;
+namespace SMTP2GO;
 
 /**
  * Fetch email summary stats from the api

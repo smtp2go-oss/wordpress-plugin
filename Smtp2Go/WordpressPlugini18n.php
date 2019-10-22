@@ -1,5 +1,5 @@
 <?php
-namespace Smtp2Go;
+namespace SMTP2GO;
 
 /**
  * Define the internationalization functionality
@@ -10,7 +10,7 @@ namespace Smtp2Go;
  * @link       https://thefold.nz
  * @since      1.0.0
  *
- * @package    Smtp2go\WordpressPlugin
+ * @package    SMTP2GO\WordpressPlugin
 
  */
 
@@ -21,7 +21,7 @@ namespace Smtp2Go;
  * so that it is ready for translation.
  *
  * @since      1.0.0
- * @package    Smtp2go\WordpressPlugin
+ * @package    SMTP2GO\WordpressPlugin
  * @author     The Fold <hello@thefold.co.nz>
  */
 class WordpressPlugini18n
@@ -34,7 +34,7 @@ class WordpressPlugini18n
     public function loadPluginTextdomain()
     {
         load_plugin_textdomain(
-            'smtp2go-wordpress-plugin',
+            'SMTP2GO-wordpress-plugin',
             false,
             dirname(dirname(plugin_basename(__FILE__))) . '/languages/'
         );

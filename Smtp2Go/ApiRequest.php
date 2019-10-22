@@ -1,10 +1,10 @@
 <?php
-namespace Smtp2Go;
+namespace SMTP2GO;
 
 /**
- * Makes http requests to the smtp2go api
+ * Makes http requests to the SMTP2GO api
  * @since 1.0.0
- * @package    Smtp2go\WordpressPlugin
+ * @package    SMTP2GO\WordpressPlugin
  * 
  */
 class ApiRequest
@@ -160,7 +160,7 @@ class ApiRequest
      */
     protected function logError()
     {
-        error_log('Error returned from Smtp2Go API...');
+        error_log('Error returned from SMTP2GO API...');
         error_log(print_r($this->last_response, 1));
     }
 

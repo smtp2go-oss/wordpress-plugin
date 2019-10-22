@@ -1,10 +1,10 @@
 <?php
-namespace Smtp2Go;
+namespace SMTP2GO;
 
 /**
- * Defines required behaviour to send a request through the Smtp2GoApiRequest class
+ * Defines required behaviour to send a request through the SMTP2GOApiRequest class
  * @since 1.0.0
- * @package    Smtp2go\WordpressPlugin
+ * @package    SMTP2GO\WordpressPlugin
  * 
  */
 interface Requestable
