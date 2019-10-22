@@ -129,6 +129,8 @@ class WordpressPlugin
 
         $this->loader->addAction('admin_menu', $plugin_admin, 'addMenuPage');
         
+        $this->loader->addFilter('plugin_action_links_' . SMTP2GO_PLUGIN_BASENAME, $plugin_admin, 'addSettingsLink');
+        
 
         $this->loader->addAction('admin_init', $plugin_admin, 'registerSettings');
 

@@ -9,10 +9,10 @@
  *
  * @link              https://thefold.nz
  * @since             1.0.0
- * @package           Smtp2go_Wordpress_Plugin
+ * @package           SMTP2GO_Wordpress_Plugin
  *
  * @wordpress-plugin
- * Plugin Name:       smtp2go wordpress plugin
+ * Plugin Name:       SMTP2GO wordpress plugin
  * Plugin URI:        https://github.com/thefold/smtp2go-wordpress-plugin
  * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
  * Version:           1.0.0
@@ -39,6 +39,8 @@ if (!defined('WPINC')) {
  */
 define('SMTP2GO_WORDPRESS_PLUGIN_VERSION', '1.0.0');
 
+
+define('SMTP2GO_PLUGIN_BASENAME', plugin_basename(__FILE__));
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-smtp2go-wordpress-plugin-activator.php
