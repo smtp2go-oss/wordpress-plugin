@@ -128,7 +128,8 @@ class WordpressPlugin
         $plugin_admin = new WordpressPluginAdmin($this->getPluginName(), $this->getVersion());
 
         $this->loader->addAction('admin_menu', $plugin_admin, 'addMenuPage');
-        
+
+        $this->loader->addFilter('plugin_action_links_' . SMTP2GO_PLUGIN_BASENAME, $plugin_admin, 'addSettingsLink');
 
         $this->loader->addAction('admin_init', $plugin_admin, 'registerSettings');
 
@@ -136,7 +137,6 @@ class WordpressPlugin
         $this->loader->addAction('admin_enqueue_scripts', $plugin_admin, 'enqueueScripts');
 
         $this->loader->addAction('wp_ajax_smtp2go_send_email', $plugin_admin, 'sendTestEmail');
-
     }
 
     /**

@@ -55,16 +55,6 @@ class WordpressPluginAdmin
     }
 
     /**
-     * Save the options from the admin page
-     * @since 1.0.0
-     * @return void
-     */
-    // public function updateOptions()
-    // {
-    //     wp_redirect('/wp-admin/tools.php?page=' . $this->plugin_name);
-    // }
-
-    /**
      * Register all settings fields for the admin page
      *
      * @since 1.0.0
@@ -216,7 +206,7 @@ class WordpressPluginAdmin
     public function customHeadersSection()
     {
         echo '<small class="smtp2go_help_text">'
-        . __('To remove a header, simply clear one of the values and save', SMTP_TEXT_DOMAIN)
+        . __('To remove a header, simply clear one of the values and save', $this->plugin_name)
             . '</small>';
     }
 
@@ -255,20 +245,19 @@ class WordpressPluginAdmin
     public function addMenuPage()
     {
         add_menu_page(
-            'SMTP2Go',
-            'SMTP2Go',
+            'SMTP2GO',
+            'SMTP2GO',
             'manage_options',
             $this->plugin_name,
             array($this, 'renderManagementPage')
         );
-        add_submenu_page($this->plugin_name, 'Stats', 'SMTP2Go Stats', 'manage_options', 'smtp2go-summary-stats', array($this, 'renderStatsPage'));
     }
-    
+
     public function renderStatsPage()
     {
         $summary = new ApiSummary;
         $request = new ApiRequest(get_option('smtp2go_api_key'));
-        $stats = null;
+        $stats   = null;
         if ($request->send($summary)) {
             $stats = $request->getLastResponse()->data;
         }
@@ -349,9 +338,18 @@ class WordpressPluginAdmin
     public function validateApiKey($input)
     {
         if (empty($input) || strpos($input, 'api-') !== 0) {
-            add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid Api key entered.', SMTP_TEXT_DOMAIN));
+            add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid Api key entered.', $this->plugin_name));
             return get_option('smtp2go_api_key');
         }
         return sanitize_text_field($input);
+    }
+
+    public function addSettingsLink($links)
+    {
+        $mylinks = array();
+        if (current_user_can('manage_options')) {
+            $mylinks[] = '<a href="' . esc_url(admin_url('admin.php?page=' . $this->plugin_name)) . '">Settings</a>';
+        }
+        return array_merge($links, $mylinks);
     }
 }

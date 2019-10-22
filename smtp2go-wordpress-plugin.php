@@ -9,10 +9,10 @@
  *
  * @link              https://thefold.nz
  * @since             1.0.0
- * @package           Smtp2go_Wordpress_Plugin
+ * @package           SMTP2GO_Wordpress_Plugin
  *
  * @wordpress-plugin
- * Plugin Name:       smtp2go wordpress plugin
+ * Plugin Name:       SMTP2GO wordpress plugin
  * Plugin URI:        https://github.com/thefold/smtp2go-wordpress-plugin
  * Description:       Send all email from WordPress via SMTP2GO, Scalable, reliable email delivery.
  * Version:           1.0.0
@@ -39,6 +39,7 @@ if (!defined('WPINC')) {
  */
 define('SMTP2GO_WORDPRESS_PLUGIN_VERSION', '1.0.0');
 
+define('SMTP2GO_PLUGIN_BASENAME', plugin_basename(__FILE__));
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-smtp2go-wordpress-plugin-activator.php
@@ -64,7 +65,6 @@ register_deactivation_hook(__FILE__, 'deactivate_smtp2go_wordpress_plugin');
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-
 
 /**
  * Begins execution of the plugin.
@@ -96,6 +96,12 @@ function run_smtp2go_wordpress_plugin()
 if (!function_exists('wp_mail')) {
     function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     {
+        if (defined('WP_DEBUG') && WP_DEBUG === true) {
+            error_log(print_r($headers, 1));
+            error_log('!!!!Attachments!!!!');
+            error_log(print_r($attachments, 1));
+
+        }
         //let other plugins modify the arguments as the native wp mail does
         $atts = apply_filters('wp_mail', compact('to', 'subject', 'message', 'headers', 'attachments'));
 
@@ -123,9 +129,6 @@ if (!function_exists('wp_mail')) {
             $attachments = $atts['attachments'];
         }
 
-        if (!is_array($attachments)) {
-            $attachments = explode("\n", str_replace("\r\n", "\n", $attachments));
-        }
 
         $smtp2gomessage = new Smtp2Go\ApiMessage($to, $subject, $message, $headers, $attachments);
 
@@ -136,6 +139,17 @@ if (!function_exists('wp_mail')) {
         $request->send($smtp2gomessage);
     }
 }
+
+if (!function_exists('smtp2go_dd')) {
+    function smtp2go_dd()
+    {
+        foreach (func_get_args() as $arg) {
+            echo '<pre>', print_r($arg, 1), '</pre>';
+        }
+        exit;
+    }
+}
+
 require_once dirname(__FILE__) . '/smtp2go-class-loader.php';
 
 run_smtp2go_wordpress_plugin();

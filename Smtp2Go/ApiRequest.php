@@ -104,8 +104,7 @@ class ApiRequest
         curl_close($curl);
         
         if (!empty($this->last_response->data->error_code)) {
-            error_log('Error returned from Smtp2Go API...');
-            error_log(print_r($this->last_response, 1));
+            $this->logError();
         }
 
         return empty($this->last_response->data->error_code);
@@ -141,20 +140,28 @@ class ApiRequest
 
         $stream = fopen($this->url . $endpoint, 'r', false, $context);
 
-        //maybe log this if a debug mode is turned on?
         $this->last_meta = stream_get_meta_data($stream);
 
         $response = stream_get_contents($stream);
 
-        //maybe log this if a debug mode is turned on?
         $this->last_response = json_decode($response);
 
         fclose($stream);
         if (!empty($this->last_response->data->error_code)) {
-            error_log('Error returned from Smtp2Go API...');
-            error_log(print_r($this->last_response, 1));
+            $this->logError();
         }
         return empty($this->last_response->data->error_code);
+    }
+
+    /**
+     * Log errors
+     *
+     * @return void
+     */
+    protected function logError()
+    {
+        error_log('Error returned from Smtp2Go API...');
+        error_log(print_r($this->last_response, 1));
     }
 
     /**

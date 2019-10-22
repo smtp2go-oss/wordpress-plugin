@@ -95,35 +95,51 @@ class ApiMessageTest extends TestCase
         $this->assertArrayHasKey('body', $request_data);
         $this->assertArrayHasKey('method', $request_data);
 
-
         $this->assertJsonStringEqualsJsonString($expected_json_body_string, json_encode(array_filter($request_data['body'])));
     }
 
     public function testAddAttachment()
     {
-        $message                   = $this->createTestInstance();
+        $message = $this->createTestInstance();
 
         $message->setAttachments(dirname(__FILE__, 2) . '/Attachments/cat.jpg');
 
         $request_data = $message->buildRequestPayload();
-        
+
         $this->assertArrayHasKey('attachments', $request_data['body']);
 
         $this->assertEquals('image/jpeg', $request_data['body']['attachments'][0]['mimetype']);
-        
+
     }
 
     public function testAddInline()
     {
-        $message                   = $this->createTestInstance();
+        $message = $this->createTestInstance();
 
         $message->setInlines(dirname(__FILE__, 2) . '/Attachments/cat.jpg');
 
         $request_data = $message->buildRequestPayload();
-        
+
         $this->assertArrayHasKey('inlines', $request_data['body']);
 
         $this->assertEquals('image/jpeg', $request_data['body']['inlines'][0]['mimetype']);
-        
-    }    
+    }
+
+    public function testAddAttachmentInConstructorAsArray()
+    {
+        $message = new ApiMessage('test@recipient.net', 'testing', 'the message', '', array(dirname(__FILE__, 2) . '/Attachments/cat.jpg'));
+
+        $request_data = $message->buildRequestPayload();
+
+        $this->assertEquals('cat.jpg', $request_data['body']['attachments'][0]['filename']);
+    }
+
+    public function testAddAttachmentInConstructorAsString()
+    {
+        $message = new ApiMessage('test@recipient.net', 'testing', 'the message', '', dirname(__FILE__, 2) . '/Attachments/cat.jpg');
+
+        $request_data = $message->buildRequestPayload();
+
+        $this->assertEquals('cat.jpg', $request_data['body']['attachments'][0]['filename']);
+    }
 }
