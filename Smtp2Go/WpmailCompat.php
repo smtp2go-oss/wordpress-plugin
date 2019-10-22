@@ -122,12 +122,11 @@ class WpmailCompat
      */
     public function processAttachments($wp_attachments)
     {
-        $attachments = array();
 
         if (!is_array($wp_attachments)) {
-            $attachments = explode("\n", str_replace("\r\n", "\n", $attachments));
+            $wp_attachments = explode("\n", str_replace("\r\n", "\n", $wp_attachments));
         }
 
-        return $attachments;
+        return $wp_attachments;
     }
 }

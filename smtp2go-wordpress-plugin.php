@@ -39,7 +39,6 @@ if (!defined('WPINC')) {
  */
 define('SMTP2GO_WORDPRESS_PLUGIN_VERSION', '1.0.0');
 
-
 define('SMTP2GO_PLUGIN_BASENAME', plugin_basename(__FILE__));
 /**
  * The code that runs during plugin activation.
@@ -97,6 +96,12 @@ function run_smtp2go_wordpress_plugin()
 if (!function_exists('wp_mail')) {
     function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     {
+        if (defined('WP_DEBUG') && WP_DEBUG === true) {
+            error_log(print_r($headers, 1));
+            error_log('!!!!Attachments!!!!');
+            error_log(print_r($attachments, 1));
+
+        }
         //let other plugins modify the arguments as the native wp mail does
         $atts = apply_filters('wp_mail', compact('to', 'subject', 'message', 'headers', 'attachments'));
 
@@ -124,9 +129,6 @@ if (!function_exists('wp_mail')) {
             $attachments = $atts['attachments'];
         }
 
-        if (!is_array($attachments)) {
-            $attachments = explode("\n", str_replace("\r\n", "\n", $attachments));
-        }
 
         $smtp2gomessage = new Smtp2Go\ApiMessage($to, $subject, $message, $headers, $attachments);
 
@@ -141,8 +143,7 @@ if (!function_exists('wp_mail')) {
 if (!function_exists('smtp2go_dd')) {
     function smtp2go_dd()
     {
-        $args = func_get_args();
-        foreach ($args as $arg) {
+        foreach (func_get_args() as $arg) {
             echo '<pre>', print_r($arg, 1), '</pre>';
         }
         exit;
