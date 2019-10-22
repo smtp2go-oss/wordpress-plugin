@@ -65,7 +65,6 @@ register_deactivation_hook(__FILE__, 'deactivate_smtp2go_wordpress_plugin');
  * admin-specific hooks, and public-facing site hooks.
  */
 
-
 /**
  * Begins execution of the plugin.
  *
@@ -136,6 +135,18 @@ if (!function_exists('wp_mail')) {
         $request->send($smtp2gomessage);
     }
 }
+
+if (!function_exists('smtp2go_dd')) {
+    function smtp2go_dd()
+    {
+        $args = func_get_args();
+        foreach ($args as $arg) {
+            echo '<pre>', print_r($arg, 1), '</pre>';
+        }
+        exit;
+    }
+}
+
 require_once dirname(__FILE__) . '/smtp2go-class-loader.php';
 
 run_smtp2go_wordpress_plugin();
