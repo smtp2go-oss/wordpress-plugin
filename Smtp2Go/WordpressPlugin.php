@@ -72,7 +72,8 @@ class WordpressPlugin
         } else {
             $this->version = '1.0.0';
         }
-        $this->plugin_name = 'SMTP2GO-wordpress-plugin';
+        //this HAS to be lowercase
+        $this->plugin_name = 'smtp2go-wordpress-plugin';
 
         $this->loadDependencies();
         $this->setLocale();
@@ -136,7 +137,7 @@ class WordpressPlugin
         $this->loader->addAction('admin_enqueue_scripts', $plugin_admin, 'enqueueStyles');
         $this->loader->addAction('admin_enqueue_scripts', $plugin_admin, 'enqueueScripts');
 
-        $this->loader->addAction('wp_ajax_SMTP2GO_send_email', $plugin_admin, 'sendTestEmail');
+        $this->loader->addAction('wp_ajax_smtp2go_send_email', $plugin_admin, 'sendTestEmail');
     }
 
     /**

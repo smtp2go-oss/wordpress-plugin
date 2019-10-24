@@ -1,6 +1,6 @@
 <?php
 /**
- * The plugin bootstrap file
+ * The plugin bootstrap file - the filename MUST be all lowercase
  *
  * This file is read by WordPress to generate the plugin information in the plugin
  * admin area. This file also includes all of the dependencies used by the plugin,
