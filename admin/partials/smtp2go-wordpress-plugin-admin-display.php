@@ -8,8 +8,8 @@
  * @link       https://thefold.nz
  * @since      1.0.0
  *
- * @package    Smtp2go_Wordpress_Plugin
- * @subpackage Smtp2go_Wordpress_Plugin/admin/partials
+ * @package    SMTP2GO\WordpressPlugin
+ * @subpackage SMTP2GO\WordpressPlugin/admin/partials
  */
 
 if (isset($_GET['settings-updated'])) {
@@ -19,7 +19,7 @@ if (isset($_GET['settings-updated'])) {
 
 // show error/update messages
 settings_errors('smtp2go_messages');
-function smtp2go_tab_active($tab)
+function SMTP2GO_tab_active($tab)
 {
     $default  = 'settings';
     $selected = !empty($_GET['tab']) ? $_GET['tab'] : $default;
@@ -34,11 +34,11 @@ function smtp2go_tab_active($tab)
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <div class="wrap smtp2go">
     <div class="nav-tab-wrapper">
-        <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'settings'), 'admin.php')) ?>" class="nav-tab <?php echo smtp2go_tab_active('settings') ?>">Settings</a>
-        <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'test'), 'admin.php')) ?>" class="nav-tab <?php echo smtp2go_tab_active('test') ?>">Test</a>
-        <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'stats'), 'admin.php')) ?>" class="nav-tab <?php echo smtp2go_tab_active('stats') ?>">Stats</a>
+        <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'settings'), 'admin.php')) ?>" class="nav-tab <?php echo SMTP2GO_tab_active('settings') ?>">Settings</a>
+        <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'test'), 'admin.php')) ?>" class="nav-tab <?php echo SMTP2GO_tab_active('test') ?>">Test</a>
+        <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'stats'), 'admin.php')) ?>" class="nav-tab <?php echo SMTP2GO_tab_active('stats') ?>">Stats</a>
     </div>
-    <?php if (!empty(smtp2go_tab_active('settings'))): ?>
+    <?php if (!empty(SMTP2GO_tab_active('settings'))): ?>
     <h1><?php _e('SMTP2GO Settings', $this->plugin_name)?></h1>
     <form action="options.php" method="post">
     <?php
@@ -54,7 +54,7 @@ submit_button('Save Settings');
 <?php endif;?>
 
 
-<?php if (!empty(smtp2go_tab_active('test'))): ?>
+<?php if (!empty(SMTP2GO_tab_active('test'))): ?>
 
     <h1><?php _e('Send Test Email', $this->plugin_name)?></h1>
     <p><?php _e('This will send a simple message to the recipient specified below, using the settings you have provided.
@@ -83,7 +83,7 @@ submit_button('Save Settings');
     </form>
 <?php endif;?>
 
-<?php if (!empty(smtp2go_tab_active('stats'))) :
+<?php if (!empty(SMTP2GO_tab_active('stats'))) :
     $this->renderStatsPage();
 endif;
 ?>

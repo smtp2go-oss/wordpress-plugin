@@ -22,7 +22,7 @@
  * @link       https://thefold.nz
  * @since      1.0.0
  *
- * @package    Smtp2go_Wordpress_Plugin
+ * @package    SMTP2GO\WordpressPlugin
  */
 
 // If uninstall not called from WordPress, then exit.

@@ -1,5 +1,5 @@
 <?php
-namespace Smtp2Go;
+namespace SMTP2GO;
 
 /**
  * The file that defines the core plugin class
@@ -10,7 +10,7 @@ namespace Smtp2Go;
  * @link       https://thefold.nz
  * @since      1.0.0
  *
- * @package    Smtp2go\WordpressPlugin
+ * @package    SMTP2GO\WordpressPlugin
  */
 
 /**
@@ -23,7 +23,7 @@ namespace Smtp2Go;
  * version of the plugin.
  *
  * @since      1.0.0
- * @package    Smtp2go\WordpressPlugin
+ * @package    SMTP2GO\WordpressPlugin
  * @author     The Fold <hello@thefold.co.nz>
  */
 class WordpressPlugin
@@ -34,7 +34,7 @@ class WordpressPlugin
      *
      * @since    1.0.0
      * @access   protected
-     * @var      Smtp2goWordpressPluginLoader    $loader    Maintains and registers all hooks for the plugin.
+     * @var      \SMTP2GO\WordpressPluginLoader    $loader    Maintains and registers all hooks for the plugin.
      */
     protected $loader;
 
@@ -72,6 +72,7 @@ class WordpressPlugin
         } else {
             $this->version = '1.0.0';
         }
+        //this HAS to be lowercase
         $this->plugin_name = 'smtp2go-wordpress-plugin';
 
         $this->loadDependencies();
@@ -84,10 +85,10 @@ class WordpressPlugin
      *
      * Include the following files that make up the plugin:
      *
-     * - Smtp2go_Wordpress_Plugin_Loader. Orchestrates the hooks of the plugin.
-     * - Smtp2go_Wordpress_Plugin_i18n. Defines internationalization functionality.
-     * - Smtp2go_Wordpress_Plugin_Admin. Defines all hooks for the admin area.
-     * - Smtp2go_Wordpress_Plugin_Public. Defines all hooks for the public side of the site.
+     * - SMTP2GO\WordpressPlugin_Loader. Orchestrates the hooks of the plugin.
+     * - SMTP2GO\WordpressPlugin_i18n. Defines internationalization functionality.
+     * - SMTP2GO\WordpressPlugin_Admin. Defines all hooks for the admin area.
+     * - SMTP2GO\WordpressPlugin_Public. Defines all hooks for the public side of the site.
      *
      * Create an instance of the loader which will be used to register the hooks
      * with WordPress.
@@ -103,7 +104,7 @@ class WordpressPlugin
     /**
      * Define the locale for this plugin for internationalization.
      *
-     * Uses the Smtp2go_Wordpress_Plugin_i18n class in order to set the domain and to register the hook
+     * Uses the SMTP2GO\WordpressPlugin_i18n class in order to set the domain and to register the hook
      * with WordPress.
      *
      * @since    1.0.0
@@ -165,7 +166,7 @@ class WordpressPlugin
      * The reference to the class that orchestrates the hooks with the plugin.
      *
      * @since     1.0.0
-     * @return    Smtp2goWordpressPluginLoader    Orchestrates the hooks of the plugin.
+     * @return    \SMTP2GO\WordpressPluginLoader    Orchestrates the hooks of the plugin.
      */
     public function getLoader()
     {

@@ -1,14 +1,14 @@
 <?php
-namespace Smtp2Go;
+namespace SMTP2GO;
 
-use Smtp2Go\WpmailCompat;
+use SMTP2GO\WpmailCompat;
 
 /**
  * Creates an email message payload to send through the request api
  *
  * @link       https://thefold.nz
  * @since      1.0.0
- * @package    Smtp2go\WordpressPlugin
+ * @package    SMTP2GO\WordpressPlugin
  */
 class ApiMessage implements Requestable
 {
@@ -167,7 +167,7 @@ class ApiMessage implements Requestable
     }
 
     /**
-     * Builds the JSON to send to the Smtp2go API
+     * Builds the JSON to send to the SMTP2GO API
      *
      * @return void
      */
