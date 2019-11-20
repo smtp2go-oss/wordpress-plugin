@@ -80,6 +80,23 @@ class WordpressPluginAdmin
         /** api key field */
         register_setting(
             'api_settings',
+            'smtp2go_enabled'
+        );
+
+        add_settings_field(
+            'smtp2go_enabled',
+            __('Enabled *', $this->plugin_name),
+            array($this, 'outputCheckboxHtml'),
+            $this->plugin_name,
+            'smtp2go_settings_section',
+            array('name' => 'smtp2go_enabled'
+            , 'label' => __('Send Email Using SMTP2GO')
+            , )
+        );
+
+        /** api key field */
+        register_setting(
+            'api_settings',
             'smtp2go_api_key',
             array($this, 'validateApiKey')
         );
@@ -237,6 +254,34 @@ class WordpressPluginAdmin
         echo '<input type="' . $type . '"' . $required . ' class="smtp2go_text_input" name="' . $field_name . '" value="' . esc_attr($setting) . '"/> ';
     }
 
+    public function outputCheckboxHtml($args)
+    {
+        $field_name = $args['name'];
+
+        $setting = get_option($field_name);
+        $checked = '';
+        if (empty($setting)) {
+            $setting = '';
+        }
+        if (!empty($setting)) {
+            $checked = 'checked="checked"';
+        }
+        $required = '';
+        if (!empty($args['required'])) {
+            $required = 'required="required"';
+        }
+
+        $type = 'text';
+        if (!empty($args['type'])) {
+            $type = $args['type'];
+        }
+        $label = '';
+        if (!empty($args['label'])) {
+            $label = $args['label'];
+        }
+        echo '<div style="display:flex;align-items:center;"><input  id="' . $field_name . '" type="checkbox"' . $required . ' class="smtp2go_text_input" name="' . $field_name . '" value="1"' . $checked . '/> <label for="' . $field_name . '">' . $label . '</label></div>';
+    }
+
     /**
      * Add Menu Page
      *
@@ -337,6 +382,7 @@ class WordpressPluginAdmin
      */
     public function validateApiKey($input)
     {
+        
         if (empty($input) || strpos($input, 'api-') !== 0) {
             add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid Api key entered.', $this->plugin_name));
             return get_option('smtp2go_api_key');

@@ -93,14 +93,13 @@ function run_SMTP2GO_wordpress_plugin()
  */
 
 //if the plugin isn't activated, this function will exist
-if (!function_exists('wp_mail')) {
+if (!function_exists('wp_mail') && get_option('smtp2go_enabled')) {
     function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     {
         if (defined('WP_DEBUG') && WP_DEBUG === true) {
             error_log(print_r($headers, 1));
             error_log('!!!!Attachments!!!!');
             error_log(print_r($attachments, 1));
-
         }
         //let other plugins modify the arguments as the native wp mail does
         $atts = apply_filters('wp_mail', compact('to', 'subject', 'message', 'headers', 'attachments'));
