@@ -38,7 +38,9 @@ function SMTP2GO_tab_active($tab)
         <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'test'), 'admin.php')) ?>" class="nav-tab <?php echo SMTP2GO_tab_active('test') ?>">Test</a>
         <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'stats'), 'admin.php')) ?>" class="nav-tab <?php echo SMTP2GO_tab_active('stats') ?>">Stats</a>
     </div>
+    <p><img src="<?php echo plugins_url('SMTP2GO_logo.png', dirname(__FILE__,2)) ?>"/></p>
     <?php if (!empty(SMTP2GO_tab_active('settings'))): ?>
+        
     <h1><?php _e('SMTP2GO Settings', $this->plugin_name)?></h1>
     <form action="options.php" method="post">
     <?php

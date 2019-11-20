@@ -45,11 +45,71 @@
 .smtp2go-success-message {
   border-left: 5px solid green;
 }
-.smtp2go-datalist {
-  display: flex;
-}
 
-.smtp2go-datalist dt {
-  font-weight: 700;
-  width: 20%;
+.smtp2go-usage-bar {
+  width:580px;
+  height:31px;
+  background-color: rgba(24, 146, 230, 0.3);
+  border: 1px solid rgba(17, 99, 157, 0.2);
+  border-radius:2px;
+  position:relative;
+  margin-bottom: 10px;
+  z-index: 10;
+
+}
+.smtp2go-progress-bar {
+  height:31px;
+  background-color:#7cb76a;
+  position: absolute;
+  left:0;
+  top:0;
+  z-index: 30;
+
+}
+.smtp2go-usage-bar p {
+  text-align: center;
+  margin:0;
+  padding:3px 0 0 0;
+  color:#fff;
+  font-size:1.2rem;
+  line-height: 1.2;
+  position: relative;
+  z-index: 40;
+}
+.smtp2go-stat-box {
+  padding:10px;
+  border:1px solid black;
+  margin-bottom: 10px;
+  width:580px;
+}
+.smtp2go-stat-box-top-row {
+  display:flex;
+  margin-bottom: 10px;
+}
+.smtp2go-stat-box h3 {
+  font-size:2rem;
+  margin:0;
+  padding:0;
+}
+.smtp2go-stat-box h5 {
+  color:#000;
+  margin:0;
+  padding:0;
+}
+.smtp2go-stat-box .stat-badge {
+   border-radius:2px;
+   height:24px;
+   font-size:16px;
+   color:#fff;
+   padding:2px 4px 0;
+   margin-left:10px;
+}
+.smtp2go-stat-box .stat-badge.smtp2go-good-status {
+  background-color:#7cb76a;
+}
+.smtp2go-stat-box .stat-badge.smtp2go-fair-status {
+  background-color:#f0d78e;
+}
+.smtp2go-stat-box .stat-badge.smtp2go-poor-status {
+  background-color:#e38b81;
 }

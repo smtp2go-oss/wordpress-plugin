@@ -90,8 +90,8 @@ class WordpressPluginAdmin
             $this->plugin_name,
             'smtp2go_settings_section',
             array('name' => 'smtp2go_enabled'
-            , 'label' => __('Send Email Using SMTP2GO')
-            , )
+                , 'label' => __('Send Email Using SMTP2GO'),
+            )
         );
 
         /** api key field */
@@ -382,7 +382,6 @@ class WordpressPluginAdmin
      */
     public function validateApiKey($input)
     {
-        
         if (empty($input) || strpos($input, 'api-') !== 0) {
             add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid Api key entered.', $this->plugin_name));
             return get_option('smtp2go_api_key');
@@ -397,5 +396,31 @@ class WordpressPluginAdmin
             $mylinks[] = '<a href="' . esc_url(admin_url('admin.php?page=' . $this->plugin_name)) . '">Settings</a>';
         }
         return array_merge($links, $mylinks);
+    }
+
+    public function spamRating($value)
+    {
+        $value = floatval($value);
+
+        if ($value <= 0.06) {
+            return ['label' => 'Good', 'css_class' => 'smtp2go-good-status'];
+        }
+        if ($value <= 0.1) {
+            return ['label' => 'Fair (a little too high)', 'css_class' => 'smtp2go-fair-status'];
+        }
+        return ['label' => 'Poor (a lot too high)', 'css_class' => 'smtp2go-fair-status'];
+    }
+
+    public function bounceRating($value)
+    {
+        $value = intval($value);
+
+        if ($value <= 8) {
+            return ['label' => 'Good', 'css_class' => 'smtp2go-good-status'];
+        }
+        if ($value <= 12) {
+            return ['label' => 'Fair (a little too high)', 'css_class' => 'smtp2go-fair-status'];
+        }
+        return ['label' => 'Poor (a lot too high)', 'css_class' => 'smtp2go-fair-status'];
     }
 }
