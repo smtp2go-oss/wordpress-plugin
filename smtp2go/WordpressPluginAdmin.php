@@ -80,6 +80,23 @@ class WordpressPluginAdmin
         /** api key field */
         register_setting(
             'api_settings',
+            'smtp2go_enabled'
+        );
+
+        add_settings_field(
+            'smtp2go_enabled',
+            __('Enabled *', $this->plugin_name),
+            array($this, 'outputCheckboxHtml'),
+            $this->plugin_name,
+            'smtp2go_settings_section',
+            array('name' => 'smtp2go_enabled'
+                , 'label' => __('Send Email Using SMTP2GO'),
+            )
+        );
+
+        /** api key field */
+        register_setting(
+            'api_settings',
             'smtp2go_api_key',
             array($this, 'validateApiKey')
         );
@@ -237,6 +254,34 @@ class WordpressPluginAdmin
         echo '<input type="' . $type . '"' . $required . ' class="smtp2go_text_input" name="' . $field_name . '" value="' . esc_attr($setting) . '"/> ';
     }
 
+    public function outputCheckboxHtml($args)
+    {
+        $field_name = $args['name'];
+
+        $setting = get_option($field_name);
+        $checked = '';
+        if (empty($setting)) {
+            $setting = '';
+        }
+        if (!empty($setting)) {
+            $checked = 'checked="checked"';
+        }
+        $required = '';
+        if (!empty($args['required'])) {
+            $required = 'required="required"';
+        }
+
+        $type = 'text';
+        if (!empty($args['type'])) {
+            $type = $args['type'];
+        }
+        $label = '';
+        if (!empty($args['label'])) {
+            $label = $args['label'];
+        }
+        echo '<div style="display:flex;align-items:center;"><input  id="' . $field_name . '" type="checkbox"' . $required . ' class="smtp2go_text_input" name="' . $field_name . '" value="1"' . $checked . '/> <label for="' . $field_name . '">' . $label . '</label></div>';
+    }
+
     /**
      * Add Menu Page
      *
@@ -351,5 +396,31 @@ class WordpressPluginAdmin
             $mylinks[] = '<a href="' . esc_url(admin_url('admin.php?page=' . $this->plugin_name)) . '">Settings</a>';
         }
         return array_merge($links, $mylinks);
+    }
+
+    public function spamRating($value)
+    {
+        $value = floatval($value);
+
+        if ($value <= 0.06) {
+            return ['label' => 'Good', 'css_class' => 'smtp2go-good-status'];
+        }
+        if ($value <= 0.1) {
+            return ['label' => 'Fair (a little too high)', 'css_class' => 'smtp2go-fair-status'];
+        }
+        return ['label' => 'Poor (a lot too high)', 'css_class' => 'smtp2go-fair-status'];
+    }
+
+    public function bounceRating($value)
+    {
+        $value = intval($value);
+
+        if ($value <= 8) {
+            return ['label' => 'Good', 'css_class' => 'smtp2go-good-status'];
+        }
+        if ($value <= 12) {
+            return ['label' => 'Fair (a little too high)', 'css_class' => 'smtp2go-fair-status'];
+        }
+        return ['label' => 'Poor (a lot too high)', 'css_class' => 'smtp2go-fair-status'];
     }
 }
