@@ -134,7 +134,7 @@ if (!function_exists('wp_mail') && get_option('smtp2go_enabled')) {
 
         $request = new SMTP2GO\ApiRequest;
 
-        $request->send($SMTP2GOmessage);
+        return $request->send($SMTP2GOmessage);
     }
 }
 
