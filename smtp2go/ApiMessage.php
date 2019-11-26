@@ -184,7 +184,16 @@ class ApiMessage implements Requestable
 
         $body['sender'] = $this->getSender();
 
-        if (preg_match('#(\<(/?[^\>]+)\>)#', $this->getMessage())) {
+
+        if ($this->parsed_headers['content-type']) {
+            $content_type = $this->parsed_headers['content-type'];
+        } else {
+            $content_type = 'text/plain';
+        }
+
+        $content_type = apply_filters( 'wp_mail_content_type', $content_type);
+
+        if ($content_type == 'text/html') {
             $body['html_body'] = $this->getMessage();
         } else {
             $body['text_body'] = $this->getMessage();
