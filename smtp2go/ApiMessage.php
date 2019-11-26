@@ -104,6 +104,13 @@ class ApiMessage implements Requestable
     protected $inlines;
 
     /**
+     * The content type of the email, can be either text/plain or text/html
+     *
+     * @var string
+     */
+    protected $content_type = '';
+
+    /**
      * endpoint to send to
      *
      * @var string
@@ -176,24 +183,18 @@ class ApiMessage implements Requestable
         /** the body of the request which will be sent as json */
         $body = array();
 
-        // $body['api_key'] = $this->getApiKey();
-
         $body['to']  = $this->buildRecipients();
         $body['cc']  = $this->buildCC();
         $body['bcc'] = $this->buildBCC();
 
         $body['sender'] = $this->getSender();
 
-
-        if ($this->parsed_headers['content-type']) {
-            $content_type = $this->parsed_headers['content-type'];
-        } else {
-            $content_type = 'text/plain';
+        //if it hasn't already been specified, check the headers
+        if (empty($this->content_type) && !empty($this->parsed_headers['content-type'])) {
+            $this->content_type = $this->parsed_headers['content-type'];
         }
 
-        $content_type = apply_filters( 'wp_mail_content_type', $content_type);
-
-        if ($content_type == 'text/html') {
+        if ($this->content_type === 'text/html') {
             $body['html_body'] = $this->getMessage();
         } else {
             $body['text_body'] = $this->getMessage();
@@ -621,4 +622,29 @@ class ApiMessage implements Requestable
 
         return $this;
     }
+
+    /**
+     * Get the email content type
+     */
+    public function getContentType()
+    {
+        return $this->content_type;
+    }
+
+    /**
+     * Set the email content type
+     * @param string
+     * @return  self
+     */
+    public function setContentType($content_type)
+    {
+        $content_type = trim(strtolower($content_type));
+
+        if (in_array($content_type, array('text/plain', 'text/html'))) {
+            $this->content_type = $content_type;
+        }
+
+        return $this;
+    }
+
 }

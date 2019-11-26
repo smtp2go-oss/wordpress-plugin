@@ -97,7 +97,12 @@ if (!function_exists('wp_mail') && get_option('smtp2go_enabled')) {
     function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     {
         if (defined('WP_DEBUG') && WP_DEBUG === true) {
+            error_log('!!!!Headers!!!!');
             error_log(print_r($headers, 1));
+            
+            error_log('!!!!Message!!!!');
+            error_log(print_r($message, 1));
+
             error_log('!!!!Attachments!!!!');
             error_log(print_r($attachments, 1));
         }
@@ -128,9 +133,27 @@ if (!function_exists('wp_mail') && get_option('smtp2go_enabled')) {
             $attachments = $atts['attachments'];
         }
 
+        if (defined('WP_DEBUG') && WP_DEBUG === true) {
+            error_log('!!!!Filtered Headers!!!!');
+            error_log(print_r($headers, 1));
+            
+            error_log('!!!!Filtered Message!!!!');
+            error_log(print_r($message, 1));
+
+            error_log('!!!!Filtered Attachments!!!!');
+            error_log(print_r($attachments, 1));
+        }
+
         $SMTP2GOmessage = new SMTP2GO\ApiMessage($to, $subject, $message, $headers, $attachments);
 
         $SMTP2GOmessage->initFromOptions();
+
+        $content_type = '';
+        
+        //see if someone is setting a type
+        $content_type = apply_filters('wp_mail_content_type', $content_type);
+
+        $SMTP2GOmessage->setContentType($content_type);
 
         $request = new SMTP2GO\ApiRequest;
 

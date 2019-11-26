@@ -36,6 +36,8 @@ class ApiSendTest extends TestCase
 
         $email->setInlines(dirname(__FILE__, 2) . '/Attachments/cat.jpg');
 
+        $email->setContentType('text/html');
+
         $api_request = new ApiRequest(SMTP2GO_API_KEY);
 
 
@@ -52,6 +54,7 @@ class ApiSendTest extends TestCase
 
         $api_request = new ApiRequest(SMTP2GO_API_KEY);
 
+        $email->setContentType('text/plain');
 
         $this->assertTrue($api_request->send($email));
     }

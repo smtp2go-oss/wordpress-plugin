@@ -1,5 +1,5 @@
 # Wordpress Plugin
-The SMTP2GO Wordpress Plugin allows you to use SMTP2GO as the email sender for your Wordpress installation.
+The SMTP2GO Plugin For Wordpress allows you to use SMTP2GO as the email sender for your Wordpress installation.
 
 # Installation
 
