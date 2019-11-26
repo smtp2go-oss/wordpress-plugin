@@ -406,9 +406,9 @@ class WordpressPluginAdmin
             return ['label' => 'Good', 'css_class' => 'smtp2go-good-status'];
         }
         if ($value <= 0.1) {
-            return ['label' => 'Fair (a little too high)', 'css_class' => 'smtp2go-fair-status'];
+            return ['label' => 'Fair', 'css_class' => 'smtp2go-fair-status'];
         }
-        return ['label' => 'Poor (a lot too high)', 'css_class' => 'smtp2go-fair-status'];
+        return ['label' => 'Poor', 'css_class' => 'smtp2go-poor-status'];
     }
 
     public function bounceRating($value)
@@ -419,8 +419,8 @@ class WordpressPluginAdmin
             return ['label' => 'Good', 'css_class' => 'smtp2go-good-status'];
         }
         if ($value <= 12) {
-            return ['label' => 'Fair (a little too high)', 'css_class' => 'smtp2go-fair-status'];
+            return ['label' => 'Fair', 'css_class' => 'smtp2go-fair-status'];
         }
-        return ['label' => 'Poor (a lot too high)', 'css_class' => 'smtp2go-fair-status'];
+        return ['label' => 'Poor', 'css_class' => 'smtp2go-poor-status'];
     }
 }

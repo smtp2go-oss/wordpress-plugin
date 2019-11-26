@@ -82,34 +82,51 @@
   margin-bottom: 10px;
   width:580px;
 }
-.smtp2go-stat-box-top-row {
-  display:flex;
-  margin-bottom: 10px;
+.smtp2go-stat-box-small {
+  padding:10px;
+  width:40%;
+  margin-right: 10px;
+  margin-top: 10px;
+  display: inline-flex;
 }
-.smtp2go-stat-box h3 {
+
+.smtp2go-stat-box-small h3 {
   font-size:2rem;
   margin:0;
   padding:0;
 }
-.smtp2go-stat-box h5 {
-  color:#000;
-  margin:0;
-  padding:0;
+
+.smtp2go-dash-stat {
+  position: relative;
+  text-align: center;
 }
-.smtp2go-stat-box .stat-badge {
-   border-radius:2px;
-   height:24px;
-   font-size:16px;
-   color:#fff;
-   padding:2px 4px 0;
-   margin-left:10px;
+
+.smtp2go-stat-badge {
+  position: absolute;
+  right: -60px;
+  top: -12px;
+  border-radius:2px;
+  font-size:14px;
+  color:#fff;
+  padding:4px 4px 4px;
+  text-transform: uppercase;
 }
-.smtp2go-stat-box .stat-badge.smtp2go-good-status {
+
+.smtp2go-should-be-meta {
+  margin: 5px 0 0;
+  text-transform: uppercase;
+  color: #909090;
+  font-size: .875em;
+}
+
+.smtp2go-stat-badge.smtp2go-good-status {
   background-color:#7cb76a;
 }
-.smtp2go-stat-box .stat-badge.smtp2go-fair-status {
+
+.smtp2go-stat-badge.smtp2go-fair-status {
   background-color:#f0d78e;
 }
-.smtp2go-stat-box .stat-badge.smtp2go-poor-status {
+
+.smtp2go-stat-badge.smtp2go-poor-status {
   background-color:#e38b81;
 }

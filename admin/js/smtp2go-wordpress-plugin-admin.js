@@ -2,8 +2,20 @@
   "use strict";
 
   $(function() {
+
+    $(".js-stats-tab").click(function(e) {
+
+      console.log($(".js-stats-tab-span.spinner"));
+
+      $(".js-stats-tab-span.spinner").show();
+      $(".js-stats-tab-span.spinner").addClass("is-active");
+
+      console.log($(".js-stats-tab-span.spinner"));
+    });
+
     $(".js-send-test-email-form").submit(function(e) {
       e.preventDefault();
+      $(".js-send-test.spinner").addClass("is-active");
       $.post(
         ajaxurl,//from html header
         {
@@ -12,6 +24,7 @@
           to_name: $("#smtp2go_to_name").val()
         },
         function(response) {
+          $(".js-send-test.spinner").removeClass("is-active");
           if (response.success) {
             $(".smtp2go-js-failure").hide();
             $(".smtp2go-js-success").show();

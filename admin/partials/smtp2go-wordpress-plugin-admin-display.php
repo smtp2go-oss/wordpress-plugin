@@ -36,12 +36,14 @@ function SMTP2GO_tab_active($tab)
     <div class="nav-tab-wrapper">
         <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'settings'), 'admin.php')) ?>" class="nav-tab <?php echo SMTP2GO_tab_active('settings') ?>">Settings</a>
         <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'test'), 'admin.php')) ?>" class="nav-tab <?php echo SMTP2GO_tab_active('test') ?>">Test</a>
-        <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'stats'), 'admin.php')) ?>" class="nav-tab <?php echo SMTP2GO_tab_active('stats') ?>">Stats</a>
+        <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'stats'), 'admin.php')) ?>" class="nav-tab <?php echo SMTP2GO_tab_active('stats') ?> js-stats-tab">Stats<span class="js-stats-tab-span spinner" style="float: none; display: none; margin: 0px 10px 2px ;"></span></a>
     </div>
-    <p><img src="<?php echo plugins_url('SMTP2GO_logo.png', dirname(__FILE__,2)) ?>"/></p>
+<!--    <p><img src="--><?php //echo plugins_url('SMTP2GO_logo.png', dirname(__FILE__,2)) ?><!--"/></p>-->
+    <p><img style="width: 150px" src="<?php echo plugins_url('smtp2go-logo-alt.svg', dirname(__FILE__,2)) ?>"/></p>
+
     <?php if (!empty(SMTP2GO_tab_active('settings'))): ?>
-        
-    <h1><?php _e('SMTP2GO Settings', $this->plugin_name)?></h1>
+
+    <h1><?php _e('Settings', $this->plugin_name)?></h1>
     <form action="options.php" method="post">
     <?php
 // output security fields for the registered setting "smtp2go"
@@ -67,22 +69,25 @@ submit_button('Save Settings');
     <form class="js-send-test-email-form" action="javascript:;">
     <table class="form-table">
         <tr>
-            <td><?php _e('To Email', $this->plugin_name)?></td>
-            <td><input type="email" name="smtp2go_to_email" id="smtp2go_to_email"></td>
+            <td style="width: 20%"><?php _e('To Email', $this->plugin_name)?></td>
+            <td><input type="email" style="width: 80%" name="smtp2go_to_email" id="smtp2go_to_email"></td>
         </tr>
         <tr>
             <td><?php _e('To Name', $this->plugin_name)?></td>
-            <td><input type="text" name="smtp2go_to_name" id="smtp2go_to_name"></td>
+            <td><input type="text" style="width: 80%" name="smtp2go_to_name" id="smtp2go_to_name"></td>
         </tr>
     <tr>
-        <td>
-            <button class="js-send-test-email button button-primary"><?php _e('Send Test Email')?></button>
+        <td colspan="2">
+            <button class="js-send-test-email button button-primary">
+                <?php _e('Send Test Email')?>
+            </button>
+            <span class="js-send-test spinner" style="float: none;"></span>
         </td>
-        <td>&nbsp;</td>
 
     </tr>
     </table>
     </form>
+
 <?php endif;?>
 
 <?php if (!empty(SMTP2GO_tab_active('stats'))) :
