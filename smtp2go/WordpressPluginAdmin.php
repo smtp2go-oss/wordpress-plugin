@@ -107,7 +107,10 @@ class WordpressPluginAdmin
             array($this, 'outputTextFieldHtml'),
             $this->plugin_name,
             'smtp2go_settings_section',
-            array('name' => 'smtp2go_api_key', 'required' => true)
+            array(
+                'name' => 'smtp2go_api_key',
+                'required' => true,
+                'label' => 'requires permissions email/send & stats/email_summary, see <a target="_blank" href="https://support.smtp2go.com/">documentation</a>')
         );
 
         /** from email address field */
@@ -251,7 +254,13 @@ class WordpressPluginAdmin
         if (!empty($args['type'])) {
             $type = $args['type'];
         }
-        echo '<input type="' . $type . '"' . $required . ' class="smtp2go_text_input" name="' . $field_name . '" value="' . esc_attr($setting) . '"/> ';
+
+        echo '<input type="' . $type . '"' . $required . ' class="smtp2go_text_input" name="' . $field_name . '" value="' . esc_attr($setting) . '"/>';
+
+        if (!empty($args['label'])) {
+            $label = $args['label'];
+            echo '<br /><label for="' . $field_name . '">' . $label . '</label> ';
+        }
     }
 
     public function outputCheckboxHtml($args)
