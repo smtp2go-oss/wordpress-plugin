@@ -96,16 +96,15 @@ function run_SMTP2GO_wordpress_plugin()
 if (!function_exists('wp_mail') && get_option('smtp2go_enabled')) {
     function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     {
-        if (defined('WP_DEBUG') && WP_DEBUG === true) {
-            error_log('!!!!Headers!!!!');
-            error_log(print_r($headers, 1));
-            
-            error_log('!!!!Message!!!!');
-            error_log(print_r($message, 1));
+        global $phpmailer;
 
-            error_log('!!!!Attachments!!!!');
-            error_log(print_r($attachments, 1));
+        // (Re)create it, if it's gone missing
+        if (!($phpmailer instanceof PHPMailer)) {
+            require_once ABSPATH . WPINC . '/class-phpmailer.php';
+            require_once ABSPATH . WPINC . '/class-smtp.php';
+            $phpmailer = new PHPMailer(true);
         }
+
         //let other plugins modify the arguments as the native wp mail does
         $atts = apply_filters('wp_mail', compact('to', 'subject', 'message', 'headers', 'attachments'));
 
@@ -133,23 +132,22 @@ if (!function_exists('wp_mail') && get_option('smtp2go_enabled')) {
             $attachments = $atts['attachments'];
         }
 
-        if (defined('WP_DEBUG') && WP_DEBUG === true) {
-            error_log('!!!!Filtered Headers!!!!');
-            error_log(print_r($headers, 1));
-            
-            error_log('!!!!Filtered Message!!!!');
-            error_log(print_r($message, 1));
-
-            error_log('!!!!Filtered Attachments!!!!');
-            error_log(print_r($attachments, 1));
-        }
 
         $SMTP2GOmessage = new SMTP2GO\ApiMessage($to, $subject, $message, $headers, $attachments);
 
         $SMTP2GOmessage->initFromOptions();
 
+        /**
+         * So far, this is just to support multipart emails in woocommerce
+         */
+
+        do_action_ref_array('phpmailer_init', array(&$phpmailer));
+
+        if (!empty($phpmailer->AltBody)) {
+            $SMTP2GOmessage->setAltMessage($phpmailer->AltBody);
+        }
         $content_type = '';
-        
+
         //see if someone is setting a type
         $content_type = apply_filters('wp_mail_content_type', $content_type);
 
@@ -159,6 +157,7 @@ if (!function_exists('wp_mail') && get_option('smtp2go_enabled')) {
 
         return $request->send($SMTP2GOmessage);
     }
+
 }
 
 if (!function_exists('SMTP2GO_dd')) {

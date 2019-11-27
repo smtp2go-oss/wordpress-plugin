@@ -69,6 +69,13 @@ class ApiMessage implements Requestable
     protected $message;
 
     /**
+     * The plain text part of a multipart email
+     *
+     * @var string
+     */
+    protected $alt_message;
+
+    /**
      * Custom email headers
      *
      * @var string|array
@@ -193,8 +200,10 @@ class ApiMessage implements Requestable
         if (empty($this->content_type) && !empty($this->parsed_headers['content-type'])) {
             $this->content_type = $this->parsed_headers['content-type'];
         }
-
-        if ($this->content_type === 'text/html') {
+        if ($this->content_type === 'multipart/alternative') {
+            $body['html_body'] = $this->getMessage();
+            $body['text_body'] = $this->getAltMessage();
+        } elseif ($this->content_type === 'text/html') {
             $body['html_body'] = $this->getMessage();
         } else {
             $body['text_body'] = $this->getMessage();
@@ -640,11 +649,34 @@ class ApiMessage implements Requestable
     {
         $content_type = trim(strtolower($content_type));
 
-        if (in_array($content_type, array('text/plain', 'text/html'))) {
+        if (in_array($content_type, array('text/plain', 'text/html', 'multipart/alternative'))) {
             $this->content_type = $content_type;
         }
 
         return $this;
     }
 
+    /**
+     * Get the plain text part of a multipart email
+     *
+     * @return  string
+     */
+    public function getAltMessage()
+    {
+        return $this->alt_message;
+    }
+
+    /**
+     * Set the plain text part of a multipart email
+     *
+     * @param  string  $alt_message  The plain text part of a multipart email
+     *
+     * @return  self
+     */
+    public function setAltMessage(string $alt_message)
+    {
+        $this->alt_message = $alt_message;
+
+        return $this;
+    }
 }
