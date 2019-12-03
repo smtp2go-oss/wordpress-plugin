@@ -359,8 +359,8 @@ class WordpressPluginAdmin
         if (empty($to_email)) {
             wp_send_json(array('success' => 0, 'reason' => 'Invalid recipient specified'));
         }
-        $body = '<h1>' . __('Success!', $this->plugin_name) . '</h1>';
-        $body .= '<p>' . __('You have successfully set up your SMTP2GO Wordpress Plugin', $this->plugin_name) . '</p>';
+        $body = __('Success!', $this->plugin_name) . "\n";
+        $body .= __('You have successfully set up your SMTP2GO Wordpress Plugin', $this->plugin_name);
 
         $message = new ApiMessage($to_email, __('Test Email Via SMTP2GO Wordpress Plugin', $this->plugin_name), $body);
 

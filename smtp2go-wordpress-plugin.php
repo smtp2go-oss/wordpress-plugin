@@ -170,6 +170,6 @@ if (!function_exists('SMTP2GO_dd')) {
     }
 }
 
-require_once dirname(__FILE__) . '/SMTP2GO-class-loader.php';
+require_once dirname(__FILE__) . '/smtp2go-class-loader.php';
 
 run_SMTP2GO_wordpress_plugin();
