@@ -350,10 +350,11 @@ class WordpressPluginAdmin
         $to_email = $to_name = null;
 
         if (!empty($_POST['to_email']) && filter_var($_POST['to_email'], FILTER_VALIDATE_EMAIL)) {
-            $to_email = $_POST['to_email'];
+            $to_email = sanitize_email($_POST['to_email']);
         }
         if (!empty($_POST['to_name'])) {
-            $to_name  = $_POST['to_name'];
+            
+            $to_name  = sanitize_text_field($_POST['to_name']);
             $to_email = $to_name . '<' . $to_email . '>';
         }
         if (empty($to_email)) {
