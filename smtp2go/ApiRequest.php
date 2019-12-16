@@ -5,7 +5,7 @@ namespace SMTP2GO;
  * Makes http requests to the SMTP2GO api
  * @since 1.0.0
  * @package    SMTP2GO\WordpressPlugin
- * 
+ *
  */
 class ApiRequest
 {
@@ -38,11 +38,12 @@ class ApiRequest
     protected $api_key;
 
     /**
-     * Determines the mechanism used to make the request. Default is curl, falls back to stream
-     *
-     * @var string either "curl" or "stream"
+     * Determines the mechanism used to make the request. Default is wordpress http class
+     * then curl, falls back to stream
+     * @see \WP_Http
+     * @var string either "WP_Http" , "curl" or "stream"
      */
-    protected $send_method = 'curl';
+    protected $send_method = 'WP_Http';
 
     public function __construct($api_key = '')
     {
@@ -51,9 +52,7 @@ class ApiRequest
         } else {
             $this->setApiKey($api_key);
         }
-        if (!function_exists('curl_init')) {
-            $this->send_method = 'stream';
-        }
+
     }
     /**
      * Send the request to the api via php stream
@@ -69,13 +68,47 @@ class ApiRequest
             error_log(print_r($payload, 1));
         }
 
-        if ($this->send_method === 'curl') {
+        if ($this->send_method === 'WP_Http') {
+            return $this->sendViaHttpApi($request, $payload);
+        } elseif ($this->send_method === 'curl') {
             return $this->sendViaCurl($request, $payload);
         } else {
             return $this->sendViaStream($request, $payload);
         }
     }
 
+    /**
+     * Send using Wordpress' built in http functionality. This is the default option.
+     *
+     * @param Requestable $request
+     * @param array $payload
+     * @return void
+     */
+    public function sendViaHttpApi(Requestable $request, $payload)
+    {
+        $payload['body']['api_key']         = $this->api_key;
+        
+        $payload['headers']['Content-type'] = 'application/json';
+
+        $payload['body'] = json_encode(array_filter($payload['body']), JSON_UNESCAPED_SLASHES);
+
+        //Array containing 'headers', 'body', 'response', 'cookies', 'filename'
+        $response = wp_remote_post($this->url . $request->getEndpoint(), $payload);
+
+        if (is_array($response)) {
+            $this->last_response = json_decode($response['body']);
+            $this->last_meta     = $response['response'];
+        } elseif (is_wp_error($response)) {
+            error_log('WP_Http Error' . print_r($response->get_error_messages(), 1));
+            return false;
+        }
+
+        if (!empty($this->last_response->data->error_code)) {
+            $this->logError();
+        }
+
+        return empty($this->last_response->data->error_code);
+    }
     /**
      * Send the request using cURL
      *
@@ -100,9 +133,9 @@ class ApiRequest
 
         $this->last_response = json_decode(curl_exec($curl));
         $this->last_meta     = curl_getinfo($curl);
-        
+
         curl_close($curl);
-        
+
         if (!empty($this->last_response->data->error_code)) {
             $this->logError();
         }
