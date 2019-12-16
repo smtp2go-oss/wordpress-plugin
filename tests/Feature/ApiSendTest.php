@@ -40,8 +40,7 @@ class ApiSendTest extends TestCase
 
         $api_request = new ApiRequest(SMTP2GO_API_KEY);
 
-        //for tests we want to avoid trying to pull in wordpress classes
-        $api_request->setSendMethod('curl');
+        
 
         $this->assertTrue($api_request->send($email));
     }
@@ -56,7 +55,6 @@ class ApiSendTest extends TestCase
 
         $api_request = new ApiRequest(SMTP2GO_API_KEY);
 
-        $api_request->setSendMethod('curl');
 
         $email->setContentType('text/plain');
 
@@ -71,8 +69,6 @@ class ApiSendTest extends TestCase
 
         $api_request = new ApiRequest(SMTP2GO_API_KEY);
 
-        $api_request->setSendMethod('curl');
-        
         $this->assertFalse($api_request->send($email));
     }
 }
