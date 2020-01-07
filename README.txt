@@ -36,8 +36,8 @@ Contributions are welcome. Please include tests with your PR's.
 
 
 == Testing ==
+
 Tests are written for PHPUnit. The phpunit.phar executable and phpunit.xml file are not included in the repo, an example is below.
-```
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
          colors="true"
@@ -52,4 +52,3 @@ Tests are written for PHPUnit. The phpunit.phar executable and phpunit.xml file 
         <const name="SMTP2GO_TEST_SENDER" value="Test Sender &lt;test+sender@yourdomain.co&gt;"/>
     </php>
 </phpunit>
-```
