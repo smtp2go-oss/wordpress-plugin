@@ -202,23 +202,21 @@ class WordpressPluginAdmin
         $existing_fields = '';
 
         $custom_headers = get_option('smtp2go_custom_headers');
-        $first_remove = 'first-remove';
+        $first_remove   = 'first-remove';
         if (!empty($custom_headers['header'])) {
-            
             foreach ($custom_headers['header'] as $index => $existing_custom_header) {
                 $existing_fields .=
-                    '<tr>'
-                    .'<td class="smtp2go_grey_cell"><span class="smtp2go_custom_header_increment"></span></td>'
-                    . '<td><input class="smtp2go_text_input" type="text" name="smtp2go_custom_headers[header][]" value="' . $existing_custom_header . '"/></td>'
-                    . '<td><input class="smtp2go_text_input" type="text" name="smtp2go_custom_headers[value][]" value="' . $custom_headers['value'][$index] . '"/></td>'
-                    .'<td  class="smtp2go_grey_cell">'
+                '<tr>'
+                . '<td class="smtp2go_grey_cell"><span class="smtp2go_custom_header_increment"></span></td>'
+                . '<td><input class="smtp2go_text_input" type="text" placeholder="' . __('Enter New Header Key', $this->plugin_name) . '" name="smtp2go_custom_headers[header][]" value="' . $existing_custom_header . '"/></td>'
+                . '<td><input class="smtp2go_text_input" type="text" placeholder="' . __('Enter New Header Value', $this->plugin_name) . '" name="smtp2go_custom_headers[value][]" value="' . $custom_headers['value'][$index] . '"/></td>'
+                    . '<td  class="smtp2go_grey_cell">'
                     . '<a href="javascript:;" class="smtp2go_add_remove_row j-add-row">+</a>'
-                    . '<a href="javascript:;" class="smtp2go_add_remove_row ' .$first_remove . ' j-remove-row">-</a>'
-                   .'</td>'
+                    . '<a href="javascript:;" class="smtp2go_add_remove_row ' . $first_remove . ' j-remove-row">-</a>'
+                    . '</td>'
                     . '</tr>';
-                    $first_remove = '';
+                $first_remove = '';
             }
-            
         }
 
         echo '<table class="smtp2go_custom_headers">'
@@ -227,20 +225,20 @@ class WordpressPluginAdmin
         . '<th class="heading">' . __('Header', $this->plugin_name) . '</th>'
         . '<th class="heading">' . __('Value', $this->plugin_name) . '</th>'
         . '<th class="heading smtp2go_grey_cell">&nbsp;</th></thead>'
-        .'<tbody class="smtp2go_custom_headers_table_body">'
+        . '<tbody class="smtp2go_custom_headers_table_body">'
         . $existing_fields
         . '<tr>'
-        .'<td class="smtp2go_grey_cell"><span class="smtp2go_custom_header_increment"></span></td>'
+        . '<td class="smtp2go_grey_cell"><span class="smtp2go_custom_header_increment"></span></td>'
         . '<td><input class="smtp2go_text_input" type="text" placeholder="' . __('Enter New Header Key', $this->plugin_name) . '" name="smtp2go_custom_headers[header][]"/></td>'
         . '<td><input  class="smtp2go_text_input" type="text" placeholder="' . __('Enter New Header Value', $this->plugin_name) . '" name="smtp2go_custom_headers[value][]"/></td>'
-        .'<td  class="smtp2go_grey_cell">'
-         . '<a href="javascript:;" class="smtp2go_add_remove_row j-add-row">+</a>'
-         . '<a href="javascript:;" class="smtp2go_add_remove_row ' . $first_remove . ' j-remove-row">-</a>'
-        .'</td>'
+            . '<td  class="smtp2go_grey_cell">'
+            . '<a href="javascript:;" class="smtp2go_add_remove_row j-add-row">+</a>'
+            . '<a href="javascript:;" class="smtp2go_add_remove_row ' . $first_remove . ' j-remove-row">-</a>'
+            . '</td>'
 
             . '</tr>'
-            .'</tbody>'
-            .'</table>';
+            . '</tbody>'
+            . '</table>';
 
     }
 
