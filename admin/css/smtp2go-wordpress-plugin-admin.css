@@ -9,20 +9,37 @@
   width: 320px;
 }
 .smtp2go_help_text {
-  font-style: italic;
   display: block;
   margin: 0.2rem 0;
 }
 .smtp2go_custom_headers {
   position: relative;
   left: -10px;
+  counter-reset: section;
+  background:#fff;
+  border:1px solid #dbdbdb;
+  border-collapse: collapse;
 }
 .smtp2go_custom_headers th {
   padding-top: 0;
+  padding-left:10px;
+  padding-bottom:5px;
+  background:#fff;
+  border:1px solid #dbdbdb;
+
+
 }
 .smtp2go_custom_headers td {
-  padding-left: 0;
+  padding-left: 10px;
+  background:#fff;
+  border:1px solid #dbdbdb;
+
 }
+.smtp2go_custom_headers .smtp2go_grey_cell {
+  background:#f1f1f1;
+  text-align: center;
+}
+
 .smtp2go_custom_headers .smtp2go_text_input {
   margin-left: 0;
   padding-left: 0;
@@ -129,4 +146,52 @@
 
 .smtp2go-stat-badge.smtp2go-poor-status {
   background-color:#e38b81;
+}
+.smtp2go-intro-wrapper {
+  background:white;
+  width:100%;
+}
+.smtp2go-intro-wrapper .inner {
+  padding:10px;
+  display:flex;
+}
+.smtp2go-intro-wrapper div.container {
+  padding:0 20px;
+}
+.smtp2go a.smtp2go-button-blue {
+  background-color:#016fae;
+  color:#fff;
+  border:1px solid #015787;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.smtp2go a.smtp2go-button-white {
+  background-color:#fff;
+  color:#000;
+  border:1px solid #a0a0a0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+.smtp2go_custom_header_increment {
+  counter-increment: section;
+}
+.smtp2go_custom_header_increment::before {
+  content: counter(section);
+  display: block;
+  width:20px;
+  height:20px;
+  padding:5px 2px;
+  text-align: center;
+}
+.smtp2go_add_remove_row {
+  border-radius: 9999px;
+  border:1px solid #dbdbdb;
+  text-align:center;
+  width:30px;
+  height:30px;
+  line-height: 1.5rem;
+  display:inline-block;
+  margin-right:1rem;
+  text-decoration: none;
+  background-color: white;
+  
 }

@@ -65,10 +65,11 @@ class WordpressPluginAdmin
         /** add sections */
         add_settings_section(
             'smtp2go_settings_section',
-            'General',
+            '',
             array($this, 'generalSection'),
             $this->plugin_name
         );
+        add_settings_section('smtp2go_section_divider', '', array($this, 'sectionDivider'), $this->plugin_name);
 
         add_settings_section(
             'smtp2go_custom_headers_section',
@@ -108,9 +109,9 @@ class WordpressPluginAdmin
             $this->plugin_name,
             'smtp2go_settings_section',
             array(
-                'name' => 'smtp2go_api_key',
+                'name'     => 'smtp2go_api_key',
                 'required' => true,
-                'label' => 'requires permissions email/send & stats/email_summary, see <a target="_blank" href="https://support.smtp2go.com/">documentation</a>')
+                'label'    => 'Find your API key and instructions in <a target="_blank" href="https://support.smtp2go.com/">our documentation</a>')
         );
 
         /** from email address field */
@@ -125,7 +126,10 @@ class WordpressPluginAdmin
             [$this, 'outputTextFieldHtml'],
             $this->plugin_name,
             'smtp2go_settings_section',
-            array('name' => 'smtp2go_from_address', 'type' => 'email', 'required' => true)
+            array('name' => 'smtp2go_from_address'
+                , 'label' => 'All of your emails will be sent from this address'
+                , 'type' => 'email'
+                , 'required' => true)
         );
 
         /** from name field */
@@ -140,7 +144,9 @@ class WordpressPluginAdmin
             [$this, 'outputTextFieldHtml'],
             $this->plugin_name,
             'smtp2go_settings_section',
-            array('name' => 'smtp2go_from_name', 'required' => true)
+            array('name' => 'smtp2go_from_name',
+                'label'      => 'All of your emails will be sent with this name as "From"'
+                , 'required' => true)
         );
 
         /**custom headers in own section */
@@ -196,38 +202,63 @@ class WordpressPluginAdmin
         $existing_fields = '';
 
         $custom_headers = get_option('smtp2go_custom_headers');
-
+        $first_remove = 'first-remove';
         if (!empty($custom_headers['header'])) {
+            
             foreach ($custom_headers['header'] as $index => $existing_custom_header) {
                 $existing_fields .=
                     '<tr>'
-                    . '<td><input  class="smtp2go_text_input" type="text" name="smtp2go_custom_headers[header][]" value="' . $existing_custom_header . '"/></td>'
-                    . '<td><input  class="smtp2go_text_input" type="text" name="smtp2go_custom_headers[value][]" value="' . $custom_headers['value'][$index] . '"/></td>'
+                    .'<td class="smtp2go_grey_cell"><span class="smtp2go_custom_header_increment"></span></td>'
+                    . '<td><input class="smtp2go_text_input" type="text" name="smtp2go_custom_headers[header][]" value="' . $existing_custom_header . '"/></td>'
+                    . '<td><input class="smtp2go_text_input" type="text" name="smtp2go_custom_headers[value][]" value="' . $custom_headers['value'][$index] . '"/></td>'
+                    .'<td  class="smtp2go_grey_cell">'
+                    . '<a href="javascript:;" class="smtp2go_add_remove_row j-add-row">+</a>'
+                    . '<a href="javascript:;" class="smtp2go_add_remove_row ' .$first_remove . ' j-remove-row">-</a>'
+                   .'</td>'
                     . '</tr>';
+                    $first_remove = '';
             }
+            
         }
 
         echo '<table class="smtp2go_custom_headers">'
-        . '<tr>'
+        . '<tr><thead>'
+        . '<th class="heading smtp2go_grey_cell" style="width:20px">&nbsp;</th>'
         . '<th class="heading">' . __('Header', $this->plugin_name) . '</th>'
         . '<th class="heading">' . __('Value', $this->plugin_name) . '</th>'
+        . '<th class="heading smtp2go_grey_cell">&nbsp;</th></thead>'
+        .'<tbody class="smtp2go_custom_headers_table_body">'
         . $existing_fields
         . '<tr>'
+        .'<td class="smtp2go_grey_cell"><span class="smtp2go_custom_header_increment"></span></td>'
         . '<td><input class="smtp2go_text_input" type="text" placeholder="' . __('Enter New Header Key', $this->plugin_name) . '" name="smtp2go_custom_headers[header][]"/></td>'
         . '<td><input  class="smtp2go_text_input" type="text" placeholder="' . __('Enter New Header Value', $this->plugin_name) . '" name="smtp2go_custom_headers[value][]"/></td>'
-            . '</tr>';
+        .'<td  class="smtp2go_grey_cell">'
+         . '<a href="javascript:;" class="smtp2go_add_remove_row j-add-row">+</a>'
+         . '<a href="javascript:;" class="smtp2go_add_remove_row ' . $first_remove . ' j-remove-row">-</a>'
+        .'</td>'
+
+            . '</tr>'
+            .'</tbody>'
+            .'</table>';
+
     }
 
     public function generalSection()
     {
         return;
     }
-
+    public function sectionDivider()
+    {
+        echo '<hr/>';
+    }
     public function customHeadersSection()
     {
-        echo '<small class="smtp2go_help_text">'
-        . __('To remove a header, simply clear one of the values and save', $this->plugin_name)
-            . '</small>';
+        echo '<span class="smtp2go_help_text">'
+        . __('Custom Headers are an optional set of custom headers that are applied to your emails.
+         These are often used for custom tracking with third-party tools such as X-Campaign.
+          For more information, check out <a href="https://support.smtp2go.com" target="_blank">our documentation</a>', $this->plugin_name)
+            . '</span>';
     }
 
     /**
@@ -353,7 +384,6 @@ class WordpressPluginAdmin
             $to_email = sanitize_email($_POST['to_email']);
         }
         if (!empty($_POST['to_name'])) {
-            
             $to_name  = sanitize_text_field($_POST['to_name']);
             $to_email = $to_name . '<' . $to_email . '>';
         }
