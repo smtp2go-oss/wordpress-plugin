@@ -38,16 +38,14 @@ function SMTP2GO_tab_active($tab)
         <div class="inner">
             <img style="width: 150px" src="<?php echo plugins_url('smtp2go-logo-alt.svg', dirname(__FILE__, 2)) ?>" />
             <div class="container">
-                <p><b>This is an introduction to the SMTP2GO plugin.</b>
-                    It reminds the user what SMTP2GO is and gives them a brief overview of what this plugin does.
-                    There is also a link to access the SMTP2GO web application, to keep that in front-of-mind too.
-                    </p>
+                <p><b>The SMTP2GO Wordpress plugin allows you to use SMTP2GO to send all email from your Wordpress installation.</b> It replaces the default phpmailer / built in php mail() functionality and allows you to send out emails via SMTP2GO's API.
+                </p>
                     <div><a class="button smtp2go-button-blue" target="_blank" href="https://app.smtp2go.com">Open the SMTP2GO
                             web app</a>
 
                             <a class="button smtp2go-button-white" target="_blank" href="https://support.smtp2go.com">View the SMTP2GO documentation</a>
                         </div>
-                
+
             </div>
         </div>
     </div>
@@ -66,13 +64,11 @@ function SMTP2GO_tab_active($tab)
     <?php if (!empty(SMTP2GO_tab_active('settings'))): ?>
 
     <h1><?php _e('General Settings', $this->plugin_name)?></h1>
-    <p>Description for the main section of settings goes here, 
-        so that it's clear precisely what the user is expected to do here.
-        For more information on how to complete the general settings, check out the
-        <a href="#">SMTP2GO Support Documentation.</a>
-        
-        
-    
+    <p>Open the SMTP2GO application linked above and create an API key for sending emails,  For more information on how to complete the general settings, check out the
+        <a href="https://support.smtp2go.com/">SMTP2GO Support Documentation.</a>
+
+
+
     </p>
     <form action="options.php" method="post">
         <?php

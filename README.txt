@@ -7,7 +7,7 @@ Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-The SMTP2GO Wordpress Plugin allows you to use SMTP2GO as the email sender for your Wordpress installation.
+The SMTP2GO Wordpress plugin allows you to use SMTP2GO to send all email from your Wordpress installation. It replaces the default phpmailer / built in php mail() functionality and allows you to send out emails via SMTP2GO's API.
 
 == Description ==
 
