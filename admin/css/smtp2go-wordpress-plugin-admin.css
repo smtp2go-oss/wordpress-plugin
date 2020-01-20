@@ -6,7 +6,7 @@
   margin: 10px 0;
 }
 .smtp2go_text_input {
-  width: 320px;
+  width: 50%;
 }
 .smtp2go_help_text {
   display: block;
@@ -19,20 +19,32 @@
   background:#fff;
   border:1px solid #dbdbdb;
   border-collapse: collapse;
+  width:100%;
+  
+}
+@media screen and (min-width:1024px) {
+  .smtp2go_custom_headers {
+    width: 59.25%;
+  }
+}
+.smtp2go_custom_headers .smtp2go_text_input {
+  width:100%;
 }
 .smtp2go_custom_headers th {
-  padding-top: 0;
+  padding-top: 5px;
   padding-left:10px;
   padding-bottom:5px;
   background:#fff;
   border:1px solid #dbdbdb;
-
+  display: table-cell;
+  width:42%;
 
 }
 .smtp2go_custom_headers td {
   padding-left: 10px;
   background:#fff;
   border:1px solid #dbdbdb;
+  display: table-cell;
 
 }
 .smtp2go_custom_headers .smtp2go_grey_cell {
@@ -44,12 +56,13 @@
   margin-left: 0;
   padding-left: 0;
   text-indent: 5px;
+  
 }
 .smtp2go_hide_title th {
   display: none;
 }
 .smtp2go_hide_title th.heading {
-  display: table-cell;
+  display: table-cell;  
 }
 .smtp2go-error-message,
 .smtp2go-success-message {
@@ -150,6 +163,7 @@
 .smtp2go-intro-wrapper {
   background:white;
   width:100%;
+  border:1px solid #ccc;
 }
 .smtp2go-intro-wrapper .inner {
   padding:10px;
@@ -188,10 +202,11 @@
   text-align:center;
   width:30px;
   height:30px;
-  line-height: 1.5rem;
-  display:inline-block;
-  margin-right:1rem;
+  line-height: 1.70rem;
+  display:inline-block;  
   text-decoration: none;
-  background-color: white;
-  
+  background-color: white;  
+}
+.smtp2go_add_remove_row:first-of-type {
+  margin-right:1rem;
 }

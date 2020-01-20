@@ -224,7 +224,7 @@ class WordpressPluginAdmin
         . '<th class="heading smtp2go_grey_cell" style="width:20px">&nbsp;</th>'
         . '<th class="heading">' . __('Header', $this->plugin_name) . '</th>'
         . '<th class="heading">' . __('Value', $this->plugin_name) . '</th>'
-        . '<th class="heading smtp2go_grey_cell">&nbsp;</th></thead>'
+        . '<th class="heading smtp2go_grey_cell" >&nbsp;</th></thead>'
         . '<tbody class="smtp2go_custom_headers_table_body">'
         . $existing_fields
         . '<tr>'
