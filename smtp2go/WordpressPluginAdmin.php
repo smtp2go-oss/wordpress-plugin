@@ -111,7 +111,7 @@ class WordpressPluginAdmin
             array(
                 'name'     => 'smtp2go_api_key',
                 'required' => true,
-                'label'    => 'Find your API key and instructions in <a target="_blank" href="https://support.smtp2go.com/">our documentation</a>')
+                'label'    => 'Find your API key <a target="_blank" href="https://app.smtp2go.com/">here</a> and instructions in <a target="_blank" href="https://support.smtp2go.com/">our documentation</a>')
         );
 
         /** from email address field */
