@@ -218,7 +218,7 @@ class WordpressPluginAdmin
                 $first_remove = '';
             }
         }
-
+        $hidden = !empty($custom_headers) ? 'smtp2go-js-hidden' : '';
         echo '<table class="smtp2go_custom_headers">'
         . '<tr><thead>'
         . '<th class="heading smtp2go_grey_cell" style="width:20px">&nbsp;</th>'
@@ -227,7 +227,7 @@ class WordpressPluginAdmin
         . '<th class="heading smtp2go_grey_cell" >&nbsp;</th></thead>'
         . '<tbody class="smtp2go_custom_headers_table_body">'
         . $existing_fields
-        . '<tr>'
+        . '<tr class="' . $hidden . '">'
         . '<td class="smtp2go_grey_cell"><span class="smtp2go_custom_header_increment"></span></td>'
         . '<td><input class="smtp2go_text_input" type="text" placeholder="' . __('Enter New Header Key', $this->plugin_name) . '" name="smtp2go_custom_headers[header][]"/></td>'
         . '<td><input  class="smtp2go_text_input" type="text" placeholder="' . __('Enter New Header Value', $this->plugin_name) . '" name="smtp2go_custom_headers[value][]"/></td>'

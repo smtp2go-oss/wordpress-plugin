@@ -13,6 +13,7 @@
           .clone();
           cloned.find('.first-remove').removeClass('first-remove');
           cloned.find('input').val('');
+          cloned.removeClass('smtp2go-js-hidden');
           cloned.appendTo(
             ".smtp2go_custom_headers .smtp2go_custom_headers_table_body"
           );
