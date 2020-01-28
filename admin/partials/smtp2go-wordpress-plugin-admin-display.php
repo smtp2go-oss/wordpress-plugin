@@ -43,7 +43,7 @@ function SMTP2GO_tab_active($tab)
                     <div><a class="button smtp2go-button-blue" target="_blank" href="https://app.smtp2go.com">Open the SMTP2GO
                             web app</a>
 
-                            <a class="button smtp2go-button-white" target="_blank" href="https://support.smtp2go.com">View the SMTP2GO documentation</a>
+                            <a class="button smtp2go-button-white" target="_blank" href="https://support.smtp2go.com">View the plugin documentation</a>
                         </div>
 
             </div>
@@ -64,12 +64,7 @@ function SMTP2GO_tab_active($tab)
     <?php if (!empty(SMTP2GO_tab_active('settings'))): ?>
 
     <h1><?php _e('General Settings', $this->plugin_name)?></h1>
-    <p>Open the SMTP2GO application linked above and create an API key for sending emails,  For more information on how to complete the general settings, check out the
-        <a href="https://support.smtp2go.com/">SMTP2GO Support Documentation.</a>
-
-
-
-    </p>
+    <p>Open the SMTP2GO web app, go to 'Settings > API Keys' and create an API key with permissions 'Emails' and 'Statistics'.</p>
     <form action="options.php" method="post">
         <?php
 // output security fields for the registered setting "smtp2go"

@@ -111,7 +111,7 @@ class WordpressPluginAdmin
             array(
                 'name'     => 'smtp2go_api_key',
                 'required' => true,
-                'label'    => 'Find your API key <a target="_blank" href="https://app.smtp2go.com/">here</a> and instructions in <a target="_blank" href="https://support.smtp2go.com/">our documentation</a>')
+                'label'    => 'Create/find your API key from the Settings > API Keys page in the SMTP2GO web app.')
         );
 
         /** from email address field */
@@ -127,7 +127,7 @@ class WordpressPluginAdmin
             $this->plugin_name,
             'smtp2go_settings_section',
             array('name' => 'smtp2go_from_address'
-                , 'label' => 'All of your emails will be sent from this address'
+                , 'label' => 'This is the default email address that your emails will be sent from.'
                 , 'type' => 'email'
                 , 'required' => true)
         );
@@ -140,12 +140,12 @@ class WordpressPluginAdmin
 
         add_settings_field(
             'smtp2go_from_name',
-            __('From Email Name *', $this->plugin_name),
+            __('From Name *', $this->plugin_name),
             [$this, 'outputTextFieldHtml'],
             $this->plugin_name,
             'smtp2go_settings_section',
             array('name' => 'smtp2go_from_name',
-                'label'      => 'All of your emails will be sent with this name as "From"'
+                'label'      => 'This is the default name that your emails will be sent from.'
                 , 'required' => true)
         );
 
@@ -254,9 +254,7 @@ class WordpressPluginAdmin
     {
         echo '<span class="smtp2go_help_text">'
         . __('Custom Headers are an optional set of custom headers that are applied to your emails.
-         These are often used for custom tracking with third-party tools such as X-Campaign.
-          For more information, check out <a href="https://support.smtp2go.com" target="_blank">our documentation</a>', $this->plugin_name)
-            . '</span>';
+         These are often used for custom tracking with third-party tools such as X-Campaign.') . '</span>';
     }
 
     /**
