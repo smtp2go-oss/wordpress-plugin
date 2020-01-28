@@ -52,5 +52,10 @@
         "jSON";
       return false;
     });
+
+    // number formatting
+    $(".smtp2go-number-format").each(function() {
+      $(this).html(Number($(this).text()).toLocaleString());
+    });
   });
 })(jQuery);

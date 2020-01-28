@@ -23,9 +23,9 @@ if ($progress_bar_width < 10) {
         <div class="smtp2go-progress-bar" style="width:<?php echo $progress_bar_width; ?>px">
 
         </div>
-        <p><?php echo $stats->cycle_used ?> / <?php echo $stats->cycle_max ?></p>
+            <p><span class="smtp2go-number-format"><?php echo $stats->cycle_used ?></span> / <span class="smtp2go-number-format"><?php echo $stats->cycle_max ?></span></p>
         </div>
-        <p>Emails Sent This Billing Month. Resets <?php echo date('F jS', strtotime($stats->cycle_end)); ?>.</p>
+        <p>Emails sent this billing month. Resets <?php echo date('F jS', strtotime($stats->cycle_end)); ?>.</p>
 
         </div>
 
