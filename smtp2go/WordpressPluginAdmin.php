@@ -111,7 +111,7 @@ class WordpressPluginAdmin
             array(
                 'name'     => 'smtp2go_api_key',
                 'required' => true,
-                'label'    => '<span style="cursor: default;">Create/find your API key from the <i>Settings > API Keys page</i> in the SMTP2GO web app with permissions \'Emails\' and \'Statistics\'.</span>')
+                'label'    => '<span style="cursor: default; font-weight: normal;">Create/find your API key from the <i>Settings > API Keys</i> page in the SMTP2GO web app.<br/>The API key will need permissions <i>Emails</i> and <i>Statistics.</i></span>')
         );
 
         /** from email address field */
@@ -127,7 +127,7 @@ class WordpressPluginAdmin
             $this->plugin_name,
             'smtp2go_settings_section',
             array('name' => 'smtp2go_from_address'
-                , 'label' => '<span style="cursor: default;">This is the default email address that your emails will be sent from.</span>'
+                , 'label' => '<span style="cursor: default; font-weight: normal;">This is the default email address that your emails will be sent from.</span>'
                 , 'type' => 'email'
                 , 'required' => true)
         );
@@ -145,7 +145,7 @@ class WordpressPluginAdmin
             $this->plugin_name,
             'smtp2go_settings_section',
             array('name' => 'smtp2go_from_name',
-                'label'      => '<span style="cursor: default;">This is the default name that your emails will be sent from.</span>'
+                'label'      => '<span style="cursor: default; font-weight: normal;">This is the default name that your emails will be sent from.</span>'
                 , 'required' => true)
         );
 
