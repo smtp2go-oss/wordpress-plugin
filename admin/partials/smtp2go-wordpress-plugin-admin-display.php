@@ -43,7 +43,7 @@ function SMTP2GO_tab_active($tab)
                     <div><a class="button smtp2go-button-blue" target="_blank" href="https://app.smtp2go.com">Open the SMTP2GO
                             web app</a>
 
-                            <a class="button smtp2go-button-white" target="_blank" href="https://support.smtp2go.com">View the plugin documentation</a>
+                            <a class="button smtp2go-button-white" target="_blank" href="https://support.smtp2go.com/hc/en-gb/articles/900000195666">View the plugin documentation</a>
                         </div>
 
             </div>
