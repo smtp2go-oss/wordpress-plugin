@@ -158,7 +158,7 @@ class ApiRequest
      * Set determines the mechanism used to make the request. Currently
      * only WP_Http is allowed.
      *
-     * @param  string  $send_method  The mechanism used to make the request. 
+     * @param  string  $send_method  The mechanism used to make the request.
      *
      * @return  self
      */

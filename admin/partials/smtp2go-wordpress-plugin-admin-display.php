@@ -92,11 +92,11 @@ submit_button('Save Settings');
         <table class="form-table">
             <tr>
                 <td style="width: 20%"><?php _e('To Email', $this->plugin_name)?></td>
-                <td><input type="email" class="smtp2go_text_input" name="smtp2go_to_email" id="smtp2go_to_email"></td>
+                <td><input type="email" class="smtp2go_text_input" name="smtp2go_to_email" id="smtp2go_to_email" required></td>
             </tr>
             <tr>
                 <td><?php _e('To Name', $this->plugin_name)?></td>
-                <td><input type="text" class="smtp2go_text_input" name="smtp2go_to_name" id="smtp2go_to_name"></td>
+                <td><input type="text" class="smtp2go_text_input" name="smtp2go_to_name" id="smtp2go_to_name" required></td>
             </tr>
             <tr>
                 <td colspan="2">
