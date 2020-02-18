@@ -4,8 +4,8 @@ namespace SMTP2GO;
 /**
  * The admin-specific functionality of the plugin.
  *
- * @link       https://thefold.nz
- * @since      1.0.0
+ * @link       https://www.smtp2go.com
+ * @since      1.0.1
  *
  * @package    SMTP2GO\WordpressPlugin
  * @subpackage SMTP2GO\WordpressPlugin/admin
@@ -26,7 +26,7 @@ class WordpressPluginAdmin
     /**
      * The ID of this plugin.
      *
-     * @since    1.0.0
+     * @since    1.0.1
      * @access   private
      * @var      string    $plugin_name    The ID of this plugin.
      */
@@ -35,7 +35,7 @@ class WordpressPluginAdmin
     /**
      * The version of this plugin.
      *
-     * @since    1.0.0
+     * @since    1.0.1
      * @access   private
      * @var      string    $version    The current version of this plugin.
      */
@@ -44,7 +44,7 @@ class WordpressPluginAdmin
     /**
      * Initialize the class and set its properties.
      *
-     * @since    1.0.0
+     * @since    1.0.1
      * @param      string    $plugin_name       The name of this plugin.
      * @param      string    $version    The version of this plugin.
      */
@@ -57,7 +57,7 @@ class WordpressPluginAdmin
     /**
      * Register all settings fields for the admin page
      *
-     * @since 1.0.0
+     * @since 1.0.1
      * @return void
      */
     public function registerSettings()
@@ -170,7 +170,7 @@ class WordpressPluginAdmin
     /**
      * Clean empty values out of the custom header options $_POST
      *
-     * @since 1.0.0
+     * @since 1.0.1
      * @param array $options
      * @return array
      */
@@ -194,7 +194,7 @@ class WordpressPluginAdmin
     /**
      * Output the html for managing custom headers
      *
-     * @since 1.0.0
+     * @since 1.0.1
      * @return void
      */
     public function outputCustomHeadersHtml()
@@ -357,7 +357,7 @@ class WordpressPluginAdmin
     /**
      * Register the stylesheets for the admin area.
      *
-     * @since    1.0.0
+     * @since    1.0.1
      */
     public function enqueueStyles()
     {
@@ -367,7 +367,7 @@ class WordpressPluginAdmin
     /**
      * Register the JavaScript for the admin area.
      *
-     * @since    1.0.0
+     * @since    1.0.1
      */
     public function enqueueScripts()
     {

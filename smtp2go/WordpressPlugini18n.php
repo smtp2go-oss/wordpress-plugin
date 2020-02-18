@@ -7,8 +7,8 @@ namespace SMTP2GO;
  * Loads and defines the internationalization files for this plugin
  * so that it is ready for translation.
  *
- * @link       https://thefold.nz
- * @since      1.0.0
+ * @link       https://www.smtp2go.com
+ * @since      1.0.1
  *
  * @package    SMTP2GO\WordpressPlugin
 
@@ -20,7 +20,7 @@ namespace SMTP2GO;
  * Loads and defines the internationalization files for this plugin
  * so that it is ready for translation.
  *
- * @since      1.0.0
+ * @since      1.0.1
  * @package    SMTP2GO\WordpressPlugin
  * @author     The Fold <hello@thefold.co.nz>
  */
@@ -29,7 +29,7 @@ class WordpressPlugini18n
     /**
      * Load the plugin text domain for translation.
      *
-     * @since    1.0.0
+     * @since    1.0.1
      */
     public function loadPluginTextdomain()
     {
