@@ -16,7 +16,7 @@
  * Plugin URI:        https://github.com/thefold/smtp2go-wordpress-plugin
  * Description:       Send all email from WordPress via SMTP2GO, Scalable, reliable email delivery https://www.smtp2go.com/.
  * Version:           1.0.1
- * Author:            The Fold
+ * Author:            SMTP2GO
  * Author URI:        https://www.smtp2go.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
@@ -34,7 +34,7 @@ if (!defined('WPINC')) {
 
 /**
  * Currently plugin version.
- * Start at version 1.0.1 and use SemVer - https://semver.org
+ * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
 define('SMTP2GO_WORDPRESS_PLUGIN_VERSION', '1.0.1');
