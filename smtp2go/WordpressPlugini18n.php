@@ -22,7 +22,7 @@ namespace SMTP2GO;
  *
  * @since      1.0.1
  * @package    SMTP2GO\WordpressPlugin
- * @author     SMTP2GO <mailto:ticket@smtp2go.com>
+ * @author     SMTP2GO <ticket@smtp2go.com>
  */
 class WordpressPlugini18n
 {
