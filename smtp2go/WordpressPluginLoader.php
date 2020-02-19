@@ -19,7 +19,7 @@ namespace SMTP2GO;
  * run function to execute the list of actions and filters.
  *
  * @package    SMTP2GO\WordpressPlugin
- * @author     The Fold <hello@thefold.co.nz>
+ * @author     SMTP2GO <mailto:ticket@smtp2go.com>
  */
 class WordpressPluginLoader
 {

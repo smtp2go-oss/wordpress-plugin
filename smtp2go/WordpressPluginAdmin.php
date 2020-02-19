@@ -19,7 +19,7 @@ namespace SMTP2GO;
  *
  * @package    SMTP2GO\WordpressPlugin
  * @subpackage SMTP2GO\WordpressPlugin/admin
- * @author     The Fold <hello@thefold.co.nz>
+ * @author     SMTP2GO <mailto:ticket@smtp2go.com>
  */
 class WordpressPluginAdmin
 {
