@@ -24,7 +24,7 @@ namespace SMTP2GO;
  *
  * @since      1.0.1
  * @package    SMTP2GO\WordpressPlugin
- * @author     The Fold <hello@thefold.co.nz>
+ * @author     SMTP2GO <ticket@smtp2go.com>
  */
 class WordpressPlugin
 {
