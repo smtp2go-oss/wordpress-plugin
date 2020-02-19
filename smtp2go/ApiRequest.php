@@ -3,7 +3,7 @@ namespace SMTP2GO;
 
 /**
  * Makes http requests to the SMTP2GO api
- * @since 1.0.0
+ * @since 1.0.1
  * @package    SMTP2GO\WordpressPlugin
  *
  */
@@ -56,7 +56,7 @@ class ApiRequest
     /**
      * Send the request to the api
      *
-     * @since 1.0.0
+     * @since 1.0.1
      * @return bool
      */
     public function send(Requestable $request)

@@ -5,8 +5,8 @@
  *
  * This file is used to markup the admin-facing aspects of the plugin.
  *
- * @link       https://thefold.nz
- * @since      1.0.0
+ * @link       https://www.smtp2go.com
+ * @since      1.0.1
  *
  * @package    SMTP2GO\WordpressPlugin
  * @subpackage SMTP2GO\WordpressPlugin/admin/partials

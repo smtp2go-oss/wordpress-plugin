@@ -4,8 +4,8 @@ namespace SMTP2GO;
 /**
  * Fired during plugin deactivation
  *
- * @link       https://thefold.nz
- * @since      1.0.0
+ * @link       https://www.smtp2go.com
+ * @since      1.0.1
  *
  * @package    SMTP2GO\WordpressPlugin
 
@@ -16,10 +16,10 @@ namespace SMTP2GO;
  *
  * This class defines all code necessary to run during the plugin's deactivation.
  *
- * @since      1.0.0
+ * @since      1.0.1
  * @package    SMTP2GO\WordpressPlugin
  * @subpackage SMTP2GO\WordpressPlugin/includes
- * @author     The Fold <hello@thefold.co.nz>
+ * @author     SMTP2GO <mailto:ticket@smtp2go.com>
  */
 class WordpressPluginDeactivator
 {
@@ -28,7 +28,7 @@ class WordpressPluginDeactivator
      *
      * Long Description.
      *
-     * @since    1.0.0
+     * @since    1.0.1
      */
     public static function deactivate()
     {

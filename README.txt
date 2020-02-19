@@ -1,5 +1,5 @@
 === SMTP2GO Plugin for Wordpress ===
-Contributors: ethos49, greatsaltlake
+Contributors: thefoldnz, greatsaltlake, ethos49
 Tags: email
 Requires at least: 4.6
 Tested up to: 5.3.2
@@ -27,4 +27,4 @@ Once successfully activated, the SMTP2GO plugin will appear in the Settings 
 If you have questions or need assistnace then feel free to contact SMTP2GO's world class support team by either of the following channels:
 Phone - https://www.smtp2go.com/contact/
 Email ticket - ticket@smtp2go.com
-Live chat - Within your SMTP2GO account at the bottom of the dashboard or on the main website https://www.smtp2go.com/ 
+Live chat - Within your SMTP2GO account at the bottom of the dashboard or on the main website https://www.smtp2go.com/
