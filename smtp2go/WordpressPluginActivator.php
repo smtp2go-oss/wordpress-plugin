@@ -3,8 +3,8 @@ namespace SMTP2GO;
 /**
  * Fired during plugin activation
  *
- * @link       https://thefold.nz
- * @since      1.0.0
+ * @link       https://www.smtp2go.com
+ * @since      1.0.1
  *
  * @package    SMTP2GO\WordpressPlugin
  * @subpackage SMTP2GO\WordpressPlugin/includes
@@ -15,10 +15,10 @@ namespace SMTP2GO;
  *
  * This class defines all code necessary to run during the plugin's activation.
  *
- * @since      1.0.0
+ * @since      1.0.1
  * @package    SMTP2GO\WordpressPlugin
  * @subpackage SMTP2GO\WordpressPlugin/includes
- * @author     The Fold <hello@thefold.co.nz>
+ * @author     SMTP2GO <mailto:ticket@smtp2go.com>
  */
 class WordpressPluginActivator
 {
@@ -27,7 +27,7 @@ class WordpressPluginActivator
      *
      * Long Description.
      *
-     * @since    1.0.0
+     * @since    1.0.1
      */
     public static function activate()
     {

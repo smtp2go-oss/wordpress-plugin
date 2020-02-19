@@ -6,8 +6,8 @@ use SMTP2GO\WpmailCompat;
 /**
  * Creates an email message payload to send through the request api
  *
- * @link       https://thefold.nz
- * @since      1.0.0
+ * @link       https://www.smtp2go.com
+ * @since      1.0.1
  * @package    SMTP2GO\WordpressPlugin
  */
 class ApiMessage implements Requestable
@@ -171,7 +171,7 @@ class ApiMessage implements Requestable
     /**
      * initialise the instance with values from the plugin options page
      *
-     * @since 1.0.0
+     * @since 1.0.1
      * @return void
      */
     public function initFromOptions()
@@ -263,7 +263,7 @@ class ApiMessage implements Requestable
      * Build an array of bcc recipients by combining ones natively set
      * or passed through the $wp_headers constructor variable
      *
-     * @since 1.0.0
+     * @since 1.0.1
      * @return array
      */
 
@@ -283,7 +283,7 @@ class ApiMessage implements Requestable
      * Build an array of bcc recipients by combining ones natively set
      * or passed through the $wp_headers constructor variable
      *
-     * @since 1.0.0
+     * @since 1.0.1
      * @return array
      */
     public function buildBCC()

@@ -7,8 +7,8 @@ namespace SMTP2GO;
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
- * @link       https://thefold.nz
- * @since      1.0.0
+ * @link       https://www.smtp2go.com
+ * @since      1.0.1
  *
  * @package    SMTP2GO\WordpressPlugin
  */
@@ -22,7 +22,7 @@ namespace SMTP2GO;
  * Also maintains the unique identifier of this plugin as well as the current
  * version of the plugin.
  *
- * @since      1.0.0
+ * @since      1.0.1
  * @package    SMTP2GO\WordpressPlugin
  * @author     The Fold <hello@thefold.co.nz>
  */
@@ -32,7 +32,7 @@ class WordpressPlugin
      * The loader that's responsible for maintaining and registering all hooks that power
      * the plugin.
      *
-     * @since    1.0.0
+     * @since    1.0.1
      * @access   protected
      * @var      \SMTP2GO\WordpressPluginLoader    $loader    Maintains and registers all hooks for the plugin.
      */
@@ -41,7 +41,7 @@ class WordpressPlugin
     /**
      * The unique identifier of this plugin.
      *
-     * @since    1.0.0
+     * @since    1.0.1
      * @access   protected
      * @var      string    $plugin_name    The string used to uniquely identify this plugin.
      */
@@ -50,7 +50,7 @@ class WordpressPlugin
     /**
      * The current version of the plugin.
      *
-     * @since    1.0.0
+     * @since    1.0.1
      * @access   protected
      * @var      string    $version    The current version of the plugin.
      */
@@ -63,14 +63,14 @@ class WordpressPlugin
      * Load the dependencies, define the locale, and set the hooks for the admin area and
      * the public-facing side of the site.
      *
-     * @since    1.0.0
+     * @since    1.0.1
      */
     public function __construct()
     {
         if (defined('SMTP2GO_WORDPRESS_PLUGIN_VERSION')) {
             $this->version = SMTP2GO_WORDPRESS_PLUGIN_VERSION;
         } else {
-            $this->version = '1.0.0';
+            $this->version = '1.0.1';
         }
         //this HAS to be lowercase
         $this->plugin_name = 'smtp2go-wordpress-plugin';
@@ -93,7 +93,7 @@ class WordpressPlugin
      * Create an instance of the loader which will be used to register the hooks
      * with WordPress.
      *
-     * @since    1.0.0
+     * @since    1.0.1
      * @access   private
      */
     private function loadDependencies()
@@ -107,7 +107,7 @@ class WordpressPlugin
      * Uses the SMTP2GO\WordpressPlugin_i18n class in order to set the domain and to register the hook
      * with WordPress.
      *
-     * @since    1.0.0
+     * @since    1.0.1
      * @access   private
      */
     private function setLocale()
@@ -121,7 +121,7 @@ class WordpressPlugin
      * Register all of the hooks related to the admin area functionality
      * of the plugin.
      *
-     * @since    1.0.0
+     * @since    1.0.1
      * @access   private
      */
     private function defineAdminHooks()
@@ -143,7 +143,7 @@ class WordpressPlugin
     /**
      * Run the loader to execute all of the hooks with WordPress.
      *
-     * @since    1.0.0
+     * @since    1.0.1
      */
     public function run()
     {
@@ -154,7 +154,7 @@ class WordpressPlugin
      * The name of the plugin used to uniquely identify it within the context of
      * WordPress and to define internationalization functionality.
      *
-     * @since     1.0.0
+     * @since     1.0.1
      * @return    string    The name of the plugin.
      */
     public function getPluginName()
@@ -165,7 +165,7 @@ class WordpressPlugin
     /**
      * The reference to the class that orchestrates the hooks with the plugin.
      *
-     * @since     1.0.0
+     * @since     1.0.1
      * @return    \SMTP2GO\WordpressPluginLoader    Orchestrates the hooks of the plugin.
      */
     public function getLoader()
@@ -176,7 +176,7 @@ class WordpressPlugin
     /**
      * Retrieve the version number of the plugin.
      *
-     * @since     1.0.0
+     * @since     1.0.1
      * @return    string    The version number of the plugin.
      */
     public function getVersion()
