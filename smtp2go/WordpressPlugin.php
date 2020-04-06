@@ -70,7 +70,7 @@ class WordpressPlugin
         if (defined('SMTP2GO_WORDPRESS_PLUGIN_VERSION')) {
             $this->version = SMTP2GO_WORDPRESS_PLUGIN_VERSION;
         } else {
-            $this->version = '1.0.1';
+            $this->version = '1.0.2';
         }
         //this HAS to be lowercase
         $this->plugin_name = 'smtp2go-wordpress-plugin';
