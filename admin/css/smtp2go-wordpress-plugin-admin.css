@@ -201,11 +201,11 @@
   text-decoration: none;
   background-color: white;
 }
-@media screen and (min-width: 768px) {
+/*@media screen and (min-width: 768px) {
   .smtp2go_add_remove_row:first-of-type {
     margin-right: 1rem;
   }
-}
+}*/
 .smtp2go-js-hidden {
   display:none;
 }
