@@ -421,7 +421,7 @@ class WordpressPluginAdmin
     public function validateApiKey($input)
     {
         if (empty($input) || strpos($input, 'api-') !== 0) {
-            add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid Api key entered.', $this->plugin_name));
+            add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API key entered.', $this->plugin_name));
             return get_option('smtp2go_api_key');
         }
         return sanitize_text_field($input);
