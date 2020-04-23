@@ -10,7 +10,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
 
-The SMTP2GO Wordpress plugin allows you to use SMTP2GO to send all email from your Wordpress installation.
+The SMTP2GO Wordpress plugin allows you to use SMTP2GO to send all emails from your Wordpress installation.
 It replaces the default phpmailer / built in php mail() functionality and allows you to send out emails via SMTP2GO's API.
 
 Signup for a free account at https://www.smtp2go.com/
@@ -24,7 +24,4 @@ Once successfully activated, the SMTP2GO plugin will appear in the Settings 
 
 == Support ==
 
-If you have questions or need assistnace then feel free to contact SMTP2GO's world class support team by either of the following channels:
-Phone - https://www.smtp2go.com/contact/
-Email ticket - ticket@smtp2go.com
-Live chat - Within your SMTP2GO account at the bottom of the dashboard or on the main website https://www.smtp2go.com/
+If you have questions or need assistance then feel free to contact the support team by logging into the App (https://app.smtp2go.com) then clicking the support icon on the bottom-right of the screen. 
