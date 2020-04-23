@@ -38,6 +38,7 @@
           to_name: $("#smtp2go_to_name").val()
         },
         function(response) {
+          console.log(response);
           $(".js-send-test.spinner").removeClass("is-active");
           if (response.success) {
             $(".smtp2go-js-failure").hide();
@@ -49,7 +50,15 @@
             $(".smtp2go-js-success").hide();
           }
         }
-      ),
+      )
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      $(".js-send-test.spinner").removeClass("is-active");
+          console.log(jqXHR);
+          $(".smtp2go-js-failure")
+              .html(jqXHR.responseText)
+              .show();
+            $(".smtp2go-js-success").hide();
+     }),
         "jSON";
       return false;
     });
