@@ -38,14 +38,13 @@
           to_name: $("#smtp2go_to_name").val()
         },
         function(response) {
-          console.log(response);
           $(".js-send-test.spinner").removeClass("is-active");
           if (response.success) {
             $(".smtp2go-js-failure").hide();
             $(".smtp2go-js-success").show();
           } else {
             $(".smtp2go-js-failure")
-              .html(response.reason)
+              .html('There was an error in either your "To Email" or "To Name", the API request responded: <i>' + response.reason + '</i>')
               .show();
             $(".smtp2go-js-success").hide();
           }
@@ -53,9 +52,9 @@
       )
     .fail(function(jqXHR, textStatus, errorThrown) {
       $(".js-send-test.spinner").removeClass("is-active");
-          console.log(jqXHR);
           $(".smtp2go-js-failure")
-              .html(jqXHR.responseText)
+              // .html(jqXHR.responseText)
+              .html('There was an error in either your "To Email" or "To Name", the API request responded: <i>' + jqXHR.responseText + '</i>')
               .show();
             $(".smtp2go-js-success").hide();
      }),

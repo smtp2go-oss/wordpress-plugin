@@ -3,6 +3,7 @@ Contributors: thefoldnz, greatsaltlake, ethos49
 Tags: email
 Requires at least: 4.6
 Tested up to: 5.4
+Requires PHP: 7.0
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -24,4 +25,4 @@ Once successfully activated, the SMTP2GO plugin will appear in the Settings 
 
 == Support ==
 
-If you have questions or need assistance then feel free to contact the support team by logging into the App (https://app.smtp2go.com) then clicking the support icon on the bottom-right of the screen. 
+If you have questions or need assistance then feel free to contact the support team by logging into the App (https://app.smtp2go.com) then clicking the support icon on the bottom-right of the screen.
