@@ -44,7 +44,7 @@
             $(".smtp2go-js-success").show();
           } else {
             $(".smtp2go-js-failure")
-              .html('There was an error in either your "To Email" or "To Name", the API request responded: <i>' + response.reason + '</i>')
+                .html(response.reason)
               .show();
             $(".smtp2go-js-success").hide();
           }
@@ -53,8 +53,7 @@
     .fail(function(jqXHR, textStatus, errorThrown) {
       $(".js-send-test.spinner").removeClass("is-active");
           $(".smtp2go-js-failure")
-              // .html(jqXHR.responseText)
-              .html('There was an error in either your "To Email" or "To Name", the API request responded: <i>' + jqXHR.responseText + '</i>')
+              .html(jqXHR.responseText)
               .show();
             $(".smtp2go-js-success").hide();
      }),

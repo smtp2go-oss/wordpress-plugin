@@ -122,7 +122,7 @@ class WordpressPluginAdmin
 
         add_settings_field(
             'smtp2go_from_address',
-            __('From Email Address *', $this->plugin_name),
+            __('Sender Email Address *', $this->plugin_name),
             [$this, 'outputTextFieldHtml'],
             $this->plugin_name,
             'smtp2go_settings_section',
@@ -140,7 +140,7 @@ class WordpressPluginAdmin
 
         add_settings_field(
             'smtp2go_from_name',
-            __('From Name *', $this->plugin_name),
+            __('Sender Name *', $this->plugin_name),
             [$this, 'outputTextFieldHtml'],
             $this->plugin_name,
             'smtp2go_settings_section',
@@ -398,6 +398,12 @@ class WordpressPluginAdmin
         $request = new ApiRequest(get_option('smtp2go_api_key'));
 
         $success = $request->send($message);
+
+        //
+	    if (count($request->getFailures()) > 0) {
+            wp_send_json(array('success' => 0, 'reason' => htmlentities($request->getFailures()[0])));
+	    }
+
         $reason  = '';
         if (empty($success)) {
             $response = $request->getLastResponse();
@@ -406,8 +412,17 @@ class WordpressPluginAdmin
             } elseif (!empty($response->data->error)) {
                 $reason = $response->data->error;
             }
+
+	        // map relevant error codes
+	        switch ($response->data->error_code) {
+		        case 'E_ApiResponseCodes.NON_VALIDATING_IN_PAYLOAD':
+//		        	$reason = 'Message failed - Error: There was an error in either your "To Email" or "To Name", please enter a valid email address and name.';
+					$reason = $response->data->field_validation_errors->message;
+					$reason = str_replace(', Please correct your JSON payload and try again', '', $reason);
+		        	break;
+	        }
         }
-        wp_send_json(array('success' => intval($success), 'reason' => $reason));
+        wp_send_json(array('success' => intval($success), 'reason' => $reason, 'response' => $response));
     }
 
     /** input validations */
