@@ -91,6 +91,8 @@ class ApiRequest
 
         $payload['body'] = json_encode(array_filter($payload['body']), JSON_UNESCAPED_SLASHES);
 
+        $payload['timeout'] = 10;
+
         //Array containing 'headers', 'body', 'response', 'cookies', 'filename'
         $response = wp_remote_post($this->url . $request->getEndpoint(), $payload);
 
