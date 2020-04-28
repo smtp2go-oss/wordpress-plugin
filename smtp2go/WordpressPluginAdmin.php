@@ -129,7 +129,8 @@ class WordpressPluginAdmin
             array('name' => 'smtp2go_from_address'
                 , 'label' => '<span style="cursor: default; font-weight: normal;">This is the default email address that your emails will be sent from.</span>'
                 , 'type' => 'email'
-                , 'required' => true)
+                , 'required' => true
+                , 'placeholder' => 'john@example.com')
         );
 
         /** from name field */
@@ -145,8 +146,10 @@ class WordpressPluginAdmin
             $this->plugin_name,
             'smtp2go_settings_section',
             array('name' => 'smtp2go_from_name',
-                'label'      => '<span style="cursor: default; font-weight: normal;">This is the default name that your emails will be sent from.</span>'
-                , 'required' => true)
+                'label'      => '<span style="cursor: default; font-weight: normal;">This is the default name that your emails will be sent from (alpha numeric characters only).</span>'
+                , 'required' => true
+	            , 'placeholder' => 'John Example'
+                , 'pattern' => '[a-zA-Z0-9 ]+')
         );
 
         /**custom headers in own section */
@@ -276,7 +279,7 @@ class WordpressPluginAdmin
         }
         $required = '';
         if (!empty($args['required'])) {
-            $required = 'required="required"';
+            $required = ' required="required"';
         }
 
         $type = 'text';
@@ -284,7 +287,18 @@ class WordpressPluginAdmin
             $type = $args['type'];
         }
 
-        echo '<input type="' . $type . '"' . $required . ' class="smtp2go_text_input" name="' . $field_name . '" value="' . esc_attr($setting) . '"/>';
+	    $placeholder = '';
+	    if (!empty($args['placeholder'])) {
+		    $placeholder = $args['placeholder'];
+	    }
+
+	    $pattern = '';
+	    if (!empty($args['pattern'])) {
+		    $pattern = ' pattern="' . $args['pattern'] . '"';
+	    }
+
+        echo '<input type="' . $type . '"' . $required . ' class="smtp2go_text_input" name="' . $field_name . '"';
+	    echo ' value="' . esc_attr($setting) . '" placeholder="' . esc_attr($placeholder) . '"' . $pattern. '/>';
 
         if (!empty($args['label'])) {
             $label = $args['label'];
@@ -302,7 +316,7 @@ class WordpressPluginAdmin
             $setting = '';
         }
         if (!empty($setting)) {
-            $checked = 'checked="checked"';
+            $checked = ' checked="checked"';
         }
         $required = '';
         if (!empty($args['required'])) {
@@ -416,8 +430,10 @@ class WordpressPluginAdmin
 	        // map relevant error codes
 	        switch ($response->data->error_code) {
 		        case 'E_ApiResponseCodes.NON_VALIDATING_IN_PAYLOAD':
-//		        	$reason = 'Message failed - Error: There was an error in either your "To Email" or "To Name", please enter a valid email address and name.';
 					$reason = $response->data->field_validation_errors->message;
+		            if (strpos($reason, "was expecting a valid RFC-822 formatted email field but found")) {
+		            	$reason = 'The supplied To Email address was invalid please correct and try again';
+		            }
 					$reason = str_replace(', Please correct your JSON payload and try again', '', $reason);
 		        	break;
 	        }
