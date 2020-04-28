@@ -44,12 +44,19 @@
             $(".smtp2go-js-success").show();
           } else {
             $(".smtp2go-js-failure")
-              .html(response.reason)
+                .html(response.reason)
               .show();
             $(".smtp2go-js-success").hide();
           }
         }
-      ),
+      )
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      $(".js-send-test.spinner").removeClass("is-active");
+          $(".smtp2go-js-failure")
+              .html(jqXHR.responseText)
+              .show();
+            $(".smtp2go-js-success").hide();
+     }),
         "jSON";
       return false;
     });
