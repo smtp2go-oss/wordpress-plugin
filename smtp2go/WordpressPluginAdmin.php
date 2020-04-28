@@ -414,7 +414,7 @@ class WordpressPluginAdmin
         $success = $request->send($message);
 
         // create / map better error messages where appropriate
-	    $reason  = '';
+	    $reason  = 'An error has occurred, please try again';
 
         // API returns failures two different ways - either in failures
 	    if (count($request->getFailures()) > 0) {
