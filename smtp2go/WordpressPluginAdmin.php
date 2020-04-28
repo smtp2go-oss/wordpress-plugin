@@ -413,21 +413,30 @@ class WordpressPluginAdmin
 
         $success = $request->send($message);
 
-        //
+        // create / map better error messages where appropriate
+	    $reason  = '';
+
+        // API returns failures two different ways - either in failures
 	    if (count($request->getFailures()) > 0) {
-            wp_send_json(array('success' => 0, 'reason' => htmlentities($request->getFailures()[0])));
+		    $reason = $request->getFailures()[0];
+
+		    // map when we don't get error_code
+		    if (strpos($reason, "unable to verify sender address")) {
+			    $reason = 'Unable to verify sender address, please check Sender Email Address';
+		    }
+
+		    wp_send_json(array('success' => 0, 'reason' => htmlentities($reason)));
 	    }
 
-        $reason  = '';
         if (empty($success)) {
             $response = $request->getLastResponse();
+
             if (!empty($response->data->field_validation_errors->message)) {
                 $reason = $response->data->field_validation_errors->message;
             } elseif (!empty($response->data->error)) {
                 $reason = $response->data->error;
             }
-
-	        // map relevant error codes
+            // API returns failures two different ways - or with error codes
 	        switch ($response->data->error_code) {
 		        case 'E_ApiResponseCodes.NON_VALIDATING_IN_PAYLOAD':
 					$reason = $response->data->field_validation_errors->message;
