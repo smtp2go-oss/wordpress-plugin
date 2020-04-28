@@ -37,6 +37,13 @@ class ApiRequest
      */
     protected $api_key;
 
+	/**
+	 * store failed email sends, the plugin only sends one email at a time, so count will be 0 or 1
+	 *
+	 * @var array
+	 */
+    private $failures = [];
+
     /**
      * Determines the mechanism used to make the request. Default is wordpress http class.
      * Other options are currently unavailable.
@@ -74,7 +81,7 @@ class ApiRequest
      *
      * @param Requestable $request
      * @param array $payload
-     * @return void
+     * @return bool
      */
     public function sendViaHttpApi(Requestable $request, $payload)
     {
@@ -84,16 +91,25 @@ class ApiRequest
 
         $payload['body'] = json_encode(array_filter($payload['body']), JSON_UNESCAPED_SLASHES);
 
+        $payload['timeout'] = 10;
+
         //Array containing 'headers', 'body', 'response', 'cookies', 'filename'
         $response = wp_remote_post($this->url . $request->getEndpoint(), $payload);
 
         if (is_array($response)) {
             $this->last_response = json_decode($response['body']);
-            $this->last_meta     = $response['response'];
         } elseif (is_wp_error($response)) {
-            error_log('WP_Http Error' . print_r($response->get_error_messages(), 1));
+            error_log('WP_Http Error' . print_r($response->get_error_messages(), 1). "\n");
             return false;
         }
+
+        // handle https://apidoc.smtp2go.com/documentation/#/POST/email/send success but with failures
+	    // mostly useful for the wp-admin send test email, this will fail silently if the plugin is enabled
+	    // but not setup correctly
+	    if (!empty($this->last_response->data->failures)) {
+		    $this->logError();
+		    $this->failures = $this->last_response->data->failures;
+	    }
 
         if (!empty($this->last_response->data->error_code)) {
             $this->logError();
@@ -101,6 +117,7 @@ class ApiRequest
 
         return empty($this->last_response->data->error_code);
     }
+
     /**
      * Log errors
      *
@@ -113,23 +130,13 @@ class ApiRequest
     }
 
     /**
-     * Get the last response recieved from the api as a json object
+     * Get the last response received from the api as a json object
      *
      * @return  mixed
      */
     public function getLastResponse()
     {
         return $this->last_response;
-    }
-
-    /**
-     * Get meta data about the last response from the api
-     *
-     * @return  mixed
-     */
-    public function getLastMeta()
-    {
-        return $this->last_meta;
     }
 
     /**
@@ -144,30 +151,13 @@ class ApiRequest
         return $this;
     }
 
-    /**
-     * Get determines the mechanism used to make the request.
-     *
-     * @return  string
-     */
-    public function getSendMethod()
-    {
-        return $this->send_method;
-    }
-
-    /**
-     * Set determines the mechanism used to make the request. Currently
-     * only WP_Http is allowed.
-     *
-     * @param  string  $send_method  The mechanism used to make the request.
-     *
-     * @return  self
-     */
-    public function setSendMethod(string $send_method)
-    {
-        if (in_array($send_method, array('WP_Http'))) {
-            $this->send_method = $send_method;
-        }
-
-        return $this;
-    }
+	/**
+	 * get any send failures
+	 *
+	 * @return array
+	 */
+	public function getFailures()
+	{
+		return$this->failures;
+	}
 }
