@@ -136,7 +136,8 @@ class WordpressPluginAdmin
         /** from name field */
         register_setting(
             'api_settings',
-            'smtp2go_from_name'
+            'smtp2go_from_name',
+	        array($this, 'validateSenderName')
         );
 
         add_settings_field(
@@ -146,10 +147,11 @@ class WordpressPluginAdmin
             $this->plugin_name,
             'smtp2go_settings_section',
             array('name' => 'smtp2go_from_name',
-                'label'      => '<span style="cursor: default; font-weight: normal;">This is the default name that your emails will be sent from (alpha numeric characters only).</span>'
+                'label'      => '<span style="cursor: default; font-weight: normal;">This is the default name that your emails will be sent from (no " or / allowed).</span>'
                 , 'required' => true
 	            , 'placeholder' => 'John Example'
-                , 'pattern' => '[a-zA-Z0-9 ]+')
+//                , 'pattern' => '[^/\x22]+'
+            )
         );
 
         /**custom headers in own section */
@@ -397,7 +399,7 @@ class WordpressPluginAdmin
         }
         if (!empty($_POST['to_name'])) {
             $to_name  = sanitize_text_field($_POST['to_name']);
-            $to_email = $to_name . '<' . $to_email . '>';
+            $to_email = '"' . $to_name . '" <' . $to_email . '>';
         }
         if (empty($to_email)) {
             wp_send_json(array('success' => 0, 'reason' => 'Invalid recipient specified'));
@@ -465,6 +467,16 @@ class WordpressPluginAdmin
             return get_option('smtp2go_api_key');
         }
         return sanitize_text_field($input);
+    }
+
+    public function validateSenderName($input)
+    {
+		if (empty($input) || preg_match('|[/\x22]|', $input)) {
+			add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid Sender Name entered.', $this->plugin_name));
+			return get_option('smtp2go_from_name');
+		}
+
+	    return sanitize_text_field($input);
     }
 
     public function addSettingsLink($links)
