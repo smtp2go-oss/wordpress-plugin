@@ -150,7 +150,7 @@ class WordpressPluginAdmin
                 'label'      => '<span style="cursor: default; font-weight: normal;">This is the default name that your emails will be sent from (no " or / allowed).</span>'
                 , 'required' => true
 	            , 'placeholder' => 'John Example'
-//                , 'pattern' => '[^/\x22]+'
+                , 'pattern' => '[^/\x22]+'
             )
         );
 
