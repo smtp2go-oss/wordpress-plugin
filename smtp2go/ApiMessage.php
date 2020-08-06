@@ -440,7 +440,7 @@ class ApiMessage implements Requestable
     {
         if (!empty($name)) {
             $email        = str_replace(['<', '>'], '', $email);
-            $this->sender = "$name <$email>";
+            $this->sender = "\"$name\" <$email>";
         } else {
             $this->sender = "$email";
         }
