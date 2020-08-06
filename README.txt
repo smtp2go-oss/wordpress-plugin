@@ -29,5 +29,5 @@ If you have questions or need assistance then feel free to contact the support t
 
 == Changelog ==
 
-= v1.0.3 =
+= v1.0.4 =
 * Allow extra characters into Sender Name, quote field through send process
