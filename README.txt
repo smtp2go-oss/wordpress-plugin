@@ -20,7 +20,7 @@ Signup for a free account at https://www.smtp2go.com/
 == Installation ==
 
 Copy the SMTP2GO directory into your wp-content/plugins directory. Activate the plugin through the wp-admin 'Plugins' page.
-Once successfully activated, the SMTP2GO plugin will appear in the Settings menu in the WordPress Admin Panel. Click on Settings > SMTP2GO to open the plugin configuration page.
+Once successfully activated, the SMTP2GO plugin will appear in the "Settings" menu in the WordPress Admin Panel. Click on "Settings > SMTP2GO" to open the plugin configuration page.
 
 
 == Support ==
