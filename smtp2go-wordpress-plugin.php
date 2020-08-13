@@ -132,10 +132,15 @@ if (!function_exists('wp_mail') && get_option('smtp2go_enabled')) {
             $attachments = $atts['attachments'];
         }
 
-
         $SMTP2GOmessage = new SMTP2GO\ApiMessage($to, $subject, $message, $headers, $attachments);
 
+        //allow other plugins to override our default setting
+        $from_email = apply_filters('wp_mail_from', get_option('smtp2go_from_address'));
+        $from_name  = apply_filters('wp_mail_from_name', get_option('smtp2go_from_name'));
+
         $SMTP2GOmessage->initFromOptions();
+
+        $SMTP2GOmessage->setSender($from_email, $from_name);
 
         /**
          * So far, this is just to support multipart emails in woocommerce
