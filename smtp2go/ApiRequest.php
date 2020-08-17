@@ -17,7 +17,7 @@ class ApiRequest
     protected $url = 'https://api.smtp2go.com/v3/';
 
     /**
-     * The last response recieved from the api as a json object
+     * The last response relieved from the api as a json object
      *
      * @var mixed
      */
@@ -88,6 +88,8 @@ class ApiRequest
         $payload['body']['api_key'] = $this->api_key;
 
         $payload['headers']['Content-type'] = 'application/json';
+
+        $payload['headers']['User-Agent'] = "smtp2go-wordpress/1.0.5 (https://www.smtp2go.com)";
 
         $payload['body'] = json_encode(array_filter($payload['body']), JSON_UNESCAPED_SLASHES);
 
