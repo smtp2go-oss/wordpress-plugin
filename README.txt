@@ -2,7 +2,7 @@
 Contributors: thefoldnz, greatsaltlake
 Tags: email, wp_mail, email reliability, smtp, smtp2go, phpmailer, mail, email marketing, newsletter, welcome email, marketing
 Requires at least: 4.6
-Tested up to: 5.4
+Tested up to: 5.5
 Requires PHP: 7.0
 Stable tag: trunk
 License: GPLv2 or later
@@ -29,5 +29,8 @@ If you have questions or need assistance then feel free to contact the support t
 
 == Changelog ==
 
+= v1.0.5 =
+* Honor wp_mail_from and wp_mail_from_name filters
+* Test with 5.5
 = v1.0.4 =
 * Allow extra characters into Sender Name, quote field through send process
