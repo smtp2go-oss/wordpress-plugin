@@ -29,5 +29,8 @@ If you have questions or need assistance then feel free to contact the support t
 
 == Changelog ==
 
+= v1.0.5 =
+* Honor wp_mail_from and wp_mail_from_name filters
+* Test with 5.5
 = v1.0.4 =
 * Allow extra characters into Sender Name, quote field through send process
