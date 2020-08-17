@@ -37,11 +37,11 @@ class ApiRequest
      */
     protected $api_key;
 
-	/**
-	 * store failed email sends, the plugin only sends one email at a time, so count will be 0 or 1
-	 *
-	 * @var array
-	 */
+    /**
+     * store failed email sends, the plugin only sends one email at a time, so count will be 0 or 1
+     *
+     * @var array
+     */
     private $failures = [];
 
     /**
@@ -101,17 +101,17 @@ class ApiRequest
         if (is_array($response)) {
             $this->last_response = json_decode($response['body']);
         } elseif (is_wp_error($response)) {
-            error_log('WP_Http Error' . print_r($response->get_error_messages(), 1). "\n");
+            error_log('WP_Http Error' . print_r($response->get_error_messages(), 1) . "\n");
             return false;
         }
 
         // handle https://apidoc.smtp2go.com/documentation/#/POST/email/send success but with failures
-	    // mostly useful for the wp-admin send test email, this will fail silently if the plugin is enabled
-	    // but not setup correctly
-	    if (!empty($this->last_response->data->failures)) {
-		    $this->logError();
-		    $this->failures = $this->last_response->data->failures;
-	    }
+        // mostly useful for the wp-admin send test email, this will fail silently if the plugin is enabled
+        // but not setup correctly
+        if (!empty($this->last_response->data->failures)) {
+            $this->logError();
+            $this->failures = $this->last_response->data->failures;
+        }
 
         if (!empty($this->last_response->data->error_code)) {
             $this->logError();
@@ -153,13 +153,13 @@ class ApiRequest
         return $this;
     }
 
-	/**
-	 * get any send failures
-	 *
-	 * @return array
-	 */
-	public function getFailures()
-	{
-		return$this->failures;
-	}
+    /**
+     * get any send failures
+     *
+     * @return array
+     */
+    public function getFailures()
+    {
+        return $this->failures;
+    }
 }
