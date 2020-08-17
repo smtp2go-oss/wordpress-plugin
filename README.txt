@@ -1,5 +1,5 @@
 === SMTP2GO Plugin for Wordpress ===
-Contributors: thefoldnz, greatsaltlake, ethos49
+Contributors: thefoldnz, greatsaltlake
 Tags: email, wp_mail, email reliability, smtp, smtp2go, phpmailer, mail, email marketing, newsletter, welcome email, marketing
 Requires at least: 4.6
 Tested up to: 5.4
@@ -20,7 +20,7 @@ Signup for a free account at https://www.smtp2go.com/
 == Installation ==
 
 Copy the SMTP2GO directory into your wp-content/plugins directory. Activate the plugin through the wp-admin 'Plugins' page.
-Once successfully activated, the SMTP2GO plugin will appear in the Settings menu in the WordPress Admin Panel. Click on Settings > SMTP2GO to open the plugin configuration page.
+Once successfully activated, the SMTP2GO plugin will appear in the "Settings" menu in the WordPress Admin Panel. Click on "Settings > SMTP2GO" to open the plugin configuration page.
 
 
 == Support ==
@@ -29,5 +29,5 @@ If you have questions or need assistance then feel free to contact the support t
 
 == Changelog ==
 
-= v1.0.3 =
+= v1.0.4 =
 * Allow extra characters into Sender Name, quote field through send process
