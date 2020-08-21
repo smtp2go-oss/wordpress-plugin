@@ -325,10 +325,12 @@ class ApiMessage implements Requestable
         }
         if (!empty($this->parsed_headers['headers'])) {
             foreach ((array) $this->parsed_headers['headers'] as $name => $content) {
-                $custom_headers[] = array(
-                    'header' => $name,
-                    'value'  => $content,
-                );
+                if (!empty($name) && !empty($content)) {
+                    $custom_headers[] = array(
+                        'header' => $name,
+                        'value'  => $content,
+                    );
+                }
             }
             //not sure if this is required but is native functionality
             if (false !== stripos($this->parsed_headers['content-type'], 'multipart') && !empty($this->parsed_headers['boundary'])) {
@@ -340,11 +342,13 @@ class ApiMessage implements Requestable
         }
         //@todo should we allow this to overwrite an existing one from the settings?
         if (!empty($this->parsed_headers['reply-to'])) {
-            $value            = is_array($this->parsed_headers['reply-to']) ? reset($this->parsed_headers['reply-to']) : $this->parsed_headers['reply-to'];
-            $custom_headers[] = array(
-                'header' => 'Reply-To',
-                'value'  => $value,
-            );
+            $value = is_array($this->parsed_headers['reply-to']) ? reset($this->parsed_headers['reply-to']) : $this->parsed_headers['reply-to'];
+            if (!empty($value)) {
+                $custom_headers[] = array(
+                    'header' => 'Reply-To',
+                    'value'  => $value,
+                );
+            }
         }
 
         return $custom_headers;
@@ -678,5 +682,15 @@ class ApiMessage implements Requestable
         $this->alt_message = $alt_message;
 
         return $this;
+    }
+
+    /**
+     * Get the data parsed from the $wp_headers
+     *
+     * @return  array
+     */ 
+    public function getParsedHeaders()
+    {
+        return $this->parsed_headers;
     }
 }
