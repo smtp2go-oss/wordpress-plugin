@@ -15,7 +15,7 @@
  * Plugin Name:       SMTP2GO
  * Plugin URI:        https://github.com/thefold/smtp2go-wordpress-plugin
  * Description:       Send all email from WordPress via SMTP2GO, Scalable, reliable email delivery https://www.smtp2go.com/.
- * Version:           1.0.5
+ * Version:           1.0.6
  * Author:            SMTP2GO
  * Author URI:        https://www.smtp2go.com
  * License:           GPL-2.0+
@@ -37,7 +37,7 @@ if (!defined('WPINC')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('SMTP2GO_WORDPRESS_PLUGIN_VERSION', '1.0.5');
+define('SMTP2GO_WORDPRESS_PLUGIN_VERSION', '1.0.6');
 
 define('SMTP2GO_PLUGIN_BASENAME', plugin_basename(__FILE__));
 /**
@@ -97,7 +97,6 @@ if (!function_exists('wp_mail') && get_option('smtp2go_enabled')) {
     function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
     {
         global $phpmailer;
-
         // (Re)create it, if it's gone missing
         if (!($phpmailer instanceof PHPMailer)) {
             require_once ABSPATH . WPINC . '/class-phpmailer.php';
@@ -133,14 +132,29 @@ if (!function_exists('wp_mail') && get_option('smtp2go_enabled')) {
         }
 
         $SMTP2GOmessage = new SMTP2GO\ApiMessage($to, $subject, $message, $headers, $attachments);
+        /*
+        some plugins set the from name and email in the headers
+        check parsed headers for a from name and email
+        [from_name] => Custom Forms Notification
+        [from_email] => customformspluginemail@example.com
+         */
+        $parsed_headers = $SMTP2GOmessage->getParsedHeaders();
+
+        $parsed_fromname  = null;
+        $parsed_fromemail = null;
+        if (!empty($parsed_headers['from_name']) && !empty($parsed_headers['from_email'])) {
+            $parsed_fromname  = $parsed_headers['from_name'];
+            $parsed_fromemail = $parsed_headers['from_email'];
+        }
 
         //allow other plugins to override our default setting
-        $from_email = apply_filters('wp_mail_from', get_option('smtp2go_from_address'));
-        $from_name  = apply_filters('wp_mail_from_name', get_option('smtp2go_from_name'));
+        $from_email = apply_filters('wp_mail_from', !empty($parsed_fromemail) ? $parsed_fromemail : get_option('smtp2go_from_address'));
+        $from_name  = apply_filters('wp_mail_from_name', !empty($parsed_fromname) ? $parsed_fromname : get_option('smtp2go_from_name'));
 
         $SMTP2GOmessage->initFromOptions();
-
-        $SMTP2GOmessage->setSender($from_email, $from_name);
+        if (!empty($from_email) && !empty($from_name)) {
+            $SMTP2GOmessage->setSender($from_email, $from_name);
+        }
 
         /**
          * So far, this is just to support multipart emails in woocommerce
