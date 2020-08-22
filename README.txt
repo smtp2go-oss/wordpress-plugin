@@ -29,6 +29,8 @@ If you have questions or need assistance then feel free to contact the support t
 
 == Changelog ==
 
+= v1.0.6 =
+* set from address from parsed headers if present / if other plugins are injecting headers like this
 = v1.0.5 =
 * Honor wp_mail_from and wp_mail_from_name filters
 * Test with 5.5
