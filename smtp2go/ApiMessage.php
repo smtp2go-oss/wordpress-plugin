@@ -271,10 +271,14 @@ class ApiMessage implements Requestable
     {
         $cc_recipients = array();
         foreach ((array) $this->cc as $cc_recipient) {
-            $cc_recipients[] = $this->rfc822($cc_recipient);
+            if (!empty($cc_recipient)) {
+                $cc_recipients[] = $this->rfc822($cc_recipient);
+            }
         }
         foreach ($this->parsed_headers['cc'] as $cc_recipient) {
-            $cc_recipients[] = $this->rfc822($cc_recipient);
+            if (!empty($cc_recipient)) {
+                $cc_recipients[] = $this->rfc822($cc_recipient);
+            }
         }
         return $cc_recipients;
     }
@@ -290,10 +294,14 @@ class ApiMessage implements Requestable
     {
         $bcc_recipients = array();
         foreach ((array) $this->bcc as $bcc_recipient) {
-            $bcc_recipients[] = $this->rfc822($bcc_recipient);
+            if (!empty($bcc_recipient)) {
+                $bcc_recipients[] = $this->rfc822($bcc_recipient);
+            }
         }
         foreach ($this->parsed_headers['bcc'] as $bcc_recipient) {
-            $bcc_recipients[] = $this->rfc822($bcc_recipient);
+            if (!empty($bcc_recipient)) {
+                $bcc_recipients[] = $this->rfc822($bcc_recipient);
+            }
         }
         return $bcc_recipients;
     }
@@ -366,7 +374,9 @@ class ApiMessage implements Requestable
             $recipients[] = $this->rfc822($this->recipients);
         } else {
             foreach ($this->recipients as $recipient_item) {
-                $recipients[] = $this->rfc822($recipient_item);
+                if (!empty($recipient_item)) {
+                    $recipients[] = $this->rfc822($recipient_item);
+                }
             }
         }
         return $recipients;
@@ -688,7 +698,7 @@ class ApiMessage implements Requestable
      * Get the data parsed from the $wp_headers
      *
      * @return  array
-     */ 
+     */
     public function getParsedHeaders()
     {
         return $this->parsed_headers;
