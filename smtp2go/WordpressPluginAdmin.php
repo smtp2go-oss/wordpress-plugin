@@ -336,6 +336,17 @@ class WordpressPluginAdmin
     public function outputApiKeyHtml()
     {
         $setting = get_option('smtp2go_api_key');
+        $hint = '<span style="cursor: default; font-weight: normal;">Create/find your API key from the <i>Settings > API Keys</i> page in the SMTP2GO web app.<br/>The API key will need permissions <i>Emails</i> and <i>Statistics.</i></span>';
+        if (empty($setting)) {
+            $this->outputTextFieldHtml(array(
+                'name'     => 'smtp2go_api_key',
+                'required' => true,
+                'type'     => 'text',
+                'label'    => $hint,
+            ));
+            return;
+        }
+
         echo '<div style="display:flex;align-items:center;">';
         echo '<span class="smtp2go_obscured_key">', substr($setting, 0, 9), str_repeat('x', 30), '</span>';
         $this->outputTextFieldHtml(
@@ -343,11 +354,11 @@ class WordpressPluginAdmin
                 'name'     => 'smtp2go_api_key',
                 'required' => true,
                 'type'     => 'hidden',
-                )
+            )
         );
         echo '&nbsp;<a class="j-smtp2go_toggle_apikey_edit" href="javascript:;">Edit</a>';
         echo '</div>';
-        echo '<span style="cursor: default; font-weight: normal;">Create/find your API key from the <i>Settings > API Keys</i> page in the SMTP2GO web app.<br/>The API key will need permissions <i>Emails</i> and <i>Statistics.</i></span>';
+        echo $hint;
     }
 
     /**
