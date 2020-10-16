@@ -105,14 +105,10 @@ class WordpressPluginAdmin
         add_settings_field(
             'smtp2go_api_key',
             __('API Key *', $this->plugin_name),
-            array($this, 'outputTextFieldHtml'),
+            array($this, 'outputApiKeyHtml'),
             $this->plugin_name,
             'smtp2go_settings_section',
-            array(
-                'name'     => 'smtp2go_api_key',
-                'required' => true,
-                'type' => 'password',
-                'label'    => '<span style="cursor: default; font-weight: normal;">Create/find your API key from the <i>Settings > API Keys</i> page in the SMTP2GO web app.<br/>The API key will need permissions <i>Emails</i> and <i>Statistics.</i></span>')
+            array()
         );
 
         /** from email address field */
@@ -337,6 +333,23 @@ class WordpressPluginAdmin
         echo '<div style="display:flex;align-items:center;"><input  id="' . $field_name . '" type="checkbox"' . $required . ' class="smtp2go_text_input" name="' . $field_name . '" value="1"' . $checked . '/> <label for="' . $field_name . '">' . $label . '</label></div>';
     }
 
+    public function outputApiKeyHtml()
+    {
+        $setting = get_option('smtp2go_api_key');
+        echo '<div style="display:flex;align-items:center;">';
+        echo '<span class="smtp2go_obscured_key">', substr($setting, 0, 9), str_repeat('x', 30), '</span>';
+        $this->outputTextFieldHtml(
+            array(
+                'name'     => 'smtp2go_api_key',
+                'required' => true,
+                'type'     => 'hidden',
+                )
+        );
+        echo '&nbsp;<a class="j-smtp2go_toggle_apikey_edit" href="javascript:;">Edit</a>';
+        echo '</div>';
+        echo '<span style="cursor: default; font-weight: normal;">Create/find your API key from the <i>Settings > API Keys</i> page in the SMTP2GO web app.<br/>The API key will need permissions <i>Emails</i> and <i>Statistics.</i></span>';
+    }
+
     /**
      * Add Menu Page
      *
@@ -467,7 +480,7 @@ class WordpressPluginAdmin
             add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API key entered.', $this->plugin_name));
             return get_option('smtp2go_api_key');
         }
-        
+
         return sanitize_text_field($input);
     }
 
