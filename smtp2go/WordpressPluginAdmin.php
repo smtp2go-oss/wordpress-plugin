@@ -349,7 +349,7 @@ class WordpressPluginAdmin
             return;
         }
 
-        echo '<div style="display:flex;align-items:center;">';
+        echo '<div style="display:flex;align-items:center;margin-bottom:10px">';
         echo '<span class="smtp2go_obscured_key">', substr($setting, 0, 9), str_repeat('x', 30), '</span>';
         $this->outputTextFieldHtml(
             array(
