@@ -75,7 +75,7 @@
       var isActive = $(this).hasClass('active');
       $(this).text(isActive ? 'Hide' : 'Edit');
       $('.smtp2go_obscured_key').toggle();
-      $('.smtp2go_text_input[name=smtp2go_api_key]').attr('type', isActive ? 'text' : 'hidden');
+      $('.smtp2go_text_input[name=smtp2go_api_key_update]').attr('type', isActive ? 'text' : 'hidden');
     });
   });
 })(jQuery);
