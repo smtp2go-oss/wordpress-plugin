@@ -493,6 +493,9 @@ class WordpressPluginAdmin
         if (!empty($_POST['smtp2go_api_key_update'])) {
             $input = $_POST['smtp2go_api_key_update'];
         }
+        if (empty($input)) {
+            $input = get_option('smtp2go_api_key');
+        }
         if (empty($input) || strpos($input, 'api-') !== 0) {
             add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API key entered.', $this->plugin_name));
             return get_option('smtp2go_api_key');
