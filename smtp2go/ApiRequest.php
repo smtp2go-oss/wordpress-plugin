@@ -89,7 +89,7 @@ class ApiRequest
 
         $payload['headers']['Content-type'] = 'application/json';
 
-        $payload['headers']['User-Agent'] = "smtp2go-wordpress/1.0.6 (https://www.smtp2go.com)";
+        $payload['headers']['User-Agent'] = "smtp2go-wordpress/1.0.7 (https://www.smtp2go.com)";
 
         $payload['body'] = json_encode(array_filter($payload['body']), JSON_UNESCAPED_SLASHES);
 
