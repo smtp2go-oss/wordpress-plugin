@@ -105,13 +105,10 @@ class WordpressPluginAdmin
         add_settings_field(
             'smtp2go_api_key',
             __('API Key *', $this->plugin_name),
-            array($this, 'outputTextFieldHtml'),
+            array($this, 'outputApiKeyHtml'),
             $this->plugin_name,
             'smtp2go_settings_section',
-            array(
-                'name'     => 'smtp2go_api_key',
-                'required' => true,
-                'label'    => '<span style="cursor: default; font-weight: normal;">Create/find your API key from the <i>Settings > API Keys</i> page in the SMTP2GO web app.<br/>The API key will need permissions <i>Emails</i> and <i>Statistics.</i></span>')
+            array()
         );
 
         /** from email address field */
@@ -137,7 +134,7 @@ class WordpressPluginAdmin
         register_setting(
             'api_settings',
             'smtp2go_from_name',
-	        array($this, 'validateSenderName')
+            array($this, 'validateSenderName')
         );
 
         add_settings_field(
@@ -149,8 +146,8 @@ class WordpressPluginAdmin
             array('name' => 'smtp2go_from_name',
                 'label'      => '<span style="cursor: default; font-weight: normal;">This is the default name that your emails will be sent from (no " or / allowed).</span>'
                 , 'required' => true
-	            , 'placeholder' => 'John Example'
-                , 'pattern' => '[^/\x22]+'
+                , 'placeholder' => 'John Example'
+                , 'pattern' => '[^/\x22]+',
             )
         );
 
@@ -169,8 +166,12 @@ class WordpressPluginAdmin
             array('class' => 'smtp2go_hide_title')
         );
 
+        add_filter('pre_update_option_smtp2go_api_key_update', array($this, 'preUpdateApiKey'));
+
         add_filter('pre_update_option_smtp2go_custom_headers', array($this, 'cleanCustomHeaderOptions'));
     }
+
+
 
     /**
      * Clean empty values out of the custom header options $_POST
@@ -193,7 +194,6 @@ class WordpressPluginAdmin
         }
 
         return $final;
-
     }
 
     /**
@@ -246,7 +246,6 @@ class WordpressPluginAdmin
             . '</tr>'
             . '</tbody>'
             . '</table>';
-
     }
 
     public function generalSection()
@@ -289,18 +288,18 @@ class WordpressPluginAdmin
             $type = $args['type'];
         }
 
-	    $placeholder = '';
-	    if (!empty($args['placeholder'])) {
-		    $placeholder = $args['placeholder'];
-	    }
+        $placeholder = '';
+        if (!empty($args['placeholder'])) {
+            $placeholder = $args['placeholder'];
+        }
 
-	    $pattern = '';
-	    if (!empty($args['pattern'])) {
-		    $pattern = ' pattern="' . $args['pattern'] . '"';
-	    }
+        $pattern = '';
+        if (!empty($args['pattern'])) {
+            $pattern = ' pattern="' . $args['pattern'] . '"';
+        }
 
         echo '<input type="' . $type . '"' . $required . ' class="smtp2go_text_input" name="' . $field_name . '"';
-	    echo ' value="' . esc_attr($setting) . '" placeholder="' . esc_attr($placeholder) . '"' . $pattern. '/>';
+        echo ' value="' . esc_attr($setting) . '" placeholder="' . esc_attr($placeholder) . '"' . $pattern . '/>';
 
         if (!empty($args['label'])) {
             $label = $args['label'];
@@ -334,6 +333,35 @@ class WordpressPluginAdmin
             $label = $args['label'];
         }
         echo '<div style="display:flex;align-items:center;"><input  id="' . $field_name . '" type="checkbox"' . $required . ' class="smtp2go_text_input" name="' . $field_name . '" value="1"' . $checked . '/> <label for="' . $field_name . '">' . $label . '</label></div>';
+    }
+
+    public function outputApiKeyHtml()
+    {
+        $setting = get_option('smtp2go_api_key');
+        $hint    = '<span style="cursor: default; font-weight: normal;">Create/find your API key from the <i>Settings > API Keys</i> page in the SMTP2GO web app.<br/>The API key will need permissions <i>Emails</i> and <i>Statistics.</i></span>';
+        if (empty($setting)) {
+            $this->outputTextFieldHtml(array(
+                'name'     => 'smtp2go_api_key',
+                'required' => true,
+                'type'     => 'text',
+                'label'    => $hint,
+            ));
+            return;
+        }
+
+        echo '<div style="display:flex;align-items:center;margin-bottom:10px">';
+        echo '<span class="smtp2go_obscured_key">', substr($setting, 0, 9), str_repeat('x', 30), '</span>';
+        $this->outputTextFieldHtml(
+            array(
+                'name'     => 'smtp2go_api_key_update',
+                'required' => true,
+                'type'     => 'hidden',
+            )
+        );
+        echo '<input type="hidden" name="smtp2go_api_key" value="" readonly/>';
+        echo '&nbsp;<a class="j-smtp2go_toggle_apikey_edit" href="javascript:;">Edit</a>';
+        echo '</div>';
+        echo $hint;
     }
 
     /**
@@ -416,19 +444,19 @@ class WordpressPluginAdmin
         $success = $request->send($message);
 
         // create / map better error messages where appropriate
-	    $reason  = 'An error has occurred, please try again';
+        $reason = 'An error has occurred, please try again';
 
         // API returns failures two different ways - either in failures
-	    if (count($request->getFailures()) > 0) {
-		    $reason = $request->getFailures()[0];
+        if (count($request->getFailures()) > 0) {
+            $reason = $request->getFailures()[0];
 
-		    // map when we don't get error_code
-		    if (strpos($reason, "unable to verify sender address")) {
-			    $reason = 'Unable to verify sender address, please check Sender Email Address';
-		    }
+            // map when we don't get error_code
+            if (strpos($reason, "unable to verify sender address")) {
+                $reason = 'Unable to verify sender address, please check Sender Email Address';
+            }
 
-		    wp_send_json(array('success' => 0, 'reason' => htmlentities($reason)));
-	    }
+            wp_send_json(array('success' => 0, 'reason' => htmlentities($reason)));
+        }
 
         if (empty($success)) {
             $response = $request->getLastResponse();
@@ -439,15 +467,15 @@ class WordpressPluginAdmin
                 $reason = $response->data->error;
             }
             // API returns failures two different ways - or with error codes
-	        switch ($response->data->error_code) {
-		        case 'E_ApiResponseCodes.NON_VALIDATING_IN_PAYLOAD':
-					$reason = $response->data->field_validation_errors->message;
-		            if (strpos($reason, "was expecting a valid RFC-822 formatted email field but found")) {
-		            	$reason = 'The supplied To Email address was invalid please correct and try again';
-		            }
-					$reason = str_replace(', Please correct your JSON payload and try again', '', $reason);
-		        	break;
-	        }
+            switch ($response->data->error_code) {
+                case 'E_ApiResponseCodes.NON_VALIDATING_IN_PAYLOAD':
+                    $reason = $response->data->field_validation_errors->message;
+                    if (strpos($reason, "was expecting a valid RFC-822 formatted email field but found")) {
+                        $reason = 'The supplied To Email address was invalid please correct and try again';
+                    }
+                    $reason = str_replace(', Please correct your JSON payload and try again', '', $reason);
+                    break;
+            }
         }
         wp_send_json(array('success' => intval($success), 'reason' => $reason, 'response' => $response));
     }
@@ -462,21 +490,28 @@ class WordpressPluginAdmin
      */
     public function validateApiKey($input)
     {
+        if (!empty($_POST['smtp2go_api_key_update'])) {
+            $input = $_POST['smtp2go_api_key_update'];
+        }
+        if (empty($input)) {
+            $input = get_option('smtp2go_api_key');
+        }
         if (empty($input) || strpos($input, 'api-') !== 0) {
             add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API key entered.', $this->plugin_name));
             return get_option('smtp2go_api_key');
         }
+
         return sanitize_text_field($input);
     }
 
     public function validateSenderName($input)
     {
-		if (empty($input) || preg_match('|[/\x22]|', $input)) {
-			add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid Sender Name entered.', $this->plugin_name));
-			return get_option('smtp2go_from_name');
-		}
+        if (empty($input) || preg_match('|[/\x22]|', $input)) {
+            add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid Sender Name entered.', $this->plugin_name));
+            return get_option('smtp2go_from_name');
+        }
 
-	    return sanitize_text_field($input);
+        return sanitize_text_field($input);
     }
 
     public function addSettingsLink($links)
