@@ -29,6 +29,8 @@ If you have questions or need assistance then feel free to contact the support t
 
 == Changelog ==
 
+= v1.0.8 =
+
 = v1.0.7 =
 * hide API key in admin
 * don't pass empty BCC string to API call
