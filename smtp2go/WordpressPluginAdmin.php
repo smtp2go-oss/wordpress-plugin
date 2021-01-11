@@ -458,6 +458,8 @@ class WordpressPluginAdmin
             wp_send_json(array('success' => 0, 'reason' => htmlentities($reason)));
         }
 
+        $response = null;
+
         if (empty($success)) {
             $response = $request->getLastResponse();
 
