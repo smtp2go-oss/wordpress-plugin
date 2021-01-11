@@ -15,7 +15,7 @@
  * Plugin Name:       SMTP2GO
  * Plugin URI:        https://github.com/thefold/smtp2go-wordpress-plugin
  * Description:       Send all email from WordPress via SMTP2GO, Scalable, reliable email delivery https://www.smtp2go.com/.
- * Version:           1.0.7
+ * Version:           1.0.8
  * Author:            SMTP2GO
  * Author URI:        https://www.smtp2go.com
  * License:           GPL-2.0+
@@ -37,7 +37,7 @@ if (!defined('WPINC')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('SMTP2GO_WORDPRESS_PLUGIN_VERSION', '1.0.7');
+define('SMTP2GO_WORDPRESS_PLUGIN_VERSION', '1.0.8');
 
 define('SMTP2GO_PLUGIN_BASENAME', plugin_basename(__FILE__));
 /**
@@ -98,10 +98,22 @@ if (!function_exists('wp_mail') && get_option('smtp2go_enabled')) {
     {
         global $phpmailer;
         // (Re)create it, if it's gone missing
-        if (!($phpmailer instanceof PHPMailer)) {
+        //handle wordpress pre 5.5
+
+        if (is_file(ABSPATH . WPINC . '/class-phpmailer.php') && !($phpmailer instanceof PHPMailer)) {
             require_once ABSPATH . WPINC . '/class-phpmailer.php';
             require_once ABSPATH . WPINC . '/class-smtp.php';
             $phpmailer = new PHPMailer(true);
+        } elseif (is_file(ABSPATH . WPINC . '/PHPMailer/PHPMailer.php') && !($phpmailer instanceof PHPMailer\PHPMailer\PHPMailer)) {
+            //5.5 and up
+            require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
+            require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
+            require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
+            $phpmailer = new PHPMailer\PHPMailer\PHPMailer(true);
+
+            $phpmailer::$validator = static function ($email) {
+                return (bool) is_email($email);
+            };
         }
 
         //let other plugins modify the arguments as the native wp mail does

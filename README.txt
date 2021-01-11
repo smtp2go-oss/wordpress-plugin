@@ -2,7 +2,7 @@
 Contributors: thefoldnz, greatsaltlake
 Tags: email, wp_mail, email reliability, smtp, smtp2go, phpmailer, mail, email marketing, newsletter, welcome email, marketing
 Requires at least: 4.6
-Tested up to: 5.5.1
+Tested up to: 5.6.0
 Requires PHP: 7.0
 Stable tag: trunk
 License: GPLv2 or later
@@ -29,6 +29,9 @@ If you have questions or need assistance then feel free to contact the support t
 
 == Changelog ==
 
+= v1.0.8 =
+* handle Deprecated: class-phpmailer.php is deprecated
+* handle php var not defined error
 = v1.0.7 =
 * hide API key in admin
 * don't pass empty BCC string to API call
