@@ -29,6 +29,8 @@ If you have questions or need assistance then feel free to contact the support t
 
 == Changelog ==
 
+= v1.0.9 =
+* update Deprecated: class-phpmailer.php handling
 = v1.0.8 =
 * handle Deprecated: class-phpmailer.php is deprecated
 * handle php var not defined error
