@@ -29,6 +29,8 @@ If you have questions or need assistance then feel free to contact the support t
 
 == Changelog ==
 
+= v1.0.10 =
+* revert depreciated mailer handling while we figure out how / if to implement backwards compatibility
 = v1.0.9 =
 * update Deprecated: class-phpmailer.php handling
 = v1.0.8 =
