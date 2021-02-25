@@ -98,11 +98,16 @@ if (!function_exists('wp_mail') && get_option('smtp2go_enabled')) {
     {
         global $phpmailer;
         // (Re)create it, if it's gone missing
-	    if (!($phpmailer instanceof PHPMailer)) {
-		    require_once ABSPATH . WPINC . '/class-phpmailer.php';
-		    require_once ABSPATH . WPINC . '/class-smtp.php';
-		    $phpmailer = new PHPMailer(true);
-	    }
+        if (!($phpmailer instanceof PHPMailer\PHPMailer\PHPMailer)) {
+            require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
+            require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
+            require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
+            $phpmailer = new PHPMailer\PHPMailer\PHPMailer(true);
+
+            $phpmailer::$validator = static function ($email) {
+                return (bool) is_email($email);
+            };
+        }
 
         //let other plugins modify the arguments as the native wp mail does
         $atts = apply_filters('wp_mail', compact('to', 'subject', 'message', 'headers', 'attachments'));
