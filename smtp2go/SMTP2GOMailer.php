@@ -12,7 +12,14 @@ class SMTP2GOMailer extends PHPMailer
 
     protected function mailSend($header, $body)
     {
+        
+        //at this point the attachments are already parsed, this method
+        //has all the info we need, we'll probably need to add a new method
+        //to ApiMessage that understands the format they're in so they can
+        //be formatted correctly for the api call
+        
         SMTP2GO_dd($this->getAttachments());
+
         $SMTP2GOmessage = new ApiMessage(
             $this->to,
             $this->Subject,
