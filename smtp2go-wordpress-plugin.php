@@ -79,6 +79,7 @@ function run_SMTP2GO_wordpress_plugin()
 {
     $plugin = new SMTP2GO\WordpressPlugin();
     $plugin->run();
+
 }
 
 /**
@@ -93,97 +94,98 @@ function run_SMTP2GO_wordpress_plugin()
  */
 
 //if the plugin isn't activated, this function will exist
+
+/*
 if (!function_exists('wp_mail') && get_option('smtp2go_enabled')) {
-    function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
-    {
-        global $phpmailer;
-        // (Re)create it, if it's gone missing
-        if (!($phpmailer instanceof PHPMailer\PHPMailer\PHPMailer)) {
-            require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
-            require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
-            require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
-            $phpmailer = new PHPMailer\PHPMailer\PHPMailer(true);
 
-            $phpmailer::$validator = static function ($email) {
-                return (bool) is_email($email);
-            };
-        }
+function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
+{
+global $phpmailer;
+// (Re)create it, if it's gone missing
+if (!($phpmailer instanceof PHPMailer\PHPMailer\PHPMailer)) {
+require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
+require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
+require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
+$phpmailer = new PHPMailer\PHPMailer\PHPMailer(true);
 
-        //let other plugins modify the arguments as the native wp mail does
-        $atts = apply_filters('wp_mail', compact('to', 'subject', 'message', 'headers', 'attachments'));
-
-        if (isset($atts['to'])) {
-            $to = $atts['to'];
-        }
-
-        if (!is_array($to)) {
-            $to = explode(',', $to);
-        }
-
-        if (isset($atts['subject'])) {
-            $subject = $atts['subject'];
-        }
-
-        if (isset($atts['message'])) {
-            $message = $atts['message'];
-        }
-
-        if (isset($atts['headers'])) {
-            $headers = $atts['headers'];
-        }
-
-        if (isset($atts['attachments'])) {
-            $attachments = $atts['attachments'];
-        }
-
-        $SMTP2GOmessage = new SMTP2GO\ApiMessage($to, $subject, $message, $headers, $attachments);
-        /*
-        some plugins set the from name and email in the headers
-        check parsed headers for a from name and email
-        [from_name] => Custom Forms Notification
-        [from_email] => customformspluginemail@example.com
-         */
-        $parsed_headers = $SMTP2GOmessage->getParsedHeaders();
-
-        $parsed_fromname  = null;
-        $parsed_fromemail = null;
-        if (!empty($parsed_headers['from_name']) && !empty($parsed_headers['from_email'])) {
-            $parsed_fromname  = $parsed_headers['from_name'];
-            $parsed_fromemail = $parsed_headers['from_email'];
-        }
-
-        //allow other plugins to override our default setting
-        $from_email = apply_filters('wp_mail_from', !empty($parsed_fromemail) ? $parsed_fromemail : get_option('smtp2go_from_address'));
-        $from_name  = apply_filters('wp_mail_from_name', !empty($parsed_fromname) ? $parsed_fromname : get_option('smtp2go_from_name'));
-
-        $SMTP2GOmessage->initFromOptions();
-        if (!empty($from_email) && !empty($from_name)) {
-            $SMTP2GOmessage->setSender($from_email, $from_name);
-        }
-
-        /**
-         * So far, this is just to support multipart emails in woocommerce
-         */
-
-        do_action_ref_array('phpmailer_init', array(&$phpmailer));
-
-        if (!empty($phpmailer->AltBody)) {
-            $SMTP2GOmessage->setAltMessage($phpmailer->AltBody);
-        }
-        $content_type = '';
-
-        //see if someone is setting a type
-        $content_type = apply_filters('wp_mail_content_type', $content_type);
-
-        $SMTP2GOmessage->setContentType($content_type);
-
-        $request = new SMTP2GO\ApiRequest;
-
-        return $request->send($SMTP2GOmessage);
-    }
-
+$phpmailer::$validator = static function ($email) {
+return (bool) is_email($email);
+};
 }
 
+//let other plugins modify the arguments as the native wp mail does
+$atts = apply_filters('wp_mail', compact('to', 'subject', 'message', 'headers', 'attachments'));
+
+if (isset($atts['to'])) {
+$to = $atts['to'];
+}
+
+if (!is_array($to)) {
+$to = explode(',', $to);
+}
+
+if (isset($atts['subject'])) {
+$subject = $atts['subject'];
+}
+
+if (isset($atts['message'])) {
+$message = $atts['message'];
+}
+
+if (isset($atts['headers'])) {
+$headers = $atts['headers'];
+}
+
+if (isset($atts['attachments'])) {
+$attachments = $atts['attachments'];
+}
+
+$SMTP2GOmessage = new SMTP2GO\ApiMessage($to, $subject, $message, $headers, $attachments);
+
+// some plugins set the from name and email in the headers
+// check parsed headers for a from name and email
+// [from_name] => Custom Forms Notification
+// [from_email] => customformspluginemail@example.com
+
+$parsed_headers = $SMTP2GOmessage->getParsedHeaders();
+
+$parsed_fromname  = null;
+$parsed_fromemail = null;
+if (!empty($parsed_headers['from_name']) && !empty($parsed_headers['from_email'])) {
+$parsed_fromname  = $parsed_headers['from_name'];
+$parsed_fromemail = $parsed_headers['from_email'];
+}
+
+//allow other plugins to override our default setting
+$from_email = apply_filters('wp_mail_from', !empty($parsed_fromemail) ? $parsed_fromemail : get_option('smtp2go_from_address'));
+$from_name  = apply_filters('wp_mail_from_name', !empty($parsed_fromname) ? $parsed_fromname : get_option('smtp2go_from_name'));
+
+$SMTP2GOmessage->initFromOptions();
+if (!empty($from_email) && !empty($from_name)) {
+$SMTP2GOmessage->setSender($from_email, $from_name);
+}
+
+//So far, this is just to support multipart emails in woocommerce
+
+do_action_ref_array('phpmailer_init', array(&$phpmailer));
+
+if (!empty($phpmailer->AltBody)) {
+$SMTP2GOmessage->setAltMessage($phpmailer->AltBody);
+}
+$content_type = '';
+
+//see if someone is setting a type
+$content_type = apply_filters('wp_mail_content_type', $content_type);
+
+$SMTP2GOmessage->setContentType($content_type);
+
+$request = new SMTP2GO\ApiRequest;
+
+return $request->send($SMTP2GOmessage);
+}
+
+}
+ */
 if (!function_exists('SMTP2GO_dd')) {
     function SMTP2GO_dd()
     {
