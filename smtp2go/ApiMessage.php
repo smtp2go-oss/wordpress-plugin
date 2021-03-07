@@ -93,7 +93,7 @@ class ApiMessage implements Requestable
      * The data parsed from the $wp_attachments
      *
      * @var array
-     * @deprecated
+     * @deprecated 1.0.10
      */
     private $parsed_attachments;
 
@@ -101,7 +101,7 @@ class ApiMessage implements Requestable
      * Attachments not added through the $wp_attachments variable
      *
      * @var string|array
-     * @deprecated version
+     * @deprecated 1.0.10
      */
     protected $attachments;
 
@@ -244,7 +244,7 @@ class ApiMessage implements Requestable
         $body['subject']        = $this->getSubject();
         $body['attachments']    = $this->buildAttachments();
         $body['inlines']        = $this->buildInlines();
-
+        
         return array(
             'method' => 'POST',
             'body'   => $body,
@@ -271,6 +271,14 @@ class ApiMessage implements Requestable
                 'mimetype' => $helper->getMimeType($path),
             );
         }
+        foreach ($this->phpmailer_attachments as $attachment_data) {
+            $attachments[] = array(
+                'filename' => $attachment_data[1],
+                'fileblob' => base64_encode(file_get_contents($attachment_data[0])),
+                'mimetype' => $attachment_data[3],
+            );
+        }
+
         return $attachments;
     }
 
@@ -723,6 +731,16 @@ class ApiMessage implements Requestable
         $this->alt_message = $alt_message;
 
         return $this;
+    }
+
+    /**
+     * Set attachements in the array format used by phpmailer
+     * @param array $attachments
+     */
+
+    public function setMailerAttachments(array $attachments)
+    {
+        $this->phpmailer_attachments = $attachments;
     }
 
     /**

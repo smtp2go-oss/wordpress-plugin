@@ -12,22 +12,18 @@ class SMTP2GOMailer extends PHPMailer
 
     protected function mailSend($header, $body)
     {
-        
-        //at this point the attachments are already parsed, this method
-        //has all the info we need, we'll probably need to add a new method
-        //to ApiMessage that understands the format they're in so they can
-        //be formatted correctly for the api call
-        
-        SMTP2GO_dd($this->getAttachments());
-
+        // SMTP2GO_dd($body);
         $SMTP2GOmessage = new ApiMessage(
-            $this->to,
+            $this->to[0],
             $this->Subject,
-            $body,
-            $this->getCustomHeaders(),
-            $this->getAttachments()
+            $this->Body //$body has MIME data in it which we dont want
         );
+
         $SMTP2GOmessage->initFromOptions();
+
+        if (!empty($this->getAttachments())) {
+            $SMTP2GOmessage->setMailerAttachments($this->getAttachments());
+        }
 
         if (!empty($this->AltBody)) {
             $SMTP2GOmessage->setAltMessage($this->AltBody);
@@ -38,7 +34,7 @@ class SMTP2GOMailer extends PHPMailer
         $SMTP2GOmessage->setContentType($this->ContentType);
 
         $request = new ApiRequest;
-        //SMTP2GO_dd($SMTP2GOmessage);
+        
         return $request->send($SMTP2GOmessage);
     }
 }
