@@ -37,7 +37,7 @@ if (!defined('WPINC')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('SMTP2GO_WORDPRESS_PLUGIN_VERSION', '1.0.10');
+define('SMTP2GO_WORDPRESS_PLUGIN_VERSION', '1.0.11');
 
 define('SMTP2GO_PLUGIN_BASENAME', plugin_basename(__FILE__));
 /**
@@ -192,6 +192,11 @@ if (!function_exists('SMTP2GO_dd')) {
         foreach (func_get_args() as $arg) {
             echo '<pre>', print_r($arg, 1), '</pre>';
         }
+
+        $e = new Exception;
+        echo '<pre>', print_r($e->getTraceAsString(), 1), '</pre>';
+
+
         exit;
     }
 }

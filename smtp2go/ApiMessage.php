@@ -105,34 +105,8 @@ class ApiMessage implements Requestable
      */
     protected $attachments;
 
-    /**
-     * Attachments in the format created by phpmailer
-     * Array
-    (
-    [0] => Array
-    (
-    [0] => /Users/krisjohansen/www/smtp2go-wp/wp-content/uploads/gravity_forms/1-bc86c0fe83b8db0cc31e7a3e63498632/2021/02/pexels-photo-3269001.jpeg
-    [1] => pexels-photo-3269001.jpeg
-    [2] => pexels-photo-3269001.jpeg
-    [3] => base64
-    [4] => image/jpeg
-    [5] =>
-    [6] => attachment
-    [7] => pexels-photo-3269001.jpeg
-    )
 
-    0 => $path,
-    1 => $filename,
-    2 => $name,
-    3 => $encoding,
-    4 => $type,
-    5 => false, // isStringAttachment
-    6 => $disposition,
-    7 => $name,
-
-    )
-     */
-    protected $phpmailer_attachments;
+    protected $phpmailer_attachments = array();
 
     /**
      * Inline attachments, only supported through this class
@@ -271,6 +245,7 @@ class ApiMessage implements Requestable
                 'mimetype' => $helper->getMimeType($path),
             );
         }
+        //Phpmailer has already determined the mime type
         foreach ($this->phpmailer_attachments as $attachment_data) {
             $attachments[] = array(
                 'filename' => $attachment_data[1],

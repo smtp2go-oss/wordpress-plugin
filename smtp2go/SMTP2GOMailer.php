@@ -8,15 +8,22 @@ require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
 
 class SMTP2GOMailer extends PHPMailer
 {
+    /**
+     * The arguments passed by wp_mail
+     *
+     * @var [type]
+     */
     public $wp_args;
 
     protected function mailSend($header, $body)
     {
-        // SMTP2GO_dd($body);
+        //SMTP2GO_dd($this->wp_args);
+        error_log('hello world!!');
         $SMTP2GOmessage = new ApiMessage(
-            $this->to[0],
-            $this->Subject,
-            $this->Body //$body has MIME data in it which we dont want
+            $this->wp_args['to'],
+            $this->wp_args['subject'],
+            $this->wp_args['message'],
+            $this->wp_args['headers']
         );
 
         $SMTP2GOmessage->initFromOptions();
@@ -34,7 +41,7 @@ class SMTP2GOMailer extends PHPMailer
         $SMTP2GOmessage->setContentType($this->ContentType);
 
         $request = new ApiRequest;
-        
+
         return $request->send($SMTP2GOmessage);
     }
 }

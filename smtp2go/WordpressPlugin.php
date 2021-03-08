@@ -143,7 +143,6 @@ class WordpressPlugin
 
     private function definePublicHooks()
     {
-        //SMTP2GO_dd('hi');
         $this->loader->addFilter('wp_mail', $this, 'initMailer');
     }
 
