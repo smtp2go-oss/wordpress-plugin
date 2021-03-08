@@ -17,8 +17,7 @@ class SMTP2GOMailer extends PHPMailer
 
     protected function mailSend($header, $body)
     {
-        //SMTP2GO_dd($this->wp_args);
-        error_log('hello world!!');
+        
         $SMTP2GOmessage = new ApiMessage(
             $this->wp_args['to'],
             $this->wp_args['subject'],
@@ -35,7 +34,7 @@ class SMTP2GOMailer extends PHPMailer
         if (!empty($this->AltBody)) {
             $SMTP2GOmessage->setAltMessage($this->AltBody);
         }
-
+        
         $SMTP2GOmessage->setSender($this->From, $this->FromName);
 
         $SMTP2GOmessage->setContentType($this->ContentType);
