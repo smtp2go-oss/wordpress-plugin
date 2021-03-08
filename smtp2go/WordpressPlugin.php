@@ -146,11 +146,19 @@ class WordpressPlugin
         $this->loader->addFilter('wp_mail', $this, 'initMailer');
     }
 
+    /**
+     * wp_mail filter handler
+     *
+     * @param array $args - to,from,body,headers,attachments
+     * @return void
+     */
     public function initMailer($args)
     {
         global $phpmailer;
         if (!$phpmailer instanceof SMTP2GOMailer) {
-            $phpmailer = new SMTP2GOMailer;
+            $phpmailer          = new SMTP2GOMailer;
+            $phpmailer->wp_args = $args;
+        } else {
             $phpmailer->wp_args = $args;
         }
     }
