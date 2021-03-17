@@ -15,9 +15,15 @@ class SMTP2GOMailer extends PHPMailer
      */
     public $wp_args;
 
+    /**
+     * The last ApiRequest Object
+     *
+     * @var ApiRequest
+     */
+    protected $last_request = null;
+
     protected function mailSend($header, $body)
     {
-        
         $SMTP2GOmessage = new ApiMessage(
             $this->wp_args['to'],
             $this->wp_args['subject'],
@@ -34,13 +40,25 @@ class SMTP2GOMailer extends PHPMailer
         if (!empty($this->AltBody)) {
             $SMTP2GOmessage->setAltMessage($this->AltBody);
         }
-        
-        $SMTP2GOmessage->setSender($this->From, $this->FromName);
+        //we dont want the wp_mail default to override our configured options
+        //only other plugins. There doesnt seem to be a nicer way to detect this.
+        if ($this->FromName != 'WordPress') {
+            $SMTP2GOmessage->setSender($this->From, $this->FromName);
+        }
 
         $SMTP2GOmessage->setContentType($this->ContentType);
-
+            
         $request = new ApiRequest;
 
-        return $request->send($SMTP2GOmessage);
+        $result = $request->send($SMTP2GOmessage);
+
+        $this->last_request = $request;
+
+        return $result;
+    }
+
+    public function getLastRequest()
+    {
+        return $this->last_request;
     }
 }
