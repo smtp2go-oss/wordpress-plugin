@@ -441,7 +441,7 @@ class WordpressPluginAdmin
         $request = $phpmailer->getLastRequest();
 
         // create / map better error messages where appropriate
-        $reason = 'An error has occurred, please try again';
+        $reason = '';
 
         // API returns failures two different ways - either in failures
         if (count($request->getFailures()) > 0) {
