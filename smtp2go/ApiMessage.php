@@ -93,7 +93,7 @@ class ApiMessage implements Requestable
      * The data parsed from the $wp_attachments
      *
      * @var array
-     * @deprecated 1.0.10
+     * @deprecated 1.1.0
      */
     private $parsed_attachments;
 
@@ -101,7 +101,7 @@ class ApiMessage implements Requestable
      * Attachments not added through the $wp_attachments variable
      *
      * @var string|array
-     * @deprecated 1.0.10
+     * @deprecated 1.1.0
      */
     protected $attachments;
 
@@ -218,7 +218,7 @@ class ApiMessage implements Requestable
         $body['subject']        = $this->getSubject();
         $body['attachments']    = $this->buildAttachments();
         $body['inlines']        = $this->buildInlines();
-        
+
         return array(
             'method' => 'POST',
             'body'   => $body,
