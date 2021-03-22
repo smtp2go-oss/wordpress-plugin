@@ -383,8 +383,9 @@ class WordpressPluginAdmin
         $summary = new ApiSummary;
         $request = new ApiRequest(get_option('smtp2go_api_key'));
         $stats   = null;
-        if ($request->send($summary)) {
-            $stats = $request->getLastResponse()->data;
+        $sender = new WordpressHttpRemotePostSender;
+        if ($request->send($summary, $sender)) {
+            $stats = $sender->getLastResponse()->data;
         }
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-stats-display.php';
     }
@@ -420,6 +421,7 @@ class WordpressPluginAdmin
     {
         /** @var SMTP2GOMailer $phpmailer */
         global $phpmailer;
+
 
         $to_email = $to_name = null;
 

@@ -161,6 +161,9 @@ class WordpressPlugin
         } else {
             $phpmailer->wp_args = $args;
         }
+        //test purposes
+        //$phpmailer->setSenderInstance(new CurlSender);
+
     }
     /**
      * Run the loader to execute all of the hooks with WordPress.

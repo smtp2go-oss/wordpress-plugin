@@ -36,7 +36,7 @@ class ApiMessageTest extends TestCase
     {
         $message = $this->createTestInstance();
 
-        $this->assertEquals($message->getSender(), 'Unit Test <unit@test.fake>');
+        $this->assertEquals($message->getSender(), '"Unit Test" <unit@test.fake>');
     }
 
     public function testMessageBodyIsSet()
@@ -66,7 +66,7 @@ class ApiMessageTest extends TestCase
 
     public function testbuildRequestPayloadWithHTMLMessage()
     {
-        $expected_json_body_string = '{"to":["Test Recipient <test@example.fake>"],"sender":"Unit Test <unit@test.fake>","html_body":"<html><body><h1>Heading<\/h1><div>This is the message<\/div><\/body><\/html>","custom_headers":[{"header":"X-Test-Header","value":"Testing"}],"subject":"Test Message"}';
+        $expected_json_body_string = '{"to":["Test Recipient <test@example.fake>"],"sender":"\"Unit Test\" <unit@test.fake>","html_body":"<html><body><h1>Heading<\/h1><div>This is the message<\/div><\/body><\/html>","custom_headers":[{"header":"X-Test-Header","value":"Testing"}],"subject":"Test Message"}';
         $message                   = $this->createTestInstance();
 
         $message->setSubject('Test Message');
@@ -83,7 +83,7 @@ class ApiMessageTest extends TestCase
 
     public function testbuildRequestPayloadWithTextMessage()
     {
-        $expected_json_body_string = '{"to":["Test Recipient <test@example.fake>"],"sender":"Unit Test <unit@test.fake>","text_body":"This is the message","custom_headers":[{"header":"X-Test-Header","value":"Testing"}],"subject":"Test Message"}';
+        $expected_json_body_string = '{"to":["Test Recipient <test@example.fake>"],"sender":"\"Unit Test\" <unit@test.fake>","text_body":"This is the message","custom_headers":[{"header":"X-Test-Header","value":"Testing"}],"subject":"Test Message"}';
         $message                   = $this->createTestInstance();
 
         $message->setSubject('Test Message');

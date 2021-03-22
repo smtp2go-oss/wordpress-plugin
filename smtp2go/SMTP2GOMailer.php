@@ -22,6 +22,18 @@ class SMTP2GOMailer extends PHPMailer
      */
     protected $last_request = null;
 
+    protected $sender = null;
+
+    public function setSenderInstance(SendsHttpRequests $sender)
+    {
+        $this->sender = $sender;
+    }
+
+    public function getSenderInstance()
+    {
+        return $this->sender;
+    }
+
     protected function mailSend($header, $body)
     {
         $SMTP2GOmessage = new ApiMessage(
@@ -47,10 +59,15 @@ class SMTP2GOMailer extends PHPMailer
         }
 
         $SMTP2GOmessage->setContentType($this->ContentType);
-            
-        $request = new ApiRequest;
 
-        $result = $request->send($SMTP2GOmessage);
+        $request = new ApiRequest;
+        if (!$this->sender) {
+            $this->sender = new WordpressHttpRemotePostSender;
+        }
+        if (defined('WP_DEBUG') && WP_DEBUG === true) {
+            error_log('sending via ' . get_class($this->sender));
+        }
+        $result = $request->send($SMTP2GOmessage, $this->sender);
 
         $this->last_request = $request;
 
