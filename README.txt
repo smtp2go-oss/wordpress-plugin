@@ -30,7 +30,9 @@ If you have questions or need assistance then feel free to contact the support t
 == Changelog ==
 = v1.1.0 =
 * codebase updated, no longer override wp_mail, remove BC
-= v1.1.0 =
+* TODO - update unit test to match overriding PHPMailer, not wp_mail()
+* admin email test send updated
+= v1.0.10 =
 * revert depreciated mailer handling while we figure out how / if to implement backwards compatibility
 = v1.0.9 =
 * update Deprecated: class-phpmailer.php handling
