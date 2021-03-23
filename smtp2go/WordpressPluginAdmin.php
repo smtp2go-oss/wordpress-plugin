@@ -1,6 +1,10 @@
 <?php
 namespace SMTP2GO;
 
+use SMTP2GO\Api\ApiRequest;
+use SMTP2GO\Api\ApiSummary;
+use SMTP2GO\Senders\WordpressHttpRemotePostSender;
+
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -374,7 +378,8 @@ class WordpressPluginAdmin
             'SMTP2GO',
             'manage_options',
             $this->plugin_name,
-            array($this, 'renderManagementPage')
+            array($this, 'renderManagementPage'),
+            'dashicons-email-alt'
         );
     }
 
@@ -383,7 +388,7 @@ class WordpressPluginAdmin
         $summary = new ApiSummary;
         $request = new ApiRequest(get_option('smtp2go_api_key'));
         $stats   = null;
-        $sender = new WordpressHttpRemotePostSender;
+        $sender  = new WordpressHttpRemotePostSender;
         if ($request->send($summary, $sender)) {
             $stats = $sender->getLastResponse()->data;
         }
@@ -421,7 +426,6 @@ class WordpressPluginAdmin
     {
         /** @var SMTP2GOMailer $phpmailer */
         global $phpmailer;
-
 
         $to_email = $to_name = null;
 
@@ -468,7 +472,7 @@ class WordpressPluginAdmin
                 $reason = $response->data->error;
             }
             // API returns failures two different ways - or with error codes
-            switch ($response->data->error_code) {
+            switch ($response->data->error_code ?? '') {
                 case 'E_ApiResponseCodes.NON_VALIDATING_IN_PAYLOAD':
                     $reason = $response->data->field_validation_errors->message;
                     if (strpos($reason, "was expecting a valid RFC-822 formatted email field but found")) {

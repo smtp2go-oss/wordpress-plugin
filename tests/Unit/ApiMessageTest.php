@@ -2,8 +2,8 @@
 namespace Tests\Unit;
 
 require_once 'SMTP2GO-class-loader.php';
+use SMTP2GO\Api\ApiMessage;
 use PHPUnit\Framework\TestCase;
-use SMTP2GO\ApiMessage;
 
 class ApiMessageTest extends TestCase
 {

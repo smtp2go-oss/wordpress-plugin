@@ -2,6 +2,10 @@
 namespace SMTP2GO;
 
 use PHPMailer\PHPMailer\PHPMailer;
+use SMTP2GO\Api\ApiMessage;
+use SMTP2GO\Api\ApiRequest;
+use SMTP2GO\Senders\SendsHttpRequests;
+use SMTP2GO\Senders\WordpressHttpRemotePostSender;
 
 require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
 require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';

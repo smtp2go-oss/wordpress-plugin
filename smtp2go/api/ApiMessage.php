@@ -1,7 +1,8 @@
 <?php
-namespace SMTP2GO;
+namespace SMTP2GO\Api;
 
 use SMTP2GO\WpmailCompat;
+use SMTP2GO\MimetypeHelper;
 
 /**
  * Creates an email message payload to send through the request api

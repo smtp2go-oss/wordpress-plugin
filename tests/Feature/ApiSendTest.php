@@ -3,10 +3,11 @@ namespace Tests\Feature;
 
 require_once 'SMTP2GO-class-loader.php';
 
+
+use SMTP2GO\Api\ApiMessage;
+use SMTP2GO\Api\ApiRequest;
 use PHPUnit\Framework\TestCase;
-use SMTP2GO\ApiMessage;
-use SMTP2GO\ApiRequest;
-use SMTP2GO\CurlSender;
+use SMTP2GO\Senders\CurlSender;
 
 /**
  * The constants used in these tests must be declared in your phpunit.xml

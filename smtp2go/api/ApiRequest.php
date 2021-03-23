@@ -1,5 +1,7 @@
 <?php
-namespace SMTP2GO;
+namespace SMTP2GO\Api;
+
+use SMTP2GO\Senders\SendsHttpRequests;
 
 /**
  * Makes http requests to the SMTP2GO api

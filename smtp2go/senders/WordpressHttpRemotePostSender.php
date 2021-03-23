@@ -1,7 +1,7 @@
 <?php
-namespace SMTP2GO;
+namespace SMTP2GO\Senders;
 
-use SMTP2GO\SendsHttpRequests;
+use SMTP2GO\Senders\SendsHttpRequests;
 
 class WordpressHttpRemotePostSender implements SendsHttpRequests
 {
@@ -35,7 +35,7 @@ class WordpressHttpRemotePostSender implements SendsHttpRequests
      */
     public function send(string $url, array $payload):bool
     {
-
+        
         $payload['headers']['Content-type'] = 'application/json';
 
         $payload['headers']['User-Agent'] = "smtp2go-wordpress/1.0.10 (https://www.smtp2go.com)";
@@ -46,7 +46,6 @@ class WordpressHttpRemotePostSender implements SendsHttpRequests
 
         //Array containing 'headers', 'body', 'response', 'cookies', 'filename'
         $response = wp_remote_post($url, $payload);
-
         if (is_array($response)) {
             $this->last_response = json_decode($response['body']);
             $this->last_meta = $response['headers'];

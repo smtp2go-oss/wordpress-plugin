@@ -1,7 +1,7 @@
 <?php
-namespace SMTP2GO;
+namespace SMTP2GO\Senders;
 
-use SMTP2GO\SendsHttpRequests;
+use SMTP2GO\Senders\SendsHttpRequests;
 
 /**
  * Sends http requests using CURL - used in development for unit tests
@@ -47,7 +47,7 @@ class CurlSender implements SendsHttpRequests
         ));
 
         curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode(array_filter($payload['body']), JSON_UNESCAPED_SLASHES));
-        curl_setopt($curl, CURLOPT_CAINFO, dirname(__FILE__, 5) . '/wp-includes/certificates/ca-bundle.crt');
+        curl_setopt($curl, CURLOPT_CAINFO, dirname(__FILE__, 6) . '/wp-includes/certificates/ca-bundle.crt');
 
         $this->last_response = json_decode(curl_exec($curl));
         $this->last_meta     = curl_getinfo($curl);
