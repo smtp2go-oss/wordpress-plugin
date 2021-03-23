@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" colors="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" processIsolation="false" stopOnFailure="true" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+  <coverage processUncoveredFiles="true">
+    <include>
+      <directory suffix=".php">./smtp2go</directory>
+    </include>
+  </coverage>
+  <php>
+    <const name="SMTP2GO_API_KEY" value="api-XXX"/>
+    <const name="SMTP2GO_TEST_RECIPIENT" value="Name &lt;Name+recipient@yourdomain.com&gt;"/>
+    <const name="SMTP2GO_TEST_RECIPIENT_NAME" value="Name"/>
+    <const name="SMTP2GO_TEST_RECIPIENT_EMAIL" value="Name+recipient@yourdomain.com"/>
+    <const name="SMTP2GO_TEST_SENDER" value="Automated Test Sender &lt;Name+sender@yourdomain.com&gt;"/>
+    <const name="SMTP2GO_TEST_SENDER_NAME" value="Automated Test Sender"/>
+    <const name="SMTP2GO_TEST_SENDER_EMAIL" value="Name+sender@yourdomain.com"/>
+  </php>
+</phpunit>

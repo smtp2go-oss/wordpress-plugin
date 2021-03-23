@@ -1,5 +1,5 @@
 <?php
-namespace SMTP2GO;
+namespace SMTP2GO\Api;
 
 /**
  * Defines required behaviour to send a request through the SMTP2GOApiRequest class

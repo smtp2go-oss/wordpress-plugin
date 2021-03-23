@@ -1,7 +1,8 @@
 <?php
-namespace SMTP2GO;
+namespace SMTP2GO\Api;
 
 use SMTP2GO\WpmailCompat;
+use SMTP2GO\MimetypeHelper;
 
 /**
  * Creates an email message payload to send through the request api
@@ -93,6 +94,7 @@ class ApiMessage implements Requestable
      * The data parsed from the $wp_attachments
      *
      * @var array
+     * @deprecated 1.1.0
      */
     private $parsed_attachments;
 
@@ -100,8 +102,12 @@ class ApiMessage implements Requestable
      * Attachments not added through the $wp_attachments variable
      *
      * @var string|array
+     * @deprecated 1.1.0
      */
     protected $attachments;
+
+
+    protected $phpmailer_attachments = array();
 
     /**
      * Inline attachments, only supported through this class
@@ -240,6 +246,15 @@ class ApiMessage implements Requestable
                 'mimetype' => $helper->getMimeType($path),
             );
         }
+        //Phpmailer has already determined the mime type
+        foreach ($this->phpmailer_attachments as $attachment_data) {
+            $attachments[] = array(
+                'filename' => $attachment_data[1],
+                'fileblob' => base64_encode(file_get_contents($attachment_data[0])),
+                'mimetype' => $attachment_data[3],
+            );
+        }
+
         return $attachments;
     }
 
@@ -692,6 +707,16 @@ class ApiMessage implements Requestable
         $this->alt_message = $alt_message;
 
         return $this;
+    }
+
+    /**
+     * Set attachements in the array format used by phpmailer
+     * @param array $attachments
+     */
+
+    public function setMailerAttachments(array $attachments)
+    {
+        $this->phpmailer_attachments = $attachments;
     }
 
     /**

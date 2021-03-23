@@ -3,9 +3,11 @@ namespace Tests\Feature;
 
 require_once 'SMTP2GO-class-loader.php';
 
+
+use SMTP2GO\Api\ApiMessage;
+use SMTP2GO\Api\ApiRequest;
 use PHPUnit\Framework\TestCase;
-use SMTP2GO\ApiMessage;
-use SMTP2GO\ApiRequest;
+use SMTP2GO\Senders\CurlSender;
 
 /**
  * The constants used in these tests must be declared in your phpunit.xml
@@ -42,7 +44,7 @@ class ApiSendTest extends TestCase
 
         
 
-        $this->assertTrue($api_request->send($email));
+        $this->assertTrue($api_request->send($email, new CurlSender));
     }
 
     public function testSendPlainTextEmailThroughApiWithValidPayloadReturnsTrue()
@@ -58,7 +60,7 @@ class ApiSendTest extends TestCase
 
         $email->setContentType('text/plain');
 
-        $this->assertTrue($api_request->send($email));
+        $this->assertTrue($api_request->send($email, new CurlSender));
     }
 
     public function testSendEmailThroughApiWithInvalidPayloadReturnsFalse()
@@ -69,6 +71,6 @@ class ApiSendTest extends TestCase
 
         $api_request = new ApiRequest(SMTP2GO_API_KEY);
 
-        $this->assertFalse($api_request->send($email));
+        $this->assertFalse($api_request->send($email, new CurlSender));
     }
 }
