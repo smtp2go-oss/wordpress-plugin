@@ -1,5 +1,7 @@
 <?php
-namespace SMTP2GO;
+namespace SMTP2GO\Api;
+
+use SMTP2GO\Senders\SendsHttpRequests;
 
 /**
  * Makes http requests to the SMTP2GO api
@@ -66,59 +68,23 @@ class ApiRequest
      * @since 1.0.1
      * @return bool
      */
-    public function send(Requestable $request)
+    public function send(Requestable $request, SendsHttpRequests $sender)
     {
         $payload = $request->buildRequestPayload();
 
         if (defined('WP_DEBUG') && WP_DEBUG === true) {
             error_log(print_r($payload, 1));
         }
-        return $this->sendViaHttpApi($request, $payload);
-    }
-
-    /**
-     * Send using Wordpress' built in http functionality. This is the default option.
-     *
-     * @param Requestable $request
-     * @param array $payload
-     * @return bool
-     */
-    public function sendViaHttpApi(Requestable $request, $payload)
-    {
         $payload['body']['api_key'] = $this->api_key;
 
-        $payload['headers']['Content-type'] = 'application/json';
+        $bool_result = $sender->send($this->url . $request->getEndpoint(), $payload);
 
-        $payload['headers']['User-Agent'] = "smtp2go-wordpress/1.1.0 (https://www.smtp2go.com)";
-
-        $payload['body'] = json_encode(array_filter($payload['body']), JSON_UNESCAPED_SLASHES);
-
-        $payload['timeout'] = 10;
-
-        //Array containing 'headers', 'body', 'response', 'cookies', 'filename'
-        $response = wp_remote_post($this->url . $request->getEndpoint(), $payload);
-
-        if (is_array($response)) {
-            $this->last_response = json_decode($response['body']);
-        } elseif (is_wp_error($response)) {
-            error_log('WP_Http Error' . print_r($response->get_error_messages(), 1) . "\n");
-            return false;
-        }
-
-        // handle https://apidoc.smtp2go.com/documentation/#/POST/email/send success but with failures
-        // mostly useful for the wp-admin send test email, this will fail silently if the plugin is enabled
-        // but not setup correctly
-        if (!empty($this->last_response->data->failures)) {
-            $this->logError();
-            $this->failures = $this->last_response->data->failures;
-        }
-
-        if (!empty($this->last_response->data->error_code)) {
-            $this->logError();
-        }
-
-        return empty($this->last_response->data->error_code);
+        $this->last_response = $sender->getLastResponse();
+        $this->failures = $sender->getFailures();
+        return $bool_result;
     }
+
+    
 
     /**
      * Log errors

@@ -1,8 +1,8 @@
 === SMTP2GO Plugin for Wordpress ===
 Contributors: thefoldnz, greatsaltlake
 Tags: email, wp_mail, email reliability, smtp, smtp2go, phpmailer, mail, email marketing, newsletter, welcome email, marketing
-Requires at least: 4.6
-Tested up to: 5.6.0
+Requires at least: 5.5
+Tested up to: 5.7
 Requires PHP: 7.0
 Stable tag: trunk
 License: GPLv2 or later
@@ -30,7 +30,7 @@ If you have questions or need assistance then feel free to contact the support t
 == Changelog ==
 = v1.1.0 =
 * codebase updated, no longer override wp_mail, remove BC
-* TODO - update unit test to match overriding PHPMailer, not wp_mail()
+* updated unit tests
 * admin email test send updated
 = v1.0.10 =
 * revert depreciated mailer handling while we figure out how / if to implement backwards compatibility
