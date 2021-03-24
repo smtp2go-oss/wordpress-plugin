@@ -161,8 +161,8 @@ class WordpressPlugin
         } else {
             $phpmailer->wp_args = $args;
         }
-        //test purposes
-        //$phpmailer->setSenderInstance(new CurlSender);
+        //need to return these for other users of the wp_mail filter
+        return $args;
 
     }
     /**
