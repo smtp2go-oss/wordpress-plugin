@@ -28,6 +28,8 @@ Once successfully activated, the SMTP2GO plugin will appear in the "Settings" me
 If you have questions or need assistance then feel free to contact the support team by logging into the App (https://app.smtp2go.com) then clicking the support icon on the top-right of the screen.
 
 == Changelog ==
+= v1.1.1 =
+* initMailer returns args for wp_mailer
 = v1.1.0 =
 * codebase updated, no longer override wp_mail, remove BC
 * updated unit tests
