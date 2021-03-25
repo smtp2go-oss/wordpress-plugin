@@ -28,13 +28,7 @@ class SMTP2GOMailerTest extends TestCase
         $mailer          = new SMTP2GOMailer;
         $GLOBALS['phpmailer'] = $mailer;
 
-        $mailer->wp_args = [
-            'to'      => 'sender1@test.test,send2@test.test',
-            'subject' => 'test',
-            'message' => 'test',
-            'headers' => '',
-        ];
-        $mailer->setSenderInstance(new MockSender);
+
         wp_mail('sender1@test.test,send2@test.test', 'test', 'test', '');
         $this->assertCount(2, $mailer->getToAddresses());
     }
@@ -44,13 +38,7 @@ class SMTP2GOMailerTest extends TestCase
         $mailer          = new SMTP2GOMailer;
         $GLOBALS['phpmailer'] = $mailer;
 
-        $mailer->wp_args = [
-            'to'      => 'sender1@test.test,send2@test.test',
-            'subject' => 'test',
-            'message' => 'test',
-            'headers' => '',
-        ];
-        $mailer->setSenderInstance(new MockSender);
+
         wp_mail(['sender1@test.test','send2@test.test'], 'test', 'test', '');
         $this->assertCount(2, $mailer->getToAddresses());
     }
