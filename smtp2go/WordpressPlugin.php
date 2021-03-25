@@ -150,7 +150,7 @@ class WordpressPlugin
      * wp_mail filter handler
      *
      * @param array $args - to,from,body,headers,attachments
-     * @return void
+     * @return array
      */
     public function initMailer($args)
     {
