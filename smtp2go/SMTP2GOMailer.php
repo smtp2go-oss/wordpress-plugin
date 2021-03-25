@@ -40,13 +40,19 @@ class SMTP2GOMailer extends PHPMailer
 
     protected function mailSend($header, $body)
     {
+        $to = $this->wp_args['to'];
+        if (!is_array($to)) {
+            $to = explode(',', $to);
+        }
         $SMTP2GOmessage = new ApiMessage(
-            $this->wp_args['to'],
+            $to,
             $this->wp_args['subject'],
             $this->wp_args['message'],
             $this->wp_args['headers']
         );
-
+        if (defined('WP_DEBUG') && WP_DEBUG === true) {
+            error_log(print_r($this->wp_args, 1));
+        }
         $SMTP2GOmessage->initFromOptions();
 
         if (!empty($this->getAttachments())) {

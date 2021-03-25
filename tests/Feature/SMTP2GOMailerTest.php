@@ -4,18 +4,21 @@ namespace Tests\Feature;
 require_once 'SMTP2GO-class-loader.php';
 use PHPUnit\Framework\TestCase;
 use SMTP2GO\Senders\CurlSender;
+use SMTP2GO\Senders\MockSender;
 use SMTP2GO\Senders\WordpressHttpRemotePostSender;
 use SMTP2GO\SMTP2GOMailer;
 
-define('ABSPATH', dirname(__FILE__, 6) . '/');
-define('WPINC', 'wp-includes');
+require_once dirname(__FILE__, 2) . '/bootstrap.php';
 
-require dirname(__FILE__, 2) . '/bootstrap.php';
-
-require ABSPATH . WPINC . '/pluggable.php';
+require_once ABSPATH . WPINC . '/pluggable.php';
 
 class SMTP2GOMailerTest extends TestCase
 {
+    public function setUp(): void
+    {
+        $GLOBALS['senderClassName'] = CurlSender::class;
+    }
+
     private function setupMailer($subject = 'Test Send')
     {
         $mailer  = new SMTP2GOMailer;
@@ -83,9 +86,8 @@ class SMTP2GOMailerTest extends TestCase
 
     public function testSendWithWpMail()
     {
-        // global $phpmailer;
         $GLOBALS['phpmailer'] = $this->setupMailer();
-        $result               = wp_mail(SMTP2GO_TEST_RECIPIENT, 'Test Send With WP MAIL', '<b>Test</b> Plain Send With WP MAIL', '', array('Content-Type: text/html; charset=UTF-8'));
+        $result               = wp_mail(SMTP2GO_TEST_RECIPIENT, 'Test Send With WP MAIL', 'Test Plain Send With WP MAIL', '', array('Content-Type: text/html; charset=UTF-8'));
         $this->assertTrue($result);
         $this->assertTrue($GLOBALS['phpmailer']->getSenderInstance()->getLastResponse()->data->succeeded == 1);
 
