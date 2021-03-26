@@ -7,16 +7,19 @@
 use SMTP2GO\Senders\CurlSender;
 use SMTP2GO\SMTP2GOMailer;
 
+define('ABSPATH', dirname(__FILE__, 5) . '/');
+define('WPINC', 'wp-includes');
+
 function wp_remote_post($url, $payload)
 {
+    $sender = new $GLOBALS['senderClassName'];
 
-    $sender = new CurlSender;
-    $result = $sender->send($url, array('body' => json_decode($payload['body'],true)));
+    $result = $sender->send($url, array('body' => json_decode($payload['body'], true)));
 
     //Array containing 'headers', 'body', 'response', 'cookies', 'filename'
-    
+
     return array(
-        'body' => json_encode($sender->getLastResponse()),
+        'body'    => json_encode($sender->getLastResponse()),
         'headers' => [],
     );
 }

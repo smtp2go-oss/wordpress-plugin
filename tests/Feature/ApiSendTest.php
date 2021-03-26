@@ -23,7 +23,7 @@ class ApiSendTest extends TestCase
 
     private function createTestMessageInstance()
     {
-        $message = new ApiMessage(SMTP2GO_TEST_RECIPIENT, 'Test Message', '');
+        $message = new ApiMessage(SMTP2GO_TEST_RECIPIENT, 'Test Message - Direct From API', '');
 
         $message->setSender(SMTP2GO_TEST_SENDER);
 
@@ -41,9 +41,6 @@ class ApiSendTest extends TestCase
         $email->setContentType('text/html');
 
         $api_request = new ApiRequest(SMTP2GO_API_KEY);
-
-        
-
         $this->assertTrue($api_request->send($email, new CurlSender));
     }
 

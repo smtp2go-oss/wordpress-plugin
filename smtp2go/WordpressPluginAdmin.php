@@ -444,8 +444,26 @@ class WordpressPluginAdmin
 
         $success = wp_mail($to_email, __('Test Email Via SMTP2GO Wordpress Plugin', $this->plugin_name), $body);
 
+        if (defined('WP_DEBUG') && WP_DEBUG === true) {
+            error_log('PHPMAILER Instance:' . print_r($phpmailer, 1));
+        }
+
+        if (!$phpmailer || !$phpmailer instanceof SMTP2GOMailer) {
+            $reason = 'Another plugin is conflicting with this one. Expected $phpmailer to be an instance of SMTP2GOMailer but it is ' . get_class($phpmailer);
+            wp_send_json(array('success' => 0, 'reason' => htmlentities($reason)));
+            exit;
+        }
+
         $request = $phpmailer->getLastRequest();
 
+        if (empty($request)) {
+            $reason = 'Unable to find the request made to the SMPT2GO API. The most likely cause is a conflict with another plugin.';
+            wp_send_json(array('success' => 0, 'reason' => htmlentities($reason)));
+            exit;
+        }
+        if (defined('WP_DEBUG') && WP_DEBUG === true) {
+            error_log('last request!' . print_r($request, 1));
+        }
         // create / map better error messages where appropriate
         $reason = '';
 

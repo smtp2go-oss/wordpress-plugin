@@ -150,7 +150,7 @@ class WordpressPlugin
      * wp_mail filter handler
      *
      * @param array $args - to,from,body,headers,attachments
-     * @return void
+     * @return array
      */
     public function initMailer($args)
     {
@@ -161,8 +161,8 @@ class WordpressPlugin
         } else {
             $phpmailer->wp_args = $args;
         }
-        //test purposes
-        //$phpmailer->setSenderInstance(new CurlSender);
+        //need to return these for other users of the wp_mail filter
+        return $args;
 
     }
     /**
