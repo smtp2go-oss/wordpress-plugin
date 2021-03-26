@@ -15,7 +15,7 @@
  * Plugin Name:       SMTP2GO
  * Plugin URI:        https://github.com/thefold/smtp2go-wordpress-plugin
  * Description:       Send all email from WordPress via SMTP2GO, Scalable, reliable email delivery https://www.smtp2go.com/.
- * Version:           1.0.1
+ * Version:           1.1.2
  * Author:            SMTP2GO
  * Author URI:        https://www.smtp2go.com
  * License:           GPL-2.0+
@@ -34,10 +34,10 @@ if (!defined('WPINC')) {
 
 /**
  * Currently plugin version.
- * Start at version 1.0.1 and use SemVer - https://semver.org
+ * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('SMTP2GO_WORDPRESS_PLUGIN_VERSION', '1.0.1');
+define('SMTP2GO_WORDPRESS_PLUGIN_VERSION', '1.1.2');
 
 define('SMTP2GO_PLUGIN_BASENAME', plugin_basename(__FILE__));
 /**
@@ -79,84 +79,6 @@ function run_SMTP2GO_wordpress_plugin()
 {
     $plugin = new SMTP2GO\WordpressPlugin();
     $plugin->run();
-}
-
-/**
- * Override the built in wp_mail function so we can send via the SMTP2GO api
- *
- * @param string|array $to
- * @param string $subject
- * @param string $message
- * @param string|array $headers
- * @param string|array $attachments
- * @return bool
- */
-
-//if the plugin isn't activated, this function will exist
-if (!function_exists('wp_mail') && get_option('smtp2go_enabled')) {
-    function wp_mail($to, $subject, $message, $headers = '', $attachments = array())
-    {
-        global $phpmailer;
-
-        // (Re)create it, if it's gone missing
-        if (!($phpmailer instanceof PHPMailer)) {
-            require_once ABSPATH . WPINC . '/class-phpmailer.php';
-            require_once ABSPATH . WPINC . '/class-smtp.php';
-            $phpmailer = new PHPMailer(true);
-        }
-
-        //let other plugins modify the arguments as the native wp mail does
-        $atts = apply_filters('wp_mail', compact('to', 'subject', 'message', 'headers', 'attachments'));
-
-        if (isset($atts['to'])) {
-            $to = $atts['to'];
-        }
-
-        if (!is_array($to)) {
-            $to = explode(',', $to);
-        }
-
-        if (isset($atts['subject'])) {
-            $subject = $atts['subject'];
-        }
-
-        if (isset($atts['message'])) {
-            $message = $atts['message'];
-        }
-
-        if (isset($atts['headers'])) {
-            $headers = $atts['headers'];
-        }
-
-        if (isset($atts['attachments'])) {
-            $attachments = $atts['attachments'];
-        }
-
-
-        $SMTP2GOmessage = new SMTP2GO\ApiMessage($to, $subject, $message, $headers, $attachments);
-
-        $SMTP2GOmessage->initFromOptions();
-
-        /**
-         * So far, this is just to support multipart emails in woocommerce
-         */
-
-        do_action_ref_array('phpmailer_init', array(&$phpmailer));
-
-        if (!empty($phpmailer->AltBody)) {
-            $SMTP2GOmessage->setAltMessage($phpmailer->AltBody);
-        }
-        $content_type = '';
-
-        //see if someone is setting a type
-        $content_type = apply_filters('wp_mail_content_type', $content_type);
-
-        $SMTP2GOmessage->setContentType($content_type);
-
-        $request = new SMTP2GO\ApiRequest;
-
-        return $request->send($SMTP2GOmessage);
-    }
 
 }
 
@@ -166,6 +88,10 @@ if (!function_exists('SMTP2GO_dd')) {
         foreach (func_get_args() as $arg) {
             echo '<pre>', print_r($arg, 1), '</pre>';
         }
+
+        $e = new Exception;
+        echo '<pre>', print_r($e->getTraceAsString(), 1), '</pre>';
+
         exit;
     }
 }

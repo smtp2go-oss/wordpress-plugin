@@ -70,7 +70,7 @@ class WordpressPlugin
         if (defined('SMTP2GO_WORDPRESS_PLUGIN_VERSION')) {
             $this->version = SMTP2GO_WORDPRESS_PLUGIN_VERSION;
         } else {
-            $this->version = '1.0.1';
+            $this->version = '1.0.2';
         }
         //this HAS to be lowercase
         $this->plugin_name = 'smtp2go-wordpress-plugin';
@@ -78,6 +78,7 @@ class WordpressPlugin
         $this->loadDependencies();
         $this->setLocale();
         $this->defineAdminHooks();
+        $this->definePublicHooks();
     }
 
     /**
@@ -140,6 +141,30 @@ class WordpressPlugin
         $this->loader->addAction('wp_ajax_smtp2go_send_email', $plugin_admin, 'sendTestEmail');
     }
 
+    private function definePublicHooks()
+    {
+        $this->loader->addFilter('wp_mail', $this, 'initMailer');
+    }
+
+    /**
+     * wp_mail filter handler
+     *
+     * @param array $args - to,from,body,headers,attachments
+     * @return array
+     */
+    public function initMailer($args)
+    {
+        global $phpmailer;
+        if (!$phpmailer instanceof SMTP2GOMailer) {
+            $phpmailer          = new SMTP2GOMailer;
+            $phpmailer->wp_args = $args;
+        } else {
+            $phpmailer->wp_args = $args;
+        }
+        //need to return these for other users of the wp_mail filter
+        return $args;
+
+    }
     /**
      * Run the loader to execute all of the hooks with WordPress.
      *

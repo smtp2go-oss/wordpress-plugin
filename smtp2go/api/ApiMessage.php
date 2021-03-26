@@ -1,7 +1,8 @@
 <?php
-namespace SMTP2GO;
+namespace SMTP2GO\Api;
 
 use SMTP2GO\WpmailCompat;
+use SMTP2GO\MimetypeHelper;
 
 /**
  * Creates an email message payload to send through the request api
@@ -93,6 +94,7 @@ class ApiMessage implements Requestable
      * The data parsed from the $wp_attachments
      *
      * @var array
+     * @deprecated 1.1.0
      */
     private $parsed_attachments;
 
@@ -100,8 +102,12 @@ class ApiMessage implements Requestable
      * Attachments not added through the $wp_attachments variable
      *
      * @var string|array
+     * @deprecated 1.1.0
      */
     protected $attachments;
+
+
+    protected $phpmailer_attachments = array();
 
     /**
      * Inline attachments, only supported through this class
@@ -240,6 +246,15 @@ class ApiMessage implements Requestable
                 'mimetype' => $helper->getMimeType($path),
             );
         }
+        //Phpmailer has already determined the mime type
+        foreach ($this->phpmailer_attachments as $attachment_data) {
+            $attachments[] = array(
+                'filename' => $attachment_data[1],
+                'fileblob' => base64_encode(file_get_contents($attachment_data[0])),
+                'mimetype' => $attachment_data[3],
+            );
+        }
+
         return $attachments;
     }
 
@@ -271,10 +286,14 @@ class ApiMessage implements Requestable
     {
         $cc_recipients = array();
         foreach ((array) $this->cc as $cc_recipient) {
-            $cc_recipients[] = $this->rfc822($cc_recipient);
+            if (!empty($cc_recipient)) {
+                $cc_recipients[] = $this->rfc822($cc_recipient);
+            }
         }
         foreach ($this->parsed_headers['cc'] as $cc_recipient) {
-            $cc_recipients[] = $this->rfc822($cc_recipient);
+            if (!empty($cc_recipient)) {
+                $cc_recipients[] = $this->rfc822($cc_recipient);
+            }
         }
         return $cc_recipients;
     }
@@ -290,10 +309,14 @@ class ApiMessage implements Requestable
     {
         $bcc_recipients = array();
         foreach ((array) $this->bcc as $bcc_recipient) {
-            $bcc_recipients[] = $this->rfc822($bcc_recipient);
+            if (!empty($bcc_recipient)) {
+                $bcc_recipients[] = $this->rfc822($bcc_recipient);
+            }
         }
         foreach ($this->parsed_headers['bcc'] as $bcc_recipient) {
-            $bcc_recipients[] = $this->rfc822($bcc_recipient);
+            if (!empty($bcc_recipient)) {
+                $bcc_recipients[] = $this->rfc822($bcc_recipient);
+            }
         }
         return $bcc_recipients;
     }
@@ -325,10 +348,12 @@ class ApiMessage implements Requestable
         }
         if (!empty($this->parsed_headers['headers'])) {
             foreach ((array) $this->parsed_headers['headers'] as $name => $content) {
-                $custom_headers[] = array(
-                    'header' => $name,
-                    'value'  => $content,
-                );
+                if (!empty($name) && !empty($content)) {
+                    $custom_headers[] = array(
+                        'header' => $name,
+                        'value'  => $content,
+                    );
+                }
             }
             //not sure if this is required but is native functionality
             if (false !== stripos($this->parsed_headers['content-type'], 'multipart') && !empty($this->parsed_headers['boundary'])) {
@@ -340,11 +365,13 @@ class ApiMessage implements Requestable
         }
         //@todo should we allow this to overwrite an existing one from the settings?
         if (!empty($this->parsed_headers['reply-to'])) {
-            $value            = is_array($this->parsed_headers['reply-to']) ? reset($this->parsed_headers['reply-to']) : $this->parsed_headers['reply-to'];
-            $custom_headers[] = array(
-                'header' => 'Reply-To',
-                'value'  => $value,
-            );
+            $value = is_array($this->parsed_headers['reply-to']) ? reset($this->parsed_headers['reply-to']) : $this->parsed_headers['reply-to'];
+            if (!empty($value)) {
+                $custom_headers[] = array(
+                    'header' => 'Reply-To',
+                    'value'  => $value,
+                );
+            }
         }
 
         return $custom_headers;
@@ -362,7 +389,9 @@ class ApiMessage implements Requestable
             $recipients[] = $this->rfc822($this->recipients);
         } else {
             foreach ($this->recipients as $recipient_item) {
-                $recipients[] = $this->rfc822($recipient_item);
+                if (!empty($recipient_item)) {
+                    $recipients[] = $this->rfc822($recipient_item);
+                }
             }
         }
         return $recipients;
@@ -440,7 +469,7 @@ class ApiMessage implements Requestable
     {
         if (!empty($name)) {
             $email        = str_replace(['<', '>'], '', $email);
-            $this->sender = "$name <$email>";
+            $this->sender = "\"$name\" <$email>";
         } else {
             $this->sender = "$email";
         }
@@ -678,5 +707,25 @@ class ApiMessage implements Requestable
         $this->alt_message = $alt_message;
 
         return $this;
+    }
+
+    /**
+     * Set attachements in the array format used by phpmailer
+     * @param array $attachments
+     */
+
+    public function setMailerAttachments(array $attachments)
+    {
+        $this->phpmailer_attachments = $attachments;
+    }
+
+    /**
+     * Get the data parsed from the $wp_headers
+     *
+     * @return  array
+     */
+    public function getParsedHeaders()
+    {
+        return $this->parsed_headers;
     }
 }

@@ -38,8 +38,7 @@ function SMTP2GO_tab_active($tab)
         <div class="inner">
             <img style="width: 150px" src="<?php echo plugins_url('smtp2go-logo-alt.svg', dirname(__FILE__, 2)) ?>" />
             <div class="container">
-                <p><b>The SMTP2GO Wordpress plugin allows you to use SMTP2GO to deliver all emails from your Wordpress installation.
-                </p>
+                <p><b>The SMTP2GO Wordpress plugin allows you to use SMTP2GO to deliver all emails from your Wordpress installation.</b></p>
                     <div><a class="button smtp2go-button-blue" target="_blank" href="https://app.smtp2go.com">Open the SMTP2GO
                             web app</a>
 
@@ -92,11 +91,19 @@ submit_button('Save Settings');
         <table class="form-table">
             <tr>
                 <td style="width: 20%"><?php _e('To Email', $this->plugin_name)?></td>
-                <td><input type="email" class="smtp2go_text_input" name="smtp2go_to_email" id="smtp2go_to_email" required></td>
+                <td>
+                    <input type="email" class="smtp2go_text_input" name="smtp2go_to_email" id="smtp2go_to_email" placeholder="john@example.com" required>
+                    <br />
+                    <label for="smtp2go_to_email"><span style="cursor: default; font-weight: normal;">A valid email address to send the test email to.</span></label>
+                </td>
             </tr>
             <tr>
                 <td><?php _e('To Name', $this->plugin_name)?></td>
-                <td><input type="text" class="smtp2go_text_input" name="smtp2go_to_name" id="smtp2go_to_name" required></td>
+                <td>
+                    <input type="text" class="smtp2go_text_input" name="smtp2go_to_name" id="smtp2go_to_name" placeholder="John Example" pattern="[a-zA-Z0-9 ]+" required>
+                    <br />
+                    <label for="smtp2go_to_name"><span style="cursor: default; font-weight: normal;">The email to name (alpha numeric characters only).</span></label>
+                </td>
             </tr>
             <tr>
                 <td colspan="2">

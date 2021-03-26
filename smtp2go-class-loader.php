@@ -4,7 +4,6 @@ function SMTP2GOClassLoader($className)
 {
     $fileName  = '';
     $namespace = '';
-
     $includePath = dirname(__FILE__) . DIRECTORY_SEPARATOR;
 
     if (false !== ($lastNsPos = strripos($className, '\\'))) {
@@ -12,16 +11,17 @@ function SMTP2GOClassLoader($className)
         $className = substr($className, $lastNsPos + 1);
         $fileName  = str_replace('\\', DIRECTORY_SEPARATOR, strtolower($namespace)) . DIRECTORY_SEPARATOR;
     }
-    if ($namespace !== 'SMTP2GO') {
+
+    if (strpos($namespace, 'SMTP2GO') === false) {
+        // exit($namespace);
         return true;
     }
     $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
     $fullFileName = $includePath . $fileName;
-
     if (file_exists($fullFileName)) {
-        require $fullFileName;
+        require_once $fullFileName;
     } else {
-        exit('Class "' . $className . '" wasn\'t found in ' . $includePath . ' as ' . $fileName);
+        exit('FAIL! Namespace: ' .$namespace .' Class "' . $className . '" wasn\'t found in ' . $includePath . ' as ' . $fileName);
     }
 }
 spl_autoload_register('SMTP2GOClassLoader');
