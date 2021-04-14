@@ -4,7 +4,6 @@ namespace Tests\Feature;
 require_once 'SMTP2GO-class-loader.php';
 use PHPUnit\Framework\TestCase;
 use SMTP2GO\Senders\CurlSender;
-use SMTP2GO\Senders\MockSender;
 use SMTP2GO\Senders\WordpressHttpRemotePostSender;
 use SMTP2GO\SMTP2GOMailer;
 
@@ -51,6 +50,7 @@ class SMTP2GOMailerTest extends TestCase
         $mailer->From     = SMTP2GO_TEST_SENDER_EMAIL;
         $mailer->FromName = SMTP2GO_TEST_SENDER_NAME;
         $mailer->Body     = $message;
+        $mailer->Subject  = $subject;
         $mailer->addAttachment(dirname(__FILE__, 2) . '/Attachments/cat.jpg', 'attachment.jpg');
         $mailer->isHTML(true);
         return $mailer;
@@ -69,7 +69,7 @@ class SMTP2GOMailerTest extends TestCase
         $mailer = $this->setupMailer();
 
         $result = $mailer->send();
-
+        
         $this->assertTrue($result);
 
         $this->assertTrue($mailer->getSenderInstance()->getLastResponse()->data->succeeded == 1);

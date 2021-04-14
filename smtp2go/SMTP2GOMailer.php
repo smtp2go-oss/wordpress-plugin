@@ -46,8 +46,8 @@ class SMTP2GOMailer extends PHPMailer
         }
         $SMTP2GOmessage = new ApiMessage(
             $to,
-            $this->wp_args['subject'],
-            $this->wp_args['message'],
+            $this->Subject,
+            $this->Body,
             $this->wp_args['headers']
         );
         if (defined('WP_DEBUG') && WP_DEBUG === true) {
