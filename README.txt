@@ -29,6 +29,9 @@ If you have questions or need assistance then feel free to contact the support t
 
 == Changelog ==
 = v1.1.3 =
+* HTML email handling issue
+* check variable for type instead of type hint
+= v1.1.2 =
 * support GravityForms multiple email recipients
 * handle plugin conflicts when admin sends a test email
 = v1.1.1 =
