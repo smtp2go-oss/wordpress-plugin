@@ -1,8 +1,8 @@
 <?php
 namespace SMTP2GO\Api;
 
-use SMTP2GO\WpmailCompat;
 use SMTP2GO\MimetypeHelper;
+use SMTP2GO\WpmailCompat;
 
 /**
  * Creates an email message payload to send through the request api
@@ -105,7 +105,6 @@ class ApiMessage implements Requestable
      * @deprecated 1.1.0
      */
     protected $attachments;
-
 
     protected $phpmailer_attachments = array();
 
@@ -440,9 +439,11 @@ class ApiMessage implements Requestable
      *
      * @return  self
      */
-    public function setCustomHeaders(array $custom_headers)
+    public function setCustomHeaders($custom_headers)
     {
-        $this->custom_headers = $custom_headers;
+        if (is_array($custom_headers)) {
+            $this->custom_headers = $custom_headers;
+        }
 
         return $this;
     }
