@@ -1,6 +1,7 @@
 <?php
 namespace SMTP2GO;
 
+use SMTP2GO\Api\ApiDomain;
 use SMTP2GO\Api\ApiRequest;
 use SMTP2GO\Api\ApiSummary;
 use SMTP2GO\Senders\WordpressHttpRemotePostSender;
@@ -393,6 +394,19 @@ class WordpressPluginAdmin
             $stats = $sender->getLastResponse()->data;
         }
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-stats-display.php';
+    }
+
+    public function renderValidationPage()
+    {
+        $domain = new ApiDomain;
+        $request = new ApiRequest(get_option('smtp2go_api_key'));
+
+        $sender  = new WordpressHttpRemotePostSender;
+        $result = null;
+        $request->send($domain->verify(get_site_url()), $sender);
+        $result = $sender->getLastResponse()->data;
+        
+        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-validation-display.php';
     }
 
     public function renderManagementPage()
