@@ -26,6 +26,12 @@
  */
 
 // If uninstall not called from WordPress, then exit.
-if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
-	exit;
+if (!defined('WP_UNINSTALL_PLUGIN')) {
+    foreach (['smtp2go_api_key',
+        'smtp2go_custom_headers',
+        'smtp2go_enabled',
+        'smtp2go_from_address',
+        'smtp2go_from_name'] as $option_name) {
+        delete_option($option_name);
+    }
 }

@@ -58,15 +58,10 @@ function deactivate_SMTP2GO_wordpress_plugin()
     WordpressPluginDeactivator::deactivate();
 }
 
-function uninstall_SMTP2GO_wordpress_plugin()
-{
-    WordpressPluginDeactivator::uninstall();
-}
 
 register_activation_hook(__FILE__, 'activate_SMTP2GO_wordpress_plugin');
 register_deactivation_hook(__FILE__, 'deactivate_SMTP2GO_wordpress_plugin');
 
-register_uninstall_hook(__FILE__, 'uninstall_SMTP2GO_wordpress_plugin');
 
 /**
  * The core plugin class that is used to define internationalization,
