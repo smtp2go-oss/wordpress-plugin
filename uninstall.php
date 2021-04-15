@@ -27,6 +27,20 @@
 
 // If uninstall not called from WordPress, then exit.
 if (!defined('WP_UNINSTALL_PLUGIN')) {
+    exit;
+}
+if (is_multisite() && !wp_is_large_network()) {
+    foreach (get_sites() as $site) {
+        switch_to_blog($site->blog_id);
+        smtp2go_delete_options();
+    }
+    restore_current_blog();
+} else {
+    smtp2go_delete_options();
+}
+
+function smtp2go_delete_options()
+{
     foreach (['smtp2go_api_key',
         'smtp2go_custom_headers',
         'smtp2go_enabled',
