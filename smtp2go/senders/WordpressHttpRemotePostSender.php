@@ -27,28 +27,33 @@ class WordpressHttpRemotePostSender implements SendsHttpRequests
     protected $failures = array();
 
     /**
+     * The max number of seconds the api call can take to return data
+     *
+     * @var integer
+     */
+    protected $timeout = 10;
+    /**
      * Send using Wordpress' built in http functionality. This is the default option.
      *
      * @param string $url
      * @param array $payload
      * @return bool
      */
-    public function send(string $url, array $payload):bool
+    public function send(string $url, array $payload): bool
     {
-        
         $payload['headers']['Content-type'] = 'application/json';
 
         $payload['headers']['User-Agent'] = "smtp2go-wordpress/1.0.10 (https://www.smtp2go.com)";
 
         $payload['body'] = json_encode(array_filter($payload['body']), JSON_UNESCAPED_SLASHES);
 
-        $payload['timeout'] = 10;
+        $payload['timeout'] = $this->timeout;
 
         //Array containing 'headers', 'body', 'response', 'cookies', 'filename'
         $response = wp_remote_post($url, $payload);
         if (is_array($response)) {
             $this->last_response = json_decode($response['body']);
-            $this->last_meta = $response['headers'];
+            $this->last_meta     = $response['headers'];
         } elseif (is_wp_error($response)) {
             error_log('WP_Http Error' . print_r($response->get_error_messages(), 1) . "\n");
             return false;
@@ -88,5 +93,29 @@ class WordpressHttpRemotePostSender implements SendsHttpRequests
     public function getFailures()
     {
         return $this->failures;
+    }
+
+    /**
+     * Get the max number of seconds the api call can take to return data
+     *
+     * @return  integer
+     */
+    public function getTimeout()
+    {
+        return $this->timeout;
+    }
+
+    /**
+     * Set the max number of seconds the api call can take to return data
+     *
+     * @param  integer  $timeout  The max number of seconds the api call can take to return data
+     *
+     * @return  self
+     */
+    public function setTimeout($timeout)
+    {
+        $this->timeout = $timeout;
+
+        return $this;
     }
 }
