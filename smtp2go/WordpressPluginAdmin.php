@@ -402,9 +402,12 @@ class WordpressPluginAdmin
         $request = new ApiRequest(get_option('smtp2go_api_key'));
 
         $sender  = new WordpressHttpRemotePostSender;
+        $sender->setTimeout(60);
         $result = null;
-        $request->send($domain->verify(get_site_url()), $sender);
-        $result = $sender->getLastResponse()->data;
+        $this_host = parse_url(get_site_url(), PHP_URL_HOST);
+        
+        $request->send($domain->verify($this_host), $sender);
+        $result = $sender->getLastResponse()->data ?? null;
         
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-validation-display.php';
     }
