@@ -424,6 +424,7 @@ class WordpressPluginAdmin
 
     public function sendTestEmail()
     {
+        define('SMTP2GO_TEST_MAIL', true);
         /** @var SMTP2GOMailer $phpmailer */
         global $phpmailer;
 
