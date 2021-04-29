@@ -341,7 +341,7 @@ class WordpressPluginAdmin
     public function outputApiKeyHtml()
     {
         $setting = get_option('smtp2go_api_key');
-        $hint    = '<span style="cursor: default; font-weight: normal;">Create/find your API key from the <i>Settings > API Keys</i> page in the SMTP2GO web app.<br/>The API key will need permissions <i>Emails</i> and <i>Statistics.</i></span>';
+        $hint    = '<span style="cursor: default; font-weight: normal;">Create/find your API key from the <i>Settings > API Keys</i> page in the SMTP2GO web app.<br/>The API key will need permissions <i>Emails</i> and <i>Statistics.</i> and <i>Sender Domains /domain/verify</i></span>';
         if (empty($setting)) {
             $this->outputTextFieldHtml(array(
                 'name'     => 'smtp2go_api_key',
@@ -405,10 +405,10 @@ class WordpressPluginAdmin
         $sender->setTimeout(60);
         $result = null;
         $this_host = parse_url(get_site_url(), PHP_URL_HOST);
-        
+
         $request->send($domain->verify($this_host), $sender);
         $result = $sender->getLastResponse()->data ?? null;
-        
+
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-validation-display.php';
     }
 
