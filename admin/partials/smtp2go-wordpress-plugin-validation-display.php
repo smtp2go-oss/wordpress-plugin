@@ -1,7 +1,7 @@
 <div class="wrap smtp2go">
 <h1>Sender Domain Validation for <?php echo $this_host ?></h1>
 
-See <a href="https://support.smtp2go.com/hc/en-gb/articles/115004408567-Sender-Domains">SMTP2GO Support</a>
+<a href="https://support.smtp2go.com/hc/en-gb/articles/115004408567-Sender-Domains">What is Sender Domain Validation?</a>
 
 <?php if (!empty($result->domains)) : ?>
 
