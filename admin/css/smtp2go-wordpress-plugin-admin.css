@@ -5,13 +5,16 @@
 .smtp2go h1 {
   margin: 10px 0;
 }
+
 .smtp2go_text_input {
   width: 50%;
 }
+
 .smtp2go_help_text {
   display: block;
   margin: 0.2rem 0;
 }
+
 .smtp2go_custom_headers {
   position: relative;
   left: -10px;
@@ -21,14 +24,17 @@
   border-collapse: collapse;
   width: 100%;
 }
+
 @media screen and (min-width: 1024px) {
   .smtp2go_custom_headers {
     width: 59.25%;
   }
 }
+
 .smtp2go_custom_headers .smtp2go_text_input {
   width: 100%;
 }
+
 .smtp2go_custom_headers th {
   padding-top: 5px;
   padding-left: 10px;
@@ -38,12 +44,14 @@
   display: table-cell;
   width: 42%;
 }
+
 .smtp2go_custom_headers td {
   padding-left: 10px;
   background: #fff;
   border: 1px solid #dbdbdb;
   display: table-cell;
 }
+
 .smtp2go_custom_headers .smtp2go_grey_cell {
   background: #f1f1f1;
   text-align: center;
@@ -54,12 +62,15 @@
   padding-left: 0;
   text-indent: 5px;
 }
+
 .smtp2go_hide_title th {
   display: none;
 }
+
 .smtp2go_hide_title th.heading {
   display: table-cell;
 }
+
 .smtp2go-error-message,
 .smtp2go-success-message {
   padding: 5px;
@@ -68,6 +79,7 @@
   border-left: 5px solid red;
   background-color: #fff;
 }
+
 .smtp2go-success-message {
   border-left: 5px solid green;
 }
@@ -82,6 +94,7 @@
   margin-bottom: 10px;
   z-index: 10;
 }
+
 .smtp2go-progress-bar {
   height: 31px;
   background-color: #7cb76a;
@@ -90,6 +103,7 @@
   top: 0;
   z-index: 30;
 }
+
 .smtp2go-usage-bar p {
   text-align: center;
   margin: 0;
@@ -100,12 +114,14 @@
   position: relative;
   z-index: 40;
 }
+
 .smtp2go-stat-box {
   padding: 15px;
   border: 1px solid black;
   margin-bottom: 10px;
   width: 580px;
 }
+
 .smtp2go-stat-box-small {
   padding: 10px;
   width: 40%;
@@ -136,6 +152,12 @@
   text-transform: uppercase;
 }
 
+.smtp2go-stat-badge.relative {
+  position: relative;
+  right: 0;
+  top: 0;
+}
+
 .smtp2go-should-be-meta {
   margin: 5px 0 0;
   text-transform: uppercase;
@@ -154,18 +176,22 @@
 .smtp2go-stat-badge.smtp2go-poor-status {
   background-color: #e38b81;
 }
+
 .smtp2go-intro-wrapper {
   background: white;
   width: 100%;
   border: 1px solid #ccc;
 }
+
 .smtp2go-intro-wrapper .inner {
   padding: 10px;
   display: flex;
 }
+
 .smtp2go-intro-wrapper div.container {
   padding: 0 20px;
 }
+
 .smtp2go a.smtp2go-button-blue {
   background-color: #016fae;
   color: #fff;
@@ -179,9 +205,11 @@
   border: 1px solid #a0a0a0;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
+
 .smtp2go_custom_header_increment {
   counter-increment: section;
 }
+
 .smtp2go_custom_header_increment::before {
   content: counter(section);
   display: block;
@@ -190,6 +218,7 @@
   padding: 5px 2px;
   text-align: center;
 }
+
 .smtp2go_add_remove_row {
   border-radius: 9999px;
   border: 1px solid #dbdbdb;
@@ -201,6 +230,27 @@
   text-decoration: none;
   background-color: white;
 }
+
 .smtp2go-js-hidden {
-  display:none;
+  display: none;
+}
+
+.smtp2go-domain-status-badge {
+  border-radius: 3px !important;
+  padding: 1px 6px 2px;
+  text-align: center;
+  color: white;
+  font-size: 0.9em;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.smtp2go-domain-status-badge.green {
+  background-color: #3bb67f;
+}
+.smtp2go-domain-status-badge.rose {
+  background-color: #ef8a78;
+}
+.smtp2go-domain-status-badge.grey {
+  background-color: #828da0;
 }
