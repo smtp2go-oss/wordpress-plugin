@@ -28,6 +28,8 @@ Once successfully activated, the SMTP2GO plugin will appear in the "Settings" me
 If you have questions or need assistance then feel free to contact the support team by logging into the App (https://app.smtp2go.com) then clicking the support icon on the top-right of the screen.
 
 == Changelog ==
+= v1.1.4 =
+* check the enable/disable flag, plugin wasn't honouring the flag and sending out via API regardless
 = v1.1.3 =
 * HTML email handling issue
 * check variable for type instead of type hint
