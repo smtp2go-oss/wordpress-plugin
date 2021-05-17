@@ -1,7 +1,5 @@
 <div class="wrap smtp2go smtp2go-stat-box">
-    <h1>Sender Domain Validation for <?php echo $this_host ?></h1>
    
-    <br />
     <?php if (!empty($result->domains)) : ?>
     <table class="smtp2go-validation-table">
         <thead>
