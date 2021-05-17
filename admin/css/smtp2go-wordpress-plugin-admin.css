@@ -236,13 +236,14 @@
 }
 
 .smtp2go-domain-status-badge {
-  border-radius: 3px !important;
-  padding: 1px 6px 2px;
+  border-radius: 2px !important;
+  padding: 4px 4px 4px;
   text-align: center;
   color: white;
-  font-size: 0.9em;
+  font-size: 14px;
   white-space: nowrap;
   display: inline-block;
+  text-transform: uppercase;
 }
 
 .smtp2go-domain-status-badge.green {
@@ -253,4 +254,11 @@
 }
 .smtp2go-domain-status-badge.grey {
   background-color: #828da0;
+}
+.smtp2go-validation-table {
+  width:100%;
+  border-collapse: collapse;
+}
+.smtp2go-validation-table th, .smtp2go-validation-table td {
+  text-align:left;
 }

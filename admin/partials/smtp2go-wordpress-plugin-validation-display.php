@@ -1,14 +1,9 @@
-<div class="wrap smtp2go">
+<div class="wrap smtp2go smtp2go-stat-box">
     <h1>Sender Domain Validation for <?php echo $this_host ?></h1>
-    <div class="notice">
-        <p>
-            <a target="_blank" href="https://support.smtp2go.com/hc/en-gb/articles/115004408567-Sender-Domains">What is
-                Sender Domain Validation?</a>
-        </p>
-    </div>
+   
     <br />
     <?php if (!empty($result->domains)) : ?>
-    <table class="widefat">
+    <table class="smtp2go-validation-table">
         <thead>
             <tr>
                 <th><strong>Domain</strong></th>
@@ -34,4 +29,10 @@
     <div class="error">Unable to retrieve domain validation information.
         <strong><?php echo $result->error ?? '' ?></strong></div>
     <?php endif?>
+
+
 </div>
+<p>
+            <a target="_blank" href="https://support.smtp2go.com/hc/en-gb/articles/115004408567-Sender-Domains">What is
+                Sender Domain Validation?</a>
+        </p>
