@@ -446,6 +446,7 @@ class WordpressPluginAdmin
 
     public function sendTestEmail()
     {
+        define('SMTP2GO_TEST_MAIL', true);
         /** @var SMTP2GOMailer $phpmailer */
         global $phpmailer;
 
@@ -479,7 +480,7 @@ class WordpressPluginAdmin
         $request = $phpmailer->getLastRequest();
 
         if (empty($request)) {
-            $reason = 'Unable to find the request made to the SMPT2GO api. The most likely cause is a conflict with another plugin.';
+            $reason = 'Unable to find the request made to the SMPT2GO API. The most likely cause is a conflict with another plugin.';
             wp_send_json(array('success' => 0, 'reason' => htmlentities($reason)));
             exit;
         }
