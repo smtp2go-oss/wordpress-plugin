@@ -75,7 +75,7 @@ class ApiRequest
         if (defined('WP_DEBUG') && WP_DEBUG === true) {
             error_log(print_r($payload, 1));
         }
-        $payload['body']['api_key'] = $this->api_key;
+        $payload['body']['api_key'] = $this-> api_key;
 
         $bool_result = $sender->send($this->url . $request->getEndpoint(), $payload);
 
@@ -84,7 +84,7 @@ class ApiRequest
         return $bool_result;
     }
 
-    
+
 
     /**
      * Log errors

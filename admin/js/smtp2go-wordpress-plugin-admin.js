@@ -6,6 +6,10 @@
       $(".js-stats-tab-span.spinner").show();
       $(".js-stats-tab-span.spinner").addClass("is-active");
     });
+    $(".js-validation-tab").click(function (e) {
+      $(".js-validation-tab-span.spinner").show();
+      $(".js-validation-tab-span.spinner").addClass("is-active");
+    });    
     $(document).on("click", ".smtp2go_add_remove_row", function () {
       if ($(this).hasClass("j-add-row")) {
         var cloned = $(

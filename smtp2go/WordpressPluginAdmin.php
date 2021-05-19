@@ -1,6 +1,7 @@
 <?php
 namespace SMTP2GO;
 
+use SMTP2GO\Api\ApiDomain;
 use SMTP2GO\Api\ApiRequest;
 use SMTP2GO\Api\ApiSummary;
 use SMTP2GO\Senders\WordpressHttpRemotePostSender;
@@ -340,7 +341,7 @@ class WordpressPluginAdmin
     public function outputApiKeyHtml()
     {
         $setting = get_option('smtp2go_api_key');
-        $hint    = '<span style="cursor: default; font-weight: normal;">Create/find your API key from the <i>Settings > API Keys</i> page in the SMTP2GO web app.<br/>The API key will need permissions <i>Emails</i> and <i>Statistics.</i></span>';
+        $hint    = '<span style="cursor: default; font-weight: normal;">Create/find your API key from the <i>Settings > API Keys</i> page in the SMTP2GO web app.<br/>The API key will need permissions <i>Emails</i> and <i>Statistics.</i> and <i>Sender Domains /domain/verify</i></span>';
         if (empty($setting)) {
             $this->outputTextFieldHtml(array(
                 'name'     => 'smtp2go_api_key',
@@ -395,6 +396,27 @@ class WordpressPluginAdmin
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-stats-display.php';
     }
 
+    public function renderValidationPage()
+    {
+        $domain  = new ApiDomain;
+        $request = new ApiRequest(get_option('smtp2go_api_key'));
+
+        $sender = new WordpressHttpRemotePostSender;
+        $sender->setTimeout(60);
+        $result    = null;
+        $this_host = parse_url(get_site_url(), PHP_URL_HOST);
+
+        $request->send($domain->verify($this_host), $sender);
+        $result                 = $sender->getLastResponse()->data ?? null;
+        $domain_info            = $result->domains[0]->domain ?? null;
+        $tracker_info           = $result->domains[0]->trackers[0] ?? null;
+        $domain_status_good     = !empty($domain_info) && $domain_info->dkim_verified && $domain_info->rpath_verified;
+        $tracker_status_good    = !empty($tracker_info) && $tracker_info->cname_verified;
+        $tracker_status_enabled = !empty($tracker_info) && $tracker_info->enabled;
+
+        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-validation-display.php';
+    }
+
     public function renderManagementPage()
     {
         //fetch all the options
@@ -424,6 +446,7 @@ class WordpressPluginAdmin
 
     public function sendTestEmail()
     {
+        define('SMTP2GO_TEST_MAIL', true);
         /** @var SMTP2GOMailer $phpmailer */
         global $phpmailer;
 

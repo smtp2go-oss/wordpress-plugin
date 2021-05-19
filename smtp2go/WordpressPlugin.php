@@ -155,6 +155,11 @@ class WordpressPlugin
     public function initMailer($args)
     {
         global $phpmailer;
+
+        if (!get_option('smtp2go_enabled') && !defined('SMTP2GO_TEST_MAIL')) {
+            return $args;
+        }
+
         if (!$phpmailer instanceof SMTP2GOMailer) {
             $phpmailer          = new SMTP2GOMailer;
             $phpmailer->wp_args = $args;
@@ -163,7 +168,6 @@ class WordpressPlugin
         }
         //need to return these for other users of the wp_mail filter
         return $args;
-
     }
     /**
      * Run the loader to execute all of the hooks with WordPress.
