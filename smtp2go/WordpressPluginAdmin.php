@@ -1,10 +1,12 @@
 <?php
 namespace SMTP2GO;
 
-use SMTP2GO\Api\ApiDomain;
 use SMTP2GO\Api\ApiRequest;
 use SMTP2GO\Api\ApiSummary;
 use SMTP2GO\Senders\WordpressHttpRemotePostSender;
+use SMTP2GO\Service\Service;
+
+require_once dirname(__FILE__, 2) . '/vendor/vendor/autoload.php';
 
 /**
  * The admin-specific functionality of the plugin.
@@ -386,28 +388,29 @@ class WordpressPluginAdmin
 
     public function renderStatsPage()
     {
-        $summary = new ApiSummary;
-        $request = new ApiRequest(get_option('smtp2go_api_key'));
+        $client = new ApiClient(get_option('smtp2go_api_key'));
         $stats   = null;
-        $sender  = new WordpressHttpRemotePostSender;
-        if ($request->send($summary, $sender)) {
-            $stats = $sender->getLastResponse()->data;
+        
+        if ($client->consume(new Service('stats/email_summary'))) {
+            $stats = $client->getResponseBody()->data;
         }
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-stats-display.php';
     }
 
     public function renderValidationPage()
     {
-        $domain  = new ApiDomain;
-        $request = new ApiRequest(get_option('smtp2go_api_key'));
+        $client = new ApiClient(get_option('smtp2go_api_key'));
 
-        $sender = new WordpressHttpRemotePostSender;
-        $sender->setTimeout(60);
         $result    = null;
         $this_host = parse_url(get_site_url(), PHP_URL_HOST);
 
-        $request->send($domain->verify($this_host), $sender);
-        $result                 = $sender->getLastResponse()->data ?? null;
+        $success = $client->consume((new Service('domain/verify', ['domain' => $this_host])));
+        if (!$success) {
+            echo 'Unable to verify domain';
+            return;
+        }
+        $result                 = $client->getResponseBody();
+        $result                 = $result->data;
         $domain_info            = $result->domains[0]->domain ?? null;
         $tracker_info           = $result->domains[0]->trackers[0] ?? null;
         $domain_status_good     = !empty($domain_info) && $domain_info->dkim_verified && $domain_info->rpath_verified;

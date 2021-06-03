@@ -451,7 +451,7 @@ class ApiMessage implements Requestable
     /**
      * Get sender
      *
-     * @return  string
+     * @return string
      */
     public function getSender()
     {
