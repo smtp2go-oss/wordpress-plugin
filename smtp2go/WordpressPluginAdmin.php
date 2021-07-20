@@ -2,10 +2,10 @@
 
 namespace SMTP2GO;
 
-use SMTP2GO\Api\ApiDomain;
-use SMTP2GO\Api\ApiRequest;
-use SMTP2GO\Api\ApiSummary;
-use SMTP2GO\Senders\WordpressHttpRemotePostSender;
+
+use SMTP2GO\Service\Service;
+
+require_once dirname(__FILE__, 2) . '/vendor/autoload.php';
 
 /**
  * The admin-specific functionality of the plugin.
@@ -383,29 +383,26 @@ class WordpressPluginAdmin
 
     public function renderStatsPage()
     {
-        $summary = new ApiSummary;
-        $request = new ApiRequest(get_option('smtp2go_api_key'));
+        $client = new ApiClient(get_option('smtp2go_api_key'));
         $stats   = null;
-        $sender  = new WordpressHttpRemotePostSender;
-        if ($request->send($summary, $sender)) {
-            $stats = $sender->getLastResponse()->data;
+
+        if ($client->consume(new Service('stats/email_summary'))) {
+            $stats = $client->getResponseBody()->data;
         }
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-stats-display.php';
     }
 
     public function renderValidationPage()
     {
-        $domain  = new ApiDomain;
-        $request = new ApiRequest(get_option('smtp2go_api_key'));
+        $client = new ApiClient(get_option('smtp2go_api_key'));
 
-        $sender = new WordpressHttpRemotePostSender;
-        $sender->setTimeout(60);
         $result    = null;
         [$name, $this_host] = explode('@', get_option('smtp2go_from_address'));
 
-        $request->send($domain->verify($this_host), $sender);
-        $result                 = $sender->getLastResponse()->data ?? null;
-        
+        $success = $client->consume((new Service('domain/verify', ['domain' => $this_host])));
+
+        $result                 = $client->getResponseBody();
+        $result                 = $result->data;
         $domain_info            = $result->domains[0]->domain ?? null;
         $tracker_info           = $result->domains[0]->trackers[0] ?? null;
         $domain_status_good     = !empty($domain_info) && $domain_info->dkim_verified && $domain_info->rpath_verified;
@@ -477,6 +474,9 @@ class WordpressPluginAdmin
 
         $request = $phpmailer->getLastRequest();
 
+        $response = $request->getResponseBody();
+
+
         if (empty($request)) {
             $reason = 'Unable to find the request made to the SMPT2GO API. The most likely cause is a conflict with another plugin.';
             wp_send_json(array('success' => 0, 'reason' => htmlentities($reason)));
@@ -484,13 +484,14 @@ class WordpressPluginAdmin
         }
         if (defined('WP_DEBUG') && WP_DEBUG === true) {
             error_log('last request!' . print_r($request, 1));
+            error_log('last response!' . print_r($response, 1));
         }
         // create / map better error messages where appropriate
         $reason = '';
-
+        $failures = $this->last_response->data->failures;
         // API returns failures two different ways - either in failures
-        if (count($request->getFailures()) > 0) {
-            $reason = $request->getFailures()[0];
+        if (count($failures) > 0) {
+            $reason = $failures[0];
 
             // map when we don't get error_code
             if (strpos($reason, "unable to verify sender address")) {
@@ -500,10 +501,8 @@ class WordpressPluginAdmin
             wp_send_json(array('success' => 0, 'reason' => htmlentities($reason)));
         }
 
-        $response = null;
 
         if (empty($success)) {
-            $response = $request->getLastResponse();
 
             if (!empty($response->data->field_validation_errors->message)) {
                 $reason = $response->data->field_validation_errors->message;
