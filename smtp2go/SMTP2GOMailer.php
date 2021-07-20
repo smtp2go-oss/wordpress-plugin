@@ -1,4 +1,5 @@
 <?php
+
 namespace SMTP2GO;
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -9,7 +10,7 @@ use SMTP2GO\Service\Mail\Send;
 
 require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
 require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
-require_once dirname(__FILE__, 2) . '/vendor/vendor/autoload.php';
+require_once dirname(__FILE__, 2) . '/vendor/autoload.php';
 class SMTP2GOMailer extends PHPMailer
 {
     /**
@@ -20,9 +21,9 @@ class SMTP2GOMailer extends PHPMailer
     public $wp_args;
 
     /**
-     * The last ApiRequest Object
+     * The last ApiClient Object
      *
-     * @var ApiRequest
+     * @var ApiClient
      */
     protected $last_request = null;
 

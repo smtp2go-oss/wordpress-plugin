@@ -1,0 +1,5 @@
+{
+    "require": {
+        "smtp2go-oss/smtp2go-php": "dev-dev"
+    }
+}
