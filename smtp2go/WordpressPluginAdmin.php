@@ -395,19 +395,10 @@ class WordpressPluginAdmin
     public function renderValidationPage()
     {
         $client = new ApiClient(get_option('smtp2go_api_key'));
-
-        $result    = null;
-        [$name, $this_host] = explode('@', get_option('smtp2go_from_address'));
-
-        $success = $client->consume((new Service('domain/verify', ['domain' => $this_host])));
+        $client->consume((new Service('domain/view')));
 
         $result                 = $client->getResponseBody();
-        $result                 = $result->data;
-        $domain_info            = $result->domains[0]->domain ?? null;
-        $tracker_info           = $result->domains[0]->trackers[0] ?? null;
-        $domain_status_good     = !empty($domain_info) && $domain_info->dkim_verified && $domain_info->rpath_verified;
-        $tracker_status_good    = !empty($tracker_info) && $tracker_info->cname_verified;
-        $tracker_status_enabled = !empty($tracker_info) && $tracker_info->enabled;
+        $result                 = $result->data ?? null;
 
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-validation-display.php';
     }
