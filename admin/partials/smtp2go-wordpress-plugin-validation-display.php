@@ -22,7 +22,7 @@
                 ?>
                     <tr>
                         <td>
-                            <a target="_blank" title="View this sender domain in your SMTP2GO account" href="https://app.smtp2go.com/settings/sender_domains/#edit/<?php echo $domain_info->fulldomain ?>"><?php echo $domain_info->fulldomain ?></a>
+                            <a target="_blank" title="View this sender domain in your SMTP2GO account" href="https://app.smtp2go.com/settings/sender_domains/"><?php echo $domain_info->fulldomain ?></a>
                         </td>
                         <td>
                             <span class="smtp2go-domain-status-badge <?php echo $domain_status_good ? 'green' : 'rose' ?>"><?php echo $domain_status_good ? 'Verified' : 'Unverified' ?></span>
