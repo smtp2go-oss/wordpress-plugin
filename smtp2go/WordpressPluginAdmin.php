@@ -2,9 +2,7 @@
 
 namespace SMTP2GO;
 
-use SMTP2GO\Api\ApiRequest;
-use SMTP2GO\Api\ApiSummary;
-use SMTP2GO\Senders\WordpressHttpRemotePostSender;
+
 use SMTP2GO\Service\Service;
 
 require_once dirname(__FILE__, 2) . '/vendor/autoload.php';
