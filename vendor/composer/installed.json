@@ -503,5 +503,6 @@
             "install-path": "../smtp2go-oss/smtp2go-php"
         }
     ],
-    "dev": true
+    "dev": true,
+    "dev-package-names": []
 }
