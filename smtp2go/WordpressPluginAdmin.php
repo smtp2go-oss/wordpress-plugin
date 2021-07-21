@@ -498,7 +498,7 @@ class WordpressPluginAdmin
             if (!empty($response->data->field_validation_errors->message)) {
                 $reason = $response->data->field_validation_errors->message;
             } elseif (!empty($response->data->error)) {
-                $reason = $response->data->error;
+                $reason = $response->data->error. '<br />' .$response->data->error_code;
             }
             // API returns failures two different ways - or with error codes
             switch ($response->data->error_code ?? '') {
