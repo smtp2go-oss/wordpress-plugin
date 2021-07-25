@@ -29,7 +29,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'c22053ba6856ca059791a363380a840237841423',
+    'reference' => 'ff25b6d0fcace539c8706d39626280879c4cdcd4',
     'name' => '__root__',
   ),
   'versions' => 
@@ -41,7 +41,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'c22053ba6856ca059791a363380a840237841423',
+      'reference' => 'ff25b6d0fcace539c8706d39626280879c4cdcd4',
     ),
     'guzzlehttp/guzzle' => 
     array (
@@ -129,13 +129,12 @@ private static $installed = array (
     ),
     'smtp2go-oss/smtp2go-php' => 
     array (
-      'pretty_version' => 'dev-dev',
-      'version' => 'dev-dev',
+      'pretty_version' => '1.0.0beta',
+      'version' => '1.0.0.0-beta',
       'aliases' => 
       array (
-        0 => '9999999-dev',
       ),
-      'reference' => '729304e52852c55ba6d7e73d1f5dd82ab3224bc4',
+      'reference' => '1a6d728fb69951f4e29f2722ddec3fe1ba4cba53',
     ),
   ),
 );
