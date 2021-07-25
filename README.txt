@@ -2,7 +2,7 @@
 Contributors: thefoldnz, greatsaltlake
 Tags: email, wp_mail, email reliability, smtp, smtp2go, phpmailer, mail, email marketing, newsletter, welcome email, marketing
 Requires at least: 5.5
-Tested up to: 5.7
+Tested up to: 5.8
 Requires PHP: 7.0
 Stable tag: trunk
 License: GPLv2 or later
