@@ -4,7 +4,6 @@ namespace SMTP2GO;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use SMTP2GO\ApiClient;
-
 use SMTP2GO\Service\Mail\Send;
 
 require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
