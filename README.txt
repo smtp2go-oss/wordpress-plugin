@@ -2,7 +2,7 @@
 Contributors: thefoldnz, greatsaltlake
 Tags: email, wp_mail, email reliability, smtp, smtp2go, phpmailer, mail, email marketing, newsletter, welcome email, marketing
 Requires at least: 5.5
-Tested up to: 5.7
+Tested up to: 5.8
 Requires PHP: 7.0
 Stable tag: trunk
 License: GPLv2 or later
@@ -28,6 +28,9 @@ Once successfully activated, the SMTP2GO plugin will appear in the "Settings" me
 If you have questions or need assistance then feel free to contact the support team by logging into the App (https://app.smtp2go.com) then clicking the support icon on the top-right of the screen.
 
 == Changelog ==
+= v1.2.0 =
+* use composer package for API integration https://github.com/smtp2go-oss/smtp2go-php
+* fix sender domain validation check
 = v1.1.5 =
 * add sender domain verification tab
 * add uninstaller / clean up database

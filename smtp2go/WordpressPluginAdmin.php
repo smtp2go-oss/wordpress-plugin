@@ -1,10 +1,11 @@
 <?php
+
 namespace SMTP2GO;
 
-use SMTP2GO\Api\ApiDomain;
-use SMTP2GO\Api\ApiRequest;
-use SMTP2GO\Api\ApiSummary;
-use SMTP2GO\Senders\WordpressHttpRemotePostSender;
+
+use SMTP2GO\Service\Service;
+
+require_once dirname(__FILE__, 2) . '/vendor/autoload.php';
 
 /**
  * The admin-specific functionality of the plugin.
@@ -95,8 +96,8 @@ class WordpressPluginAdmin
             array($this, 'outputCheckboxHtml'),
             $this->plugin_name,
             'smtp2go_settings_section',
-            array('name' => 'smtp2go_enabled'
-                , 'label' => __('Send Email Using SMTP2GO'),
+            array(
+                'name' => 'smtp2go_enabled', 'label' => __('Send Email Using SMTP2GO'),
             )
         );
 
@@ -128,11 +129,9 @@ class WordpressPluginAdmin
             [$this, 'outputTextFieldHtml'],
             $this->plugin_name,
             'smtp2go_settings_section',
-            array('name' => 'smtp2go_from_address'
-                , 'label' => '<span style="cursor: default; font-weight: normal;">This is the default email address that your emails will be sent from.</span>'
-                , 'type' => 'email'
-                , 'required' => true
-                , 'placeholder' => 'john@example.com')
+            array(
+                'name' => 'smtp2go_from_address', 'label' => '<span style="cursor: default; font-weight: normal;">This is the default email address that your emails will be sent from.</span>', 'type' => 'email', 'required' => true, 'placeholder' => 'john@example.com'
+            )
         );
 
         /** from name field */
@@ -148,11 +147,9 @@ class WordpressPluginAdmin
             [$this, 'outputTextFieldHtml'],
             $this->plugin_name,
             'smtp2go_settings_section',
-            array('name' => 'smtp2go_from_name',
-                'label'      => '<span style="cursor: default; font-weight: normal;">This is the default name that your emails will be sent from (no " or / allowed).</span>'
-                , 'required' => true
-                , 'placeholder' => 'John Example'
-                , 'pattern' => '[^/\x22]+',
+            array(
+                'name' => 'smtp2go_from_name',
+                'label'      => '<span style="cursor: default; font-weight: normal;">This is the default name that your emails will be sent from (no " or / allowed).</span>', 'required' => true, 'placeholder' => 'John Example', 'pattern' => '[^/\x22]+',
             )
         );
 
@@ -216,10 +213,10 @@ class WordpressPluginAdmin
             $hidden = 'smtp2go-js-hidden';
             foreach ($custom_headers['header'] as $index => $existing_custom_header) {
                 $existing_fields .=
-                '<tr>'
-                . '<td class="smtp2go_grey_cell"><span class="smtp2go_custom_header_increment"></span></td>'
-                . '<td><input class="smtp2go_text_input" type="text" placeholder="' . __('Enter New Header Key', $this->plugin_name) . '" name="smtp2go_custom_headers[header][]" value="' . $existing_custom_header . '"/></td>'
-                . '<td><input class="smtp2go_text_input" type="text" placeholder="' . __('Enter New Header Value', $this->plugin_name) . '" name="smtp2go_custom_headers[value][]" value="' . $custom_headers['value'][$index] . '"/></td>'
+                    '<tr>'
+                    . '<td class="smtp2go_grey_cell"><span class="smtp2go_custom_header_increment"></span></td>'
+                    . '<td><input class="smtp2go_text_input" type="text" placeholder="' . __('Enter New Header Key', $this->plugin_name) . '" name="smtp2go_custom_headers[header][]" value="' . $existing_custom_header . '"/></td>'
+                    . '<td><input class="smtp2go_text_input" type="text" placeholder="' . __('Enter New Header Value', $this->plugin_name) . '" name="smtp2go_custom_headers[value][]" value="' . $custom_headers['value'][$index] . '"/></td>'
                     . '<td  class="smtp2go_grey_cell">'
                     . '<a href="javascript:;" class="smtp2go_add_remove_row j-add-row">+</a>'
                     . '<a href="javascript:;" class="smtp2go_add_remove_row ' . $first_remove . ' j-remove-row">-</a>'
@@ -230,17 +227,17 @@ class WordpressPluginAdmin
         }
 
         echo '<table class="smtp2go_custom_headers">'
-        . '<tr><thead>'
-        . '<th class="heading smtp2go_grey_cell" style="width:20px">&nbsp;</th>'
-        . '<th class="heading">' . __('Header', $this->plugin_name) . '</th>'
-        . '<th class="heading">' . __('Value', $this->plugin_name) . '</th>'
-        . '<th class="heading smtp2go_grey_cell" >&nbsp;</th></thead>'
-        . '<tbody class="smtp2go_custom_headers_table_body">'
-        . $existing_fields
-        . '<tr class="' . $hidden . '">'
-        . '<td class="smtp2go_grey_cell"><span class="smtp2go_custom_header_increment"></span></td>'
-        . '<td><input class="smtp2go_text_input" type="text" placeholder="' . __('Enter New Header Key', $this->plugin_name) . '" name="smtp2go_custom_headers[header][]"/></td>'
-        . '<td><input  class="smtp2go_text_input" type="text" placeholder="' . __('Enter New Header Value', $this->plugin_name) . '" name="smtp2go_custom_headers[value][]"/></td>'
+            . '<tr><thead>'
+            . '<th class="heading smtp2go_grey_cell" style="width:20px">&nbsp;</th>'
+            . '<th class="heading">' . __('Header', $this->plugin_name) . '</th>'
+            . '<th class="heading">' . __('Value', $this->plugin_name) . '</th>'
+            . '<th class="heading smtp2go_grey_cell" >&nbsp;</th></thead>'
+            . '<tbody class="smtp2go_custom_headers_table_body">'
+            . $existing_fields
+            . '<tr class="' . $hidden . '">'
+            . '<td class="smtp2go_grey_cell"><span class="smtp2go_custom_header_increment"></span></td>'
+            . '<td><input class="smtp2go_text_input" type="text" placeholder="' . __('Enter New Header Key', $this->plugin_name) . '" name="smtp2go_custom_headers[header][]"/></td>'
+            . '<td><input  class="smtp2go_text_input" type="text" placeholder="' . __('Enter New Header Value', $this->plugin_name) . '" name="smtp2go_custom_headers[value][]"/></td>'
             . '<td  class="smtp2go_grey_cell">'
             . '<a href="javascript:;" class="smtp2go_add_remove_row j-add-row">+</a>'
             . '<a href="javascript:;" class="smtp2go_add_remove_row ' . $first_remove . ' j-remove-row">-</a>'
@@ -262,7 +259,7 @@ class WordpressPluginAdmin
     public function customHeadersSection()
     {
         echo '<span class="smtp2go_help_text">'
-        . __('Custom Headers are an optional set of custom headers that are applied to your emails.
+            . __('Custom Headers are an optional set of custom headers that are applied to your emails.
          These are often used for custom tracking with third-party tools such as X-Campaign.') . '</span>';
     }
 
@@ -386,33 +383,22 @@ class WordpressPluginAdmin
 
     public function renderStatsPage()
     {
-        $summary = new ApiSummary;
-        $request = new ApiRequest(get_option('smtp2go_api_key'));
+        $client = new ApiClient(get_option('smtp2go_api_key'));
         $stats   = null;
-        $sender  = new WordpressHttpRemotePostSender;
-        if ($request->send($summary, $sender)) {
-            $stats = $sender->getLastResponse()->data;
+
+        if ($client->consume(new Service('stats/email_summary'))) {
+            $stats = $client->getResponseBody()->data;
         }
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-stats-display.php';
     }
 
     public function renderValidationPage()
     {
-        $domain  = new ApiDomain;
-        $request = new ApiRequest(get_option('smtp2go_api_key'));
+        $client = new ApiClient(get_option('smtp2go_api_key'));
+        $client->consume((new Service('domain/view')));
 
-        $sender = new WordpressHttpRemotePostSender;
-        $sender->setTimeout(60);
-        $result    = null;
-        $this_host = parse_url(get_site_url(), PHP_URL_HOST);
-
-        $request->send($domain->verify($this_host), $sender);
-        $result                 = $sender->getLastResponse()->data ?? null;
-        $domain_info            = $result->domains[0]->domain ?? null;
-        $tracker_info           = $result->domains[0]->trackers[0] ?? null;
-        $domain_status_good     = !empty($domain_info) && $domain_info->dkim_verified && $domain_info->rpath_verified;
-        $tracker_status_good    = !empty($tracker_info) && $tracker_info->cname_verified;
-        $tracker_status_enabled = !empty($tracker_info) && $tracker_info->enabled;
+        $result                 = $client->getResponseBody();
+        $result                 = $result->data ?? null;
 
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-validation-display.php';
     }
@@ -479,6 +465,9 @@ class WordpressPluginAdmin
 
         $request = $phpmailer->getLastRequest();
 
+        $response = $request->getResponseBody();
+
+
         if (empty($request)) {
             $reason = 'Unable to find the request made to the SMPT2GO API. The most likely cause is a conflict with another plugin.';
             wp_send_json(array('success' => 0, 'reason' => htmlentities($reason)));
@@ -486,13 +475,14 @@ class WordpressPluginAdmin
         }
         if (defined('WP_DEBUG') && WP_DEBUG === true) {
             error_log('last request!' . print_r($request, 1));
+            error_log('last response!' . print_r($response, 1));
         }
         // create / map better error messages where appropriate
         $reason = '';
-
+        $failures = $this->last_response->data->failures;
         // API returns failures two different ways - either in failures
-        if (count($request->getFailures()) > 0) {
-            $reason = $request->getFailures()[0];
+        if (count($failures) > 0) {
+            $reason = $failures[0];
 
             // map when we don't get error_code
             if (strpos($reason, "unable to verify sender address")) {
@@ -502,15 +492,13 @@ class WordpressPluginAdmin
             wp_send_json(array('success' => 0, 'reason' => htmlentities($reason)));
         }
 
-        $response = null;
 
         if (empty($success)) {
-            $response = $request->getLastResponse();
 
             if (!empty($response->data->field_validation_errors->message)) {
                 $reason = $response->data->field_validation_errors->message;
             } elseif (!empty($response->data->error)) {
-                $reason = $response->data->error;
+                $reason = $response->data->error. '<br />' .$response->data->error_code;
             }
             // API returns failures two different ways - or with error codes
             switch ($response->data->error_code ?? '') {

@@ -1,15 +1,14 @@
 <?php
+
 namespace SMTP2GO;
 
 use PHPMailer\PHPMailer\PHPMailer;
-use SMTP2GO\Api\ApiMessage;
-use SMTP2GO\Api\ApiRequest;
-use SMTP2GO\Senders\SendsHttpRequests;
-use SMTP2GO\Senders\WordpressHttpRemotePostSender;
+use SMTP2GO\ApiClient;
+use SMTP2GO\Service\Mail\Send;
 
 require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
 require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
-
+require_once dirname(__FILE__, 2) . '/vendor/autoload.php';
 class SMTP2GOMailer extends PHPMailer
 {
     /**
@@ -20,69 +19,56 @@ class SMTP2GOMailer extends PHPMailer
     public $wp_args;
 
     /**
-     * The last ApiRequest Object
+     * The last ApiClient Object
      *
-     * @var ApiRequest
+     * @var ApiClient
      */
     protected $last_request = null;
 
     protected $sender = null;
 
-    public function setSenderInstance(SendsHttpRequests $sender)
-    {
-        $this->sender = $sender;
-    }
-
-    public function getSenderInstance()
-    {
-        return $this->sender;
-    }
-
     protected function mailSend($header, $body)
     {
-        $to = $this->wp_args['to'];
-        if (!is_array($to)) {
-            $to = explode(',', $to);
-        }
-        $SMTP2GOmessage = new ApiMessage(
-            $to,
+        $from = [get_option('smtp2go_from_address'), get_option('smtp2go_from_name')];
+
+        $mailSendService = new Send(
+            $from,
+            $this->getToAddresses(),
             $this->Subject,
             $this->Body,
-            $this->wp_args['headers']
         );
-        if (defined('WP_DEBUG') && WP_DEBUG === true) {
-            error_log(print_r($this->wp_args, 1));
-        }
-        $SMTP2GOmessage->initFromOptions();
+
+        $mailSendService->setCustomHeaders(get_option('smtp2go_custom_headers'));
+
+        $mailSendService->setBcc($this->getBccAddresses());
+        $mailSendService->setCc($this->getCcAddresses());
 
         if (!empty($this->getAttachments())) {
-            $SMTP2GOmessage->setMailerAttachments($this->getAttachments());
+            $attachments = [];
+            foreach ($this->getAttachments() as $phpmailerAttachementItem) {
+                $attachments[] = $phpmailerAttachementItem[0];
+            }
+            $mailSendService->setAttachments($attachments);
         }
 
         if (!empty($this->AltBody)) {
-            $SMTP2GOmessage->setAltMessage($this->AltBody);
+            $mailSendService->setTextBody($this->AltBody);
         }
-        //we dont want the wp_mail default to override our configured options
-        //only other plugins. There doesnt seem to be a nicer way to detect this.
+        /*we dont want the wp_mail default to override our configured options,
+        only other plugins. There doesnt seem to be a nicer way to detect this.*/
         if ($this->FromName != 'WordPress') {
-            $SMTP2GOmessage->setSender($this->From, $this->FromName);
+            $mailSendService->setSender($this->From, $this->FromName);
         }
 
-        $SMTP2GOmessage->setContentType($this->ContentType);
+        $client = new ApiClient(get_option('smtp2go_api_key'));
 
-        $request = new ApiRequest;
-        if (!$this->sender) {
-            $this->sender = new WordpressHttpRemotePostSender;
-        }
-        if (defined('WP_DEBUG') && WP_DEBUG === true) {
-            error_log('sending via ' . get_class($this->sender));
-        }
-        $result = $request->send($SMTP2GOmessage, $this->sender);
+        $success            = $client->consume($mailSendService);
+        $this->last_request = $client;
 
-        $this->last_request = $request;
-
-        return $result;
+        return $success;
     }
+
+
 
     public function getLastRequest()
     {
