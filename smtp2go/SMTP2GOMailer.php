@@ -3,12 +3,12 @@
 namespace SMTP2GO;
 
 use PHPMailer\PHPMailer\PHPMailer;
-use SMTP2GO\ApiClient;
-use SMTP2GO\Service\Mail\Send;
+use SMTP2GOWpPlugin\SMTP2GO\ApiClient;
+use SMTP2GOWpPlugin\SMTP2GO\Service\Mail\Send;
 
 require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
 require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
-require_once dirname(__FILE__, 2) . '/vendor/autoload.php';
+require_once dirname(__FILE__, 2) . '/build/vendor/autoload.php';
 class SMTP2GOMailer extends PHPMailer
 {
     /**

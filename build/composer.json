@@ -1,0 +1,10 @@
+{
+    "require": {
+        "smtp2go-oss\/smtp2go-php": "1.0.0beta"
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        }
+    }
+}

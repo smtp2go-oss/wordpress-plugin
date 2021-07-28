@@ -3,9 +3,10 @@
 namespace SMTP2GO;
 
 
-use SMTP2GO\Service\Service;
+use SMTP2GOWpPlugin\SMTP2GO\ApiClient;
+use SMTP2GOWpPlugin\SMTP2GO\Service\Service;
 
-require_once dirname(__FILE__, 2) . '/vendor/autoload.php';
+require_once dirname(__FILE__, 2) . '/build/vendor/autoload.php';
 
 /**
  * The admin-specific functionality of the plugin.
@@ -498,7 +499,7 @@ class WordpressPluginAdmin
             if (!empty($response->data->field_validation_errors->message)) {
                 $reason = $response->data->field_validation_errors->message;
             } elseif (!empty($response->data->error)) {
-                $reason = $response->data->error. '<br />' .$response->data->error_code;
+                $reason = $response->data->error . '<br />' . $response->data->error_code;
             }
             // API returns failures two different ways - or with error codes
             switch ($response->data->error_code ?? '') {
