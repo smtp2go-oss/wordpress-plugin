@@ -6,5 +6,8 @@
         "preferred-install": {
             "*": "dist"
         }
+    },
+    "require-dev": {
+        "humbug/php-scoper": "^0.15.0"
     }
 }
