@@ -43,6 +43,8 @@ class SMTP2GOMailer extends PHPMailer
         $mailSendService->setBcc($this->getBccAddresses());
         $mailSendService->setCc($this->getCcAddresses());
 
+        $mailSendService->addAddresses('reply-to', $this->getReplyToAddresses());
+
         if (!empty($this->getAttachments())) {
             $attachments = [];
             foreach ($this->getAttachments() as $phpmailerAttachementItem) {
