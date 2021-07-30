@@ -3,8 +3,8 @@
 namespace SMTP2GO;
 
 
-use SMTP2GOWpPlugin\SMTP2GO\ApiClient;
-use SMTP2GOWpPlugin\SMTP2GO\Service\Service;
+use SMTP2GOWPPlugin\SMTP2GO\ApiClient;
+use SMTP2GOWPPlugin\SMTP2GO\Service\Service;
 
 require_once dirname(__FILE__, 2) . '/build/vendor/autoload.php';
 

@@ -3,8 +3,8 @@
 namespace SMTP2GO;
 
 use PHPMailer\PHPMailer\PHPMailer;
-use SMTP2GOWpPlugin\SMTP2GO\ApiClient;
-use SMTP2GOWpPlugin\SMTP2GO\Service\Mail\Send;
+use SMTP2GOWPPlugin\SMTP2GO\ApiClient;
+use SMTP2GOWPPlugin\SMTP2GO\Service\Mail\Send;
 
 require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
 require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
