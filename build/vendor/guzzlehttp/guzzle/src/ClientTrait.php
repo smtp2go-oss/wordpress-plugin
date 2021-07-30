@@ -1,11 +1,11 @@
 <?php
 
-namespace SMTP2GOWpPlugin\GuzzleHttp;
+namespace SMTP2GOWPPlugin\GuzzleHttp;
 
-use SMTP2GOWpPlugin\GuzzleHttp\Exception\GuzzleException;
-use SMTP2GOWpPlugin\GuzzleHttp\Promise\PromiseInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\ResponseInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\UriInterface;
+use SMTP2GOWPPlugin\GuzzleHttp\Exception\GuzzleException;
+use SMTP2GOWPPlugin\GuzzleHttp\Promise\PromiseInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\ResponseInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\UriInterface;
 /**
  * Client interface for sending HTTP requests.
  */

@@ -1,0 +1,15 @@
+{
+    "bin": [
+        "bin\/greet.php"
+    ],
+    "autoload": {
+        "psr-4": {
+            "SMTP2GOWPPlugin\\Set022\\": "src\/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SMTP2GOWPPlugin\\Set022\\": "tests\/"
+        }
+    }
+}

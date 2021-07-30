@@ -1,13 +1,13 @@
 <?php
 
-namespace SMTP2GOWpPlugin\SMTP2GO;
+namespace SMTP2GOWPPlugin\SMTP2GO;
 
-use SMTP2GOWpPlugin\GuzzleHttp\Client;
-use SMTP2GOWpPlugin\GuzzleHttp\Exception\ClientException;
-use SMTP2GOWpPlugin\GuzzleHttp\Psr7\Message;
-use SMTP2GOWpPlugin\GuzzleHttp\Psr7\Request;
-use SMTP2GOWpPlugin\GuzzleHttp\Utils;
-use SMTP2GOWpPlugin\SMTP2GO\Contracts\BuildsRequest;
+use SMTP2GOWPPlugin\GuzzleHttp\Client;
+use SMTP2GOWPPlugin\GuzzleHttp\Exception\ClientException;
+use SMTP2GOWPPlugin\GuzzleHttp\Psr7\Message;
+use SMTP2GOWPPlugin\GuzzleHttp\Psr7\Request;
+use SMTP2GOWPPlugin\GuzzleHttp\Utils;
+use SMTP2GOWPPlugin\SMTP2GO\Contracts\BuildsRequest;
 class ApiClient
 {
     /**
@@ -78,7 +78,7 @@ class ApiClient
     /**
      * Consume a service on the SMTP2GO Api
      *
-     * @param SMTP2GOWpPlugin\SMTP2GO\Contracts\BuildsRequest $service
+     * @param \SMTP2GO\Contracts\BuildsRequest $service
      * @since 1.0.0
      * @return bool
      */

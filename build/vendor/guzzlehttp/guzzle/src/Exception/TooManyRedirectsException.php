@@ -1,6 +1,6 @@
 <?php
 
-namespace SMTP2GOWpPlugin\GuzzleHttp\Exception;
+namespace SMTP2GOWPPlugin\GuzzleHttp\Exception;
 
 class TooManyRedirectsException extends RequestException
 {

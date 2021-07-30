@@ -20,7 +20,7 @@
     },
     "autoload": {
         "psr-4": {
-            "SMTP2GOWpPlugin\\GuzzleHttp\\Promise\\": "src\/"
+            "SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\": "src\/"
         },
         "files": [
             "src\/functions_include.php"
@@ -28,7 +28,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "SMTP2GOWpPlugin\\GuzzleHttp\\Promise\\Tests\\": "tests\/"
+            "SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\Tests\\": "tests\/"
         }
     },
     "scripts": {

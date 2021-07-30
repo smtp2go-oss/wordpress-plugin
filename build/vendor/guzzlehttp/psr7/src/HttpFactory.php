@@ -1,20 +1,20 @@
 <?php
 
 declare (strict_types=1);
-namespace SMTP2GOWpPlugin\GuzzleHttp\Psr7;
+namespace SMTP2GOWPPlugin\GuzzleHttp\Psr7;
 
-use SMTP2GOWpPlugin\Psr\Http\Message\RequestFactoryInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\RequestInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\ResponseFactoryInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\ResponseInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\ServerRequestFactoryInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\ServerRequestInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\StreamFactoryInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\StreamInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\UploadedFileFactoryInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\UploadedFileInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\UriFactoryInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\UriInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\RequestFactoryInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\RequestInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\ResponseFactoryInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\ResponseInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\ServerRequestFactoryInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\ServerRequestInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\StreamFactoryInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\StreamInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\UploadedFileFactoryInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\UploadedFileInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\UriFactoryInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\UriInterface;
 /**
  * Implements all of the PSR-17 interfaces.
  *

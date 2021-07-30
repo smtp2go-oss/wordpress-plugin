@@ -1,6 +1,6 @@
 <?php
 
-namespace SMTP2GOWpPlugin\GuzzleHttp\Promise;
+namespace SMTP2GOWPPlugin\GuzzleHttp\Promise;
 
 /**
  * A special exception that is thrown when waiting on a rejected promise.

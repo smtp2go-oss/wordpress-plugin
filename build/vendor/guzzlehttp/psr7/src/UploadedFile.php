@@ -1,11 +1,11 @@
 <?php
 
 declare (strict_types=1);
-namespace SMTP2GOWpPlugin\GuzzleHttp\Psr7;
+namespace SMTP2GOWPPlugin\GuzzleHttp\Psr7;
 
 use InvalidArgumentException;
-use SMTP2GOWpPlugin\Psr\Http\Message\StreamInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\UploadedFileInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\StreamInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
 class UploadedFile implements UploadedFileInterface
 {

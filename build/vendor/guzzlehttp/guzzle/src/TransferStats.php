@@ -1,10 +1,10 @@
 <?php
 
-namespace SMTP2GOWpPlugin\GuzzleHttp;
+namespace SMTP2GOWPPlugin\GuzzleHttp;
 
-use SMTP2GOWpPlugin\Psr\Http\Message\RequestInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\ResponseInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\UriInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\RequestInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\ResponseInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\UriInterface;
 /**
  * Represents data at the point after it was transferred either successfully
  * or after a network error.

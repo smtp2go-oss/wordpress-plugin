@@ -1,8 +1,8 @@
 <?php
 
-namespace SMTP2GOWpPlugin\GuzzleHttp\Cookie;
+namespace SMTP2GOWPPlugin\GuzzleHttp\Cookie;
 
-use SMTP2GOWpPlugin\GuzzleHttp\Utils;
+use SMTP2GOWPPlugin\GuzzleHttp\Utils;
 /**
  * Persists non-session cookies using a JSON formatted file
  */

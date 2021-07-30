@@ -1,10 +1,10 @@
 <?php
 
-namespace SMTP2GOWpPlugin\GuzzleHttp;
+namespace SMTP2GOWPPlugin\GuzzleHttp;
 
-use SMTP2GOWpPlugin\GuzzleHttp\Promise\PromiseInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\RequestInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\ResponseInterface;
+use SMTP2GOWPPlugin\GuzzleHttp\Promise\PromiseInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\RequestInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\ResponseInterface;
 /**
  * Creates a composed Guzzle handler function by stacking middlewares on top of
  * an HTTP handler function.

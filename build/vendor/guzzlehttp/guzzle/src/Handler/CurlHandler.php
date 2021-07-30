@@ -1,9 +1,9 @@
 <?php
 
-namespace SMTP2GOWpPlugin\GuzzleHttp\Handler;
+namespace SMTP2GOWPPlugin\GuzzleHttp\Handler;
 
-use SMTP2GOWpPlugin\GuzzleHttp\Promise\PromiseInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\RequestInterface;
+use SMTP2GOWPPlugin\GuzzleHttp\Promise\PromiseInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\RequestInterface;
 /**
  * HTTP handler that uses cURL easy handles as a transport layer.
  *

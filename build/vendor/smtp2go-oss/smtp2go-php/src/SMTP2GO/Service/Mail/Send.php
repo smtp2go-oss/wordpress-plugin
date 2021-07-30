@@ -1,10 +1,10 @@
 <?php
 
-namespace SMTP2GOWpPlugin\SMTP2GO\Service\Mail;
+namespace SMTP2GOWPPlugin\SMTP2GO\Service\Mail;
 
 use InvalidArgumentException;
-use SMTP2GOWpPlugin\SMTP2GO\Mime\Detector;
-use SMTP2GOWpPlugin\SMTP2GO\Contracts\BuildsRequest;
+use SMTP2GOWPPlugin\SMTP2GO\Mime\Detector;
+use SMTP2GOWPPlugin\SMTP2GO\Contracts\BuildsRequest;
 /**
  * Constructs the payload for sending email through the SMTP2GO Api
  */

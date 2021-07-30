@@ -1,6 +1,6 @@
 <?php
 
-namespace SMTP2GOWpPlugin\GuzzleHttp\Cookie;
+namespace SMTP2GOWPPlugin\GuzzleHttp\Cookie;
 
 /**
  * Persists cookies in the client session

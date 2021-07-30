@@ -1,13 +1,13 @@
 <?php
 
-namespace SMTP2GOWpPlugin\GuzzleHttp;
+namespace SMTP2GOWPPlugin\GuzzleHttp;
 
-use SMTP2GOWpPlugin\GuzzleHttp\Exception\BadResponseException;
-use SMTP2GOWpPlugin\GuzzleHttp\Exception\TooManyRedirectsException;
-use SMTP2GOWpPlugin\GuzzleHttp\Promise\PromiseInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\RequestInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\ResponseInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\UriInterface;
+use SMTP2GOWPPlugin\GuzzleHttp\Exception\BadResponseException;
+use SMTP2GOWPPlugin\GuzzleHttp\Exception\TooManyRedirectsException;
+use SMTP2GOWPPlugin\GuzzleHttp\Promise\PromiseInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\RequestInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\ResponseInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\UriInterface;
 /**
  * Request redirect middleware.
  *

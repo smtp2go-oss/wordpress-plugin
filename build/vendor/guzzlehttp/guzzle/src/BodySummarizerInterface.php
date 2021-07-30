@@ -1,8 +1,8 @@
 <?php
 
-namespace SMTP2GOWpPlugin\GuzzleHttp;
+namespace SMTP2GOWPPlugin\GuzzleHttp;
 
-use SMTP2GOWpPlugin\Psr\Http\Message\MessageInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\MessageInterface;
 interface BodySummarizerInterface
 {
     /**

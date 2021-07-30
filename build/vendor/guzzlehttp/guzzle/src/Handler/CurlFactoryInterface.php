@@ -1,8 +1,8 @@
 <?php
 
-namespace SMTP2GOWpPlugin\GuzzleHttp\Handler;
+namespace SMTP2GOWPPlugin\GuzzleHttp\Handler;
 
-use SMTP2GOWpPlugin\Psr\Http\Message\RequestInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\RequestInterface;
 interface CurlFactoryInterface
 {
     /**

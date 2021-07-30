@@ -1,12 +1,12 @@
 <?php
 
-namespace SMTP2GOWpPlugin\GuzzleHttp;
+namespace SMTP2GOWPPlugin\GuzzleHttp;
 
-use SMTP2GOWpPlugin\GuzzleHttp\Promise as P;
-use SMTP2GOWpPlugin\GuzzleHttp\Promise\EachPromise;
-use SMTP2GOWpPlugin\GuzzleHttp\Promise\PromiseInterface;
-use SMTP2GOWpPlugin\GuzzleHttp\Promise\PromisorInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\RequestInterface;
+use SMTP2GOWPPlugin\GuzzleHttp\Promise as P;
+use SMTP2GOWPPlugin\GuzzleHttp\Promise\EachPromise;
+use SMTP2GOWPPlugin\GuzzleHttp\Promise\PromiseInterface;
+use SMTP2GOWPPlugin\GuzzleHttp\Promise\PromisorInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\RequestInterface;
 /**
  * Sends an iterator of requests concurrently using a capped pool size.
  *

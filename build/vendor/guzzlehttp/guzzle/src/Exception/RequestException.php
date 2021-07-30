@@ -1,13 +1,13 @@
 <?php
 
-namespace SMTP2GOWpPlugin\GuzzleHttp\Exception;
+namespace SMTP2GOWPPlugin\GuzzleHttp\Exception;
 
-use SMTP2GOWpPlugin\GuzzleHttp\BodySummarizer;
-use SMTP2GOWpPlugin\GuzzleHttp\BodySummarizerInterface;
-use SMTP2GOWpPlugin\Psr\Http\Client\RequestExceptionInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\RequestInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\ResponseInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\UriInterface;
+use SMTP2GOWPPlugin\GuzzleHttp\BodySummarizer;
+use SMTP2GOWPPlugin\GuzzleHttp\BodySummarizerInterface;
+use SMTP2GOWPPlugin\Psr\Http\Client\RequestExceptionInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\RequestInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\ResponseInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\UriInterface;
 /**
  * HTTP Request exception
  */

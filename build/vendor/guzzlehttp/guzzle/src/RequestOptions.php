@@ -1,6 +1,6 @@
 <?php
 
-namespace SMTP2GOWpPlugin\GuzzleHttp;
+namespace SMTP2GOWPPlugin\GuzzleHttp;
 
 /**
  * This class contains a list of built-in Guzzle request options.

@@ -1,9 +1,9 @@
 <?php
 
-namespace SMTP2GOWpPlugin\GuzzleHttp\Exception;
+namespace SMTP2GOWPPlugin\GuzzleHttp\Exception;
 
-use SMTP2GOWpPlugin\Psr\Http\Client\NetworkExceptionInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\RequestInterface;
+use SMTP2GOWPPlugin\Psr\Http\Client\NetworkExceptionInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\RequestInterface;
 /**
  * Exception thrown when a connection cannot be established.
  *

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMTP2GOWpPlugin\Psr\Http\Client;
+namespace SMTP2GOWPPlugin\Psr\Http\Client;
 
 /**
  * Every HTTP client related exception MUST implement this interface.

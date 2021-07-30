@@ -1,16 +1,16 @@
 <?php
 
-namespace SMTP2GOWpPlugin\GuzzleHttp\Handler;
+namespace SMTP2GOWPPlugin\GuzzleHttp\Handler;
 
-use SMTP2GOWpPlugin\GuzzleHttp\Exception\ConnectException;
-use SMTP2GOWpPlugin\GuzzleHttp\Exception\RequestException;
-use SMTP2GOWpPlugin\GuzzleHttp\Promise as P;
-use SMTP2GOWpPlugin\GuzzleHttp\Promise\FulfilledPromise;
-use SMTP2GOWpPlugin\GuzzleHttp\Promise\PromiseInterface;
-use SMTP2GOWpPlugin\GuzzleHttp\Psr7\LazyOpenStream;
-use SMTP2GOWpPlugin\GuzzleHttp\TransferStats;
-use SMTP2GOWpPlugin\GuzzleHttp\Utils;
-use SMTP2GOWpPlugin\Psr\Http\Message\RequestInterface;
+use SMTP2GOWPPlugin\GuzzleHttp\Exception\ConnectException;
+use SMTP2GOWPPlugin\GuzzleHttp\Exception\RequestException;
+use SMTP2GOWPPlugin\GuzzleHttp\Promise as P;
+use SMTP2GOWPPlugin\GuzzleHttp\Promise\FulfilledPromise;
+use SMTP2GOWPPlugin\GuzzleHttp\Promise\PromiseInterface;
+use SMTP2GOWPPlugin\GuzzleHttp\Psr7\LazyOpenStream;
+use SMTP2GOWPPlugin\GuzzleHttp\TransferStats;
+use SMTP2GOWPPlugin\GuzzleHttp\Utils;
+use SMTP2GOWPPlugin\Psr\Http\Message\RequestInterface;
 /**
  * Creates curl resources from a request
  *
@@ -289,11 +289,11 @@ class CurlFactory implements CurlFactoryInterface
         }
         if (!isset($options['sink'])) {
             // Use a default temp stream if no sink was set.
-            $options['sink'] = \SMTP2GOWpPlugin\GuzzleHttp\Psr7\Utils::tryFopen('php://temp', 'w+');
+            $options['sink'] = \SMTP2GOWPPlugin\GuzzleHttp\Psr7\Utils::tryFopen('php://temp', 'w+');
         }
         $sink = $options['sink'];
         if (!\is_string($sink)) {
-            $sink = \SMTP2GOWpPlugin\GuzzleHttp\Psr7\Utils::streamFor($sink);
+            $sink = \SMTP2GOWPPlugin\GuzzleHttp\Psr7\Utils::streamFor($sink);
         } elseif (!\is_dir(\dirname($sink))) {
             // Ensure that the directory exists before failing in curl.
             throw new \RuntimeException(\sprintf('Directory %s does not exist for sink value of %s', \dirname($sink), $sink));

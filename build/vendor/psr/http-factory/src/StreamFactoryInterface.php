@@ -1,6 +1,6 @@
 <?php
 
-namespace SMTP2GOWpPlugin\Psr\Http\Message;
+namespace SMTP2GOWPPlugin\Psr\Http\Message;
 
 interface StreamFactoryInterface
 {

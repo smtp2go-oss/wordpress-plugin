@@ -21,7 +21,7 @@
     },
     "autoload": {
         "psr-4": {
-            "SMTP2GOWpPlugin\\Psr\\Http\\Client\\": "src\/"
+            "SMTP2GOWPPlugin\\Psr\\Http\\Client\\": "src\/"
         }
     },
     "extra": {

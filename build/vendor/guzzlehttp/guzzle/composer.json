@@ -59,7 +59,7 @@
     },
     "autoload": {
         "psr-4": {
-            "SMTP2GOWpPlugin\\GuzzleHttp\\": "src\/"
+            "SMTP2GOWPPlugin\\GuzzleHttp\\": "src\/"
         },
         "files": [
             "src\/functions_include.php"
@@ -67,7 +67,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "SMTP2GOWpPlugin\\GuzzleHttp\\Tests\\": "tests\/"
+            "SMTP2GOWPPlugin\\GuzzleHttp\\Tests\\": "tests\/"
         }
     }
 }

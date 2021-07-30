@@ -1,14 +1,14 @@
 <?php
 
-namespace SMTP2GOWpPlugin;
+namespace SMTP2GOWPPlugin;
 
-use SMTP2GOWpPlugin\GuzzleHttp\Client;
-use SMTP2GOWpPlugin\GuzzleHttp\HandlerStack;
-use SMTP2GOWpPlugin\GuzzleHttp\Handler\MockHandler;
-use SMTP2GOWpPlugin\GuzzleHttp\Psr7\Response;
-use SMTP2GOWpPlugin\PHPUnit\Framework\TestCase;
-use SMTP2GOWpPlugin\SMTP2GO\ApiClient;
-use SMTP2GOWpPlugin\SMTP2GO\Service\Service;
+use SMTP2GOWPPlugin\GuzzleHttp\Client;
+use SMTP2GOWPPlugin\GuzzleHttp\HandlerStack;
+use SMTP2GOWPPlugin\GuzzleHttp\Handler\MockHandler;
+use SMTP2GOWPPlugin\GuzzleHttp\Psr7\Response;
+use SMTP2GOWPPlugin\PHPUnit\Framework\TestCase;
+use SMTP2GOWPPlugin\SMTP2GO\ApiClient;
+use SMTP2GOWPPlugin\SMTP2GO\Service\Service;
 class MockApiTest extends TestCase
 {
     /**
@@ -62,4 +62,4 @@ class MockApiTest extends TestCase
         $this->assertFalse($result);
     }
 }
-\class_alias('SMTP2GOWpPlugin\\MockApiTest', 'MockApiTest', \false);
+\class_alias('SMTP2GOWPPlugin\\MockApiTest', 'MockApiTest', \false);

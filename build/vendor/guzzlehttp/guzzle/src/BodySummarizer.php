@@ -1,8 +1,8 @@
 <?php
 
-namespace SMTP2GOWpPlugin\GuzzleHttp;
+namespace SMTP2GOWPPlugin\GuzzleHttp;
 
-use SMTP2GOWpPlugin\Psr\Http\Message\MessageInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\MessageInterface;
 final class BodySummarizer implements BodySummarizerInterface
 {
     /**
@@ -18,6 +18,6 @@ final class BodySummarizer implements BodySummarizerInterface
      */
     public function summarize(MessageInterface $message) : ?string
     {
-        return $this->truncateAt === null ? \SMTP2GOWpPlugin\GuzzleHttp\Psr7\Message::bodySummary($message) : \SMTP2GOWpPlugin\GuzzleHttp\Psr7\Message::bodySummary($message, $this->truncateAt);
+        return $this->truncateAt === null ? \SMTP2GOWPPlugin\GuzzleHttp\Psr7\Message::bodySummary($message) : \SMTP2GOWPPlugin\GuzzleHttp\Psr7\Message::bodySummary($message, $this->truncateAt);
     }
 }

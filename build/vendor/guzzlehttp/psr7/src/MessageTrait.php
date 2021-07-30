@@ -1,10 +1,10 @@
 <?php
 
 declare (strict_types=1);
-namespace SMTP2GOWpPlugin\GuzzleHttp\Psr7;
+namespace SMTP2GOWPPlugin\GuzzleHttp\Psr7;
 
-use SMTP2GOWpPlugin\Psr\Http\Message\MessageInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\StreamInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\MessageInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\StreamInterface;
 /**
  * Trait implementing functionality common to requests and responses.
  */

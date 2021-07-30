@@ -54,12 +54,12 @@
     },
     "autoload": {
         "psr-4": {
-            "SMTP2GOWpPlugin\\GuzzleHttp\\Psr7\\": "src\/"
+            "SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\": "src\/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "SMTP2GOWpPlugin\\GuzzleHttp\\Tests\\Psr7\\": "tests\/"
+            "SMTP2GOWPPlugin\\GuzzleHttp\\Tests\\Psr7\\": "tests\/"
         }
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMTP2GOWpPlugin\SMTP2GO\Mime;
+namespace SMTP2GOWPPlugin\SMTP2GO\Mime;
 
 /**
  * Credit to https://github.com/thephpleague/mime-type-detection for the  

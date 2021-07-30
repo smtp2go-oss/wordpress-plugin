@@ -1,9 +1,9 @@
 <?php
 
-namespace SMTP2GOWpPlugin\Psr\Http\Client;
+namespace SMTP2GOWPPlugin\Psr\Http\Client;
 
-use SMTP2GOWpPlugin\Psr\Http\Message\RequestInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\ResponseInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\RequestInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\ResponseInterface;
 interface ClientInterface
 {
     /**

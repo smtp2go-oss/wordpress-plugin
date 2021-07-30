@@ -1,9 +1,9 @@
 <?php
 
 declare (strict_types=1);
-namespace SMTP2GOWpPlugin\GuzzleHttp\Psr7;
+namespace SMTP2GOWPPlugin\GuzzleHttp\Psr7;
 
-use SMTP2GOWpPlugin\Psr\Http\Message\StreamInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\StreamInterface;
 /**
  * Provides a buffer stream that can be written to to fill a buffer, and read
  * from to remove bytes from the buffer.

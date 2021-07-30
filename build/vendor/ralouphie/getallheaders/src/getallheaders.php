@@ -1,6 +1,6 @@
 <?php
 
-namespace SMTP2GOWpPlugin;
+namespace SMTP2GOWPPlugin;
 
 if (!\function_exists('getallheaders')) {
     /**

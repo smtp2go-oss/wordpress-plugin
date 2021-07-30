@@ -1,9 +1,9 @@
 <?php
 
 declare (strict_types=1);
-namespace SMTP2GOWpPlugin\GuzzleHttp\Psr7;
+namespace SMTP2GOWPPlugin\GuzzleHttp\Psr7;
 
-use SMTP2GOWpPlugin\Psr\Http\Message\StreamInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\StreamInterface;
 /**
  * Stream decorator that can cache previously read bytes from a sequentially
  * read stream.

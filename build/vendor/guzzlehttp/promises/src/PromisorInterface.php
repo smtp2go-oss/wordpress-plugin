@@ -1,6 +1,6 @@
 <?php
 
-namespace SMTP2GOWpPlugin\GuzzleHttp\Promise;
+namespace SMTP2GOWPPlugin\GuzzleHttp\Promise;
 
 /**
  * Interface used with classes that return a promise.

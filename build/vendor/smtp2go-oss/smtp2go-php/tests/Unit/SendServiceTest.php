@@ -1,9 +1,9 @@
 <?php
 
-namespace SMTP2GOWpPlugin;
+namespace SMTP2GOWPPlugin;
 
-use SMTP2GOWpPlugin\PHPUnit\Framework\TestCase;
-use SMTP2GOWpPlugin\SMTP2GO\Service\Mail\Send;
+use SMTP2GOWPPlugin\PHPUnit\Framework\TestCase;
+use SMTP2GOWPPlugin\SMTP2GO\Service\Mail\Send;
 class SendServiceTest extends TestCase
 {
     private function createTestInstance()
@@ -150,4 +150,4 @@ class SendServiceTest extends TestCase
         $this->assertTrue($sendService->getSender() == \SMTP2GO_TEST_SENDER_EMAIL);
     }
 }
-\class_alias('SMTP2GOWpPlugin\\SendServiceTest', 'SendServiceTest', \false);
+\class_alias('SMTP2GOWPPlugin\\SendServiceTest', 'SendServiceTest', \false);

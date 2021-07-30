@@ -22,7 +22,7 @@
     },
     "autoload": {
         "psr-4": {
-            "SMTP2GOWpPlugin\\Psr\\Http\\Message\\": "src\/"
+            "SMTP2GOWPPlugin\\Psr\\Http\\Message\\": "src\/"
         }
     },
     "extra": {

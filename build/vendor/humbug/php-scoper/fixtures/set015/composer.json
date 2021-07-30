@@ -1,0 +1,13 @@
+{
+    "bin": [
+        "bin\/greet.php"
+    ],
+    "autoload": {
+        "psr-4": {
+            "SMTP2GOWPPlugin\\Set015\\": "src\/Set015\/"
+        }
+    },
+    "require": {
+        "pimple\/pimple": "3.2.3"
+    }
+}

@@ -11,7 +11,7 @@
     },
     "autoload": {
         "psr-4": {
-            "SMTP2GOWpPlugin\\SMTP2GO\\": "src\/SMTP2GO\/"
+            "SMTP2GOWPPlugin\\SMTP2GO\\": "src\/SMTP2GO\/"
         }
     }
 }

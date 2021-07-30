@@ -1,6 +1,6 @@
 <?php
 
-namespace SMTP2GOWpPlugin\SMTP2GO\Contracts;
+namespace SMTP2GOWPPlugin\SMTP2GO\Contracts;
 
 interface BuildsRequest
 {

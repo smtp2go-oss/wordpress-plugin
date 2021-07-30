@@ -1,9 +1,9 @@
 <?php
 
-namespace SMTP2GOWpPlugin\GuzzleHttp\Cookie;
+namespace SMTP2GOWPPlugin\GuzzleHttp\Cookie;
 
-use SMTP2GOWpPlugin\Psr\Http\Message\RequestInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\ResponseInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\RequestInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\ResponseInterface;
 /**
  * Stores HTTP cookies.
  *

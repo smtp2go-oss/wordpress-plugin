@@ -1,12 +1,12 @@
 <?php
 
-namespace SMTP2GOWpPlugin\GuzzleHttp\Handler;
+namespace SMTP2GOWPPlugin\GuzzleHttp\Handler;
 
-use SMTP2GOWpPlugin\GuzzleHttp\Psr7\Response;
-use SMTP2GOWpPlugin\GuzzleHttp\Utils;
-use SMTP2GOWpPlugin\Psr\Http\Message\RequestInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\ResponseInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\StreamInterface;
+use SMTP2GOWPPlugin\GuzzleHttp\Psr7\Response;
+use SMTP2GOWPPlugin\GuzzleHttp\Utils;
+use SMTP2GOWPPlugin\Psr\Http\Message\RequestInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\ResponseInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\StreamInterface;
 /**
  * Represents a cURL easy handle and the data it populates.
  *

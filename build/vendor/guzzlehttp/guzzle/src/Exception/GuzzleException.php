@@ -1,8 +1,8 @@
 <?php
 
-namespace SMTP2GOWpPlugin\GuzzleHttp\Exception;
+namespace SMTP2GOWPPlugin\GuzzleHttp\Exception;
 
-use SMTP2GOWpPlugin\Psr\Http\Client\ClientExceptionInterface;
+use SMTP2GOWPPlugin\Psr\Http\Client\ClientExceptionInterface;
 interface GuzzleException extends ClientExceptionInterface
 {
 }

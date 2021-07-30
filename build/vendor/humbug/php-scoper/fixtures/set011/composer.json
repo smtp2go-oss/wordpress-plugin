@@ -1,0 +1,18 @@
+{
+    "bin": [
+        "bin\/greet.php"
+    ],
+    "autoload": {
+        "classmap": [
+            "polyfill"
+        ],
+        "psr-4": {
+            "SMTP2GOWPPlugin\\Set011\\": "src\/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SMTP2GOWPPlugin\\Set011\\": "tests\/"
+        }
+    }
+}

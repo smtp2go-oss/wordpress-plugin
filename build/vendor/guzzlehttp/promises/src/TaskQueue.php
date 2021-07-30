@@ -1,6 +1,6 @@
 <?php
 
-namespace SMTP2GOWpPlugin\GuzzleHttp\Promise;
+namespace SMTP2GOWPPlugin\GuzzleHttp\Promise;
 
 /**
  * A task queue that executes tasks in a FIFO order.

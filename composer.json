@@ -9,5 +9,17 @@
     },
     "require-dev": {
         "humbug/php-scoper": "^0.15.0"
+    },
+    "scripts": {
+        "auto-scripts": {
+            "removeBuild": "rm -r build/",
+            "scopeBuild": "./vendor/bin/php-scoper add-prefix"
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ]
     }
 }

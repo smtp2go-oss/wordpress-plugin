@@ -1,10 +1,10 @@
 <?php
 
-namespace SMTP2GOWpPlugin\GuzzleHttp\Handler;
+namespace SMTP2GOWPPlugin\GuzzleHttp\Handler;
 
-use SMTP2GOWpPlugin\GuzzleHttp\Promise\PromiseInterface;
-use SMTP2GOWpPlugin\GuzzleHttp\RequestOptions;
-use SMTP2GOWpPlugin\Psr\Http\Message\RequestInterface;
+use SMTP2GOWPPlugin\GuzzleHttp\Promise\PromiseInterface;
+use SMTP2GOWPPlugin\GuzzleHttp\RequestOptions;
+use SMTP2GOWPPlugin\Psr\Http\Message\RequestInterface;
 /**
  * Provides basic proxies for handlers.
  *

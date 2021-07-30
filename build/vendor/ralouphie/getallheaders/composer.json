@@ -22,7 +22,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "SMTP2GOWpPlugin\\getallheaders\\Tests\\": "tests\/"
+            "SMTP2GOWPPlugin\\getallheaders\\Tests\\": "tests\/"
         }
     }
 }

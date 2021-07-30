@@ -1,16 +1,16 @@
 <?php
 
-namespace SMTP2GOWpPlugin\GuzzleHttp\Handler;
+namespace SMTP2GOWPPlugin\GuzzleHttp\Handler;
 
-use SMTP2GOWpPlugin\GuzzleHttp\Exception\RequestException;
-use SMTP2GOWpPlugin\GuzzleHttp\HandlerStack;
-use SMTP2GOWpPlugin\GuzzleHttp\Promise as P;
-use SMTP2GOWpPlugin\GuzzleHttp\Promise\PromiseInterface;
-use SMTP2GOWpPlugin\GuzzleHttp\TransferStats;
-use SMTP2GOWpPlugin\GuzzleHttp\Utils;
-use SMTP2GOWpPlugin\Psr\Http\Message\RequestInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\ResponseInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\StreamInterface;
+use SMTP2GOWPPlugin\GuzzleHttp\Exception\RequestException;
+use SMTP2GOWPPlugin\GuzzleHttp\HandlerStack;
+use SMTP2GOWPPlugin\GuzzleHttp\Promise as P;
+use SMTP2GOWPPlugin\GuzzleHttp\Promise\PromiseInterface;
+use SMTP2GOWPPlugin\GuzzleHttp\TransferStats;
+use SMTP2GOWPPlugin\GuzzleHttp\Utils;
+use SMTP2GOWPPlugin\Psr\Http\Message\RequestInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\ResponseInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\StreamInterface;
 /**
  * Handler that returns responses or throw exceptions from a queue.
  *

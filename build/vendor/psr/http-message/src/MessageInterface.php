@@ -1,6 +1,6 @@
 <?php
 
-namespace SMTP2GOWpPlugin\Psr\Http\Message;
+namespace SMTP2GOWPPlugin\Psr\Http\Message;
 
 /**
  * HTTP messages consist of requests from a client to a server and responses

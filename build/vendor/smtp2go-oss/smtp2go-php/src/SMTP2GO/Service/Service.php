@@ -1,8 +1,8 @@
 <?php
 
-namespace SMTP2GOWpPlugin\SMTP2GO\Service;
+namespace SMTP2GOWPPlugin\SMTP2GO\Service;
 
-use SMTP2GOWpPlugin\SMTP2GO\Contracts\BuildsRequest;
+use SMTP2GOWPPlugin\SMTP2GO\Contracts\BuildsRequest;
 /**
  * Generic service class which can be used to consume any endpoint in the API
  */

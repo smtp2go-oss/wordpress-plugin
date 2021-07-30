@@ -1,13 +1,13 @@
 <?php
 
-namespace SMTP2GOWpPlugin\GuzzleHttp;
+namespace SMTP2GOWPPlugin\GuzzleHttp;
 
-use SMTP2GOWpPlugin\GuzzleHttp\Exception\InvalidArgumentException;
-use SMTP2GOWpPlugin\GuzzleHttp\Handler\CurlHandler;
-use SMTP2GOWpPlugin\GuzzleHttp\Handler\CurlMultiHandler;
-use SMTP2GOWpPlugin\GuzzleHttp\Handler\Proxy;
-use SMTP2GOWpPlugin\GuzzleHttp\Handler\StreamHandler;
-use SMTP2GOWpPlugin\Psr\Http\Message\UriInterface;
+use SMTP2GOWPPlugin\GuzzleHttp\Exception\InvalidArgumentException;
+use SMTP2GOWPPlugin\GuzzleHttp\Handler\CurlHandler;
+use SMTP2GOWPPlugin\GuzzleHttp\Handler\CurlMultiHandler;
+use SMTP2GOWPPlugin\GuzzleHttp\Handler\Proxy;
+use SMTP2GOWPPlugin\GuzzleHttp\Handler\StreamHandler;
+use SMTP2GOWPPlugin\Psr\Http\Message\UriInterface;
 final class Utils
 {
     /**
@@ -64,7 +64,7 @@ final class Utils
         if (\defined('STDOUT')) {
             return \STDOUT;
         }
-        return \SMTP2GOWpPlugin\GuzzleHttp\Psr7\Utils::tryFopen('php://output', 'w');
+        return \SMTP2GOWPPlugin\GuzzleHttp\Psr7\Utils::tryFopen('php://output', 'w');
     }
     /**
      * Chooses and creates a default handler to use based on the environment.

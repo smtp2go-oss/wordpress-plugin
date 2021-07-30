@@ -1,19 +1,19 @@
 <?php
 
-namespace SMTP2GOWpPlugin\GuzzleHttp;
+namespace SMTP2GOWPPlugin\GuzzleHttp;
 
-use SMTP2GOWpPlugin\GuzzleHttp\Cookie\CookieJar;
-use SMTP2GOWpPlugin\GuzzleHttp\Exception\GuzzleException;
-use SMTP2GOWpPlugin\GuzzleHttp\Exception\InvalidArgumentException;
-use SMTP2GOWpPlugin\GuzzleHttp\Promise as P;
-use SMTP2GOWpPlugin\GuzzleHttp\Promise\PromiseInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\RequestInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\ResponseInterface;
-use SMTP2GOWpPlugin\Psr\Http\Message\UriInterface;
+use SMTP2GOWPPlugin\GuzzleHttp\Cookie\CookieJar;
+use SMTP2GOWPPlugin\GuzzleHttp\Exception\GuzzleException;
+use SMTP2GOWPPlugin\GuzzleHttp\Exception\InvalidArgumentException;
+use SMTP2GOWPPlugin\GuzzleHttp\Promise as P;
+use SMTP2GOWPPlugin\GuzzleHttp\Promise\PromiseInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\RequestInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\ResponseInterface;
+use SMTP2GOWPPlugin\Psr\Http\Message\UriInterface;
 /**
  * @final
  */
-class Client implements ClientInterface, \SMTP2GOWpPlugin\Psr\Http\Client\ClientInterface
+class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\ClientInterface
 {
     use ClientTrait;
     /**
