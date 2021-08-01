@@ -2,18 +2,14 @@
     "require": {
         "smtp2go-oss/smtp2go-php": "1.0.0beta"
     },
-    "config": {
-        "preferred-install": {
-            "*": "dist"
-        }
-    },
     "require-dev": {
         "humbug/php-scoper": "^0.15.0"
     },
     "scripts": {
         "auto-scripts": {
             "removeBuild": "rm -r build/",
-            "scopeBuild": "./vendor/bin/php-scoper add-prefix"
+            "scopeBuild": "./vendor/bin/php-scoper add-prefix",
+            "dumpBuildAutoload": "cd build && composer dumpautoload"
         },
         "post-install-cmd": [
             "@auto-scripts"

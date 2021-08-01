@@ -38,12 +38,13 @@ class SMTP2GOMailer extends PHPMailer
             $this->Body,
         );
 
+        // TODO - need these headers in
+        // $this->getReplyToAddresses()
+
         $mailSendService->setCustomHeaders(get_option('smtp2go_custom_headers'));
 
         $mailSendService->setBcc($this->getBccAddresses());
         $mailSendService->setCc($this->getCcAddresses());
-
-        $mailSendService->addAddresses('reply-to', $this->getReplyToAddresses());
 
         if (!empty($this->getAttachments())) {
             $attachments = [];

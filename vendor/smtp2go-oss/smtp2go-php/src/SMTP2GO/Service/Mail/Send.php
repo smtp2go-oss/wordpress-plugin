@@ -370,8 +370,8 @@ class Send implements BuildsRequest
 
     public function addAddress(string $addressType, $email, $name = ''): Send
     {
-        if (!in_array($addressType, ['to', 'cc', 'bcc'])) {
-            throw new InvalidArgumentException('$addressType must be one of either "to", "cc" or "bcc"');
+        if (!in_array($addressType, ['to', 'cc', 'bcc', 'reply-to'])) {
+            throw new InvalidArgumentException('$addressType must be one of either "to", "cc", "bcc" or "reply-to"');
         }
         if (!empty($name)) {
             $email                = str_replace(['<', '>'], '', $email);
