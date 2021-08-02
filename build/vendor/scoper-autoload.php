@@ -33,8 +33,8 @@ if (!class_exists('Bar', false) && !interface_exists('Bar', false) && !trait_exi
 if (!class_exists('JsonException', false) && !interface_exists('JsonException', false) && !trait_exists('JsonException', false)) {
     spl_autoload_call('SMTP2GOWPPlugin\JsonException');
 }
-if (!class_exists('ComposerAutoloaderInitb84b60e31ad7381d44050040b529e845', false) && !interface_exists('ComposerAutoloaderInitb84b60e31ad7381d44050040b529e845', false) && !trait_exists('ComposerAutoloaderInitb84b60e31ad7381d44050040b529e845', false)) {
-    spl_autoload_call('SMTP2GOWPPlugin\ComposerAutoloaderInitb84b60e31ad7381d44050040b529e845');
+if (!class_exists('ComposerAutoloaderInit6096e25c061ab7c49c69828a1170aa2b', false) && !interface_exists('ComposerAutoloaderInit6096e25c061ab7c49c69828a1170aa2b', false) && !trait_exists('ComposerAutoloaderInit6096e25c061ab7c49c69828a1170aa2b', false)) {
+    spl_autoload_call('SMTP2GOWPPlugin\ComposerAutoloaderInit6096e25c061ab7c49c69828a1170aa2b');
 }
 if (!class_exists('MockApiTest', false) && !interface_exists('MockApiTest', false) && !trait_exists('MockApiTest', false)) {
     spl_autoload_call('SMTP2GOWPPlugin\MockApiTest');
@@ -1777,9 +1777,9 @@ if (!function_exists('formatErrorMessage')) {
         return \SMTP2GOWPPlugin\formatErrorMessage(...func_get_args());
     }
 }
-if (!function_exists('composerRequireb84b60e31ad7381d44050040b529e845')) {
-    function composerRequireb84b60e31ad7381d44050040b529e845() {
-        return \SMTP2GOWPPlugin\composerRequireb84b60e31ad7381d44050040b529e845(...func_get_args());
+if (!function_exists('composerRequire6096e25c061ab7c49c69828a1170aa2b')) {
+    function composerRequire6096e25c061ab7c49c69828a1170aa2b() {
+        return \SMTP2GOWPPlugin\composerRequire6096e25c061ab7c49c69828a1170aa2b(...func_get_args());
     }
 }
 if (!function_exists('GEOSVersion')) {

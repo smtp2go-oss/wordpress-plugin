@@ -38,10 +38,11 @@ class SMTP2GOMailer extends PHPMailer
             $this->Body,
         );
 
-        // TODO - need these headers in
-        // $this->getReplyToAddresses()
+        $this->processCustomHeaders($mailSendService);
 
-        $mailSendService->setCustomHeaders(get_option('smtp2go_custom_headers'));
+
+        $this->processReplyTos($mailSendService);
+
 
         $mailSendService->setBcc($this->getBccAddresses());
         $mailSendService->setCc($this->getCcAddresses());
@@ -63,6 +64,7 @@ class SMTP2GOMailer extends PHPMailer
             $mailSendService->setSender($this->From, $this->FromName);
         }
 
+
         $client = new ApiClient(get_option('smtp2go_api_key'));
 
         $success            = $client->consume($mailSendService);
@@ -71,7 +73,40 @@ class SMTP2GOMailer extends PHPMailer
         return $success;
     }
 
+    /**
+     * Process the headers stored as Wordpress options
+     */
+    private function processCustomHeaders(Send $mailSendService)
+    {
+        $raw_custom_headers =  get_option('smtp2go_custom_headers');
+        if (!empty($raw_custom_headers['header'])) {
+            foreach ($raw_custom_headers['header'] as $index => $header) {
+                if (!empty($header) && !empty($raw_custom_headers['value'][$index])) {
 
+                    $mailSendService->addCustomHeader($header, $raw_custom_headers['value'][$index]);
+                }
+            }
+        }
+    }
+
+    /**
+     * Process PHPMailer reply To Addresses into Reply-To Headers
+     *
+     * @param Send $mailSendService
+     * @return void
+     */
+    private function processReplyTos(Send $mailSendService)
+    {
+        $replyTos = $this->getReplyToAddresses();
+
+        foreach ($replyTos as $replyToItem) {
+            $email = $replyToItem[0] ?? null;
+            $name = $replyToItem[1] ?? '';
+            if ($email) {
+                $mailSendService->addCustomHeader('Reply-To', trim("$name <$email>"));
+            }
+        }
+    }
 
     public function getLastRequest()
     {

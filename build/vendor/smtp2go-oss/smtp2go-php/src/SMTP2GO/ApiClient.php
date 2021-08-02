@@ -87,7 +87,6 @@ class ApiClient
         $body = [];
         $body = $service->buildRequestBody();
         $body['api_key'] = $this->apiKey;
-
         $basepath = \dirname(__FILE__, 3);
         try {
             $this->lastResponse = $this->httpClient->request(
