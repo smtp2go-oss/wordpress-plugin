@@ -480,7 +480,7 @@ class WordpressPluginAdmin
         }
         // create / map better error messages where appropriate
         $reason = '';
-        $failures = $this->last_response->data->failures;
+        $failures = $response->data->failures;
         // API returns failures two different ways - either in failures
         if (count($failures) > 0) {
             $reason = $failures[0];
