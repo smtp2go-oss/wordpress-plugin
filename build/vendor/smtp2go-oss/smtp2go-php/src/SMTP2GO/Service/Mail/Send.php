@@ -57,19 +57,19 @@ class Send implements BuildsRequest
      *
      * @var array
      */
-    protected $custom_headers;
+    protected $custom_headers = [];
     /**
      * Attachments
      *
      * @var array
      */
-    protected $attachments;
+    protected $attachments = [];
     /**
      * Inline attachments
      *
      * @var array
      */
-    protected $inlines;
+    protected $inlines = [];
     /**
      * endpoint to send to
      *
@@ -132,9 +132,8 @@ class Send implements BuildsRequest
     {
         $detector = new Detector();
         $attachments = [];
-        foreach ((array) $this->attachments as $path) {
-            $file_contents = \file_get_contents($path);
-            $attachments[] = array('filename' => \basename($path), 'fileblob' => \base64_encode($file_contents), 'mimetype' => $detector->detectMimeType($path));
+        foreach ($this->attachments as $path) {
+            $attachments[] = array('filename' => \basename($path), 'fileblob' => \base64_encode(\file_get_contents($path)), 'mimetype' => $detector->detectMimeType($path));
         }
         return $attachments;
     }
@@ -147,8 +146,7 @@ class Send implements BuildsRequest
     {
         $detector = new Detector();
         $inlines = [];
-        foreach ((array) $this->inlines as $path) {
-            $file_contents = \file_get_contents($path);
+        foreach ($this->inlines as $path) {
             $inlines[] = array('filename' => \basename($path), 'fileblob' => \base64_encode(\file_get_contents($path)), 'mimetype' => $detector->detectMimeType($path));
         }
         return $inlines;
@@ -327,9 +325,9 @@ class Send implements BuildsRequest
     /**
      * Get the BCC'd recipients
      *
-     * @return  string|array
+     * @return  array
      */
-    public function getBcc()
+    public function getBcc() : array
     {
         return $this->bcc;
     }
@@ -349,7 +347,7 @@ class Send implements BuildsRequest
     /**
      * Get the CC'd recipients. This clears any previously added CC addresses
      *
-     * @return  string|array
+     * @return  array
      */
     public function getCc()
     {
@@ -362,7 +360,7 @@ class Send implements BuildsRequest
      *
      * @return  Send
      */
-    public function setCc($cc) : Send
+    public function setCc(array $cc) : Send
     {
         $this->cc = [];
         $this->addAddresses('cc', $cc);
@@ -371,9 +369,9 @@ class Send implements BuildsRequest
     /**
      * Get attachments
      *
-     * @return  string|array
+     * @return  array
      */
-    public function getAttachments()
+    public function getAttachments() : array
     {
         return $this->attachments;
     }
@@ -384,7 +382,7 @@ class Send implements BuildsRequest
      *
      * @return  Send
      */
-    public function setAttachments($attachments) : Send
+    public function setAttachments(array $attachments) : Send
     {
         $this->attachments = $attachments;
         return $this;
@@ -405,7 +403,7 @@ class Send implements BuildsRequest
      *
      * @return  Send
      */
-    public function setInlines($inlines) : Send
+    public function setInlines(array $inlines) : Send
     {
         $this->inlines = $inlines;
         return $this;
@@ -415,7 +413,7 @@ class Send implements BuildsRequest
      *
      * @return  string
      */
-    public function getTextBody()
+    public function getTextBody() : string
     {
         return $this->text_body;
     }

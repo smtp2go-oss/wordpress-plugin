@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a755075d4f3c2577875c5344e6cabf92",
+    "content-hash": "38adb7419f44ec934a4ab00eaceaed31",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -450,16 +450,16 @@
         },
         {
             "name": "smtp2go-oss/smtp2go-php",
-            "version": "1.0.1beta",
+            "version": "1.0.2beta",
             "source": {
                 "type": "git",
                 "url": "https://github.com/smtp2go-oss/smtp2go-php.git",
-                "reference": "71748df834ed3b2242cac1d607963d33506f8853"
+                "reference": "9e3777208c54f1c9578af8b2fde67814585406eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/smtp2go-oss/smtp2go-php/zipball/71748df834ed3b2242cac1d607963d33506f8853",
-                "reference": "71748df834ed3b2242cac1d607963d33506f8853",
+                "url": "https://api.github.com/repos/smtp2go-oss/smtp2go-php/zipball/9e3777208c54f1c9578af8b2fde67814585406eb",
+                "reference": "9e3777208c54f1c9578af8b2fde67814585406eb",
                 "shasum": ""
             },
             "require": {
@@ -479,9 +479,9 @@
             "description": "A library for sending email through the SMTP2GO Api",
             "support": {
                 "issues": "https://github.com/smtp2go-oss/smtp2go-php/issues",
-                "source": "https://github.com/smtp2go-oss/smtp2go-php/tree/1.0.1beta"
+                "source": "https://github.com/smtp2go-oss/smtp2go-php/tree/1.0.2beta"
             },
-            "time": "2021-08-02T00:46:41+00:00"
+            "time": "2021-08-03T21:24:11+00:00"
         }
     ],
     "packages-dev": [

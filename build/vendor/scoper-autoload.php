@@ -33,11 +33,17 @@ if (!class_exists('Bar', false) && !interface_exists('Bar', false) && !trait_exi
 if (!class_exists('JsonException', false) && !interface_exists('JsonException', false) && !trait_exists('JsonException', false)) {
     spl_autoload_call('SMTP2GOWPPlugin\JsonException');
 }
-if (!class_exists('ComposerAutoloaderInit55352671a746245a4d999ee78f3c64f4', false) && !interface_exists('ComposerAutoloaderInit55352671a746245a4d999ee78f3c64f4', false) && !trait_exists('ComposerAutoloaderInit55352671a746245a4d999ee78f3c64f4', false)) {
-    spl_autoload_call('SMTP2GOWPPlugin\ComposerAutoloaderInit55352671a746245a4d999ee78f3c64f4');
+if (!class_exists('ComposerAutoloaderInitdb31840f90d77a508b78d8fbac1c1c97', false) && !interface_exists('ComposerAutoloaderInitdb31840f90d77a508b78d8fbac1c1c97', false) && !trait_exists('ComposerAutoloaderInitdb31840f90d77a508b78d8fbac1c1c97', false)) {
+    spl_autoload_call('SMTP2GOWPPlugin\ComposerAutoloaderInitdb31840f90d77a508b78d8fbac1c1c97');
+}
+if (!class_exists('SendSettersTest', false) && !interface_exists('SendSettersTest', false) && !trait_exists('SendSettersTest', false)) {
+    spl_autoload_call('SMTP2GOWPPlugin\SendSettersTest');
 }
 if (!class_exists('MockApiTest', false) && !interface_exists('MockApiTest', false) && !trait_exists('MockApiTest', false)) {
     spl_autoload_call('SMTP2GOWPPlugin\MockApiTest');
+}
+if (!class_exists('SendGettersTest', false) && !interface_exists('SendGettersTest', false) && !trait_exists('SendGettersTest', false)) {
+    spl_autoload_call('SMTP2GOWPPlugin\SendGettersTest');
 }
 if (!class_exists('SendServiceTest', false) && !interface_exists('SendServiceTest', false) && !trait_exists('SendServiceTest', false)) {
     spl_autoload_call('SMTP2GOWPPlugin\SendServiceTest');
@@ -1777,9 +1783,9 @@ if (!function_exists('formatErrorMessage')) {
         return \SMTP2GOWPPlugin\formatErrorMessage(...func_get_args());
     }
 }
-if (!function_exists('composerRequire55352671a746245a4d999ee78f3c64f4')) {
-    function composerRequire55352671a746245a4d999ee78f3c64f4() {
-        return \SMTP2GOWPPlugin\composerRequire55352671a746245a4d999ee78f3c64f4(...func_get_args());
+if (!function_exists('composerRequiredb31840f90d77a508b78d8fbac1c1c97')) {
+    function composerRequiredb31840f90d77a508b78d8fbac1c1c97() {
+        return \SMTP2GOWPPlugin\composerRequiredb31840f90d77a508b78d8fbac1c1c97(...func_get_args());
     }
 }
 if (!function_exists('GEOSVersion')) {
