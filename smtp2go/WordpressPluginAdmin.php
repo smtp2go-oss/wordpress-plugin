@@ -464,10 +464,14 @@ class WordpressPluginAdmin
             exit;
         }
 
+        if ($phpmailer->isError()) {
+            $reason = 'PHPMailer Error: ' . $phpmailer->ErrorInfo;
+            wp_send_json(array('success' => 0, 'reason' => htmlentities($reason)));
+            exit;
+        }
+
         $request = $phpmailer->getLastRequest();
-
         $response = $request->getResponseBody();
-
 
         if (empty($request)) {
             $reason = 'Unable to find the request made to the SMPT2GO API. The most likely cause is a conflict with another plugin.';
