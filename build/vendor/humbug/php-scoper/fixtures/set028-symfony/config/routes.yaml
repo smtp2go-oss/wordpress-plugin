@@ -1,3 +1,0 @@
-#index:
-#    path: /
-#    controller: SMTP2GOWPPlugin\App\Controller\DefaultController::index

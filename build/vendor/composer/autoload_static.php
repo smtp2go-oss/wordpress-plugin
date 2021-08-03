@@ -4,39 +4,20 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit55352671a746245a4d999ee78f3c64f4
+class ComposerStaticInit3611a3a8c7c13bea862565407659ca70
 {
     public static $files = array (
-        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
-        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
-        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        '0d59ee240a4cd96ddbb4ff164fccea4d' => __DIR__ . '/..' . '/symfony/polyfill-php73/bootstrap.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
-        'fe1d4898277c26748a003292f432cd3b' => __DIR__ . '/..' . '/jetbrains/phpstorm-stubs/PhpStormStubsMap.php',
-        '107bb9f2fcf71c39f243ed29e9ceb506' => __DIR__ . '/..' . '/humbug/php-scoper/src/functions.php',
-        '0d8b55c902603f8c22bf1ed149beb7a8' => __DIR__ . '/..' . '/humbug/php-scoper/src/json.php',
     );
 
     public static $prefixLengthsPsr4 = array (
         'S' => 
         array (
-            'SMTP2GOWPPlugin\\Symfony\\Polyfill\\Php80\\' => 39,
-            'SMTP2GOWPPlugin\\Symfony\\Polyfill\\Php73\\' => 39,
-            'SMTP2GOWPPlugin\\Symfony\\Polyfill\\Mbstring\\' => 42,
-            'SMTP2GOWPPlugin\\Symfony\\Polyfill\\Ctype\\' => 39,
-            'SMTP2GOWPPlugin\\Symfony\\Contracts\\Service\\' => 42,
-            'SMTP2GOWPPlugin\\Symfony\\Component\\Finder\\' => 41,
-            'SMTP2GOWPPlugin\\Symfony\\Component\\Filesystem\\' => 45,
-            'SMTP2GOWPPlugin\\Symfony\\Component\\Console\\' => 42,
             'SMTP2GOWPPlugin\\SMTP2GO\\' => 24,
             'SMTP2GOWPPlugin\\Psr\\Http\\Message\\' => 33,
             'SMTP2GOWPPlugin\\Psr\\Http\\Client\\' => 32,
-            'SMTP2GOWPPlugin\\Psr\\Container\\' => 30,
-            'SMTP2GOWPPlugin\\PhpParser\\' => 26,
-            'SMTP2GOWPPlugin\\PackageVersions\\' => 32,
-            'SMTP2GOWPPlugin\\Humbug\\PhpScoper\\' => 33,
             'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\' => 32,
             'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\' => 35,
             'SMTP2GOWPPlugin\\GuzzleHttp\\' => 27,
@@ -44,38 +25,6 @@ class ComposerStaticInit55352671a746245a4d999ee78f3c64f4
     );
 
     public static $prefixDirsPsr4 = array (
-        'SMTP2GOWPPlugin\\Symfony\\Polyfill\\Php80\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
-        ),
-        'SMTP2GOWPPlugin\\Symfony\\Polyfill\\Php73\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-php73',
-        ),
-        'SMTP2GOWPPlugin\\Symfony\\Polyfill\\Mbstring\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
-        ),
-        'SMTP2GOWPPlugin\\Symfony\\Polyfill\\Ctype\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
-        ),
-        'SMTP2GOWPPlugin\\Symfony\\Contracts\\Service\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/service-contracts',
-        ),
-        'SMTP2GOWPPlugin\\Symfony\\Component\\Finder\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/finder',
-        ),
-        'SMTP2GOWPPlugin\\Symfony\\Component\\Filesystem\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/filesystem',
-        ),
-        'SMTP2GOWPPlugin\\Symfony\\Component\\Console\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/console',
-        ),
         'SMTP2GOWPPlugin\\SMTP2GO\\' => 
         array (
             0 => __DIR__ . '/..' . '/smtp2go-oss/smtp2go-php/src/SMTP2GO',
@@ -88,22 +37,6 @@ class ComposerStaticInit55352671a746245a4d999ee78f3c64f4
         'SMTP2GOWPPlugin\\Psr\\Http\\Client\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-client/src',
-        ),
-        'SMTP2GOWPPlugin\\Psr\\Container\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/psr/container/src',
-        ),
-        'SMTP2GOWPPlugin\\PhpParser\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
-        ),
-        'SMTP2GOWPPlugin\\PackageVersions\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/composer/package-versions-deprecated/src/PackageVersions',
-        ),
-        'SMTP2GOWPPlugin\\Humbug\\PhpScoper\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/humbug/php-scoper/src',
         ),
         'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\' => 
         array (
@@ -121,19 +54,14 @@ class ComposerStaticInit55352671a746245a4d999ee78f3c64f4
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'SMTP2GOWPPlugin\\Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
-        'SMTP2GOWPPlugin\\JsonException' => __DIR__ . '/..' . '/symfony/polyfill-php73/Resources/stubs/JsonException.php',
-        'SMTP2GOWPPlugin\\Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
-        'SMTP2GOWPPlugin\\UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
-        'SMTP2GOWPPlugin\\ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit55352671a746245a4d999ee78f3c64f4::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit55352671a746245a4d999ee78f3c64f4::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit55352671a746245a4d999ee78f3c64f4::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit3611a3a8c7c13bea862565407659ca70::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit3611a3a8c7c13bea862565407659ca70::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit3611a3a8c7c13bea862565407659ca70::$classMap;
 
         }, null, ClassLoader::class);
     }

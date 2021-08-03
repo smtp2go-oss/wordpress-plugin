@@ -6,21 +6,9 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'SMTP2GOWPPlugin\\Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),
-    'SMTP2GOWPPlugin\\Symfony\\Polyfill\\Php73\\' => array($vendorDir . '/symfony/polyfill-php73'),
-    'SMTP2GOWPPlugin\\Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
-    'SMTP2GOWPPlugin\\Symfony\\Polyfill\\Ctype\\' => array($vendorDir . '/symfony/polyfill-ctype'),
-    'SMTP2GOWPPlugin\\Symfony\\Contracts\\Service\\' => array($vendorDir . '/symfony/service-contracts'),
-    'SMTP2GOWPPlugin\\Symfony\\Component\\Finder\\' => array($vendorDir . '/symfony/finder'),
-    'SMTP2GOWPPlugin\\Symfony\\Component\\Filesystem\\' => array($vendorDir . '/symfony/filesystem'),
-    'SMTP2GOWPPlugin\\Symfony\\Component\\Console\\' => array($vendorDir . '/symfony/console'),
     'SMTP2GOWPPlugin\\SMTP2GO\\' => array($vendorDir . '/smtp2go-oss/smtp2go-php/src/SMTP2GO'),
     'SMTP2GOWPPlugin\\Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-factory/src', $vendorDir . '/psr/http-message/src'),
     'SMTP2GOWPPlugin\\Psr\\Http\\Client\\' => array($vendorDir . '/psr/http-client/src'),
-    'SMTP2GOWPPlugin\\Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
-    'SMTP2GOWPPlugin\\PhpParser\\' => array($vendorDir . '/nikic/php-parser/lib/PhpParser'),
-    'SMTP2GOWPPlugin\\PackageVersions\\' => array($vendorDir . '/composer/package-versions-deprecated/src/PackageVersions'),
-    'SMTP2GOWPPlugin\\Humbug\\PhpScoper\\' => array($vendorDir . '/humbug/php-scoper/src'),
     'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\' => array($vendorDir . '/guzzlehttp/psr7/src'),
     'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\' => array($vendorDir . '/guzzlehttp/promises/src'),
     'SMTP2GOWPPlugin\\GuzzleHttp\\' => array($vendorDir . '/guzzlehttp/guzzle/src'),
