@@ -43,7 +43,6 @@ class SMTP2GOMailer extends PHPMailer
 
         $this->processReplyTos($mailSendService);
 
-
         $mailSendService->setBcc($this->getBccAddresses());
         $mailSendService->setCc($this->getCcAddresses());
 

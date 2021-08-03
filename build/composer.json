@@ -1,6 +1,6 @@
 {
     "require": {
-        "smtp2go-oss\/smtp2go-php": "1.0.1beta"
+        "smtp2go-oss\/smtp2go-php": "1.0.2beta"
     },
     "scripts": {
         "auto-scripts": {

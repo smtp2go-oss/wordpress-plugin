@@ -31,6 +31,7 @@ If you have questions or need assistance then feel free to contact the support t
 = v1.2.1 =
 * user php-scoper to avoid potential conflicts
 * fix issue with header handling
+* additional error handling in admin test email setup
 = v1.2.0 =
 * use composer package for API integration https://github.com/smtp2go-oss/smtp2go-php
 * fix sender domain validation check

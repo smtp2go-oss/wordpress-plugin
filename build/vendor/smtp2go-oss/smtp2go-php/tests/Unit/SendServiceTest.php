@@ -107,7 +107,7 @@ class SendServiceTest extends TestCase
     public function testAddAttachment()
     {
         $sendService = $this->createTestInstance();
-        $sendService->setAttachments(\dirname(__FILE__, 2) . '/Attachments/cat.jpg');
+        $sendService->setAttachments([\dirname(__FILE__, 2) . '/Attachments/cat.jpg']);
         $request_data = $sendService->buildRequestBody();
         $this->assertArrayHasKey('attachments', $request_data);
         $this->assertEquals('image/jpeg', $request_data['attachments'][0]['mimetype']);
@@ -122,7 +122,7 @@ class SendServiceTest extends TestCase
     public function testAddInline()
     {
         $sendService = $this->createTestInstance();
-        $sendService->setInlines(\dirname(__FILE__, 2) . '/Attachments/cat.jpg');
+        $sendService->setInlines([\dirname(__FILE__, 2) . '/Attachments/cat.jpg']);
         $request_data = $sendService->buildRequestBody();
         $this->assertArrayHasKey('inlines', $request_data);
         $this->assertEquals('image/jpeg', $request_data['inlines'][0]['mimetype']);
