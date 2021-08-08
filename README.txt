@@ -28,6 +28,8 @@ Once successfully activated, the SMTP2GO plugin will appear in the "Settings" me
 If you have questions or need assistance then feel free to contact the support team by logging into the App (https://app.smtp2go.com) then clicking the support icon on the top-right of the screen.
 
 == Changelog ==
+= v1.2.2 =
+* PHP 7.2 compatability
 = v1.2.1 =
 * user php-scoper to avoid potential conflicts
 * fix issue with header handling
