@@ -35,7 +35,7 @@ class SMTP2GOMailer extends PHPMailer
             $from,
             $this->getToAddresses(),
             $this->Subject,
-            $this->Body,
+            $this->Body
         );
 
         $this->processCustomHeaders($mailSendService);
