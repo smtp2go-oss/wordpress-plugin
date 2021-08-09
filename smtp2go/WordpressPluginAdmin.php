@@ -3,9 +3,10 @@
 namespace SMTP2GO;
 
 
-use SMTP2GO\Service\Service;
+use SMTP2GOWPPlugin\SMTP2GO\ApiClient;
+use SMTP2GOWPPlugin\SMTP2GO\Service\Service;
 
-require_once dirname(__FILE__, 2) . '/vendor/autoload.php';
+require_once dirname(__FILE__, 2) . '/build/vendor/autoload.php';
 
 /**
  * The admin-specific functionality of the plugin.
@@ -463,10 +464,14 @@ class WordpressPluginAdmin
             exit;
         }
 
+        if ($phpmailer->isError()) {
+            $reason = 'PHPMailer Error: ' . $phpmailer->ErrorInfo;
+            wp_send_json(array('success' => 0, 'reason' => htmlentities($reason)));
+            exit;
+        }
+
         $request = $phpmailer->getLastRequest();
-
         $response = $request->getResponseBody();
-
 
         if (empty($request)) {
             $reason = 'Unable to find the request made to the SMPT2GO API. The most likely cause is a conflict with another plugin.';
@@ -479,7 +484,7 @@ class WordpressPluginAdmin
         }
         // create / map better error messages where appropriate
         $reason = '';
-        $failures = $this->last_response->data->failures;
+        $failures = $response->data->failures;
         // API returns failures two different ways - either in failures
         if (count($failures) > 0) {
             $reason = $failures[0];
@@ -498,7 +503,7 @@ class WordpressPluginAdmin
             if (!empty($response->data->field_validation_errors->message)) {
                 $reason = $response->data->field_validation_errors->message;
             } elseif (!empty($response->data->error)) {
-                $reason = $response->data->error. '<br />' .$response->data->error_code;
+                $reason = $response->data->error . '<br />' . $response->data->error_code;
             }
             // API returns failures two different ways - or with error codes
             switch ($response->data->error_code ?? '') {
