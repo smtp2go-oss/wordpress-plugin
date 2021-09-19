@@ -74,7 +74,7 @@
 .smtp2go-error-message,
 .smtp2go-success-message {
   padding: 5px;
-  margin: 5px 0;
+  margin: 10px 0;
   border: 1px solid black;
   border-left: 5px solid red;
   background-color: #fff;
@@ -85,7 +85,7 @@
 }
 
 .smtp2go-usage-bar {
-  width: 580px;
+  width: 100%;
   height: 31px;
   background-color: rgba(24, 146, 230, 0.3);
   border: 1px solid rgba(17, 99, 157, 0.2);
@@ -116,10 +116,8 @@
 }
 
 .smtp2go-stat-box {
-  padding: 15px;
-  border: 1px solid black;
-  margin-bottom: 10px;
-  width: 580px;
+  width: 50%;
+  padding-top: 10px;
 }
 
 .smtp2go-stat-box-small {
@@ -237,10 +235,9 @@
 
 .smtp2go-domain-status-badge {
   border-radius: 2px !important;
-  padding: 4px 4px 4px;
+  padding: 2px 4px;
   text-align: center;
   color: white;
-  font-size: 14px;
   white-space: nowrap;
   display: inline-block;
   text-transform: uppercase;
@@ -261,4 +258,12 @@
 }
 .smtp2go-validation-table th, .smtp2go-validation-table td {
   text-align:left;
+}
+
+.smtp2go-validation-help-link {
+  margin-top: 40px;
+}
+
+.smtp2go-admin-spacing {
+  margin: 20px 0;
 }

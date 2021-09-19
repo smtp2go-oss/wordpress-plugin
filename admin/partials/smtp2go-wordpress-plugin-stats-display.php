@@ -5,29 +5,6 @@ $bar_width = 580;
 <div class="wrap smtp2go">
 
     <?php if (!empty($stats)): ?>
-        <div class="smtp2go-stat-box">
-
-        <div class="smtp2go-usage-bar">
-        <!-- a bar showing their current billing period's usage -->
-        <?php
-
-$progress_bar_width = ($stats->cycle_used / $stats->cycle_max) * $bar_width;
-if ($progress_bar_width < 10) {
-    $progress_bar_width = 10;
-} else if ($progress_bar_width > $bar_width) {
-    $progress_bar_width = $bar_width;
-}
-?>
-
-
-        <div class="smtp2go-progress-bar" style="width:<?php echo $progress_bar_width; ?>px">
-
-        </div>
-            <p><span class="smtp2go-number-format"><?php echo $stats->cycle_used ?></span> / <span class="smtp2go-number-format"><?php echo $stats->cycle_max ?></span></p>
-        </div>
-        <p>Emails sent this billing month. Resets <?php echo date('F jS', strtotime($stats->cycle_end)); ?>.</p>
-
-        </div>
 
         <div class="smtp2go-stat-box">
 
@@ -52,6 +29,30 @@ if ($progress_bar_width < 10) {
             </div>
 
         </div>
+
+        </div>
+
+        <div class="smtp2go-stat-box">
+
+            <div class="smtp2go-usage-bar">
+                <!-- a bar showing their current billing period's usage -->
+                <?php
+
+                $progress_bar_width = ($stats->cycle_used / $stats->cycle_max) * $bar_width;
+                if ($progress_bar_width < 10) {
+                    $progress_bar_width = 10;
+                } else if ($progress_bar_width > $bar_width) {
+                    $progress_bar_width = $bar_width;
+                }
+                ?>
+
+
+                <div class="smtp2go-progress-bar" style="width:<?php echo $progress_bar_width; ?>px">
+
+                </div>
+                <p><span class="smtp2go-number-format"><?php echo $stats->cycle_used ?></span> / <span class="smtp2go-number-format"><?php echo $stats->cycle_max ?></span></p>
+            </div>
+            <p>Emails sent this billing month. Resets <?php echo date('F jS', strtotime($stats->cycle_end)); ?>.</p>
 
         </div>
 

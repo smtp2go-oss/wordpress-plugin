@@ -93,12 +93,12 @@ class WordpressPluginAdmin
 
         add_settings_field(
             'smtp2go_enabled',
-            __('Enabled *', $this->plugin_name),
+            __('Enable this plugin *', $this->plugin_name),
             array($this, 'outputCheckboxHtml'),
             $this->plugin_name,
             'smtp2go_settings_section',
             array(
-                'name' => 'smtp2go_enabled', 'label' => __('Send Email Using SMTP2GO'),
+                'name' => 'smtp2go_enabled', 'label' => __(''),
             )
         );
 
@@ -339,7 +339,7 @@ class WordpressPluginAdmin
     public function outputApiKeyHtml()
     {
         $setting = get_option('smtp2go_api_key');
-        $hint    = '<span style="cursor: default; font-weight: normal;">Create/find your API key from the <i>Settings > API Keys</i> page in the SMTP2GO web app.<br/>The API key will need permissions <i>Emails</i> and <i>Statistics.</i> and <i>Sender Domains /domain/verify</i></span>';
+        $hint    = '<span style="cursor: default; font-weight: normal;">The API key will need permissions <i>Emails</i> and <i>Statistics.</i> and <i>Sender Domains /domain/verify</i></span>';
         if (empty($setting)) {
             $this->outputTextFieldHtml(array(
                 'name'     => 'smtp2go_api_key',
