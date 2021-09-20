@@ -1,4 +1,4 @@
-=== SMTP2GO Plugin for Wordpress ===
+=== SMTP2GO - Email Made Easy ===
 Contributors: thefoldnz, greatsaltlake
 Tags: email, wp_mail, email reliability, smtp, smtp2go, phpmailer, mail, email marketing, newsletter, welcome email, marketing
 Requires at least: 5.5
