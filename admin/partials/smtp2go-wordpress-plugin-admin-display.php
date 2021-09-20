@@ -52,7 +52,9 @@ function SMTP2GO_tab_active($tab)
 
         <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'settings'), 'admin.php')) ?>"
             class="nav-tab <?php echo SMTP2GO_tab_active('settings') ?>"><?php _e('Settings', $this->plugin_name)?></a>
-
+        <?php
+        if (get_option('smtp2go_api_key')):
+        ?>
         <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'test'), 'admin.php')) ?>"
             class="nav-tab <?php echo SMTP2GO_tab_active('test') ?>">Test</a>
 
@@ -63,10 +65,9 @@ function SMTP2GO_tab_active($tab)
                 <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'validation'), 'admin.php')) ?>"
             class="nav-tab <?php echo SMTP2GO_tab_active('validation') ?> js-validation-tab">Sender Domain<span
                 class="js-validation-tab-span spinner" style="float: none; display: none; margin: 0px 10px 2px ;"></span></a>
+        <?php endif;?>
 
     </div>
-    <!--    <p><img src="--><?php //echo plugins_url('SMTP2GO_logo.png', dirname(__FILE__,2)) ?>
-    <!--"/></p>-->
 
     <?php if (!empty(SMTP2GO_tab_active('settings'))): ?>
 
