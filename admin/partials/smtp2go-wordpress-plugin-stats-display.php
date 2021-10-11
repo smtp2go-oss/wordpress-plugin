@@ -38,7 +38,7 @@ $bar_width = 580;
                 <!-- a bar showing their current billing period's usage -->
                 <?php
 
-                $progress_bar_width = ($stats->cycle_used / $stats->cycle_max) * $bar_width;
+                $progress_bar_width = ($stats->email_count / $stats->cycle_max) * $bar_width;
                 if ($progress_bar_width < 10) {
                     $progress_bar_width = 10;
                 } else if ($progress_bar_width > $bar_width) {
@@ -50,9 +50,9 @@ $bar_width = 580;
                 <div class="smtp2go-progress-bar" style="width:<?php echo $progress_bar_width; ?>px">
 
                 </div>
-                <p><span class="smtp2go-number-format"><?php echo $stats->cycle_used ?></span> / <span class="smtp2go-number-format"><?php echo $stats->cycle_max ?></span></p>
+                <p><span class="smtp2go-number-format"><?php echo $stats->email_count ?></span> / <span class="smtp2go-number-format"><?php echo $stats->cycle_max ?></span></p>
             </div>
-            <p>Emails sent this billing month. Resets <?php echo date('F jS', strtotime($stats->cycle_end)); ?>.</p>
+            <p><?php echo __('Plugin emails sent this billing month. Resets') ?> <?php echo date('F jS', strtotime($stats->cycle_end)); ?>.</p>
 
         </div>
 
