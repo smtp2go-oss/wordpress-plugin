@@ -384,10 +384,10 @@ class WordpressPluginAdmin
 
     public function renderStatsPage()
     {
-        $client = new ApiClient(get_option('smtp2go_api_key'));
+        $apiKey = get_option('smtp2go_api_key');
+        $client = new ApiClient($apiKey);
         $stats   = null;
-
-        if ($client->consume(new Service('stats/email_summary'))) {
+        if ($client->consume(new Service('stats/email_summary', ['username' => substr($apiKey, 0, 16)]))) {
             $stats = $client->getResponseBody()->data;
         }
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-stats-display.php';
