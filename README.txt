@@ -38,7 +38,7 @@ Signup for a [free account here](https://www.smtp2go.com/).
 
 = Do I need an SMTP2GO account? =
 
-Yes, the SMTP2GO WordPress plugin uses SMTP2GO’s API to deliver emails and get statistics. Creating an account on SMTP2GO is free, quick and simple to set up - [sign up here] (https://www.smtp2go.com/).
+Yes, the SMTP2GO WordPress plugin uses SMTP2GO’s API to deliver emails and get statistics. Creating an account on SMTP2GO is free, quick and simple to set up - [sign up here](https://www.smtp2go.com/).
 
 Once logged into your account and completed the setup steps you can get an API Key (Settings > API Keys) which you’ll need to set in the plugin.
 
@@ -50,7 +50,7 @@ For more email volume per month and no daily restrictions you can upgrade within
 
 Paid plans have access to very useful extra features such as Subaccounts, Email Archiving, Email Testing, and Dedicated IPs.
 
-Paid plans start at $10USD/month - check out our [pricing here] (https://www.smtp2go.com/pricing).
+Paid plans start at $10USD/month - check out our [pricing here](https://www.smtp2go.com/pricing).
 
 = Can you tell me about the compatibility of this plugin? =
 Sure can! We replace the default **wp_mail** so any plugin that makes use of this will be compatible.
@@ -79,7 +79,7 @@ If you're needing extra help, our award winning support team has lots of tips an
 
 == Installation ==
 
-If you are not an existing customer, you will need to signup for an SMTP2GO account - [a free plan is available!] (https://www.smtp2go.com)
+If you are not an existing customer, you will need to signup for an SMTP2GO account - [a free plan is available!](https://www.smtp2go.com)
 
 https://www.youtube.com/watch?v=28MaT2NWR5A
 
@@ -137,9 +137,9 @@ Note: The default From Email Address and From Name can be changed programmatical
 
 == Support ==
 
-If you have questions or need assistance then feel free to contact the support team by logging into your [SMTP2GO dashboard] (https://app.smtp2go.com) then clicking the support icon on the top-right of the screen.
+If you have questions or need assistance then feel free to contact the support team by logging into your [SMTP2GO dashboard](https://app.smtp2go.com) then clicking the support icon on the top-right of the screen.
 
-More information on this plugin is available in our [Knowledgebase] (https://support.smtp2go.com/hc/en-gb/articles/900000195666-SMTP2GO-WordPress-Plugin).
+More information on this plugin is available in our [Knowledgebase](https://support.smtp2go.com/hc/en-gb/articles/900000195666-SMTP2GO-WordPress-Plugin).
 
 == About SMTP2GO ==
 
