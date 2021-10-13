@@ -38,9 +38,9 @@ class SMTP2GOMailer extends PHPMailer
             $this->Body
         );
 
+        $mailSendService->addCustomHeader('X-Smtp2go-WP', SMTP2GO_WORDPRESS_PLUGIN_VERSION);
+
         $this->processCustomHeaders($mailSendService);
-
-
         $this->processReplyTos($mailSendService);
 
         $mailSendService->setBcc($this->getBccAddresses());

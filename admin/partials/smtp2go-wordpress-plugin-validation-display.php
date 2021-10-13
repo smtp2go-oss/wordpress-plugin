@@ -42,7 +42,7 @@
 
 
 </div>
-<p>
+<div class="smtp2go-validation-help-link">
     <a target="_blank" href="https://support.smtp2go.com/hc/en-gb/articles/115004408567-Sender-Domains">What is
         Sender Domain Validation?</a>
-</p>
+</div>
