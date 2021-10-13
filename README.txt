@@ -1,6 +1,6 @@
 === SMTP2GO - Email Made Easy ===
 Contributors: thefoldnz, greatsaltlake
-Tags: email, wp_mail, email reliability, smtp, smtp2go, phpmailer, mail, email marketing, newsletter, welcome email, marketing
+Tags: email, wp_mail, smtp, smtp2go, phpmailer, newsletter, marketing, inbox, api, delivery
 Requires at least: 5.5
 Tested up to: 5.8
 Requires PHP: 7.2
@@ -8,25 +8,24 @@ Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
+Resolve email deliverability issues, increase inbox placement, track sent email, get 24/7 support, and real-time reporting.
 
 == Description ==
 
-Resolve email deliverability issues, increase inbox placement, and track sent email.
+SMTP2GO provides valuable insight into every aspect of your email needs, whether it is transactional, marketing campaigns, contact forms, or notifications.
 
-SMTP2GO provides valuable insight into every aspect of your email campaigns, whether it is transactional, marketing, contact forms or notifications.
-
-**Email Made Easy** uses SMTP2GO’s industry-leading network to deliver all email from your WordPress installation by replacing the default phpmailer/built in wp_mail() functionality by sending via SMTP2GO’s API. Within the SMTP2GO App, you can review sending and gain further insight using real-time reporting, statistics and charts as well as further features to maximize your emailing experience.
+The **Email Made Easy** plugin uses SMTP2GO’s industry-leading network to deliver all email from your WordPress installation by replacing the default phpmailer/built in wp_mail() functionality by sending via SMTP2GO’s API. Within the SMTP2GO App, see using real-time reporting, statistics and charts, as well as further features to maximize your emailing experience.
 
 **The main benefits of using SMTP2GO’s plugin:**
+
 * Setup within minutes with zero maintenance required
 * Be confident your emails have been delivered successfully with intuitive real-time reporting in the SMTP2GO App (delivery, opens, clicks, bounces, unsubscribes etc.)
-* Secure worldwide servers with intelligent routing for speed and network redundancy
+* Secure worldwide servers with intelligent routing for network redundancy and speed
 * SPF and DKIM aligned for optimal delivery
 * Diagnose and resolve delivery issues
 * 24/7 support via email ticket, live chat or phone
 * Dedicated review team handling reputation monitoring to ensure the best delivery rates
 * Scalable to cater for any sending volume
-* 100% SLA giving you peace of mind
 * Avoid poor reputation or common restrictions implemented by ISPs or other providers
 
 
@@ -39,7 +38,7 @@ Signup for a [free account here](https://www.smtp2go.com/).
 
 = Do I need an SMTP2GO account? =
 
-Yes, the SMTP2GO WordPress plugin uses SMTP2GO’s API to deliver emails and get statistics. Creating an account on SMTP2GO is free, quick and simple to set up - sign up here https://www.smtp2go.com/.
+Yes, the SMTP2GO WordPress plugin uses SMTP2GO’s API to deliver emails and get statistics. Creating an account on SMTP2GO is free, quick and simple to set up - [sign up here] (https://www.smtp2go.com/).
 
 Once logged into your account and completed the setup steps you can get an API Key (Settings > API Keys) which you’ll need to set in the plugin.
 
@@ -51,14 +50,14 @@ For more email volume per month and no daily restrictions you can upgrade within
 
 Paid plans have access to very useful extra features such as Subaccounts, Email Archiving, Email Testing, and Dedicated IPs.
 
-Paid plans start at $10USD/month - check out our pricing here: https://www.smtp2go.com/pricing
+Paid plans start at $10USD/month - check out our [pricing here] (https://www.smtp2go.com/pricing).
 
 = Can you tell me about the compatibility of this plugin? =
 Sure can! We replace the default **wp_mail** so any plugin that makes use of this will be compatible.
 
 If you do find some compatibility issues, please do let the support team know.
 
-Email Made Easy by SMTP2GO has been tested for Linux and other Unix type operating systems. We do not recommend using the plugin on Windows/IIS based systems as we do not currently support these platforms.
+**Email Made Easy** has been tested for Linux and other Unix type operating systems. We do not recommend using the plugin on Windows/IIS based systems as we do not currently support these platforms.
 
 We also recommend keeping your WordPress up to date and only use the the most recent version of WordPress, or no more than one major release behind.
 
@@ -80,7 +79,7 @@ If you're needing extra help, our award winning support team has lots of tips an
 
 == Installation ==
 
-If you are not an existing customer, you will need to signup for an SMTP2GO account (a free plan is available!). (https://www.smtp2go.com)
+If you are not an existing customer, you will need to signup for an SMTP2GO account - [a free plan is available!] (https://www.smtp2go.com)
 
 https://www.youtube.com/watch?v=28MaT2NWR5A
 
@@ -94,12 +93,14 @@ https://www.youtube.com/watch?v=28MaT2NWR5A
 
 **Configuration:**
 
-You will need to enable the plugin and enter the required details under the “Settings” tab.
+You will need to enable the plugin and enter the required details under the "Settings" tab.
 
-1. Enable the checkbox "Enable Email Made Easy by SMTPGO"
-2. Enter your API Key which can be found in your SMTP2GO account under "Settings > API Keys".
+1. Enable the checkbox "Enable Email Made Easy by SMTPGO".
+2. Enter your API Key which can be found in your SMTP2GO: "Settings > API Keys".
 
-Note: the API Key needs at least the following permissions:
+ **Note:**
+ The API Key needs at least the following permissions:
+
 * Emails
 * Statistics
 * Sender Domains
@@ -108,13 +109,15 @@ Note: the API Key needs at least the following permissions:
 4. Set the default From Name.
 5. Save the settings by clicking the "Save Settings" button at the bottom.
 
-*Note: The default From Email Address and From Name can be changed programmatically.*
+ **Note:**
+ The default From Email Address and From Name can be changed programmatically.
 
-You can add custom headers to your emails, such as headers for custom tracking with third-party tools such as X-Campaign.
 
-The *Test* tab can be used to send a test email to ensure your configuration is correct.
+You can add custom headers to your emails, such as headers for custom tracking with third-party tools such as "X-Campaign".
 
-The *Stats* tab will give you an overview of your SMTP2GO plan’s quota as well as your Spam and Bounce rates for the past 30 days.
+The "Test" tab can be used to send a test email to ensure your settings have been entered correctly.
+
+The "Stats" tab will give you an overview of your SMTP2GO plan’s quota as well as your Spam and Bounce rates for the past 30 days.
 
 And that's it! Once you've installed and enabled the plugin, all emails originating from your WordPress installation will be routed via your SMTP2GO account.
 
@@ -134,9 +137,9 @@ Note: The default From Email Address and From Name can be changed programmatical
 
 == Support ==
 
-If you have questions or need assistance then feel free to contact the support team by logging into your [SMTP2GO dashboard](https://app.smtp2go.com) then clicking the support icon on the top-right of the screen.
+If you have questions or need assistance then feel free to contact the support team by logging into your [SMTP2GO dashboard] (https://app.smtp2go.com) then clicking the support icon on the top-right of the screen.
 
-More information on this plugin is available in our [Knowledgebase](https://support.smtp2go.com/hc/en-gb/articles/900000195666-SMTP2GO-WordPress-Plugin).
+More information on this plugin is available in our [Knowledgebase] (https://support.smtp2go.com/hc/en-gb/articles/900000195666-SMTP2GO-WordPress-Plugin).
 
 == About SMTP2GO ==
 
@@ -144,9 +147,11 @@ Founded in 2006, SMTP2GO is a fast and scalable email service provider for sendi
 
 Complexities such as reputation monitoring, SPF and DKIM are professionally managed for each customer. Native-English speaking support is available worldwide (agents in the USA, EU, UK, Australia, and New Zealand).
 
-Servers are also located around the world, meaning lightning-fast connection speeds and network redundancy.
+Our data centers located around the world, meaning lightning-fast connection speeds, network redundancy, and GDPR compliance.
 
 == Changelog ==
+= v1.2.4 =
+* API call for stats pulls detail for specific key / user
 = v1.2.3 =
 * plugin layout updates
 = v1.2.2 =
