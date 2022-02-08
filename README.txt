@@ -2,7 +2,7 @@
 Contributors: thefoldnz, greatsaltlake
 Tags: email, wp_mail, smtp, smtp2go, phpmailer, newsletter, marketing, inbox, api, delivery
 Requires at least: 5.5
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 7.2
 Stable tag: trunk
 License: GPLv2 or later
@@ -150,6 +150,8 @@ Complexities such as reputation monitoring, SPF and DKIM are professionally mana
 Our data centers located around the world, meaning lightning-fast connection speeds, network redundancy, and GDPR compliance.
 
 == Changelog ==
+= v1.2.5 =
+* test on WordPres 5.9
 = v1.2.4 =
 * API call for stats pulls detail for specific key / user
 = v1.2.3 =
