@@ -150,6 +150,8 @@ Complexities such as reputation monitoring, SPF and DKIM are professionally mana
 Our data centers located around the world, meaning lightning-fast connection speeds, network redundancy, and GDPR compliance.
 
 == Changelog ==
+= v1.2.5 =
+* test on WordPres 5.9
 = v1.2.4 =
 * API call for stats pulls detail for specific key / user
 = v1.2.3 =
