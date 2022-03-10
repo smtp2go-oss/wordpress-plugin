@@ -70,7 +70,7 @@ class RequestException extends TransferException implements RequestExceptionInte
         $uri = static::obfuscateUri($uri);
         // Client Error: `GET /` resulted in a `404 Not Found` response:
         // <html> ... (truncated)
-        $message = \sprintf('%s: `%s %s` resulted in a `%s %s` response', $label, $request->getMethod(), $uri, $response->getStatusCode(), $response->getReasonPhrase());
+        $message = \sprintf('%s: `%s %s` resulted in a `%s %s` response', $label, $request->getMethod(), $uri->__toString(), $response->getStatusCode(), $response->getReasonPhrase());
         $summary = ($bodySummarizer ?? new BodySummarizer())->summarize($response);
         if ($summary !== null) {
             $message .= ":\n{$summary}\n";
