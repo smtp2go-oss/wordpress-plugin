@@ -49,21 +49,30 @@ function SMTP2GO_tab_active($tab)
         </div>
     </div>
     <div class="nav-tab-wrapper">
+
         <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'settings'), 'admin.php')) ?>"
             class="nav-tab <?php echo SMTP2GO_tab_active('settings') ?>"><?php _e('Settings', $this->plugin_name)?></a>
+        <?php
+        if (get_option('smtp2go_api_key')):
+        ?>
         <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'test'), 'admin.php')) ?>"
             class="nav-tab <?php echo SMTP2GO_tab_active('test') ?>">Test</a>
+
         <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'stats'), 'admin.php')) ?>"
             class="nav-tab <?php echo SMTP2GO_tab_active('stats') ?> js-stats-tab">Stats<span
                 class="js-stats-tab-span spinner" style="float: none; display: none; margin: 0px 10px 2px ;"></span></a>
+
+                <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'validation'), 'admin.php')) ?>"
+            class="nav-tab <?php echo SMTP2GO_tab_active('validation') ?> js-validation-tab">Sender Domain<span
+                class="js-validation-tab-span spinner" style="float: none; display: none; margin: 0px 10px 2px ;"></span></a>
+        <?php endif;?>
+
     </div>
-    <!--    <p><img src="--><?php //echo plugins_url('SMTP2GO_logo.png', dirname(__FILE__,2)) ?>
-    <!--"/></p>-->
 
     <?php if (!empty(SMTP2GO_tab_active('settings'))): ?>
 
     <h1><?php _e('General Settings', $this->plugin_name)?></h1>
-        <p style="font-weight: normal;">Open the SMTP2GO web app, create an API key, then complete the details below.</p>
+        <p style="font-weight: normal;">To create an API key, log in to the SMTP2GO web app, click "Settings > API Keys". Copy the API key then complete the details below.</p>
     <form action="options.php" method="post">
         <?php
 // output security fields for the registered setting "smtp2go"
@@ -81,46 +90,52 @@ submit_button('Save Settings');
     <?php if (!empty(SMTP2GO_tab_active('test'))): ?>
 
     <h1><?php _e('Send Test Email', $this->plugin_name)?></h1>
-    <p><?php _e('This will send a simple message to the recipient specified below, using the settings you have provided.
-     Please save any settings changes before sending the test.', $this->plugin_name);?></p>
-    <div class="smtp2go-js-success smtp2go-success-message" style="display:none">
-        <?php _e('Success! The test message was sent.', $this->plugin_name)?></div>
-    <div class="smtp2go-js-failure smtp2go-error-message" style="display:none"></div>
+    <div class="smtp2go_text_input"><?php _e('This will send a simple message to the recipient specified below, using the settings you have provided. Please save any settings changes before sending the test.', $this->plugin_name);?></div>
 
     <form class="js-send-test-email-form" action="javascript:;">
-        <table class="form-table">
-            <tr>
-                <td style="width: 20%"><?php _e('To Email', $this->plugin_name)?></td>
-                <td>
-                    <input type="email" class="smtp2go_text_input" name="smtp2go_to_email" id="smtp2go_to_email" placeholder="john@example.com" required>
-                    <br />
-                    <label for="smtp2go_to_email"><span style="cursor: default; font-weight: normal;">A valid email address to send the test email to.</span></label>
-                </td>
-            </tr>
-            <tr>
-                <td><?php _e('To Name', $this->plugin_name)?></td>
-                <td>
-                    <input type="text" class="smtp2go_text_input" name="smtp2go_to_name" id="smtp2go_to_name" placeholder="John Example" pattern="[a-zA-Z0-9 ]+" required>
-                    <br />
-                    <label for="smtp2go_to_name"><span style="cursor: default; font-weight: normal;">The email to name (alpha numeric characters only).</span></label>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <button class="js-send-test-email button button-primary">
-                        <?php _e('Send Test Email')?>
-                    </button>
-                    <span class="js-send-test spinner" style="float: none;"></span>
-                </td>
 
-            </tr>
-        </table>
+        <div class="smtp2go-admin-spacing">
+            <div>
+                <input type="email" class="smtp2go_text_input" name="smtp2go_to_email" id="smtp2go_to_email"
+                       placeholder="john@example.com" required>
+            </div>
+            <div>
+                <label for="smtp2go_to_email"><span style="cursor: default; font-weight: normal;">A valid email address to send the test email to.</span></label>
+            </div>
+        </div>
+
+        <div class="smtp2go-admin-spacing">
+            <div>
+                <input type="text" class="smtp2go_text_input" name="smtp2go_to_name" id="smtp2go_to_name"
+                       placeholder="John Example" pattern="[a-zA-Z0-9 ]+" required>
+            </div>
+            <div>
+                <label for="smtp2go_to_name"><span style="cursor: default; font-weight: normal;">The email to name (alpha numeric characters only).</span></label>
+            </div>
+        </div>
+
+        <div class="smtp2go-js-success smtp2go-success-message smtp2go_text_input" style="display:none">
+            <?php _e('Success! The test message was sent.', $this->plugin_name)?>
+        </div>
+
+        <div class="smtp2go-js-failure smtp2go-error-message smtp2go_text_input" style="display:none"></div>
+
+        <button class="js-send-test-email button button-primary">
+            <?php _e('Send Test Email') ?>
+        </button>
+        <span class="js-send-test spinner" style="float: none;"></span>
+
     </form>
 
     <?php endif;?>
 
     <?php if (!empty(SMTP2GO_tab_active('stats'))):
     $this->renderStatsPage();
+endif;
+?>
+
+<?php if (!empty(SMTP2GO_tab_active('validation'))):
+    $this->renderValidationPage();
 endif;
 ?>
 

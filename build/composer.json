@@ -1,0 +1,18 @@
+{
+    "require": {
+        "smtp2go-oss\/smtp2go-php": "1.0.3beta"
+    },
+    "scripts": {
+        "auto-scripts": {
+            "removeBuild": "rm -rf build\/",
+            "scopeBuild": "php-scoper add-prefix",
+            "dumpBuildAutoload": "cd build && composer dumpautoload"
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ]
+    }
+}

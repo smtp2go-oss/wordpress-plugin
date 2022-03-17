@@ -1,15 +1,20 @@
 <?php
+
 namespace SMTP2GO;
 
 use PHPMailer\PHPMailer\PHPMailer;
-use SMTP2GO\Api\ApiMessage;
-use SMTP2GO\Api\ApiRequest;
-use SMTP2GO\Senders\SendsHttpRequests;
-use SMTP2GO\Senders\WordpressHttpRemotePostSender;
+use SMTP2GOWPPlugin\SMTP2GO\ApiClient;
+use SMTP2GOWPPlugin\SMTP2GO\Collections\Mail\AddressCollection;
+use SMTP2GOWPPlugin\SMTP2GO\Collections\Mail\AttachmentCollection;
+use SMTP2GOWPPlugin\SMTP2GO\Service\Mail\Send;
+use SMTP2GOWPPlugin\SMTP2GO\Types\Mail\Address;
+use SMTP2GOWPPlugin\SMTP2GO\Types\Mail\Attachment;
+use SMTP2GOWPPlugin\SMTP2GO\Types\Mail\CustomHeader;
+use SMTP2GOWPPlugin\SMTP2GO\Types\Mail\InlineAttachment;
 
 require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
 require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
-
+require_once dirname(__FILE__, 2) . '/build/vendor/autoload.php';
 class SMTP2GOMailer extends PHPMailer
 {
     /**
@@ -20,68 +25,127 @@ class SMTP2GOMailer extends PHPMailer
     public $wp_args;
 
     /**
-     * The last ApiRequest Object
+     * The last ApiClient Object
      *
-     * @var ApiRequest
+     * @var ApiClient
      */
     protected $last_request = null;
 
     protected $sender = null;
 
-    public function setSenderInstance(SendsHttpRequests $sender)
-    {
-        $this->sender = $sender;
-    }
-
-    public function getSenderInstance()
-    {
-        return $this->sender;
-    }
-
     protected function mailSend($header, $body)
     {
-        $to = $this->wp_args['to'];
-        if (!is_array($to)) {
-            $to = explode(',', $to);
-        }
-        $SMTP2GOmessage = new ApiMessage(
-            $to,
-            $this->Subject,
-            $this->Body,
-            $this->wp_args['headers']
-        );
-        if (defined('WP_DEBUG') && WP_DEBUG === true) {
-            error_log(print_r($this->wp_args, 1));
-        }
-        $SMTP2GOmessage->initFromOptions();
+        $from = [get_option('smtp2go_from_address'), get_option('smtp2go_from_name')];
 
+        $addresses = [];
+        foreach ($this->getToAddresses() as $addressItem) {
+            $addresses[] = new Address(...$addressItem);
+        }
+        $mailSendService = new Send(
+            new Address(...$from),
+            new AddressCollection($addresses),
+            $this->Subject,
+            $this->Body
+        );
+
+        $mailSendService->addCustomHeader(new CustomHeader('X-Smtp2go-WP', SMTP2GO_WORDPRESS_PLUGIN_VERSION));
+
+        $this->processCustomHeaders($mailSendService);
+        $this->processReplyTos($mailSendService);
+
+        $bcc = new AddressCollection([]);
+        foreach ($this->getBccAddresses() as $addressItem) {
+            $bcc->add(new Address(...$addressItem));
+        }
+        $cc = new AddressCollection([]);
+        foreach ($this->getCcAddresses() as $addressItem) {
+            $cc->add(new Address(...$addressItem));
+        }
+
+        $mailSendService->setBcc($bcc);
+        $mailSendService->setCc($cc);
+
+        /** PhpMailer attachment array structure
+         *  0 => $path,
+         *   1 => $filename,
+         *   2 => $name,
+         *   3 => $encoding,
+         *   4 => $type,
+         *   5 => false, //isStringAttachment
+         *   6 => $disposition,
+         *   7 => $name,
+         */
         if (!empty($this->getAttachments())) {
-            $SMTP2GOmessage->setMailerAttachments($this->getAttachments());
+            $inlines     = new AttachmentCollection;
+            $attachments = new AttachmentCollection;
+            foreach ($this->getAttachments() as $phpmailerAttachementItem) {
+                if (self::fileIsAccessible($phpmailerAttachementItem[0])) {
+                    $attachments->add(new Attachment($phpmailerAttachementItem[0]));
+                } else {
+                    if (!empty($phpmailerAttachementItem[7]) && is_string($phpmailerAttachementItem[7])) {
+                        $inlines->add(new InlineAttachment(
+                            $phpmailerAttachementItem[7],
+                            $phpmailerAttachementItem[0],
+                            $phpmailerAttachementItem[4]
+                        ));
+                    }
+                }
+            }
+            $mailSendService->setAttachments($attachments);
+            $mailSendService->setInlines($inlines);
         }
 
         if (!empty($this->AltBody)) {
-            $SMTP2GOmessage->setAltMessage($this->AltBody);
+            $mailSendService->setTextBody($this->AltBody);
         }
-        //we dont want the wp_mail default to override our configured options
-        //only other plugins. There doesnt seem to be a nicer way to detect this.
+        /*we dont want the wp_mail default to override our configured options,
+        only other plugins. There doesnt seem to be a nicer way to detect this.*/
         if ($this->FromName != 'WordPress') {
-            $SMTP2GOmessage->setSender($this->From, $this->FromName);
+            $mailSendService->setSender(new Address($this->From, $this->FromName));
         }
 
-        $SMTP2GOmessage->setContentType($this->ContentType);
+        // error_log(print_r($mailSendService->buildRequestBody(), 1));
+        $client = new ApiClient(get_option('smtp2go_api_key'));
 
-        $request = new ApiRequest;
-        if (!$this->sender) {
-            $this->sender = new WordpressHttpRemotePostSender;
+        $success            = $client->consume($mailSendService);
+        $this->last_request = $client;
+
+        return $success;
+    }
+
+    /**
+     * Process the headers stored as Wordpress options
+     */
+    private function processCustomHeaders(Send $mailSendService)
+    {
+        $raw_custom_headers =  get_option('smtp2go_custom_headers');
+        if (!empty($raw_custom_headers['header'])) {
+            foreach ($raw_custom_headers['header'] as $index => $header) {
+                if (!empty($header) && !empty($raw_custom_headers['value'][$index])) {
+
+                    $mailSendService->addCustomHeader(new CustomHeader($header, $raw_custom_headers['value'][$index]));
+                }
+            }
         }
-        if (defined('WP_DEBUG') && WP_DEBUG === true) {
-            error_log('sending via ' . get_class($this->sender));
+    }
+
+    /**
+     * Process PHPMailer reply To Addresses into Reply-To Headers
+     *
+     * @param Send $mailSendService
+     * @return void
+     */
+    private function processReplyTos(Send $mailSendService)
+    {
+        $replyTos = $this->getReplyToAddresses();
+
+        foreach ($replyTos as $replyToItem) {
+            $email = $replyToItem[0] ?? null;
+            $name = $replyToItem[1] ?? '';
+            if ($email) {
+                $mailSendService->addCustomHeader(new CustomHeader('Reply-To', trim("$name <$email>")));
+            }
         }
-        $result = $request->send($SMTP2GOmessage, $this->sender);
-
-        $this->last_request = $request;
-
-        return $result;
     }
 
     public function getLastRequest()
