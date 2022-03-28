@@ -180,8 +180,11 @@ class StreamHandler
             $errors[] = ['message' => $msg, 'file' => $file, 'line' => $line];
             return \true;
         });
-        $resource = $callback();
-        \restore_error_handler();
+        try {
+            $resource = $callback();
+        } finally {
+            \restore_error_handler();
+        }
         if (!$resource) {
             $message = 'Error creating resource: ';
             foreach ($errors as $err) {
@@ -392,7 +395,9 @@ class StreamHandler
     {
         self::addNotification($params, static function ($code, $a, $b, $c, $transferred, $total) use($value) {
             if ($code == \STREAM_NOTIFY_PROGRESS) {
-                $value($total, $transferred, null, null);
+                // The upload progress cannot be determined. Use 0 for cURL compatibility:
+                // https://curl.se/libcurl/c/CURLOPT_PROGRESSFUNCTION.html
+                $value($total, $transferred, 0, 0);
             }
         });
     }

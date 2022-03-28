@@ -221,6 +221,11 @@ class ServerRequest extends Request implements ServerRequestInterface
         $new->queryParams = $query;
         return $new;
     }
+    /**
+     * {@inheritdoc}
+     *
+     * @return array|object|null
+     */
     public function getParsedBody()
     {
         return $this->parsedBody;
@@ -235,6 +240,11 @@ class ServerRequest extends Request implements ServerRequestInterface
     {
         return $this->attributes;
     }
+    /**
+     * {@inheritdoc}
+     *
+     * @return mixed
+     */
     public function getAttribute($attribute, $default = null)
     {
         if (\false === \array_key_exists($attribute, $this->attributes)) {
