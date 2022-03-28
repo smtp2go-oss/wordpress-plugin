@@ -73,7 +73,7 @@ class SMTP2GOMailer extends PHPMailer
          *   4 => $type,
          *   5 => false, //isStringAttachment
          *   6 => $disposition,
-         *   7 => $name,
+         *   7 => cid,
          */
         if (!empty($this->getAttachments())) {
             $inlines     = new AttachmentCollection;
