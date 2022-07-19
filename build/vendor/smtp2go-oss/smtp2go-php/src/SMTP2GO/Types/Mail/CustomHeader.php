@@ -20,7 +20,7 @@ class CustomHeader
     /**
      * Get the value of value
      */
-    public function getvalue()
+    public function getValue()
     {
         return $this->value;
     }
@@ -29,7 +29,7 @@ class CustomHeader
      *
      * @return  self
      */
-    public function setvalue($value)
+    public function setValue($value)
     {
         $this->value = $value;
         return $this;
@@ -37,7 +37,7 @@ class CustomHeader
     /**
      * Get the value of header
      */
-    public function getheader()
+    public function getHeader()
     {
         return $this->header;
     }
@@ -46,7 +46,7 @@ class CustomHeader
      *
      * @return  self
      */
-    public function setheader($header)
+    public function setHeader($header)
     {
         $this->header = $header;
         return $this;
