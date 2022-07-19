@@ -1,8 +1,9 @@
 === SMTP2GO - Email Made Easy ===
-Contributors: thefoldnz, greatsaltlake
+Contributors: thefoldnz, greatsaltlake, smtp2go, 2050nz
+Authors: smtp2go, 2050nz
 Tags: email, wp_mail, smtp, smtp2go, phpmailer, newsletter, marketing, inbox, api, delivery
 Requires at least: 5.5
-Tested up to: 5.9
+Tested up to: 6.0
 Requires PHP: 7.2
 Stable tag: trunk
 License: GPLv2 or later
@@ -150,6 +151,8 @@ Complexities such as reputation monitoring, SPF and DKIM are professionally mana
 Our data centers located around the world, meaning lightning-fast connection speeds, network redundancy, and GDPR compliance.
 
 == Changelog ==
+= v1.2.7 =
+* test on WordPress 6.0
 = v1.2.6 =
 * fix for inline attachment handling
 = v1.2.5 =
