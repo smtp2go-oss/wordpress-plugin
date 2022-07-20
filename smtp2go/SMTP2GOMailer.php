@@ -33,6 +33,8 @@ class SMTP2GOMailer extends PHPMailer
 
     protected $sender = null;
 
+    protected $hasCustomReplyToHeader = false;
+
     protected function mailSend($header, $body)
     {
         $from = [get_option('smtp2go_from_address'), get_option('smtp2go_from_name')];
@@ -119,11 +121,15 @@ class SMTP2GOMailer extends PHPMailer
     private function processCustomHeaders(Send $mailSendService)
     {
         $raw_custom_headers =  get_option('smtp2go_custom_headers');
+
         if (!empty($raw_custom_headers['header'])) {
             foreach ($raw_custom_headers['header'] as $index => $header) {
                 if (!empty($header) && !empty($raw_custom_headers['value'][$index])) {
 
                     $mailSendService->addCustomHeader(new CustomHeader($header, $raw_custom_headers['value'][$index]));
+                    if (strtolower($header) === 'reply-to') {
+                        $this->hasCustomReplyToHeader = true;
+                    }
                 }
             }
         }
@@ -138,12 +144,27 @@ class SMTP2GOMailer extends PHPMailer
     private function processReplyTos(Send $mailSendService)
     {
         $replyTos = $this->getReplyToAddresses();
-
+        $existing = false;
+        if ($this->hasCustomReplyToHeader) {
+            $customHeaders = $mailSendService->getCustomHeaders();
+            /** @var CustomHeader $CustomHeader */
+            foreach ($customHeaders as $CustomHeader) {
+                if (strtolower($CustomHeader->getHeader()) === 'reply-to') {
+                    $existing = $CustomHeader;
+                    break;
+                }
+            }
+        }
         foreach ($replyTos as $replyToItem) {
             $email = $replyToItem[0] ?? null;
             $name = $replyToItem[1] ?? '';
             if ($email) {
-                $mailSendService->addCustomHeader(new CustomHeader('Reply-To', trim("$name <$email>")));
+                if (!$existing) {
+                    $mailSendService->addCustomHeader(new CustomHeader('Reply-To', trim("$name <$email>")));
+                } else {
+                    /** @var CustomHeader $existing */
+                    $existing->setValue($existing->getValue() . ',' . trim("$name <$email>"));
+                }
             }
         }
     }
