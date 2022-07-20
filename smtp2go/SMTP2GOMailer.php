@@ -160,7 +160,8 @@ class SMTP2GOMailer extends PHPMailer
             $name = $replyToItem[1] ?? '';
             if ($email) {
                 if (!$existing) {
-                    $mailSendService->addCustomHeader(new CustomHeader('Reply-To', trim("$name <$email>")));
+                    $existing = new CustomHeader('Reply-To', trim("$name <$email>"));
+                    $mailSendService->addCustomHeader($existing);
                 } else {
                     /** @var CustomHeader $existing */
                     $existing->setValue($existing->getValue() . ',' . trim("$name <$email>"));
