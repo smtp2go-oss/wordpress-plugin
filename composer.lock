@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5fbae773b16d01908ad5af6181d36800",
+    "content-hash": "731e80ff778db26293c705c46da3ab08",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -535,16 +535,16 @@
         },
         {
             "name": "smtp2go-oss/smtp2go-php",
-            "version": "1.1.0-rc",
+            "version": "1.1.0-rc2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/smtp2go-oss/smtp2go-php.git",
-                "reference": "d044d1977c5bc2e48016fd3cb3defa53070c8f4f"
+                "reference": "98d6314b2a6b382ad6ceb85c6d5549edc38e6ea6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/smtp2go-oss/smtp2go-php/zipball/d044d1977c5bc2e48016fd3cb3defa53070c8f4f",
-                "reference": "d044d1977c5bc2e48016fd3cb3defa53070c8f4f",
+                "url": "https://api.github.com/repos/smtp2go-oss/smtp2go-php/zipball/98d6314b2a6b382ad6ceb85c6d5549edc38e6ea6",
+                "reference": "98d6314b2a6b382ad6ceb85c6d5549edc38e6ea6",
                 "shasum": ""
             },
             "require": {
@@ -567,9 +567,9 @@
             "description": "A library for sending email through the SMTP2GO Api",
             "support": {
                 "issues": "https://github.com/smtp2go-oss/smtp2go-php/issues",
-                "source": "https://github.com/smtp2go-oss/smtp2go-php/tree/1.1.0-rc"
+                "source": "https://github.com/smtp2go-oss/smtp2go-php/tree/1.1.0-rc2"
             },
-            "time": "2022-07-19T22:52:57+00:00"
+            "time": "2022-07-19T23:59:12+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
