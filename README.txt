@@ -151,6 +151,8 @@ Complexities such as reputation monitoring, SPF and DKIM are professionally mana
 Our data centers located around the world, meaning lightning-fast connection speeds, network redundancy, and GDPR compliance.
 
 == Changelog ==
+= v1.3.0 =
+* update smtp2go-oss/smtp2go-php handle duplicate reply-to headers
 = v1.2.7 =
 * test on WordPress 6.0
 = v1.2.6 =
