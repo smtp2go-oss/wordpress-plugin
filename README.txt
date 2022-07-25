@@ -151,7 +151,7 @@ Our data centers located around the world, meaning lightning-fast connection spe
 
 == Changelog ==
 = v1.3.0 =
-* update smtp2go-oss/smtp2go-php handle duplicate headers
+* update smtp2go-oss/smtp2go-php handle duplicate reply-to headers
 = v1.2.7 =
 * test on WordPress 6.0
 = v1.2.6 =
