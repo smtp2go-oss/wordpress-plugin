@@ -154,6 +154,23 @@ class WordpressPluginAdmin
             )
         );
 
+        register_setting(
+            'api_settings',
+            'smtp2go_mail_structure_version'
+        );
+
+        add_settings_field(
+            'smtp2go_mail_structure_version',
+            __('Version Number', $this->plugin_name),
+            [$this, 'outputRadioOptionsHtml'],
+            $this->plugin_name,
+            'smtp2go_settings_section',
+            array(
+                'name' => 'smtp2go_mail_structure_version',
+                'options' => array(1 => '1', 2 => '2',),
+                'label'      => '<span style="cursor: default; font-weight: normal;">The version parameter specifies which version (structure) to use when generating the email <a target="_blank" href="https://apidoc.smtp2go.com/documentation/#/POST%20/email/send">More information is available on this page </a></span>',
+            )
+        );
         /**custom headers in own section */
         register_setting(
             'api_settings',
@@ -195,6 +212,16 @@ class WordpressPluginAdmin
         }
 
         return $final;
+    }
+
+    public function outputRadioOptionsHtml($args)
+    {
+        $currentValue = get_option($args['name'],1);
+        foreach ($args['options'] as $value => $label) {
+            $selected = $value == $currentValue ? 'checked="checked"' : '';
+            echo '<input ' . $selected . ' type="radio" name="' .$args['name'] . '" value="' . $value . '">' . $label . PHP_EOL;
+        }
+        echo '<br/>' , $args['label'];
     }
 
     /**

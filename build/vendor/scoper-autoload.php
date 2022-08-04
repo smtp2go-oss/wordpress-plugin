@@ -6,8 +6,8 @@ $loader = require_once __DIR__.'/autoload.php';
 
 // Aliases for the whitelisted classes. For more information see:
 // https://github.com/humbug/php-scoper/blob/master/README.md#class-whitelisting
-if (!class_exists('ComposerAutoloaderInit9518d9f0486f491be72960c86ae34596', false) && !interface_exists('ComposerAutoloaderInit9518d9f0486f491be72960c86ae34596', false) && !trait_exists('ComposerAutoloaderInit9518d9f0486f491be72960c86ae34596', false)) {
-    spl_autoload_call('SMTP2GOWPPlugin\ComposerAutoloaderInit9518d9f0486f491be72960c86ae34596');
+if (!class_exists('ComposerAutoloaderInit3b508e0144f82248261a35ed0054f065', false) && !interface_exists('ComposerAutoloaderInit3b508e0144f82248261a35ed0054f065', false) && !trait_exists('ComposerAutoloaderInit3b508e0144f82248261a35ed0054f065', false)) {
+    spl_autoload_call('SMTP2GOWPPlugin\ComposerAutoloaderInit3b508e0144f82248261a35ed0054f065');
 }
 if (!class_exists('SendSettersTest', false) && !interface_exists('SendSettersTest', false) && !trait_exists('SendSettersTest', false)) {
     spl_autoload_call('SMTP2GOWPPlugin\SendSettersTest');
@@ -24,9 +24,9 @@ if (!class_exists('SendServiceTest', false) && !interface_exists('SendServiceTes
 
 // Functions whitelisting. For more information see:
 // https://github.com/humbug/php-scoper/blob/master/README.md#functions-whitelisting
-if (!function_exists('composerRequire9518d9f0486f491be72960c86ae34596')) {
-    function composerRequire9518d9f0486f491be72960c86ae34596() {
-        return \SMTP2GOWPPlugin\composerRequire9518d9f0486f491be72960c86ae34596(...func_get_args());
+if (!function_exists('composerRequire3b508e0144f82248261a35ed0054f065')) {
+    function composerRequire3b508e0144f82248261a35ed0054f065() {
+        return \SMTP2GOWPPlugin\composerRequire3b508e0144f82248261a35ed0054f065(...func_get_args());
     }
 }
 if (!function_exists('trigger_deprecation')) {
