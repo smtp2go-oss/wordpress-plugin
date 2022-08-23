@@ -15,7 +15,7 @@
  * Plugin Name:       SMTP2GO - Email Made Easy
  * Plugin URI:        https://github.com/thefold/smtp2go-wordpress-plugin
  * Description:       Send all email from WordPress via SMTP2GO. Scalable, reliable email delivery. https://www.smtp2go.com/.
- * Version:           1.3.0
+ * Version:           1.4.0
  * Author:            SMTP2GO
  * Author URI:        https://www.smtp2go.com
  * License:           GPL-2.0+
