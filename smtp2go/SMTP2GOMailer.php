@@ -67,6 +67,8 @@ class SMTP2GOMailer extends PHPMailer
         $mailSendService->setBcc($bcc);
         $mailSendService->setCc($cc);
 
+        $mailSendService->setVersion(2);
+
         /** PhpMailer attachment array structure
          *  0 => $path,
          *   1 => $filename,

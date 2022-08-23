@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "731e80ff778db26293c705c46da3ab08",
+    "content-hash": "8e67e086a4559e19c91396a2aafb7af0",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -535,16 +535,16 @@
         },
         {
             "name": "smtp2go-oss/smtp2go-php",
-            "version": "1.1.0-rc2",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/smtp2go-oss/smtp2go-php.git",
-                "reference": "98d6314b2a6b382ad6ceb85c6d5549edc38e6ea6"
+                "reference": "976e3ca288e1121a893429879b16ae2ef2cfb980"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/smtp2go-oss/smtp2go-php/zipball/98d6314b2a6b382ad6ceb85c6d5549edc38e6ea6",
-                "reference": "98d6314b2a6b382ad6ceb85c6d5549edc38e6ea6",
+                "url": "https://api.github.com/repos/smtp2go-oss/smtp2go-php/zipball/976e3ca288e1121a893429879b16ae2ef2cfb980",
+                "reference": "976e3ca288e1121a893429879b16ae2ef2cfb980",
                 "shasum": ""
             },
             "require": {
@@ -567,9 +567,9 @@
             "description": "A library for sending email through the SMTP2GO Api",
             "support": {
                 "issues": "https://github.com/smtp2go-oss/smtp2go-php/issues",
-                "source": "https://github.com/smtp2go-oss/smtp2go-php/tree/1.1.0-rc2"
+                "source": "https://github.com/smtp2go-oss/smtp2go-php/tree/1.1.0"
             },
-            "time": "2022-07-19T23:59:12+00:00"
+            "time": "2022-08-04T03:01:04+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -642,9 +642,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "smtp2go-oss/smtp2go-php": 5
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
