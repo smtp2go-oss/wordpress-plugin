@@ -106,7 +106,7 @@ class ApiClient
         return $statusCode === 200;
     }
     /**
-     * Return the response body as a string
+     * Return the response body as a json object or string
      *
      * @return \stdClass|string
      */

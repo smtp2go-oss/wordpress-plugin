@@ -86,6 +86,13 @@ class Send implements BuildsRequest
      */
     protected $inlines;
     /**
+     * @var int version
+     * The version parameter specifies which version (structure) to use when generating the email
+     * @see https://apidoc.smtp2go.com/documentation/#/POST%20/email/send
+     * 
+     */
+    protected $version = 1;
+    /**
      * endpoint to send to
      *
      * @var string
@@ -131,6 +138,7 @@ class Send implements BuildsRequest
         $body['inlines'] = $this->buildInlines();
         $body['template_id'] = $this->template_id;
         $body['template_data'] = $this->template_data;
+        $body['version'] = $this->version;
         return \array_filter($body);
     }
     public function buildCustomHeaders()
@@ -507,6 +515,27 @@ class Send implements BuildsRequest
     public function setTemplateData(array $template_data)
     {
         $this->template_data = \json_encode($template_data);
+        return $this;
+    }
+    /**
+     * Get version
+     *
+     * @return  int
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+    /**
+     * Set version
+     *
+     * @param  int  $version  version
+     *
+     * @return  self
+     */
+    public function setVersion(int $version)
+    {
+        $this->version = $version;
         return $this;
     }
 }

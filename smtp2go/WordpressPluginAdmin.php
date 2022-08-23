@@ -197,6 +197,16 @@ class WordpressPluginAdmin
         return $final;
     }
 
+    public function outputRadioOptionsHtml($args)
+    {
+        $currentValue = get_option($args['name'], 1);
+        foreach ($args['options'] as $value => $label) {
+            $selected = $value == $currentValue ? 'checked="checked"' : '';
+            echo '<input ' . $selected . ' type="radio" name="' . $args['name'] . '" value="' . $value . '">' . $label . PHP_EOL;
+        }
+        echo '<br/>', $args['label'];
+    }
+
     /**
      * Output the html for managing custom headers
      *
