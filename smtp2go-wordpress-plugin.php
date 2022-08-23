@@ -37,7 +37,7 @@ if (!defined('WPINC')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('SMTP2GO_WORDPRESS_PLUGIN_VERSION', '1.3.0');
+define('SMTP2GO_WORDPRESS_PLUGIN_VERSION', '1.4.0');
 
 define('SMTP2GO_PLUGIN_BASENAME', plugin_basename(__FILE__));
 /**
