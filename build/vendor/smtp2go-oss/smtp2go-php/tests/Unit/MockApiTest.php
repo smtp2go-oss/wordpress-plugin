@@ -23,7 +23,7 @@ class MockApiTest extends TestCase
         $handlerStack = HandlerStack::create($mock);
         $httpClient = new Client(['handler' => $handlerStack]);
         $service = new Service('stats/email_bounces');
-        $client = new ApiClient(\SMTP2GO_API_KEY);
+        $client = new ApiClient(\SMTP2GOWPPlugin\SMTP2GO_API_KEY);
         $client->setHttpClient($httpClient);
         $client->setRequestOptions(['verify' => \false]);
         $this->assertArrayHasKey('verify', $client->getRequestOptions());
@@ -55,11 +55,10 @@ class MockApiTest extends TestCase
         $handlerStack = HandlerStack::create($mock);
         $httpClient = new Client(['handler' => $handlerStack]);
         $service = new Service('stats/email_bounces');
-        $client = new ApiClient(\SMTP2GO_API_KEY);
+        $client = new ApiClient(\SMTP2GOWPPlugin\SMTP2GO_API_KEY);
         $client->setHttpClient($httpClient);
         $result = $client->consume($service);
         $this->assertNotEmpty($client->getLastRequest());
         $this->assertFalse($result);
     }
 }
-\class_alias('SMTP2GOWPPlugin\\MockApiTest', 'MockApiTest', \false);
