@@ -54,6 +54,7 @@ final class Message
         if ($size === 0) {
             return null;
         }
+        $body->rewind();
         $summary = $body->read($truncateAt);
         $body->rewind();
         if ($size > $truncateAt) {

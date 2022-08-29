@@ -152,20 +152,3 @@ class SendSettersTest extends TestCase
         $this->assertEquals('email/send', $this->sender->getEndpoint());
     }
 }
-/**
- * @covers \SMTP2GO\Service\Mail\Send
- * @covers \SMTP2GO\Collections\Collection::current
- * @covers \SMTP2GO\Collections\Collection::next
- * @covers \SMTP2GO\Collections\Collection::rewind
- * @covers \SMTP2GO\Collections\Collection::valid
- * @covers \SMTP2GO\Collections\Mail\AddressCollection::__construct
- * @covers \SMTP2GO\Collections\Mail\AddressCollection::add
- * @covers \SMTP2GO\Collections\Mail\AttachmentCollection::__construct
- * @covers \SMTP2GO\Collections\Mail\CustomHeaderCollection::__construct
- * @covers \SMTP2GO\Types\Mail\Address::__construct
- * @covers \SMTP2GO\Types\Mail\Address::getEmail
- * @covers \SMTP2GO\Types\Mail\Address::getName
- * @covers \SMTP2GO\Collections\Mail\CustomHeaderCollection::add
- * @covers \SMTP2GO\Types\Mail\CustomHeader::__construct
- */
-\class_alias('SMTP2GOWPPlugin\\SendSettersTest', 'SendSettersTest', \false);
