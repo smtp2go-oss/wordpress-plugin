@@ -58,18 +58,3 @@ class SendGettersTest extends TestCase
         $this->assertIsString($this->sender->getSubject());
     }
 }
-/**
-* @covers \SMTP2GO\Service\Mail\Send
-* @covers \SMTP2GO\Collections\Collection::current
-* @covers \SMTP2GO\Collections\Collection::next
-* @covers \SMTP2GO\Collections\Collection::rewind
-* @covers \SMTP2GO\Collections\Collection::valid
-* @covers \SMTP2GO\Collections\Mail\AddressCollection::__construct
-* @covers \SMTP2GO\Collections\Mail\AddressCollection::add
-* @covers \SMTP2GO\Collections\Mail\AttachmentCollection::__construct
-* @covers \SMTP2GO\Collections\Mail\CustomHeaderCollection::__construct
-* @covers \SMTP2GO\Types\Mail\Address::__construct
-* @covers \SMTP2GO\Types\Mail\Address::getEmail
-* @covers \SMTP2GO\Types\Mail\Address::getName
-*/
-\class_alias('SMTP2GOWPPlugin\\SendGettersTest', 'SendGettersTest', \false);
