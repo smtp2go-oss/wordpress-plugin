@@ -63,7 +63,7 @@ function SMTP2GO_tab_active($tab)
                 class="js-stats-tab-span spinner" style="float: none; display: none; margin: 0px 10px 2px ;"></span></a>
 
                 <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'validation'), 'admin.php')) ?>"
-            class="nav-tab <?php echo SMTP2GO_tab_active('validation') ?> js-validation-tab">Sender Domain<span
+            class="nav-tab <?php echo SMTP2GO_tab_active('validation') ?> js-validation-tab">Verified Senders<span
                 class="js-validation-tab-span spinner" style="float: none; display: none; margin: 0px 10px 2px ;"></span></a>
         <?php endif;?>
 
