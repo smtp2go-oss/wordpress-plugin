@@ -3,7 +3,7 @@ Contributors: thefoldnz, greatsaltlake, smtp2go, 2050nz
 Authors: smtp2go, 2050nz
 Tags: email, wp_mail, smtp, smtp2go, phpmailer, newsletter, marketing, inbox, api, delivery
 Requires at least: 5.5
-Tested up to: 6.0
+Tested up to: 6.1
 Requires PHP: 7.2
 Stable tag: trunk
 License: GPLv2 or later
@@ -151,6 +151,7 @@ Complexities such as reputation monitoring, SPF and DKIM are professionally mana
 Our data centers located around the world, meaning lightning-fast connection speeds, network redundancy, and GDPR compliance.
 
 == Changelog ==
+= v1.4.2 = test on WordPress 6.1
 = v1.4.1 = handle php 8.1 PHP Deprecated notices
 = v1.4.0 = default SMTP2GO API send call to version 2 structure https://apidoc.smtp2go.com/documentation/#/POST/email/send
 = v1.3.0 =
