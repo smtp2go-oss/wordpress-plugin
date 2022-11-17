@@ -3,7 +3,7 @@ Contributors: thefoldnz, greatsaltlake, smtp2go, 2050nz
 Authors: smtp2go, 2050nz
 Tags: email, wp_mail, smtp, smtp2go, phpmailer, newsletter, marketing, inbox, api, delivery
 Requires at least: 5.5
-Tested up to: 6.0
+Tested up to: 6.1
 Requires PHP: 7.2
 Stable tag: trunk
 License: GPLv2 or later
