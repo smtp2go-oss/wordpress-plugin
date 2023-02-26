@@ -349,7 +349,7 @@ class WordpressPluginAdmin
     public function outputApiKeyHtml()
     {
         $setting = get_option('smtp2go_api_key');
-        $hint    = '<span style="cursor: default; font-weight: normal;">The API key will need permissions <i>Emails</i> and <i>Statistics.</i> and <i>Sender Domains /domain/verify</i></span>';
+        $hint    = '<span style="cursor: default; font-weight: normal;">The API key will need permissions <i>Emails</i> and <i>Statistics.</i></span>';
         if (empty($setting)) {
             $this->outputTextFieldHtml(array(
                 'name'     => 'smtp2go_api_key',
@@ -403,22 +403,8 @@ class WordpressPluginAdmin
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-stats-display.php';
     }
 
-    public function renderValidationPage()
-    {
-        $client = new ApiClient(get_option('smtp2go_api_key'));
-        $client->consume((new Service('domain/view')));
-
-        $result                 = $client->getResponseBody();
-        $result                 = $result->data ?? null;
-
-        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-validation-display.php';
-    }
-
     public function renderManagementPage()
     {
-        //fetch all the options
-
-        //display the page
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-admin-display.php';
     }
     /**
