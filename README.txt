@@ -69,11 +69,9 @@ Absolutely! SMTP2GO has support agents located in the US, EU, UK, and the Pacifi
 
 = How do I avoid emails going to the spam or junk folder? =
 
-1. Ensure you have added your domain names to the "Settings > Sender Domains" section of your SMTP2GO account, and have them all fully verified.
+1. Make sure your domain has a great reputation and isn't listed on any blacklists.
 
-2. Make sure your domain has a great reputation and isn't listed on any blacklists.
-
-3. Think about your email content and avoid words and phrases that could trigger a spam filter.
+2. Think about your email content and avoid words and phrases that could trigger a spam filter.
 
 If you're needing extra help, our award winning support team has lots of tips and tricks to help you out. You can find the support tab in your SMTP2GO dashboard.
 
@@ -104,7 +102,6 @@ You will need to enable the plugin and enter the required details under the "Set
 
 * Emails
 * Statistics
-* Sender Domains
 
 3. Set the default From Email Address.
 4. Set the default From Name.
