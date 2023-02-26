@@ -87,13 +87,13 @@ class ApiClient
         $body = [];
         $body = $service->buildRequestBody();
         $body['api_key'] = $this->apiKey;
-        $basepath = \dirname(__FILE__, 3);
+        $caPathOrFile = \SMTP2GOWPPlugin\Composer\CaBundle\CaBundle::getSystemCaRootBundlePath();
         try {
             $this->lastResponse = $this->httpClient->request(
                 $service->getMethod(),
                 static::API_URL . $service->getEndpoint(),
                 //ensures user options can overwrite these defaults
-                $this->requestOptions + ['json' => $body, 'verify' => $basepath . '/ca-bundle.crt']
+                $this->requestOptions + ['json' => $body, 'verify' => $caPathOrFile]
             );
         } catch (ClientException $e) {
             $this->lastRequest = $e->getRequest();
