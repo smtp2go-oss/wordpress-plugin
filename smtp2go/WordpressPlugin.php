@@ -75,10 +75,15 @@ class WordpressPlugin
         //this HAS to be lowercase
         $this->plugin_name = 'smtp2go-wordpress-plugin';
 
+        add_filter( 'admin_footer_text', [ $this, 'admin_footer' ] );
+
         $this->loadDependencies();
         $this->setLocale();
         $this->defineAdminHooks();
         $this->definePublicHooks();
+
+
+
     }
 
     /**
@@ -212,4 +217,28 @@ class WordpressPlugin
     {
         return $this->version;
     }
+
+    /**
+     * When user is on a SMTP2GO related admin page, display footer text
+     * that graciously asks them to rate us.
+     *
+     * @since 1.5.0
+     *
+     * @param string $text Footer text.
+     *
+     * @return string
+     */
+    public function admin_footer( $text = "" ) {
+
+        global $current_screen;
+
+        if ( ! empty( $current_screen->id ) && strpos( $current_screen->id, 'smtp2go' ) !== false ) {
+            $url  = 'https://wordpress.org/support/plugin/smtp2go/reviews/?filter=5#new-post';
+
+            $text = "Thank you for using the <strong>SMTP2GO plugin!</strong> Please leave us a 5 star review on <a href='$url' target='_blank'>Wordpress.org</a> to help spread the word.";
+        }
+        return $text;
+    }
+
+
 }

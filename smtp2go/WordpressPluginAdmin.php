@@ -226,8 +226,8 @@ class WordpressPluginAdmin
                 $existing_fields .=
                     '<tr>'
                     . '<td class="smtp2go_grey_cell"><span class="smtp2go_custom_header_increment"></span></td>'
-                    . '<td><input class="smtp2go_text_input" type="text" placeholder="' . __('Enter New Header Key', $this->plugin_name) . '" name="smtp2go_custom_headers[header][]" value="' . $existing_custom_header . '"/></td>'
-                    . '<td><input class="smtp2go_text_input" type="text" placeholder="' . __('Enter New Header Value', $this->plugin_name) . '" name="smtp2go_custom_headers[value][]" value="' . $custom_headers['value'][$index] . '"/></td>'
+                    . '<td><input class="smtp2go_text_input" type="text" placeholder="' . __('Enter New Header Key', $this->plugin_name) . '" name="smtp2go_custom_headers[header][]" value="' . esc_attr($existing_custom_header) . '"/></td>'
+                    . '<td><input class="smtp2go_text_input" type="text" placeholder="' . __('Enter New Header Value', $this->plugin_name) . '" name="smtp2go_custom_headers[value][]" value="' . esc_attr($custom_headers['value'][$index]) . '"/></td>'
                     . '<td  class="smtp2go_grey_cell">'
                     . '<a href="javascript:;" class="smtp2go_add_remove_row j-add-row">+</a>'
                     . '<a href="javascript:;" class="smtp2go_add_remove_row ' . $first_remove . ' j-remove-row">-</a>'
@@ -349,7 +349,7 @@ class WordpressPluginAdmin
     public function outputApiKeyHtml()
     {
         $setting = get_option('smtp2go_api_key');
-        $hint    = '<span style="cursor: default; font-weight: normal;">The API key will need permissions <i>Emails</i> and <i>Statistics.</i> and <i>Sender Domains /domain/verify</i></span>';
+        $hint    = '<span style="cursor: default; font-weight: normal;">The API key will need permissions <i>Emails</i> and <i>Statistics.</i></span>';
         if (empty($setting)) {
             $this->outputTextFieldHtml(array(
                 'name'     => 'smtp2go_api_key',
@@ -403,22 +403,8 @@ class WordpressPluginAdmin
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-stats-display.php';
     }
 
-    public function renderValidationPage()
-    {
-        $client = new ApiClient(get_option('smtp2go_api_key'));
-        $client->consume((new Service('domain/view')));
-
-        $result                 = $client->getResponseBody();
-        $result                 = $result->data ?? null;
-
-        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-validation-display.php';
-    }
-
     public function renderManagementPage()
     {
-        //fetch all the options
-
-        //display the page
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-admin-display.php';
     }
     /**

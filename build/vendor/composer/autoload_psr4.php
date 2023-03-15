@@ -12,4 +12,5 @@ return array(
     'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\' => array($vendorDir . '/guzzlehttp/psr7/src'),
     'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\' => array($vendorDir . '/guzzlehttp/promises/src'),
     'SMTP2GOWPPlugin\\GuzzleHttp\\' => array($vendorDir . '/guzzlehttp/guzzle/src'),
+    'SMTP2GOWPPlugin\\Composer\\CaBundle\\' => array($vendorDir . '/composer/ca-bundle/src'),
 );
