@@ -2,7 +2,7 @@
 Contributors: 2050nz, greatsaltlake
 Tags: email, wp_mail, smtp, smtp2go, phpmailer, newsletter, marketing, inbox, api, delivery
 Requires at least: 5.5
-Tested up to: 5.8
+Tested up to: 6.1
 Requires PHP: 7.2
 Stable tag: trunk
 License: GPLv2 or later
@@ -147,6 +147,7 @@ Complexities such as reputation monitoring, SPF and DKIM are professionally mana
 Our data centers located around the world, meaning lightning-fast connection speeds, network redundancy, and GDPR compliance.
 
 == Changelog ==
+= v1.5.1 = missed moving the tested up to version number with Readme update
 = v1.5.0 =
 * remove sender domains fn
 * upgrade smtp2go-oss/smtp2go-php to 1.1.2
