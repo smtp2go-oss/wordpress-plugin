@@ -65,7 +65,7 @@ Absolutely! SMTP2GO has support agents located in the US, EU, UK, and the Pacifi
 
 = How do I avoid emails going to the spam or junk folder? =
 
-1. Ensure you have added your domain names to the "Settings > Verified Senders" section of your SMTP2GO account, and have them all fully verified.
+1. Ensure you have added your Sender Domain Names to the "Sending > Verified" section of your SMTP2GO account, and have them all fully verified.
 
 2. Make sure your domain has a great reputation and isn't listed on any blacklists.
 
@@ -147,6 +147,7 @@ Complexities such as reputation monitoring, SPF and DKIM are professionally mana
 Our data centers located around the world, meaning lightning-fast connection speeds, network redundancy, and GDPR compliance.
 
 == Changelog ==
+
 = v1.5.1 = missed moving the tested up to version number with Readme update
 = v1.5.0 =
 * remove sender domains fn
