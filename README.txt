@@ -2,7 +2,7 @@
 Contributors: 2050nz, greatsaltlake
 Tags: email, wp_mail, smtp, smtp2go, phpmailer, newsletter, marketing, inbox, api, delivery
 Requires at least: 5.5
-Tested up to: 6.1
+Tested up to: 6.2
 Requires PHP: 7.2
 Stable tag: trunk
 License: GPLv2 or later
@@ -148,6 +148,8 @@ Our data centers located around the world, meaning lightning-fast connection spe
 
 == Changelog ==
 
+= v1.5.2
+= tested on WordPress 6.2
 = v1.5.1 = missed moving the tested up to version number with Readme update
 = v1.5.0 =
 * remove sender domains fn
