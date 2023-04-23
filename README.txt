@@ -12,7 +12,7 @@ Resolve email delivery issues, increase inbox placement, track sent email, get 2
 
 == Description ==
 
-SMTP2GO provides valuable insight into every aspect of your email needs, whether it is transactional, marketing campaigns, contact forms, or notifications. SMTP2GO provides valuable insights into every aspect of your email's life cycle, enabling you to track delivery rates, opens, clicks, and bounce rates. Whether you are sending transactional, marketing, contact form, or notification emails - we have got you covered.
+SMTP2GO provides valuable insights into every aspect of your email's life cycle, enabling you to track delivery rates, opens, clicks, and bounce rates. Whether you are sending transactional, marketing, contact form, or notification emails - we have got you covered.
 
 With **Email Made Easy**, you can access real-time reporting, statistics and charts in addition to having powerful features that will enhance your emailing experience at your fingertips. The plugin uses SMTP2GO’s industry-leading network to deliver all email from your WordPress installation by replacing the default phpmailer/built in wp_mail() functionality and sending via SMTP2GO’s API.
 
@@ -37,7 +37,7 @@ Sign up for a [free account here](https://www.smtp2go.com/).
 
 Yes, the SMTP2GO WordPress plugin uses SMTP2GO’s API to deliver emails and get statistics. Creating an account on SMTP2GO is free, quick and simple to set up - [sign up here](https://www.smtp2go.com/).
 
-Once logged into your account and completed the required setup steps, you can get an API Key (Settings > API Keys) which you’ll need to get the plugin up and running.
+Once logged into your account and completed the required setup steps, you can get an API Key (Sending > API Keys) which you’ll need to get the plugin up and running.
 
 = How much does it cost? =
 
@@ -65,7 +65,7 @@ Absolutely! SMTP2GO has support agents located in the US, EU, UK, and the Pacifi
 
 = How do I avoid emails going to the spam or junk folder? =
 
-1. Ensure you have added your Sender Domain Names to the "Sending > Verified Senders" section of your SMTP2GO account, and have them all fully verified.
+1. Ensure you have added your Sender Domain Names to the "Sending > Verified" section of your SMTP2GO account, and have them all fully verified.
 
 2. Make sure your domain has a great reputation and isn't listed on any blacklists.
 
