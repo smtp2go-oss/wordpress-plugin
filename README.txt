@@ -3,7 +3,7 @@ Contributors: 2050nz, greatsaltlake
 Tags: email, wp_mail, smtp, smtp2go, phpmailer, newsletter, marketing, inbox, api, delivery
 Requires at least: 5.5
 Tested up to: 6.2
-Requires PHP: 7.2
+Requires PHP: 7.4
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -148,6 +148,8 @@ Our data centers located around the world, meaning lightning-fast connection spe
 
 == Changelog ==
 
+= v1.5.4
+= drop testing / supporting PHP 7.2
 = v1.5.3
 = ensure phpmailer is set to use the 'mail' mailer
 = v1.5.2
