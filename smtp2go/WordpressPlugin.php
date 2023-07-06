@@ -1,4 +1,5 @@
 <?php
+
 namespace SMTP2GO;
 
 /**
@@ -75,15 +76,12 @@ class WordpressPlugin
         //this HAS to be lowercase
         $this->plugin_name = 'smtp2go-wordpress-plugin';
 
-        add_filter( 'admin_footer_text', [ $this, 'admin_footer' ] );
+        add_filter('admin_footer_text', [$this, 'admin_footer']);
 
         $this->loadDependencies();
         $this->setLocale();
         $this->defineAdminHooks();
         $this->definePublicHooks();
-
-
-
     }
 
     /**
@@ -144,6 +142,19 @@ class WordpressPlugin
         $this->loader->addAction('admin_enqueue_scripts', $plugin_admin, 'enqueueScripts');
 
         $this->loader->addAction('wp_ajax_smtp2go_send_email', $plugin_admin, 'sendTestEmail');
+
+        $this->loader->addAction('phpmailer_init', $this, 'configurePhpmailer');
+    }
+
+    public function configurePhpmailer($phpmailer)
+    {
+        if (!get_option('smtp2go_enabled')) {
+            return;
+        }
+        //ensures that mail goes through our extended mailSend method
+
+        /** @var \PHPMailer\PHPMailer\PHPMailer $phpmailer */
+        $phpmailer->isMail();
     }
 
     private function definePublicHooks()
@@ -228,17 +239,16 @@ class WordpressPlugin
      *
      * @return string
      */
-    public function admin_footer( $text = "" ) {
+    public function admin_footer($text = "")
+    {
 
         global $current_screen;
 
-        if ( ! empty( $current_screen->id ) && strpos( $current_screen->id, 'smtp2go' ) !== false ) {
+        if (!empty($current_screen->id) && strpos($current_screen->id, 'smtp2go') !== false) {
             $url  = 'https://wordpress.org/support/plugin/smtp2go/reviews/?filter=5#new-post';
 
             $text = "Thank you for using the <strong>SMTP2GO plugin!</strong> Please leave us a 5 star review on <a href='$url' target='_blank'>Wordpress.org</a> to help spread the word.";
         }
         return $text;
     }
-
-
 }
