@@ -149,7 +149,7 @@ Our data centers located around the world, meaning lightning-fast connection spe
 == Changelog ==
 
 = v1.5.3
-= flag PHPMailer to use mail transport in the event of hosting providers defaulting to smtp transport
+= ensure phpmailer is set to use the 'mail' mailer
 = v1.5.2
 = tested on WordPress 6.2
 = v1.5.1 = missed moving the tested up to version number with Readme update
