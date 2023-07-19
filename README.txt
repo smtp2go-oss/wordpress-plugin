@@ -1,5 +1,5 @@
 === SMTP2GO - Email Made Easy ===
-Contributors: 2050nz, greatsaltlake
+Contributors: 2050nz, greatsaltlake, smtp2go
 Tags: email, wp_mail, smtp, smtp2go, phpmailer, newsletter, marketing, inbox, api, delivery
 Requires at least: 5.5
 Tested up to: 6.2
