@@ -4,8 +4,8 @@ function SMTP2GOClassLoader($className)
 {
     $fileName  = '';
     $namespace = '';
-    $includePath = dirname(__FILE__) . DIRECTORY_SEPARATOR;
-
+    $includePath = dirname(__FILE__,2) . DIRECTORY_SEPARATOR ;
+    
     if (false !== ($lastNsPos = strripos($className, '\\'))) {
         $namespace = substr($className, 0, $lastNsPos);
         $className = substr($className, $lastNsPos + 1);
@@ -13,7 +13,6 @@ function SMTP2GOClassLoader($className)
     }
 
     if (strpos($namespace, 'SMTP2GO') === false) {
-        // exit($namespace);
         return true;
     }
     $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';

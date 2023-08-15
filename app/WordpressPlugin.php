@@ -1,6 +1,6 @@
 <?php
 
-namespace SMTP2GO;
+namespace SMTP2GO\App;
 
 /**
  * The file that defines the core plugin class

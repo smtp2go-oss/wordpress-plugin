@@ -24,8 +24,8 @@
  * Domain Path:       /languages
  */
 
-use SMTP2GO\WordpressPluginActivator;
-use SMTP2GO\WordpressPluginDeactivator;
+use SMTP2GO\App\WordpressPluginActivator;
+use SMTP2GO\App\WordpressPluginDeactivator;
 
 // If this file is called directly, abort.
 if (!defined('WPINC')) {
@@ -77,7 +77,8 @@ register_deactivation_hook(__FILE__, 'deactivate_SMTP2GO_wordpress_plugin');
  */
 function run_SMTP2GO_wordpress_plugin()
 {
-    $plugin = new SMTP2GO\WordpressPlugin();
+    $plugin = new SMTP2GO\App\WordpressPlugin();
+    $plugin->run();
     $plugin->run();
 
 }
