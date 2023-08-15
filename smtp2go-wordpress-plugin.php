@@ -79,8 +79,6 @@ function run_SMTP2GO_wordpress_plugin()
 {
     $plugin = new SMTP2GO\App\WordpressPlugin();
     $plugin->run();
-    $plugin->run();
-
 }
 
 if (!function_exists('SMTP2GO_dd')) {
