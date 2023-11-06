@@ -15,7 +15,7 @@
  * Plugin Name:       SMTP2GO - Email Made Easy
  * Plugin URI:        https://github.com/thefold/smtp2go-wordpress-plugin
  * Description:       Send all email from WordPress via SMTP2GO. Scalable, reliable email delivery. https://www.smtp2go.com/.
- * Version:           1.5.4
+ * Version:           1.5.6
  * Author:            SMTP2GO
  * Author URI:        https://www.smtp2go.com
  * License:           GPL-2.0+
@@ -24,8 +24,8 @@
  * Domain Path:       /languages
  */
 
-use SMTP2GO\WordpressPluginActivator;
-use SMTP2GO\WordpressPluginDeactivator;
+use SMTP2GO\App\WordpressPluginActivator;
+use SMTP2GO\App\WordpressPluginDeactivator;
 
 // If this file is called directly, abort.
 if (!defined('WPINC')) {
@@ -37,7 +37,7 @@ if (!defined('WPINC')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('SMTP2GO_WORDPRESS_PLUGIN_VERSION', '1.5.4');
+define('SMTP2GO_WORDPRESS_PLUGIN_VERSION', '1.5.6');
 
 define('SMTP2GO_PLUGIN_BASENAME', plugin_basename(__FILE__));
 /**
@@ -77,9 +77,8 @@ register_deactivation_hook(__FILE__, 'deactivate_SMTP2GO_wordpress_plugin');
  */
 function run_SMTP2GO_wordpress_plugin()
 {
-    $plugin = new SMTP2GO\WordpressPlugin();
+    $plugin = new SMTP2GO\App\WordpressPlugin();
     $plugin->run();
-
 }
 
 if (!function_exists('SMTP2GO_dd')) {

@@ -2,7 +2,7 @@
 Contributors: 2050nz, greatsaltlake
 Tags: email, wp_mail, smtp, smtp2go, phpmailer, newsletter, marketing, inbox, api, delivery
 Requires at least: 5.5
-Tested up to: 6.2
+Tested up to: 6.3
 Requires PHP: 7.4
 Stable tag: trunk
 License: GPLv2 or later
@@ -21,21 +21,21 @@ With **Email Made Easy**, you can access real-time reporting, statistics and cha
 * We made our plugin easy and as low maintenance as possible. You can set it up in under ten minutes and there is zero maintenance required. Let it do its thing while you do yours!
 * Take over from the WordPress email system for more reliable delivery - be confident your emails have been arrived at their destination successfully.
 * Get access to our intuitive real-time reporting tools. You can uncover what's going on behind the scenes with delivery, open, click, bounce, and unsubscribe reports.
-* We offer secure worldwide servers with intelligent, genius-level routing for network redundancy, speedy delivery, and lightning-fast reporting
-* We handle SPF and DKIM on your behalf
+* We offer secure worldwide servers with intelligent, genius-level routing for network redundancy, speedy delivery, and lightning-fast reporting.
+* We handle SPF and DKIM on your behalf.
 * Diagnose and resolve delivery issues with our insightful reporting page, or reach out to our award-winning support team who are available almost 24/7 to help address problems in a timely, friendly fashion.
 * We have a dedicated Review team who constantly monitor the reputations of out IP's  and we proactively alert members to any suspicious changes in their email regimen.
 * Our architecture is scalable to cater to any sending volume- whether it's 1000 emails a month, or 5 million. We like numbers big and small!
-* Avoid poor reputation and throttling or limitations from over used shared web hosts and other providers
+* Avoid poor reputation and throttling or limitations from over used shared web hosts and other providers.
 
-Sign up for a [free account here](https://www.smtp2go.com/).
+[Sign up here](https://www.smtp2go.com/).
 
 
 == FAQ ==
 
 = Do I need an SMTP2GO account? =
 
-Yes, the SMTP2GO WordPress plugin uses SMTP2GO’s API to deliver emails and get statistics. Creating an account on SMTP2GO is free, quick and simple to set up - [sign up here](https://www.smtp2go.com/).
+Yes, the SMTP2GO WordPress plugin uses SMTP2GO’s API to deliver emails and get statistics. Creating an account on SMTP2GO quick and simple - [sign up here](https://www.smtp2go.com/).
 
 Once logged into your account and completed the required setup steps, you can get an API Key (Sending > API Keys) which you’ll need to get the plugin up and running.
 
@@ -43,9 +43,7 @@ Once logged into your account and completed the required setup steps, you can ge
 
 SMTP2GO offers a free forever plan that includes 1,000 emails per month.
 
-For more email volume per month and no daily restrictions, you can upgrade within your SMTP2GO account to one of the many available plans to suit your sending needs.
-
-Paid plans have access to very useful extra features such as Subaccounts, Email Archiving, Email Testing, and Dedicated IPs.
+For more email volume per month and fewer restrictions, you can easily upgrade to one of the many available plans to suit your sending needs.
 
 Paid plans start at $10 USD/month - check out our [pricing here](https://www.smtp2go.com/pricing).
 
@@ -60,7 +58,7 @@ We also recommend keeping your WordPress up to date and only use the the most re
 
 = Can I get support? =
 
-Absolutely! SMTP2GO has support agents located in the US, EU, UK, and the Pacific to cover all time zones providing assistance when you need it most. If you have questions or need assistance then feel free to contact the support team by logging into your SMTP2GO dashboard and clicking on the support icon on the top-right of the screen. We can be reached by instant message, ticket, or phone.
+Absolutely! SMTP2GO has support agents located in the US, EU, UK, and the Pacific to cover all time zones providing assistance when you need it most. If you have questions or need assistance then feel free to contact the support team by logging into your SMTP2GO dashboard and clicking on the support icon on the top-right of the screen. We can be reached by instant message, ticket, or phone.
 
 
 = How do I avoid emails going to the spam or junk folder? =
@@ -92,7 +90,7 @@ https://www.youtube.com/watch?v=28MaT2NWR5A
 You will need to enable the plugin and enter the required details under the "Settings" tab.
 
 1. Enable the checkbox "Enable Email Made Easy by SMTPGO".
-2. Enter your API Key which can be found in your SMTP2GO: "Settings > API Keys".
+2. Enter your API Key which can be found in your SMTP2GO dashboard: "Sending > API Keys".
 
  **Note:**
  The API Key needs at least the following permissions:
@@ -148,6 +146,10 @@ Our data centers located around the world, meaning lightning-fast connection spe
 
 == Changelog ==
 
+= v1.5.6
+= readme updated
+= test on WordPress 6.3
+= rename smtp2go dir to app for FlyWheel compatability
 = v1.5.4
 = drop testing / supporting PHP 7.2
 = v1.5.3

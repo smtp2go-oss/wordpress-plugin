@@ -1,6 +1,6 @@
 <?php
 
-namespace SMTP2GO;
+namespace SMTP2GO\App;
 
 
 use SMTP2GOWPPlugin\SMTP2GO\ApiClient;
