@@ -60,10 +60,14 @@ class Send implements BuildsRequest
      */
     protected $text_body;
     /**
-     * @var string
+     * The template id to use
+     * @link https://app-us.smtp2go.com/settings/templates/
+     * @var string|null
      */
-    protected $template_id;
+    protected ?string $template_id = null;
     /**
+     * The template data to use which is key value pairs of [placeholder => replacement]
+     * @link https://app-us.smtp2go.com/settings/templates/
      * @var array
      */
     protected $template_data;
@@ -136,8 +140,8 @@ class Send implements BuildsRequest
         $body['subject'] = $this->getSubject();
         $body['attachments'] = $this->buildAttachments();
         $body['inlines'] = $this->buildInlines();
-        $body['template_id'] = $this->template_id;
-        $body['template_data'] = $this->template_data;
+        $body['template_id'] = $this->template_id ?? null;
+        $body['template_data'] = $this->template_data ?? null;
         $body['version'] = $this->version;
         return \array_filter($body);
     }
@@ -498,9 +502,10 @@ class Send implements BuildsRequest
     /**
      * Set the value of template_id
      *
+     * @param  string  $template_id
      * @return  self
      */
-    public function setTemplateId($template_id)
+    public function setTemplateId(string $template_id)
     {
         $this->template_id = $template_id;
         return $this;
@@ -514,7 +519,7 @@ class Send implements BuildsRequest
      */
     public function setTemplateData(array $template_data)
     {
-        $this->template_data = \json_encode($template_data);
+        $this->template_data = $template_data;
         return $this;
     }
     /**

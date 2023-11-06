@@ -26,7 +26,7 @@ final class Message
             throw new \InvalidArgumentException('Unknown message type');
         }
         foreach ($message->getHeaders() as $name => $values) {
-            if (\strtolower($name) === 'set-cookie') {
+            if (\is_string($name) && \strtolower($name) === 'set-cookie') {
                 foreach ($values as $value) {
                     $msg .= "\r\n{$name}: " . $value;
                 }
@@ -62,7 +62,7 @@ final class Message
         }
         // Matches any printable character, including unicode characters:
         // letters, marks, numbers, punctuation, spacing, and separators.
-        if (\preg_match('/[^\\pL\\pM\\pN\\pP\\pS\\pZ\\n\\r\\t]/u', $summary)) {
+        if (\preg_match('/[^\\pL\\pM\\pN\\pP\\pS\\pZ\\n\\r\\t]/u', $summary) !== 0) {
             return null;
         }
         return $summary;
