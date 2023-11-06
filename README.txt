@@ -146,6 +146,8 @@ Our data centers located around the world, meaning lightning-fast connection spe
 
 == Changelog ==
 
+= v1.6.0
+= use new smtp2go composer package with retry feature
 = v1.5.6
 = readme updated
 = test on WordPress 6.3
