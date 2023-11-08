@@ -1,6 +1,6 @@
 === SMTP2GO - Email Made Easy ===
 Contributors: 2050nz, greatsaltlake
-Tags: email, wp_mail, smtp, smtp2go, phpmailer, newsletter, marketing, inbox, api, delivery
+Tags: email, smtp, smtp2go, newsletter, marketing, inbox, delivery, wp_mail
 Requires at least: 5.5
 Tested up to: 6.3
 Requires PHP: 7.4
@@ -14,7 +14,7 @@ Resolve email delivery issues, increase inbox placement, track sent email, get 2
 
 SMTP2GO provides valuable insights into every aspect of your email's life cycle, enabling you to track delivery rates, opens, clicks, and bounce rates. Whether you are sending transactional, marketing, contact form, or notification emails - we have got you covered.
 
-With **Email Made Easy**, you can access real-time reporting, statistics and charts in addition to having powerful features that will enhance your emailing experience at your fingertips. The plugin uses SMTP2GO’s industry-leading network to deliver all email from your WordPress installation by replacing the default phpmailer/built in wp_mail() functionality and sending via SMTP2GO’s API.
+With **Email Made Easy**, you can access real-time reporting, statistics and charts in addition to having powerful features that will enhance your emailing experience at your fingertips. The plugin uses SMTP2GO’s industry-leading network to deliver all email from your WordPress installation by replacing the default built in wp_mail() functionality (phpmailer ) and sending via SMTP2GO’s API.
 
 **The main benefitis of using the official SMTP2GO plugin:**
 
@@ -24,9 +24,9 @@ With **Email Made Easy**, you can access real-time reporting, statistics and cha
 * We offer secure worldwide servers with intelligent, genius-level routing for network redundancy, speedy delivery, and lightning-fast reporting.
 * We handle SPF and DKIM on your behalf.
 * Diagnose and resolve delivery issues with our insightful reporting page, or reach out to our award-winning support team who are available almost 24/7 to help address problems in a timely, friendly fashion.
-* We have a dedicated Review team who constantly monitor the reputations of out IP's  and we proactively alert members to any suspicious changes in their email regimen.
-* Our architecture is scalable to cater to any sending volume- whether it's 1000 emails a month, or 5 million. We like numbers big and small!
-* Avoid poor reputation and throttling or limitations from over used shared web hosts and other providers.
+* We have a dedicated Review team who constantly monitor the reputations of our IP's  and we proactively alert members to any suspicious changes in their email regimen.
+* Our architecture is scalable to cater to any sending volume - whether it's 1000 emails a month, or 5 million. We like numbers big and small!
+* Avoid poor reputation and throttling or limitations from over-used shared web hosts and other providers.
 
 [Sign up here](https://www.smtp2go.com/).
 
@@ -39,18 +39,16 @@ Yes, the SMTP2GO WordPress plugin uses SMTP2GO’s API to deliver emails and get
 
 Once logged into your account and completed the required setup steps, you can get an API Key (Sending > API Keys) which you’ll need to get the plugin up and running.
 
-= How much does it cost? =
+= How much will it cost me? =
 
-SMTP2GO offers a free forever plan that includes 1,000 emails per month.
+SMTP2GO offers a free forever plan that includes 1,000 emails per month. You can use this for your WordPress site but also any other email and SMTP needs you have! One account can cover all your inbox delivery needs.
 
-For more email volume per month and fewer restrictions, you can easily upgrade to one of the many available plans to suit your sending needs.
-
-Paid plans start at $10 USD/month - check out our [pricing here](https://www.smtp2go.com/pricing).
+For more email volume per month and fewer restrictions, you can easily upgrade to one of the many available plans to suit your sending needs. Paid plans start at $10 USD/month - check out our [pricing here](https://www.smtp2go.com/pricing).
 
 = Can you tell me about the compatibility of this plugin? =
-Sure can! We replace the default **wp_mail** so any plugin that makes use of this will be compatible.
+Sure can! We replace the default **wp_mail** so most other plugins that need to send email will be compatible.
 
-If you do find some compatibility issues, please do let the support team know.
+We are always looking to improve, so if you do find some compatibility issues, please let us know.
 
 **Email Made Easy** has been tested for Linux and other Unix type operating systems. We do not recommend using the plugin on Windows/IIS based systems as we do not currently support these platforms.
 
@@ -58,22 +56,22 @@ We also recommend keeping your WordPress up to date and only use the the most re
 
 = Can I get support? =
 
-Absolutely! SMTP2GO has support agents located in the US, EU, UK, and the Pacific to cover all time zones providing assistance when you need it most. If you have questions or need assistance then feel free to contact the support team by logging into your SMTP2GO dashboard and clicking on the support icon on the top-right of the screen. We can be reached by instant message, ticket, or phone.
+Absolutely! The SMTP2GO support team has agents located in the US, EU, UK, and the Pacific to cover all time zones providing assistance when you need it most. If you have questions or need help then feel free to contact the support team by logging into your SMTP2GO dashboard and clicking on the support icon on the top-right. We can be reached by instant message, ticket, or phone.
 
 
 = How do I avoid emails going to the spam or junk folder? =
 
-1. Ensure you have added your Sender Domain Names to the "Sending > Verified" section of your SMTP2GO account, and have them all fully verified.
+1. Check that your domain names are fully verified in the "Sending > Verified Sender" section of your SMTP2GO account.
 
-2. Make sure your domain has a great reputation and isn't listed on any blacklists.
+2. Make sure your domain has a great reputation and isn't listed on any blacklists. A good place to start checking is MXToolbox.
 
-3. Think about your email content and avoid words and phrases that could trigger a spam filter.
+3. Think about your email content and subject line to avoid words and phrases that could trigger a spam filter.
 
 If you're needing extra help, our support team has lots of tips and tricks to help you out. You can find the support tab in your SMTP2GO dashboard.
 
 == Installation ==
 
-If you are not an existing customer, you will need to signup for an SMTP2GO account - [a free plan is available!](https://www.smtp2go.com)
+If you are not an existing customer, you will an SMTP2GO account - [a free plan is available!](https://www.smtp2go.com)
 
 https://www.youtube.com/watch?v=28MaT2NWR5A
 
@@ -89,7 +87,7 @@ https://www.youtube.com/watch?v=28MaT2NWR5A
 
 You will need to enable the plugin and enter the required details under the "Settings" tab.
 
-1. Enable the checkbox "Enable Email Made Easy by SMTPGO".
+1. Tick the checkbox labelled "Enable Email Made Easy by SMTPGO".
 2. Enter your API Key which can be found in your SMTP2GO dashboard: "Sending > API Keys".
 
  **Note:**
@@ -104,18 +102,14 @@ You will need to enable the plugin and enter the required details under the "Set
 5. Save the settings by clicking the "Save Settings" button at the bottom.
 
  **Note:**
- The default From Email Address and From Name can be changed programmatically.
+ The default From Email Address and From Name will only be used if your other plugins don't specify a sending email address.
 
 
 You can add custom headers to your emails, such as headers for custom tracking with third-party tools such as "X-Campaign".
 
 The "Test" tab can be used to send a test email to ensure your settings have been entered correctly.
 
-The "Stats" tab will give you an overview of your SMTP2GO plan’s quota as well as your Spam and Bounce rates for the past 30 days.
-
-And that's it! Once you've installed and enabled the plugin, all emails originating from your WordPress installation will be routed via your SMTP2GO account.
-
-If any problem occurs, please contact us at ticket@smtp2go.com or via the "Support" tab within the SMTP2GO app.
+And that's it! If any problem occurs, please contact us via the "Support" tab within the SMTP2GO app.
 
 
 **Advanced Setup:**
@@ -128,21 +122,21 @@ If any problem occurs, please contact us at ticket@smtp2go.com or via the "Suppo
 6. Enable the checkbox "Enable Email Made Easy by SMTPGO".
 7. Add a default sending name and email address.
 
-Note: The default From Email Address and From Name can be changed programmatically.
+Note: The default From Email Address and From Name is only used if these are not specified by any other Wordpress function or plugin that is trying to send an email.
 
 == Support ==
 
-If you have questions or need assistance then feel free to contact the support team by logging into your [SMTP2GO dashboard](https://app.smtp2go.com) then clicking the support icon on the top-right of the screen.
+If you have questions or need assistance then feel free to contact the support team by logging into your [SMTP2GO dashboard](https://app.smtp2go.com) and clicking the support icon on the top right navigation bar.
 
-More information on this plugin is available in our [Knowledgebase](https://support.smtp2go.com/hc/en-gb/articles/900000195666-SMTP2GO-WordPress-Plugin).
+More information on this plugin is available in our [knowledgebase](https://support.smtp2go.com/hc/en-gb/articles/900000195666-SMTP2GO-WordPress-Plugin).
 
 == About SMTP2GO ==
 
-Founded in 2006, SMTP2GO is a fast and scalable world clase email service provider for sending transactional and marketing emails. It is developed and supported by a team of delivery experts at the forefront of the email industry, providing a reliable and scalable SMTP solution for over 35,000 businesses.
+Founded in 2006, SMTP2GO is a fast and scalable world class email service provider for sending transactional and marketing emails. It is developed and supported by a team of delivery experts at the forefront of the email industry, providing a reliable SMTP solution for over 35,000 businesses.
 
 Complexities such as reputation monitoring, SPF and DKIM are professionally managed for each customer. Native-English speaking support is available worldwide (agents in the USA, EU, UK, Australia, and New Zealand).
 
-Our data centers located around the world, meaning lightning-fast connection speeds, network redundancy, and GDPR compliance.
+Our data centers are located around the world, meaning lightning-fast connection speeds, network redundancy, and GDPR compliance.
 
 == Changelog ==
 
