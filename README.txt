@@ -1,4 +1,4 @@
-=== SMTP2GO - Email Made Easy ===
+=== SMTP2GO for WordPress - Email Made Easy ===
 Contributors: 2050nz, greatsaltlake
 Tags: email, smtp, smtp2go, newsletter, marketing, inbox, delivery, wp_mail
 Requires at least: 5.5
@@ -12,20 +12,19 @@ Resolve email delivery issues, increase inbox placement, track sent email, get 2
 
 == Description ==
 
-SMTP2GO provides valuable insights into every aspect of your email's life cycle, enabling you to track delivery rates, opens, clicks, and bounce rates. Whether you are sending transactional, marketing, contact form, or notification emails - we have got you covered.
+SMTP2GO’s WordPress plugin replaces the default built in wp_mail() functionality (phpmailer) and sends your email via SMTP2GO’s API and industry leading email delivery platform.
 
-With **Email Made Easy**, you can access real-time reporting, statistics and charts in addition to having powerful features that will enhance your emailing experience at your fingertips. The plugin uses SMTP2GO’s industry-leading network to deliver all email from your WordPress installation by replacing the default built in wp_mail() functionality (phpmailer ) and sending via SMTP2GO’s API.
+SMTP2GO provides valuable insights into every aspect of your email's life cycle, enabling you to track delivery rates, opens, clicks, and bounce rates. Whether your email is transactional, marketing, newsletter, contact form, or notification - we have got you covered.
 
-**The main benefitis of using the official SMTP2GO plugin:**
+**The main benefits of using the official SMTP2GO plugin:**
 
-* We made our plugin easy and as low maintenance as possible. You can set it up in under ten minutes and there is zero maintenance required. Let it do its thing while you do yours!
-* Take over from the WordPress email system for more reliable delivery - be confident your emails have been arrived at their destination successfully.
-* Get access to our intuitive real-time reporting tools. You can uncover what's going on behind the scenes with delivery, open, click, bounce, and unsubscribe reports.
-* We offer secure worldwide servers with intelligent, genius-level routing for network redundancy, speedy delivery, and lightning-fast reporting.
-* We handle SPF and DKIM on your behalf.
+* We have made our plugin as easy and low maintenance as possible - you can set it up in under ten minutes.
+* Take over from the default WordPress email system for more reliable delivery - you can be confident your emails have arrived at their destination inbox successfully.
+* Get access to our intuitive real-time reporting tools. You can uncover what is going on behind the scenes with delivery, open rates, click rates, bounce, and unsubscription reports.
+* We offer secure worldwide servers with intelligent routing for network redundancy and speedy delivery.
+* We handle SPF and DKIM on your behalf. SMTP2GO can even turn your "http" links into "https".
 * Diagnose and resolve delivery issues with our insightful reporting page, or reach out to our award-winning support team who are available almost 24/7 to help address problems in a timely, friendly fashion.
-* We have a dedicated Review team who constantly monitor the reputations of our IP's  and we proactively alert members to any suspicious changes in their email regimen.
-* Our architecture is scalable to cater to any sending volume - whether it's 1000 emails a month, or 5 million. We like numbers big and small!
+* We have a dedicated Review team who constantly monitor the reputations of our IP's and we proactively alert members to any suspicious changes in their email regimen.
 * Avoid poor reputation and throttling or limitations from over-used shared web hosts and other providers.
 
 [Sign up here](https://www.smtp2go.com/).
@@ -41,14 +40,14 @@ Once logged into your account and completed the required setup steps, you can ge
 
 = How much will it cost me? =
 
-SMTP2GO offers a free forever plan that includes 1,000 emails per month. You can use this for your WordPress site but also any other email and SMTP needs you have! One account can cover all your inbox delivery needs.
+SMTP2GO offers a free plan that includes 1,000 emails per month. You can use this for your WordPress site but also any other email and SMTP needs you have! One account can cover all your inbox delivery and SMTP needs.
 
 For more email volume per month and fewer restrictions, you can easily upgrade to one of the many available plans to suit your sending needs. Paid plans start at $10 USD/month - check out our [pricing here](https://www.smtp2go.com/pricing).
 
 = Can you tell me about the compatibility of this plugin? =
 Sure can! We replace the default **wp_mail** so most other plugins that need to send email will be compatible.
 
-We are always looking to improve, so if you do find some compatibility issues, please let us know.
+We are always looking to improve, so if you do find any compatibility issues, please let us know.
 
 **Email Made Easy** has been tested for Linux and other Unix type operating systems. We do not recommend using the plugin on Windows/IIS based systems as we do not currently support these platforms.
 
