@@ -1,7 +1,7 @@
 === SMTP2GO for WordPress - Email Made Easy ===
 Contributors: 2050nz, greatsaltlake
 Tags: email, smtp, smtp2go, newsletter, marketing, inbox, delivery, wp_mail
-Requires at least: 5.5
+Requires at least: 5.8
 Tested up to: 6.4
 Requires PHP: 7.4
 Stable tag: trunk
