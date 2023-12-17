@@ -69,7 +69,7 @@ function SMTP2GO_tab_active($tab)
     <?php if (!empty(SMTP2GO_tab_active('settings'))): ?>
 
     <h1><?php _e('General Settings', $this->plugin_name)?></h1>
-        <p style="font-weight: normal;">To create an API key, log in to the SMTP2GO web app, click "Settings > API Keys". Copy the API key then complete the details below.</p>
+        <p style="font-weight: normal;">To create an API key, log in to the SMTP2GO web app, click "Sending > API Keys". Copy the API key then complete the details below.</p>
     <form action="options.php" method="post">
         <?php
 // output security fields for the registered setting "smtp2go"
