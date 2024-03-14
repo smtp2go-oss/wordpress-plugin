@@ -59,6 +59,46 @@ class WordpressPluginAdmin
     {
         $this->plugin_name = $plugin_name;
         $this->version     = $version;
+        $this->checkForConflictingPlugins();
+    }
+
+    /**
+     * Check for possibly conflicting plugins
+     *
+     * @since 1.7.2
+     * @return void
+     */
+    private function checkForConflictingPlugins()
+    {
+        $plugins = get_plugins();
+        $active = get_option('active_plugins');
+
+        $conflicting = [
+            'wp-mail-smtp',
+            'post-smtp',
+            'fluent-smtp',
+            'easy-wp-smtp',
+            'wp-smtp',
+            'smtp-mailer',
+            'post-smtp',
+            'wpsp',
+        ];
+
+        $conflicted = [];
+
+        foreach ($plugins as $pluginFile => $pluginData) {
+            if (in_array($pluginFile, $active) && in_array($pluginData['TextDomain'], $conflicting)) {
+                $conflicted[] = $pluginData['Name'];
+            }
+        }
+        if (!empty($conflicted)) {
+            add_action('admin_notices', function () use ($conflicted) {
+                echo '<div class="notice notice-error "><p>';
+                echo 'SMTP2GO Wordpress Plugin may not be compatible with the following plugins: <strong>' . implode('</strong><strong>, ', $conflicted) . '</strong>.';
+                echo '<br/>If you are experiencing issues with the SMTP2GO Wordpress Plugin, please disable these plugins and try again.';
+                echo '</p></div>';
+            });
+        }
     }
 
     /**
