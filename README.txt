@@ -36,7 +36,7 @@ SMTP2GO provides valuable insights into every aspect of your email's life cycle,
 
 Yes, the SMTP2GO WordPress plugin uses SMTP2GO’s API to deliver emails and get statistics. Creating an account on SMTP2GO quick and simple - [sign up here](https://www.smtp2go.com/).
 
-Once logged into your account and completed the required setup steps, you can get an API Key (Sending > API Keys) which you’ll need to get the plugin up and running.
+Once logged into your account and you have completed the required setup steps, you can get an API Key (Sending > API Keys) which you’ll need to get the plugin up and running.
 
 = How much will it cost me? =
 
@@ -117,7 +117,7 @@ And that's it! If any problem occurs, please contact us via the "Support" tab wi
 2. Activate the plugin through the wp-admin "Plugins" page.
 3. Once successfully activated, the SMTP2GO plugin will appear in the "Settings" menu in the WordPress Admin Panel.
 4. Click on "Settings > SMTP2GO" to open the plugin configuration page.
-5. Retrieve a copy of your API key by going to the "Settings > API Keys" section of your SMTP2GO dashboard.
+5. Retrieve a copy of your API key by going to the "Sending > API Keys" section of your SMTP2GO dashboard.
 6. Enable the checkbox "Enable Email Made Easy by SMTPGO".
 7. Add a default sending name and email address.
 
@@ -139,6 +139,12 @@ Our data centers are located around the world, meaning lightning-fast connection
 
 == Changelog ==
 
+= v1.8.1
+= fix get_plugins getting called when not available
+= v1.8.0
+= add checking and warning for conflicting plugins
+= v1.7.1
+= admin and readme text correction
 = v1.7.0
 = bring back PHP 7.4 compatability
 = v1.6.1
