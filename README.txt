@@ -139,6 +139,8 @@ Our data centers are located around the world, meaning lightning-fast connection
 
 == Changelog ==
 
+= v1.8.1
+= fix get_plugins getting called when not available
 = v1.8.0
 = add checking and warning for conflicting plugins
 = v1.7.1

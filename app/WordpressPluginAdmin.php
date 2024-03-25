@@ -70,6 +70,10 @@ class WordpressPluginAdmin
      */
     private function checkForConflictingPlugins()
     {
+        if ( ! function_exists( 'get_plugins' ) ) {
+            return;
+        }
+
         $plugins = get_plugins();
         $active = get_option('active_plugins');
 
