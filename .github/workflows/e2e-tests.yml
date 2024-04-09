@@ -1,0 +1,32 @@
+---
+name: End-To-End Tests
+'on':
+  push:
+    branches:
+      - feat_end_to_end_tests_with_github_actions
+jobs:
+  test:
+    name: End-To-End Tests
+    runs-on: ubuntu-latest
+    environment: Test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21.x
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Playwright dependencies
+        run: |
+          npx playwright install chromium --with-deps       
+# firefox webkit
+      - name: Install WordPress and start the server
+        run: |
+          npm run wp-env start          
+      - name: Running End-To-End Tests
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+        run: |
+          npm run test:playwright

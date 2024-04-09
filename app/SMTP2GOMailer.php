@@ -104,7 +104,8 @@ class SMTP2GOMailer extends PHPMailer
         }
         /*we dont want the wp_mail default to override our configured options,
         only other plugins. There doesnt seem to be a nicer way to detect this.*/
-        if ($this->FromName != 'WordPress') {
+
+        if ($this->FromName != 'WordPress' && !empty($this->From)) {
             $mailSendService->setSender(new Address($this->From, $this->FromName));
         }
 
