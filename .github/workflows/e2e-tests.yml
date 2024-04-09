@@ -21,7 +21,9 @@ jobs:
       - name: Install Playwright dependencies
         run: |
           npx playwright install chromium --with-deps       
-# firefox webkit
+      - name: Create .env file
+        run: |
+          echo "SMTP2GO_API_KEY=${{secrets.SMTP2GO_API_KEY}}" > .env
       - name: Install WordPress and start the server
         run: |
           npm run wp-env start          
