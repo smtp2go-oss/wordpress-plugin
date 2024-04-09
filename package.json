@@ -4,11 +4,11 @@
   "description": "End To End Tests For SMTP2O Wordpress Plugin",
   "scripts": {
     "wp-env": "wp-env",
-    "test": "echo \"Error: no test specified\" && exit 1",    
+    "test": "echo \"Error: no test specified\" && exit 1",
     "test:playwright": "wp-scripts test-playwright",
     "test:playwright:clean": "wp-env \"clean\" && wp-scripts test-playwright",
-		"test:playwright:help": "wp-scripts test-playwright --help",
-		"test:playwright:debug": "wp-scripts test-playwright --debug"
+    "test:playwright:help": "wp-scripts test-playwright --help",
+    "test:playwright:debug": "wp-scripts test-playwright --debug"
   },
   "author": "SMTP2GO",
   "devDependencies": {
@@ -19,6 +19,7 @@
     "@wordpress/jest-console": "^7.26.0",
     "@wordpress/jest-puppeteer-axe": "^6.26.0",
     "@wordpress/scripts": "^27.6.0",
+    "dotenv": "^16.4.5",
     "expect-puppeteer": "^10.0.0",
     "puppeteer": "^22.6.2",
     "puppeteer-testing-library": "^0.6.0"
