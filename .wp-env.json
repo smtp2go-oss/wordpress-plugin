@@ -1,5 +1,10 @@
 {
-    "plugins":[".", "https://downloads.wordpress.org/plugin/woocommerce.8.8.3.zip", "https://downloads.wordpress.org/plugin/jetpack.13.3.1.zip"],
+    "plugins": [
+        ".",
+        "https://downloads.wordpress.org/plugin/woocommerce.8.8.3.zip",
+        "https://downloads.wordpress.org/plugin/jetpack.13.3.1.zip",
+        "https://downloads.wordpress.org/plugin/caldera-forms.1.9.7.zip"
+    ],
     "phpVersion": "7.4",
     "core": null,
     "config": {
@@ -7,5 +12,5 @@
         "WP_DEBUG_LOG": true,
         "WP_DEBUG_DISPLAY": true,
         "SCRIPT_DEBUG": true
-      }
+    }
 }
