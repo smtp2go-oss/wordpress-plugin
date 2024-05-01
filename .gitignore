@@ -7,3 +7,4 @@ node_modules
 artifacts
 .env
 test-results
+.wp-env.override.json
