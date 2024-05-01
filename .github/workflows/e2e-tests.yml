@@ -39,6 +39,7 @@ jobs:
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
         run: |
+          npm run wp-env clean all
           npm run wp-env start --update
           npm run test:playwright
       - name: Running End-To-End Tests Against PHP 8.2
@@ -46,5 +47,6 @@ jobs:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
         run: |
           echo "{"\"phpVersion\"": "\"8.2\""}" > .wp-env.override.json
+          npm run wp-env clean all
           npm run wp-env start --update
           npm run test:playwright
