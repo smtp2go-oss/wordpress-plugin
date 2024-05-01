@@ -3,3 +3,5 @@ phpunit.phar
 .phpunit.result.cache
 phpunit_private.xml
 /vendor/
+node_modules
+.env
