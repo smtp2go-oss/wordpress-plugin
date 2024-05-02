@@ -7,3 +7,5 @@ node_modules
 .env
 .wp-env.override.json
 artifacts/storage-states/admin.json
+test-results
+artifacts
