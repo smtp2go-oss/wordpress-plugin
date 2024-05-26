@@ -2,7 +2,7 @@
 Contributors: 2050nz, greatsaltlake
 Tags: email, smtp, smtp2go, newsletter, marketing, inbox, delivery, wp_mail
 Requires at least: 5.8
-Tested up to: 6.4
+Tested up to: 6.5
 Requires PHP: 7.4
 Stable tag: trunk
 License: GPLv2 or later
@@ -139,6 +139,8 @@ Our data centers are located around the world, meaning lightning-fast connection
 
 == Changelog ==
 
+= v1.8.2
+= check WordPress 6.5 compatibility
 = v1.8.1
 = fix get_plugins getting called when not available
 = v1.8.0
