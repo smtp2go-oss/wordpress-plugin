@@ -576,9 +576,16 @@ class WordpressPluginAdmin
             $input = get_option('smtp2go_api_key');
         }
         if (empty($input) || strpos($input, 'api-') !== 0) {
-            add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API key entered.', $this->plugin_name));
+            add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API key entered. The key should begin with "api-"', $this->plugin_name));
             return get_option('smtp2go_api_key');
         }
+        //make sure the key is valid
+        $client = new ApiClient($input);
+        if (!$client->consume(new Service('stats/email_summary', ['username' => substr($input, 0, 16)]))) {
+            add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API key entered. Unable to make a successful call to the API with the provided key.', $this->plugin_name));
+            return get_option('smtp2go_api_key');
+        }
+
 
         return sanitize_text_field($input);
     }
