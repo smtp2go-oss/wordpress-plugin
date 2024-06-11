@@ -63,6 +63,36 @@ class WordpressPluginAdmin
     }
 
     /**
+     * Check for send limit
+     *
+     * @since 1.7.2
+     * @return void
+     */
+    private function isFreePlan()
+    {
+        $apiKey = get_option('smtp2go_api_key');
+        if (empty($apiKey)) {
+            return;
+        }
+        $client = new ApiClient($apiKey);
+        $stats   = null;
+        if ($client->consume(new Service('stats/email_cycle'))) {
+            $body = $client->getResponseBody();
+            if (empty($body->data)) {
+                return false;
+            }
+            $stats = $body->data;
+        }
+
+        if (empty($stats)) {
+            return false;
+        }
+
+
+        return !empty($stats->cycle_max && $stats->cycle_max <= 1000);
+    }
+
+    /**
      * Check for possibly conflicting plugins
      *
      * @since 1.7.2
@@ -70,7 +100,7 @@ class WordpressPluginAdmin
      */
     private function checkForConflictingPlugins()
     {
-        if ( ! function_exists( 'get_plugins' ) ) {
+        if (!function_exists('get_plugins')) {
             return;
         }
 
@@ -449,6 +479,8 @@ class WordpressPluginAdmin
 
     public function renderManagementPage()
     {
+        $onFreePlan = $this->isFreePlan();
+
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-admin-display.php';
     }
     /**

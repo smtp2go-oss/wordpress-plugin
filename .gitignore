@@ -8,3 +8,4 @@ artifacts
 .env
 test-results
 .wp-env.override.json
+artifacts/storage-states/admin.json
