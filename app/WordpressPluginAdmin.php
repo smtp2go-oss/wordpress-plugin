@@ -59,7 +59,7 @@ class WordpressPluginAdmin
     {
         $this->plugin_name = $plugin_name;
         $this->version     = $version;
-        $this->checkForConflictingPlugins();
+        $this->checkForConflictingPlugins();        
     }
 
     /**
@@ -524,9 +524,9 @@ class WordpressPluginAdmin
         }
         // create / map better error messages where appropriate
         $reason = '';
-        $failures = $response->data->failures;
+        $failures = $response->data->failures ?? [];
         // API returns failures two different ways - either in failures
-        if (count($failures) > 0) {
+        if (is_countable($failures) && count($failures) > 0) {
             $reason = $failures[0];
 
             // map when we don't get error_code

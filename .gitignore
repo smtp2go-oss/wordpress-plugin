@@ -3,3 +3,8 @@ phpunit.phar
 .phpunit.result.cache
 phpunit_private.xml
 /vendor/
+node_modules
+artifacts
+.env
+test-results
+.wp-env.override.json
