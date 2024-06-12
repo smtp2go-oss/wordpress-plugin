@@ -70,7 +70,7 @@ If you're needing extra help, our support team has lots of tips and tricks to he
 
 == Installation ==
 
-If you are not an existing customer, you will an SMTP2GO account - [a free plan is available!](https://www.smtp2go.com)
+If you are not an existing customer, you will need an SMTP2GO account - [a free plan is available!](https://www.smtp2go.com)
 
 https://www.youtube.com/watch?v=28MaT2NWR5A
 
