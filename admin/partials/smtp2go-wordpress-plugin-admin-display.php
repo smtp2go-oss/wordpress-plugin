@@ -70,7 +70,7 @@ function SMTP2GO_tab_active($tab)
                 <div class="notice notice-info" style="padding:15px">
 
                     <h3 style="line-height: 1.5;">You know our free plan is great, but our paid plans are even better!</h3>
-                    <h3>Send more emails with fewer restrictions, and access more features, like email-to-SMS, full reporting, archiving, and 24/7 support via phone, chat and email. Woohoo!  &#127881;</h3>
+                    <h3>Send more emails with fewer restrictions, and access more features such as email-to-SMS, full reporting, archiving, and 24/7 support via phone, chat and email. Woohoo!  &#127881;</h3>
                     <a class="button smtp2go-button-blue" target="_blank" href="https://app.smtp2go.com/account/changeplan/">Choose Your Plan</a>
 
                     <a class="button smtp2go-button-white" target="_blank" href="https://support.smtp2go.com/hc/en-gb/articles/20483715021081-Billing-Pricing-and-Plans-FAQ
