@@ -139,6 +139,11 @@ Our data centers are located around the world, meaning lightning-fast connection
 
 == Changelog ==
 
+= v1.9.0
+= add upsell modal if user is on free plan
+= validate API key when entered
+= e2e Github action tests
+= iterate Guzzle version in composer package
 = v1.8.2
 = check WordPress 6.5 compatibility
 = v1.8.1
