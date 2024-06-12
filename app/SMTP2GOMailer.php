@@ -35,6 +35,8 @@ class SMTP2GOMailer extends PHPMailer
 
     protected $hasCustomReplyToHeader = false;
 
+    private $apiClient = null;
+
     protected function mailSend($header, $body)
     {
         $from = [get_option('smtp2go_from_address'), get_option('smtp2go_from_name')];
@@ -109,7 +111,7 @@ class SMTP2GOMailer extends PHPMailer
             $mailSendService->setSender(new Address($this->From, $this->FromName));
         }
 
-        $client = new ApiClient(get_option('smtp2go_api_key'));
+        $client = $this->apiClient ?? new ApiClient(get_option('smtp2go_api_key'));
         $client->setMaxSendAttempts(2);
         $client->setTimeoutIncrement(0);
         $success            = $client->consume($mailSendService);
@@ -117,6 +119,12 @@ class SMTP2GOMailer extends PHPMailer
 
         return $success;
     }
+
+    public function setApiClient(ApiClient $apiClient)
+    {
+        $this->apiClient = $apiClient;
+    }
+
 
     /**
      * Process the headers stored as Wordpress options
