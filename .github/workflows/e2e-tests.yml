@@ -4,6 +4,7 @@ name: End-To-End Tests
   push:
     branches:
       - feat_end_to_end_tests_with_github_actions
+      - prerelease
 jobs:
   test:
     name: End-To-End Tests
