@@ -116,6 +116,7 @@ class WordpressPluginAdmin
             'smtp-mailer',
             'post-smtp',
             'wpsp',
+            'sendwp',
         ];
 
         $conflicted = [];
