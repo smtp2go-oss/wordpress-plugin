@@ -101,7 +101,9 @@ class WordpressPluginAdmin
     private function checkForConflictingPlugins()
     {
         if (!function_exists('get_plugins')) {
-            return;
+            include ABSPATH . '/wp-admin/includes/plugin.php';
+
+            die("test github action failing");
         }
 
         $plugins = get_plugins();
@@ -126,6 +128,7 @@ class WordpressPluginAdmin
                 $conflicted[] = $pluginData['Name'];
             }
         }
+
         if (!empty($conflicted)) {
             add_action('admin_notices', function () use ($conflicted) {
                 echo '<div class="notice notice-error "><p>';
