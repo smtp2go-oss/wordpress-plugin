@@ -102,8 +102,6 @@ class WordpressPluginAdmin
     {
         if (!function_exists('get_plugins')) {
             include ABSPATH . '/wp-admin/includes/plugin.php';
-
-            die("test github action failing");
         }
 
         $plugins = get_plugins();
