@@ -3,7 +3,7 @@ name: End-To-End Tests
 'on':
   push:
     branches:
-      - feat_end_to_end_tests_with_github_actions
+      - master
       - prerelease
 jobs:
   test:
