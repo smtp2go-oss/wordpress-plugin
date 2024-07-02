@@ -35,6 +35,8 @@ class SMTP2GOMailer extends PHPMailer
 
     protected $hasCustomReplyToHeader = false;
 
+    private $apiClient = null;
+
     protected function mailSend($header, $body)
     {
         $from = [get_option('smtp2go_from_address'), get_option('smtp2go_from_name')];
@@ -104,11 +106,12 @@ class SMTP2GOMailer extends PHPMailer
         }
         /*we dont want the wp_mail default to override our configured options,
         only other plugins. There doesnt seem to be a nicer way to detect this.*/
-        if ($this->FromName != 'WordPress') {
+
+        if ($this->FromName != 'WordPress' && !empty($this->From)) {
             $mailSendService->setSender(new Address($this->From, $this->FromName));
         }
 
-        $client = new ApiClient(get_option('smtp2go_api_key'));
+        $client = $this->apiClient ?? new ApiClient(get_option('smtp2go_api_key'));
         $client->setMaxSendAttempts(2);
         $client->setTimeoutIncrement(0);
         $success            = $client->consume($mailSendService);
@@ -116,6 +119,12 @@ class SMTP2GOMailer extends PHPMailer
 
         return $success;
     }
+
+    public function setApiClient(ApiClient $apiClient)
+    {
+        $this->apiClient = $apiClient;
+    }
+
 
     /**
      * Process the headers stored as Wordpress options

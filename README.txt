@@ -2,7 +2,7 @@
 Contributors: 2050nz, greatsaltlake
 Tags: email, smtp, smtp2go, newsletter, marketing, inbox, delivery, wp_mail
 Requires at least: 5.8
-Tested up to: 6.4
+Tested up to: 6.5
 Requires PHP: 7.4
 Stable tag: trunk
 License: GPLv2 or later
@@ -70,7 +70,7 @@ If you're needing extra help, our support team has lots of tips and tricks to he
 
 == Installation ==
 
-If you are not an existing customer, you will an SMTP2GO account - [a free plan is available!](https://www.smtp2go.com)
+If you are not an existing customer, you will need an SMTP2GO account - [a free plan is available!](https://www.smtp2go.com)
 
 https://www.youtube.com/watch?v=28MaT2NWR5A
 
@@ -139,6 +139,13 @@ Our data centers are located around the world, meaning lightning-fast connection
 
 == Changelog ==
 
+= v1.9.0
+= add upsell modal if user is on free plan
+= validate API key when entered
+= e2e Github action tests
+= iterate Guzzle version in composer package
+= v1.8.2
+= check WordPress 6.5 compatibility
 = v1.8.1
 = fix get_plugins getting called when not available
 = v1.8.0

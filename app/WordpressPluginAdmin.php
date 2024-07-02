@@ -59,7 +59,37 @@ class WordpressPluginAdmin
     {
         $this->plugin_name = $plugin_name;
         $this->version     = $version;
-        $this->checkForConflictingPlugins();
+        $this->checkForConflictingPlugins();        
+    }
+
+    /**
+     * Check for send limit
+     *
+     * @since 1.7.2
+     * @return void
+     */
+    private function isFreePlan()
+    {
+        $apiKey = get_option('smtp2go_api_key');
+        if (empty($apiKey)) {
+            return;
+        }
+        $client = new ApiClient($apiKey);
+        $stats   = null;
+        if ($client->consume(new Service('stats/email_cycle'))) {
+            $body = $client->getResponseBody();
+            if (empty($body->data)) {
+                return false;
+            }
+            $stats = $body->data;
+        }
+
+        if (empty($stats)) {
+            return false;
+        }
+
+
+        return !empty($stats->cycle_max && $stats->cycle_max <= 1000);
     }
 
     /**
@@ -70,8 +100,8 @@ class WordpressPluginAdmin
      */
     private function checkForConflictingPlugins()
     {
-        if ( ! function_exists( 'get_plugins' ) ) {
-            return;
+        if (!function_exists('get_plugins')) {
+            include ABSPATH . '/wp-admin/includes/plugin.php';
         }
 
         $plugins = get_plugins();
@@ -86,6 +116,7 @@ class WordpressPluginAdmin
             'smtp-mailer',
             'post-smtp',
             'wpsp',
+            'sendwp',
         ];
 
         $conflicted = [];
@@ -95,6 +126,7 @@ class WordpressPluginAdmin
                 $conflicted[] = $pluginData['Name'];
             }
         }
+
         if (!empty($conflicted)) {
             add_action('admin_notices', function () use ($conflicted) {
                 echo '<div class="notice notice-error "><p>';
@@ -449,6 +481,8 @@ class WordpressPluginAdmin
 
     public function renderManagementPage()
     {
+        $onFreePlan = $this->isFreePlan();
+
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-admin-display.php';
     }
     /**
@@ -524,9 +558,9 @@ class WordpressPluginAdmin
         }
         // create / map better error messages where appropriate
         $reason = '';
-        $failures = $response->data->failures;
+        $failures = $response->data->failures ?? [];
         // API returns failures two different ways - either in failures
-        if (count($failures) > 0) {
+        if (is_countable($failures) && count($failures) > 0) {
             $reason = $failures[0];
 
             // map when we don't get error_code
@@ -576,9 +610,16 @@ class WordpressPluginAdmin
             $input = get_option('smtp2go_api_key');
         }
         if (empty($input) || strpos($input, 'api-') !== 0) {
-            add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API key entered.', $this->plugin_name));
+            add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API key entered. The key should begin with "api-"', $this->plugin_name));
             return get_option('smtp2go_api_key');
         }
+        //make sure the key is valid
+        $client = new ApiClient($input);
+        if (!$client->consume(new Service('stats/email_summary', ['username' => substr($input, 0, 16)]))) {
+            add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API key entered. Unable to make a successful call to the API with the provided key.', $this->plugin_name));
+            return get_option('smtp2go_api_key');
+        }
+
 
         return sanitize_text_field($input);
     }
