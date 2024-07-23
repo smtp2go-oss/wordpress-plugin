@@ -11,18 +11,20 @@ class SecureApiKeyHelper
 
     private $key = 'default-key-not-secure';
 
+    private $canEncrypt = false;
+
     public function __construct()
     {
         $this->ivlen = openssl_cipher_iv_length(self::CIPHER);
         $this->key = defined('AUTH_KEY') ? AUTH_KEY : $this->key;
+
+        $this->canEncrypt = extension_loaded('openssl')
+            && in_array(strtolower(self::CIPHER), openssl_get_cipher_methods());
     }
 
     public function encryptKey($plain)
     {
-        if (!extension_loaded('openssl')) {
-            return $plain;
-        }
-        if (!in_array(strtolower(self::CIPHER), openssl_get_cipher_methods())) {
+        if (!$this->canEncrypt) {
             return $plain;
         }
 
@@ -35,11 +37,7 @@ class SecureApiKeyHelper
 
     public function decryptKey($maybeEncryptedKey)
     {
-        if (!extension_loaded('openssl')) {
-            return $maybeEncryptedKey;
-        }
-
-        if (!in_array(strtolower(self::CIPHER), openssl_get_cipher_methods())) {
+        if (!$this->canEncrypt) {
             return $maybeEncryptedKey;
         }
 
