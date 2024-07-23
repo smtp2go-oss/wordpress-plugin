@@ -88,7 +88,6 @@ class WordpressPluginAdmin
             return false;
         }
 
-
         return !empty($stats->cycle_max && $stats->cycle_max <= 1000);
     }
 
@@ -249,6 +248,8 @@ class WordpressPluginAdmin
 
         add_filter('pre_update_option_smtp2go_custom_headers', array($this, 'cleanCustomHeaderOptions'));
     }
+
+
 
     /**
      * Clean empty values out of the custom header options $_POST
@@ -425,6 +426,9 @@ class WordpressPluginAdmin
     public function outputApiKeyHtml()
     {
         $setting = get_option('smtp2go_api_key');
+        $secureHelper = new SecureApiKeyHelper();
+        
+        $setting = $secureHelper->decryptKey($setting);
         $hint    = '<span style="cursor: default; font-weight: normal;">The API key will need permissions <i>Emails</i> and <i>Statistics.</i></span>';
         if (empty($setting)) {
             $this->outputTextFieldHtml(array(
@@ -603,11 +607,14 @@ class WordpressPluginAdmin
      */
     public function validateApiKey($input)
     {
+        $keyHelper = new SecureApiKeyHelper();
+
         if (!empty($_POST['smtp2go_api_key_update'])) {
             $input = $_POST['smtp2go_api_key_update'];
         }
         if (empty($input)) {
             $input = get_option('smtp2go_api_key');
+            $input = $keyHelper->decryptKey($input);
         }
         if (empty($input) || strpos($input, 'api-') !== 0) {
             add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API key entered. The key should begin with "api-"', $this->plugin_name));
@@ -615,13 +622,15 @@ class WordpressPluginAdmin
         }
         //make sure the key is valid
         $client = new ApiClient($input);
-        if (!$client->consume(new Service('stats/email_summary', ['username' => substr($input, 0, 16)]))) {
+        if (!$client->consume(new Service('stats/email_summary', ['username' => substr($input, 0, 16)]))) {            
             add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API key entered. Unable to make a successful call to the API with the provided key.', $this->plugin_name));
             return get_option('smtp2go_api_key');
         }
 
 
-        return sanitize_text_field($input);
+        $plain = sanitize_text_field($input);
+        
+        return $keyHelper->encryptKey($plain);
     }
 
     public function validateSenderName($input)
