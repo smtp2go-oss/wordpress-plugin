@@ -37,21 +37,16 @@ class SecureApiKeyHelper
 
     public function decryptKey($maybeEncryptedKey)
     {
-        if (!$this->canEncrypt) {
+        if (!$this->canEncrypt || strpos($maybeEncryptedKey, 'api-') === 0) {
             return $maybeEncryptedKey;
         }
+        
+        $encrypted = base64_decode($maybeEncryptedKey);
 
-        if (strpos($maybeEncryptedKey, 'api-') !== 0) {
+        $iv = substr($encrypted, 0, $this->ivlen);
 
-            $encrypted = base64_decode($maybeEncryptedKey);
+        $encrypted = substr($encrypted, $this->ivlen);
 
-            $iv = substr($encrypted, 0, $this->ivlen);
-
-            $encrypted = substr($encrypted, $this->ivlen);
-
-            return openssl_decrypt($encrypted, self::CIPHER, $this->key, 0, $iv);
-        }
-
-        return $maybeEncryptedKey;
+        return openssl_decrypt($encrypted, self::CIPHER, $this->key, 0, $iv);
     }
 }
