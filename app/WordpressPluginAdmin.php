@@ -59,7 +59,38 @@ class WordpressPluginAdmin
     {
         $this->plugin_name = $plugin_name;
         $this->version     = $version;
-        $this->checkForConflictingPlugins();        
+        $this->checkForConflictingPlugins();
+    }
+
+    /**
+     * Check for send limit
+     *
+     * @since 1.7.2
+     * @return void
+     */
+    private function isFreePlan()
+    {
+        $apiKey = get_option('smtp2go_api_key');
+        if (empty($apiKey)) {
+            return;
+        }
+        $keyHelper = new SecureApiKeyHelper();
+        $apiKey    = $keyHelper->decryptKey($apiKey);
+        $client = new ApiClient($apiKey);
+        $stats   = null;
+        if ($client->consume(new Service('stats/email_cycle'))) {
+            $body = $client->getResponseBody();
+            if (empty($body->data)) {
+                return false;
+            }
+            $stats = $body->data;
+        }
+
+        if (empty($stats)) {
+            return false;
+        }
+
+        return !empty($stats->cycle_max && $stats->cycle_max <= 1000);
     }
 
     /**
@@ -70,8 +101,8 @@ class WordpressPluginAdmin
      */
     private function checkForConflictingPlugins()
     {
-        if ( ! function_exists( 'get_plugins' ) ) {
-            return;
+        if (!function_exists('get_plugins')) {
+            include ABSPATH . '/wp-admin/includes/plugin.php';
         }
 
         $plugins = get_plugins();
@@ -86,6 +117,7 @@ class WordpressPluginAdmin
             'smtp-mailer',
             'post-smtp',
             'wpsp',
+            'sendwp',
         ];
 
         $conflicted = [];
@@ -95,6 +127,7 @@ class WordpressPluginAdmin
                 $conflicted[] = $pluginData['Name'];
             }
         }
+
         if (!empty($conflicted)) {
             add_action('admin_notices', function () use ($conflicted) {
                 echo '<div class="notice notice-error "><p>';
@@ -217,6 +250,8 @@ class WordpressPluginAdmin
 
         add_filter('pre_update_option_smtp2go_custom_headers', array($this, 'cleanCustomHeaderOptions'));
     }
+
+
 
     /**
      * Clean empty values out of the custom header options $_POST
@@ -393,6 +428,9 @@ class WordpressPluginAdmin
     public function outputApiKeyHtml()
     {
         $setting = get_option('smtp2go_api_key');
+        $secureHelper = new SecureApiKeyHelper();
+
+        $setting = $secureHelper->decryptKey($setting);
         $hint    = '<span style="cursor: default; font-weight: normal;">The API key will need permissions <i>Emails</i> and <i>Statistics.</i></span>';
         if (empty($setting)) {
             $this->outputTextFieldHtml(array(
@@ -439,7 +477,8 @@ class WordpressPluginAdmin
     public function renderStatsPage()
     {
         $apiKey = get_option('smtp2go_api_key');
-        $client = new ApiClient($apiKey);
+        $apiKeyHelper = new SecureApiKeyHelper();
+        $client = new ApiClient($apiKeyHelper->decryptKey($apiKey));
         $stats   = null;
         if ($client->consume(new Service('stats/email_summary', ['username' => substr($apiKey, 0, 16)]))) {
             $stats = $client->getResponseBody()->data;
@@ -449,6 +488,8 @@ class WordpressPluginAdmin
 
     public function renderManagementPage()
     {
+        $onFreePlan = $this->isFreePlan();
+
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-admin-display.php';
     }
     /**
@@ -569,18 +610,30 @@ class WordpressPluginAdmin
      */
     public function validateApiKey($input)
     {
+        $keyHelper = new SecureApiKeyHelper();
+
         if (!empty($_POST['smtp2go_api_key_update'])) {
             $input = $_POST['smtp2go_api_key_update'];
         }
         if (empty($input)) {
             $input = get_option('smtp2go_api_key');
+            $input = $keyHelper->decryptKey($input);
         }
         if (empty($input) || strpos($input, 'api-') !== 0) {
-            add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API key entered.', $this->plugin_name));
+            add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API key entered. The key should begin with "api-"', $this->plugin_name));
+            return get_option('smtp2go_api_key');
+        }
+        //make sure the key is valid
+        $client = new ApiClient($input);
+        if (!$client->consume(new Service('stats/email_summary', ['username' => substr($input, 0, 16)]))) {
+            add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API key entered. Unable to make a successful call to the API with the provided key.', $this->plugin_name));
             return get_option('smtp2go_api_key');
         }
 
-        return sanitize_text_field($input);
+
+        $plain = sanitize_text_field($input);
+
+        return $keyHelper->encryptKey($plain);
     }
 
     public function validateSenderName($input)

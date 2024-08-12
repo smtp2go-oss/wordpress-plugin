@@ -111,7 +111,10 @@ class SMTP2GOMailer extends PHPMailer
             $mailSendService->setSender(new Address($this->From, $this->FromName));
         }
 
-        $client = $this->apiClient ?? new ApiClient(get_option('smtp2go_api_key'));
+        $apiKey = get_option('smtp2go_api_key');
+
+        $keyHelper = new SecureApiKeyHelper();
+        $client = $this->apiClient ?? new ApiClient($keyHelper->decryptKey($apiKey));
         $client->setMaxSendAttempts(2);
         $client->setTimeoutIncrement(0);
         $success            = $client->consume($mailSendService);
@@ -180,6 +183,8 @@ class SMTP2GOMailer extends PHPMailer
             }
         }
     }
+
+
 
     public function getLastRequest()
     {
