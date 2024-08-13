@@ -22,14 +22,19 @@ test('test front end form', async ({ page, admin }) => {
   await page.getByRole('button', { name: 'Publish', exact: true }).click();
   await page.getByLabel('Editor publish').getByRole('button', { name: 'Publish', exact: true }).click();
   await page.getByText('View Page').nth(0).click();
+  const currentUrl = page.url();
+  //we want to log out of teh admin area and test the form
+  await page.goto('wp-login.php?action=logout');
+  await page.getByRole('link', { name: 'log out' }).click();
+  await page.goto(currentUrl);
   await page.getByLabel('First Name *').click();
-  await page.getByLabel('First Name *').fill('Kris');
+  await page.getByLabel('First Name *').fill('Test');
   await page.getByLabel('First Name *').press('Tab');
-  await page.getByLabel('Last Name *').fill('Johansen');
+  await page.getByLabel('Last Name *').fill('User');
   await page.getByLabel('Last Name *').press('Tab');
-  await page.getByLabel('Email Address *').fill('kris@2050.nz');
+  await page.getByLabel('Email Address *').fill('test@user.com');
   await page.getByLabel('Comments / Questions *').click();
-  await page.getByLabel('Comments / Questions *').fill('Please work');
+  await page.getByLabel('Comments / Questions *').fill('Test message');
   await page.getByRole('button', { name: 'Send Message' }).click();
   await expect(page.getByText('Form has been successfully')).toBeVisible();
 });
