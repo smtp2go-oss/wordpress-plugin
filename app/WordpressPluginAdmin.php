@@ -612,26 +612,39 @@ class WordpressPluginAdmin
     {
         $keyHelper = new SecureApiKeyHelper();
 
+        // click edit - replacing obsfucated key with new key
         if (!empty($_POST['smtp2go_api_key_update'])) {
             $input = $_POST['smtp2go_api_key_update'];
         }
+
+        // initial key input
         if (empty($input)) {
             $input = get_option('smtp2go_api_key');
             $input = $keyHelper->decryptKey($input);
         }
-        if (empty($input) || strpos($input, 'api-') !== 0) {
+
+        // swicth encrypted vs not keys
+        if (strpos($input, 'api-') === 0) {
+            $key = $input;
+        } elseif (strpos($keyHelper->decryptKey($input), 'api-') == 0) {
+            $key = $keyHelper->decryptKey($input);
+        } else {
+            $key = false;
+        }
+
+        if (!$key) {
             add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API key entered. The key should begin with "api-"', $this->plugin_name));
             return get_option('smtp2go_api_key');
         }
         //make sure the key is valid
-        $client = new ApiClient($input);
+        $client = new ApiClient($key);
         if (!$client->consume(new Service('stats/email_summary', ['username' => substr($input, 0, 16)]))) {
             add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API key entered. Unable to make a successful call to the API with the provided key.', $this->plugin_name));
             return get_option('smtp2go_api_key');
         }
 
 
-        $plain = sanitize_text_field($input);
+        $plain = sanitize_text_field($key);
 
         return $keyHelper->encryptKey($plain);
     }
