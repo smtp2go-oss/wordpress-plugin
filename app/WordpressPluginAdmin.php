@@ -626,7 +626,7 @@ class WordpressPluginAdmin
         // swicth encrypted vs not keys
         if (strpos($input, 'api-') === 0) {
             $key = $input;
-        } elseif (strpos($keyHelper->decryptKey($input), 'api-') == 0) {
+        } elseif (strpos($keyHelper->decryptKey($input), 'api-') === 0) {
             $key = $keyHelper->decryptKey($input);
         } else {
             $key = false;
