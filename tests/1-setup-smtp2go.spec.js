@@ -9,8 +9,8 @@ test('Setup SMTP2GO Plugin', async ({ page, admin }) => {
   await page.locator('input[name="smtp2go_api_key"]').fill(process.env.SMTP2GO_API_KEY);
 
   // await page.getByPlaceholder('john@example.com').click();
-  await page.getByPlaceholder('john@example.com').fill('kris@2050.nz');
-  await page.getByPlaceholder('John Example').fill('Kris Johansen');
+  await page.getByPlaceholder('john@example.com').fill('test@2050.nz');
+  await page.getByPlaceholder('John Example').fill('Test Person');
 
   
   
@@ -19,9 +19,9 @@ test('Setup SMTP2GO Plugin', async ({ page, admin }) => {
   //Go to the "test" tab
   await page.getByRole('link', { name: 'Test' }).click();
   await page.getByPlaceholder('john@example.com').click();
-  await page.getByPlaceholder('john@example.com').fill('kris+recipient@2050.nz');
+  await page.getByPlaceholder('john@example.com').fill('test+recipient@2050.nz');
   await page.getByPlaceholder('john@example.com').press('Tab');
-  await page.getByPlaceholder('John Example').fill('Kris Recipient');
+  await page.getByPlaceholder('John Example').fill('Test Recipient');
   await page.getByRole('button', { name: 'Send Test Email' }).click();
   await page.getByText('Success! The test message was').click();
   await page.getByText('Success! The test message was').click();
