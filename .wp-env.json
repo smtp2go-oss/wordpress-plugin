@@ -3,7 +3,9 @@
         ".",
         "https://downloads.wordpress.org/plugin/woocommerce.8.8.3.zip",
         "https://downloads.wordpress.org/plugin/jetpack.13.3.1.zip",
-        "https://downloads.wordpress.org/plugin/caldera-forms.1.9.7.zip"
+        "https://downloads.wordpress.org/plugin/caldera-forms.1.9.7.zip",
+        "https://downloads.wordpress.org/plugin/wp-mail-logging.1.12.0.zip",
+        "https://downloads.wordpress.org/plugin/email-log.2.4.9.zip"
     ],
     "phpVersion": "7.4",
     "core": null,
