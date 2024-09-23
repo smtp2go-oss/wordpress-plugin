@@ -60,6 +60,12 @@ function SMTP2GO_tab_active($tab)
 
         <?php endif; ?>
 
+        <?php
+        if (get_option('smtp2go_enable_api_logs')) :
+        ?>
+            <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'logs'), 'admin.php')) ?>" class="nav-tab <?php echo SMTP2GO_tab_active('logs') ?>">Logs</a>
+        <?php endif; ?>
+
     </div>
 
     <?php if (!empty(SMTP2GO_tab_active('settings'))) : ?>
@@ -139,6 +145,11 @@ function SMTP2GO_tab_active($tab)
     endif;
     ?>
 
+    <?php if (!empty(SMTP2GO_tab_active('logs'))) :
+        $this->renderLogsPage();
+
+    endif;
+    ?>
 
 
 </div>

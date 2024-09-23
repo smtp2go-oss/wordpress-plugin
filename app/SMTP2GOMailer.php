@@ -116,13 +116,18 @@ class SMTP2GOMailer extends PHPMailer
         $client->setTimeoutIncrement(0);
         $success            = $client->consume($mailSendService);
         $this->last_request = $client;
-
+        Logger::logEmail($client, $mailSendService);
         return $success;
     }
 
     public function setApiClient(ApiClient $apiClient)
     {
         $this->apiClient = $apiClient;
+    }
+
+    public function getApiClient()
+    {
+        return $this->apiClient;
     }
 
 

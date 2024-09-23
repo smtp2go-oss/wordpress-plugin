@@ -43,6 +43,8 @@ EOF;
 
         $client->consume($service);
 
+        $this->lastResponse = json_encode($mockResponse);
+
         return true;
     }
 }

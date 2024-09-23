@@ -175,8 +175,28 @@ class WordpressPluginAdmin
             'smtp2go_settings_section',
             array(
                 'name' => 'smtp2go_enabled', 'label' => __(''),
+
             )
         );
+
+        register_setting(
+            'api_settings',
+            'smtp2go_enable_api_logs'
+        );
+
+        add_settings_field(
+            'smtp2go_enable_api_logs',
+            __('Enable logging', $this->plugin_name),
+            array($this, 'outputCheckboxHtml'),
+            $this->plugin_name,
+            'smtp2go_settings_section',
+            array(
+                'name' => 'smtp2go_enable_api_logs', 'label' => __(''),
+                'hint' => __('Enable logging to help diagnose issues with the plugin.'),
+            )            
+        );
+
+
 
         /** api key field */
         register_setting(
@@ -419,7 +439,12 @@ class WordpressPluginAdmin
         if (!empty($args['label'])) {
             $label = $args['label'];
         }
-        echo '<div style="display:flex;align-items:center;"><input  id="' . $field_name . '" type="checkbox"' . $required . ' class="smtp2go_text_input" name="' . $field_name . '" value="1"' . $checked . '/> <label for="' . $field_name . '">' . $label . '</label></div>';
+        $hint = '';
+        if (!empty($args['hint'])) {
+            $hint = '<p>' . $args['hint'] . '</p>';
+        }
+        echo '<div style="display:flex;align-items:center;"><input  id="' . $field_name . '" type="checkbox"' . $required . ' class="smtp2go_text_input" name="' . $field_name . '" value="1"' . $checked . '/> <label for="' . $field_name . '">' . $label . '</label>' . '</div>';
+        echo $hint;
     }
 
     public function outputApiKeyHtml()
@@ -485,6 +510,15 @@ class WordpressPluginAdmin
 
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-admin-display.php';
     }
+
+    public function renderLogsPage()
+    {
+        global $wpdb;
+        $table = $wpdb->prefix . 'smtp2go_api_logs';
+        $logs  = $wpdb->get_results("SELECT * FROM $table ORDER BY created_at DESC LIMIT 100");
+        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-logs-display.php';
+    }
+
     /**
      * Register the stylesheets for the admin area.
      *
