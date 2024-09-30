@@ -2,9 +2,9 @@
 Contributors: 2050nz, greatsaltlake
 Tags: email, smtp, smtp2go, newsletter, marketing, inbox, delivery, wp_mail
 Requires at least: 5.8
-Tested up to: 6.5
+Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: trunk
+Stable tag: 1.10.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -139,36 +139,40 @@ Our data centers are located around the world, meaning lightning-fast connection
 
 == Changelog ==
 
-= v1.9.0
-= add upsell modal if user is on free plan
-= validate API key when entered
-= e2e Github action tests
-= iterate Guzzle version in composer package
-= v1.8.2
-= check WordPress 6.5 compatibility
-= v1.8.1
-= fix get_plugins getting called when not available
-= v1.8.0
-= add checking and warning for conflicting plugins
-= v1.7.1
-= admin and readme text correction
-= v1.7.0
-= bring back PHP 7.4 compatability
-= v1.6.1
-= require PHP 8.1
-= v1.6.0
-= use new smtp2go composer package with retry feature
-= v1.5.6
-= readme updated
-= test on WordPress 6.3
-= rename smtp2go dir to app for FlyWheel compatability
-= v1.5.4
-= drop testing / supporting PHP 7.2
-= v1.5.3
-= ensure phpmailer is set to use the 'mail' mailer
-= v1.5.2
-= tested on WordPress 6.2
-= v1.5.1 = missed moving the tested up to version number with Readme update
+= v1.10.0 =
+* encrypt API key in database
+* check WordPress 6.6 compatibility
+= v1.9.0 =
+* add upsell modal if user is on free plan
+* validate API key when entered
+* e2e Github action tests
+* iterate Guzzle version in composer package
+= v1.8.2 =
+* check WordPress 6.5 compatibility
+= v1.8.1 =
+* fix get_plugins getting called when not available
+= v1.8.0 =
+* add checking and warning for conflicting plugins
+= v1.7.1 =
+* admin and readme text correction
+= v1.7.0 =
+* bring back PHP 7.4 compatability
+= v1.6.1 =
+* require PHP 8.1
+= v1.6.0 =
+* use new smtp2go composer package with retry feature
+= v1.5.6 =
+* readme updated
+* test on WordPress 6.3
+* rename smtp2go dir to app for FlyWheel compatability
+= v1.5.4 =
+* drop testing / supporting PHP 7.2
+= v1.5.3 =
+* ensure phpmailer is set to use the 'mail' mailer
+= v1.5.2 =
+* tested on WordPress 6.2
+= v1.5.1 =
+* missed moving the tested up to version number with Readme update
 = v1.5.0 =
 * remove sender domains fn
 * upgrade smtp2go-oss/smtp2go-php to 1.1.2

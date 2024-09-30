@@ -18,7 +18,7 @@
 //   await page.locator('#woocommerce-select-control-0__help svg').click();
 //   await page.getByRole('option', { name: 'Clothing and accessories' }).click();
 //   await page.getByPlaceholder('wordpress@example.com').click();
-//   await page.getByPlaceholder('wordpress@example.com').fill('kris@2050.nz');
+//   await page.getByPlaceholder('wordpress@example.com').fill('test@2050.nz');
 //   await page.getByRole('button', { name: 'Continue' }).click();
 //   await page.locator('#inspector-checkbox-control-2').uncheck();
 //   await page.locator('#inspector-checkbox-control-4').uncheck();
@@ -50,11 +50,11 @@
 //   await page.getByRole('link', { name: 'Proceed to Checkout' }).click();
 //   await page.getByLabel('Email address').click();
 //   await page.getByLabel('Email address').press('Meta+a');
-//   await page.getByLabel('Email address').fill('kris@2050.nz');
+//   await page.getByLabel('Email address').fill('test@2050.nz');
 //   await page.getByLabel('Email address').press('Tab');
-//   await page.getByLabel('First name').fill('Kris');
+//   await page.getByLabel('First name').fill('Test');
 //   await page.getByLabel('First name').press('Tab');
-//   await page.getByLabel('Last name').fill('Johansen');
+//   await page.getByLabel('Last name').fill('User');
 //   await page.getByLabel('Last name').press('Tab');
 //   await page.getByLabel('Address', { exact: true }).fill('76a great south road manurewa');
 //   await page.getByLabel('Address', { exact: true }).press('Tab');
