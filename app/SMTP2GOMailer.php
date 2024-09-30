@@ -20,7 +20,7 @@ class SMTP2GOMailer extends PHPMailer
     /**
      * The arguments passed by wp_mail
      *
-     * @var [type]
+     * @var array
      */
     public $wp_args;
 
@@ -84,15 +84,15 @@ class SMTP2GOMailer extends PHPMailer
         if (!empty($this->getAttachments())) {
             $inlines     = new AttachmentCollection;
             $attachments = new AttachmentCollection;
-            foreach ($this->getAttachments() as $phpmailerAttachementItem) {
-                if (self::fileIsAccessible($phpmailerAttachementItem[0])) {
-                    $attachments->add(new Attachment($phpmailerAttachementItem[0]));
+            foreach ($this->getAttachments() as $phpmailerAttachmentItem) {
+                if (self::fileIsAccessible($phpmailerAttachmentItem[0])) {
+                    $attachments->add(new Attachment($phpmailerAttachmentItem[0]));
                 } else {
-                    if (!empty($phpmailerAttachementItem[7]) && is_string($phpmailerAttachementItem[7])) {
+                    if (!empty($phpmailerAttachmentItem[7]) && is_string($phpmailerAttachmentItem[7])) {
                         $inlines->add(new InlineAttachment(
-                            $phpmailerAttachementItem[7],
-                            $phpmailerAttachementItem[0],
-                            $phpmailerAttachementItem[4]
+                            $phpmailerAttachmentItem[7],
+                            $phpmailerAttachmentItem[0],
+                            $phpmailerAttachmentItem[4]
                         ));
                     }
                 }
@@ -130,7 +130,7 @@ class SMTP2GOMailer extends PHPMailer
 
 
     /**
-     * Process the headers stored as Wordpress options
+     * Process the headers stored as WordPress options
      */
     private function processCustomHeaders(Send $mailSendService)
     {

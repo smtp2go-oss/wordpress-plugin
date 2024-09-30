@@ -35,7 +35,7 @@ class WordpressPlugin
      *
      * @since    1.0.1
      * @access   protected
-     * @var      \SMTP2GO\WordpressPluginLoader    $loader    Maintains and registers all hooks for the plugin.
+     * @var      \SMTP2GO\App\WordpressPluginLoader    $loader    Maintains and registers all hooks for the plugin.
      */
     protected $loader;
 
@@ -214,7 +214,7 @@ class WordpressPlugin
      * The reference to the class that orchestrates the hooks with the plugin.
      *
      * @since     1.0.1
-     * @return    \SMTP2GO\WordpressPluginLoader    Orchestrates the hooks of the plugin.
+     * @return    \SMTP2GO\App\WordpressPluginLoader    Orchestrates the hooks of the plugin.
      */
     public function getLoader()
     {
@@ -250,7 +250,7 @@ class WordpressPlugin
         if (!empty($current_screen->id) && strpos($current_screen->id, 'smtp2go') !== false) {
             $url  = 'https://wordpress.org/support/plugin/smtp2go/reviews/?filter=5#new-post';
 
-            $text = "Thank you for using the <strong>SMTP2GO plugin!</strong> Please leave us a 5 star review on <a href='$url' target='_blank'>Wordpress.org</a> to help spread the word.";
+            $text = "Thank you for using the <strong>SMTP2GO plugin!</strong> Please leave us a 5 star review on <a href='$url' target='_blank'>WordPress.org</a> to help spread the word.";
         }
         return $text;
     }

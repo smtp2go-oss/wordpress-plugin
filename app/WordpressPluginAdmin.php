@@ -66,13 +66,13 @@ class WordpressPluginAdmin
      * Check for send limit
      *
      * @since 1.7.2
-     * @return void
+     * @return bool
      */
     private function isFreePlan()
     {
         $apiKey = get_option('smtp2go_api_key');
         if (empty($apiKey)) {
-            return;
+            return false;
         }
         $keyHelper = new SecureApiKeyHelper();
         $apiKey    = $keyHelper->decryptKey($apiKey);
@@ -131,8 +131,8 @@ class WordpressPluginAdmin
         if (!empty($conflicted)) {
             add_action('admin_notices', function () use ($conflicted) {
                 echo '<div class="notice notice-error "><p>';
-                echo 'SMTP2GO Wordpress Plugin may not be compatible with the following plugins: <strong>' . implode('</strong><strong>, ', $conflicted) . '</strong>.';
-                echo '<br/>If you are experiencing issues with the SMTP2GO Wordpress Plugin, please disable these plugins and try again.';
+                echo 'SMTP2GO WordPress Plugin may not be compatible with the following plugins: <strong>' . implode('</strong><strong>, ', $conflicted) . '</strong>.';
+                echo '<br/>If you are experiencing issues with the SMTP2GO WordPress Plugin, please disable these plugins and try again.';
                 echo '</p></div>';
             });
         }
@@ -531,9 +531,9 @@ class WordpressPluginAdmin
             wp_send_json(array('success' => 0, 'reason' => 'Invalid recipient specified'));
         }
         $body = __('Success!', $this->plugin_name) . "\n";
-        $body .= __('You have successfully set up your SMTP2GO Wordpress Plugin', $this->plugin_name);
+        $body .= __('You have successfully set up your SMTP2GO WordPress Plugin', $this->plugin_name);
 
-        $success = wp_mail($to_email, __('Test Email Via SMTP2GO Wordpress Plugin', $this->plugin_name), $body);
+        $success = wp_mail($to_email, __('Test Email Via SMTP2GO WordPress Plugin', $this->plugin_name), $body);
 
         if (defined('WP_DEBUG') && WP_DEBUG === true) {
             error_log('PHPMAILER Instance:' . print_r($phpmailer, 1));
@@ -555,7 +555,7 @@ class WordpressPluginAdmin
         $response = $request->getResponseBody();
 
         if (empty($request)) {
-            $reason = 'Unable to find the request made to the SMPT2GO API. The most likely cause is a conflict with another plugin.';
+            $reason = 'Unable to find the request made to the SMTP2GO API. The most likely cause is a conflict with another plugin.';
             wp_send_json(array('success' => 0, 'reason' => htmlentities($reason)));
             exit;
         }
