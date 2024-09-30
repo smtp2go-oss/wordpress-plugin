@@ -139,50 +139,75 @@ Our data centers are located around the world, meaning lightning-fast connection
 
 == Changelog ==
 
-= v1.9.0
-= add upsell modal if user is on free plan
-= validate API key when entered
-= e2e Github action tests
-= iterate Guzzle version in composer package
-= v1.8.2
-= check WordPress 6.5 compatibility
-= v1.8.1
-= fix get_plugins getting called when not available
-= v1.8.0
-= add checking and warning for conflicting plugins
-= v1.7.1
-= admin and readme text correction
-= v1.7.0
-= bring back PHP 7.4 compatability
-= v1.6.1
-= require PHP 8.1
-= v1.6.0
-= use new smtp2go composer package with retry feature
-= v1.5.6
-= readme updated
-= test on WordPress 6.3
-= rename smtp2go dir to app for FlyWheel compatability
-= v1.5.4
-= drop testing / supporting PHP 7.2
-= v1.5.3
-= ensure phpmailer is set to use the 'mail' mailer
-= v1.5.2
-= tested on WordPress 6.2
-= v1.5.1 = missed moving the tested up to version number with Readme update
-= v1.5.0 =
+= 1.9.0 =
+* add upsell modal if user is on free plan
+* validate API key when entered
+* e2e Github action tests
+* iterate Guzzle version in composer package
+
+= 1.8.2 =
+* check WordPress 6.5 compatibility
+
+= 1.8.1 =
+* fix get_plugins getting called when not available
+
+= 1.8.0 =
+* add checking and warning for conflicting plugins
+
+= 1.7.1 =
+* admin and readme text correction
+
+= 1.7.0 =
+* bring back PHP 7.4 compatability
+
+= 1.6.1 =
+* require PHP 8.1
+
+= 1.6.0 =
+* use new smtp2go composer package with retry feature
+
+= 1.5.6 =
+* readme updated
+* test on WordPress 6.3
+* rename smtp2go dir to app for FlyWheel compatability
+
+= 1.5.4 =
+* drop testing / supporting PHP 7.2
+
+= 1.5.3 =
+* ensure phpmailer is set to use the 'mail' mailer
+
+= 1.5.2 =
+* tested on WordPress 6.2
+
+= 1.5.1 =
+* missed moving the tested up to version number with Readme update
+
+= 1.5.0 =
 * remove sender domains fn
 * upgrade smtp2go-oss/smtp2go-php to 1.1.2
-= v1.4.2 = test on WordPress 6.1
-= v1.4.1 = handle php 8.1 PHP Deprecated notices
-= v1.4.0 = default SMTP2GO API send call to version 2 structure https://apidoc.smtp2go.com/documentation/#/POST/email/send
-= v1.3.0 =
+
+= 1.4.2 =
+* test on WordPress 6.1
+
+= 1.4.1 =
+* handle php 8.1 PHP Deprecated notices
+
+= 1.4.0 =
+* default SMTP2GO API send call to version 2 structure https://apidoc.smtp2go.com/documentation/#/POST/email/send
+
+= 1.3.0 =
 * update smtp2go-oss/smtp2go-php handle duplicate reply-to headers
-= v1.2.7 =
+
+= 1.2.7 =
 * test on WordPress 6.0
-= v1.2.6 =
+
+= 1.2.6 =
 * fix for inline attachment handling
-= v1.2.5 =
+
+= 1.2.5 =
 * test on WordPres 5.9
+
 = v1.2.4 =
 * API call for stats pulls detail for specific key / user
 = v1.2.3 =
