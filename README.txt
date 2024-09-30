@@ -121,7 +121,7 @@ And that's it! If any problem occurs, please contact us via the "Support" tab wi
 6. Enable the checkbox "Enable Email Made Easy by SMTPGO".
 7. Add a default sending name and email address.
 
-Note: The default From Email Address and From Name is only used if these are not specified by any other Wordpress function or plugin that is trying to send an email.
+Note: The default From Email Address and From Name is only used if these are not specified by any other WordPress function or plugin that is trying to send an email.
 
 == Support ==
 
@@ -145,7 +145,7 @@ Our data centers are located around the world, meaning lightning-fast connection
 = v1.9.0 =
 * add upsell modal if user is on free plan
 * validate API key when entered
-* e2e Github action tests
+* e2e GitHub action tests
 * iterate Guzzle version in composer package
 = v1.8.2 =
 * check WordPress 6.5 compatibility
@@ -156,7 +156,7 @@ Our data centers are located around the world, meaning lightning-fast connection
 = v1.7.1 =
 * admin and readme text correction
 = v1.7.0 =
-* bring back PHP 7.4 compatability
+* bring back PHP 7.4 compatibility
 = v1.6.1 =
 * require PHP 8.1
 = v1.6.0 =
@@ -164,7 +164,7 @@ Our data centers are located around the world, meaning lightning-fast connection
 = v1.5.6 =
 * readme updated
 * test on WordPress 6.3
-* rename smtp2go dir to app for FlyWheel compatability
+* rename smtp2go dir to app for FlyWheel compatibility
 = v1.5.4 =
 * drop testing / supporting PHP 7.2
 = v1.5.3 =
@@ -192,7 +192,7 @@ Our data centers are located around the world, meaning lightning-fast connection
 = v1.2.3 =
 * plugin layout updates
 = v1.2.2 =
-* PHP 7.2 compatability
+* PHP 7.2 compatibility
 = v1.2.1 =
 * user php-scoper to avoid potential conflicts
 * fix issue with header handling

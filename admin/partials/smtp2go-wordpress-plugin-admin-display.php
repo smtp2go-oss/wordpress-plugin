@@ -38,7 +38,7 @@ function SMTP2GO_tab_active($tab)
         <div class="inner">
             <img style="width: 150px" src="<?php echo plugins_url('smtp2go-logo-alt.svg', dirname(__FILE__, 2)) ?>" />
             <div class="container">
-                <p><b>The SMTP2GO Wordpress plugin allows you to use SMTP2GO to deliver all emails from your Wordpress installation.</b></p>
+                <p><b>The SMTP2GO WordPress plugin allows you to use SMTP2GO to deliver all emails from your WordPress installation.</b></p>
                 <div><a class="button smtp2go-button-blue" target="_blank" href="https://app.smtp2go.com">Open the SMTP2GO
                         web app</a>
 

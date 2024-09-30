@@ -23,7 +23,7 @@ test('test front end form', async ({ page, admin }) => {
   await page.getByLabel('Editor publish').getByRole('button', { name: 'Publish', exact: true }).click();
   await page.getByText('View Page').nth(0).click();
   const currentUrl = page.url();
-  //we want to log out of teh admin area and test the form
+  //we want to log out of the admin area and test the form
   await page.goto('wp-login.php?action=logout');
   await page.getByRole('link', { name: 'log out' }).click();
   await page.goto(currentUrl);
