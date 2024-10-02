@@ -92,8 +92,10 @@ class SMTP2GOMailer extends PHPMailer
         $client->setTimeoutIncrement(0);
 
         $success = $client->consume($mailSendService);
+        $this->last_request = $client;
 
         $response = $client->getResponseBody();
+
 
         if (!empty($response->data->field_validation_errors->message)) {
             $reason = $response->data->field_validation_errors->message;
