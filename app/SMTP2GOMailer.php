@@ -39,6 +39,7 @@ class SMTP2GOMailer extends PHPMailer
 
     protected function mailSend($header, $body)
     {
+
         $from = [get_option('smtp2go_from_address'), get_option('smtp2go_from_name')];
 
         $addresses = [];
@@ -118,9 +119,23 @@ class SMTP2GOMailer extends PHPMailer
         $client->setMaxSendAttempts(2);
         $client->setTimeoutIncrement(0);
         $success            = $client->consume($mailSendService);
-        $this->last_request = $client;
 
-        return $success;
+        $response = $client->getResponseBody();
+
+        if (!empty($response->data->field_validation_errors->message)) {
+            $reason = $response->data->field_validation_errors->message;
+        } elseif (!empty($response->data->error)) {
+            $reason = $response->data->error . '<br />' . $response->data->error_code;
+        } elseif ($response->data->failed == true && !empty($response->data->failures)) {
+            $reason = $response->data->failures[0];
+        }
+
+        if (!isset($reason)) {
+            return $success;
+        }
+
+        $this->setError('SMTP2GO Error: ' . $reason);
+        throw new \PHPMailer\PHPMailer\Exception($this->ErrorInfo, self::STOP_CRITICAL);
     }
 
     public function setApiClient(ApiClient $apiClient)
