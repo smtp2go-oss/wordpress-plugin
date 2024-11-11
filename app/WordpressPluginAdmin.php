@@ -553,7 +553,7 @@ class WordpressPluginAdmin
 
         $request = $phpmailer->getLastRequest();
         $response = $request->getResponseBody();
-
+        $reason = null;
         if (empty($request)) {
             $reason = 'Unable to find the request made to the SMPT2GO API. The most likely cause is a conflict with another plugin.';
             wp_send_json(array('success' => 0, 'reason' => htmlentities($reason)));
@@ -563,40 +563,7 @@ class WordpressPluginAdmin
             error_log('last request!' . print_r($request, 1));
             error_log('last response!' . print_r($response, 1));
         }
-        // create / map better error messages where appropriate
-        $reason = '';
-        $failures = $response->data->failures ?? [];
-        // API returns failures two different ways - either in failures
-        if (is_countable($failures) && count($failures) > 0) {
-            $reason = $failures[0];
-
-            // map when we don't get error_code
-            if (strpos($reason, "unable to verify sender address")) {
-                $reason = 'Unable to verify sender address, please check Sender Email Address';
-            }
-
-            wp_send_json(array('success' => 0, 'reason' => htmlentities($reason)));
-        }
-
-
-        if (empty($success)) {
-
-            if (!empty($response->data->field_validation_errors->message)) {
-                $reason = $response->data->field_validation_errors->message;
-            } elseif (!empty($response->data->error)) {
-                $reason = $response->data->error . '<br />' . $response->data->error_code;
-            }
-            // API returns failures two different ways - or with error codes
-            switch ($response->data->error_code ?? '') {
-                case 'E_ApiResponseCodes.NON_VALIDATING_IN_PAYLOAD':
-                    $reason = $response->data->field_validation_errors->message;
-                    if (strpos($reason, "was expecting a valid RFC-822 formatted email field but found")) {
-                        $reason = 'The supplied To Email address was invalid please correct and try again';
-                    }
-                    $reason = str_replace(', Please correct your JSON payload and try again', '', $reason);
-                    break;
-            }
-        }
+        
         wp_send_json(array('success' => intval($success), 'reason' => $reason, 'response' => $response));
     }
 

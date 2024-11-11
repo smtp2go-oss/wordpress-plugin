@@ -39,6 +39,7 @@ class SMTP2GOMailer extends PHPMailer
 
     protected function mailSend($header, $body)
     {
+
         $from = [get_option('smtp2go_from_address'), get_option('smtp2go_from_name')];
 
         $addresses = [];
@@ -71,6 +72,59 @@ class SMTP2GOMailer extends PHPMailer
 
         $mailSendService->setVersion(2);
 
+        $this->processAttachments($mailSendService);
+
+        if (!empty($this->AltBody)) {
+            $mailSendService->setTextBody($this->AltBody);
+        }
+        /*we dont want the wp_mail default to override our configured options,
+        only other plugins. There doesnt seem to be a nicer way to detect this.*/
+
+        if ($this->FromName != 'WordPress' && !empty($this->From)) {
+            $mailSendService->setSender(new Address($this->From, $this->FromName));
+        }
+
+        $apiKey = get_option('smtp2go_api_key');
+
+        $keyHelper = new SecureApiKeyHelper();
+        $client = $this->apiClient ?? new ApiClient($keyHelper->decryptKey($apiKey));
+        $client->setMaxSendAttempts(2);
+        $client->setTimeoutIncrement(0);
+
+        $success = $client->consume($mailSendService);
+        $this->last_request = $client;
+
+        $response = $client->getResponseBody();
+
+
+        if (!empty($response->data->field_validation_errors->message)) {
+            $reason = $response->data->field_validation_errors->message;
+        } elseif (!empty($response->data->error) && !empty($response->data->error_code)) {
+            $reason = $response->data->error . '<br />' . $response->data->error_code;
+        } elseif ($response->data->failed == true && !empty($response->data->failures)) {
+            $reason = $response->data->failures[0];
+        }
+
+        if (!isset($reason)) {
+            return $success;
+        }
+        if (defined('WP_DEBUG') && WP_DEBUG === true) {
+            error_log(print_r($response, true));
+        }
+        $this->setError('SMTP2GO Error: ' . $reason);
+        throw new \PHPMailer\PHPMailer\Exception($this->ErrorInfo, self::STOP_CRITICAL);
+    }
+
+    public function setApiClient(ApiClient $apiClient)
+    {
+        $this->apiClient = $apiClient;
+    }
+
+    /**
+     * Process the attachments stored as Wordpress options
+     */
+    private function processAttachments(Send $mailSendService)
+    {
         /** PhpMailer attachment array structure
          *  0 => $path,
          *   1 => $filename,
@@ -100,34 +154,7 @@ class SMTP2GOMailer extends PHPMailer
             $mailSendService->setAttachments($attachments);
             $mailSendService->setInlines($inlines);
         }
-
-        if (!empty($this->AltBody)) {
-            $mailSendService->setTextBody($this->AltBody);
-        }
-        /*we dont want the wp_mail default to override our configured options,
-        only other plugins. There doesnt seem to be a nicer way to detect this.*/
-
-        if ($this->FromName != 'WordPress' && !empty($this->From)) {
-            $mailSendService->setSender(new Address($this->From, $this->FromName));
-        }
-
-        $apiKey = get_option('smtp2go_api_key');
-
-        $keyHelper = new SecureApiKeyHelper();
-        $client = $this->apiClient ?? new ApiClient($keyHelper->decryptKey($apiKey));
-        $client->setMaxSendAttempts(2);
-        $client->setTimeoutIncrement(0);
-        $success            = $client->consume($mailSendService);
-        $this->last_request = $client;
-
-        return $success;
     }
-
-    public function setApiClient(ApiClient $apiClient)
-    {
-        $this->apiClient = $apiClient;
-    }
-
 
     /**
      * Process the headers stored as Wordpress options
