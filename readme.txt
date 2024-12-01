@@ -1,10 +1,10 @@
 === SMTP2GO for WordPress - Email Made Easy ===
 Contributors: 2050nz, greatsaltlake
-Tags: email, smtp, smtp2go, newsletter, marketing, inbox, delivery, wp_mail
+Tags: email, smtp, inbox, delivery, wp_mail
 Requires at least: 5.8
-Tested up to: 6.6
+Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.10.0
+Stable tag: 1.11.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -139,6 +139,8 @@ Our data centers are located around the world, meaning lightning-fast connection
 
 == Changelog ==
 
+= v1.10.1 =
+* update readme
 = v1.10.0 =
 * encrypt API key in database
 * check WordPress 6.6 compatibility
@@ -176,63 +178,3 @@ Our data centers are located around the world, meaning lightning-fast connection
 = v1.5.0 =
 * remove sender domains fn
 * upgrade smtp2go-oss/smtp2go-php to 1.1.2
-= v1.4.2 = test on WordPress 6.1
-= v1.4.1 = handle php 8.1 PHP Deprecated notices
-= v1.4.0 = default SMTP2GO API send call to version 2 structure https://apidoc.smtp2go.com/documentation/#/POST/email/send
-= v1.3.0 =
-* update smtp2go-oss/smtp2go-php handle duplicate reply-to headers
-= v1.2.7 =
-* test on WordPress 6.0
-= v1.2.6 =
-* fix for inline attachment handling
-= v1.2.5 =
-* test on WordPres 5.9
-= v1.2.4 =
-* API call for stats pulls detail for specific key / user
-= v1.2.3 =
-* plugin layout updates
-= v1.2.2 =
-* PHP 7.2 compatability
-= v1.2.1 =
-* user php-scoper to avoid potential conflicts
-* fix issue with header handling
-* additional error handling in admin test email setup
-= v1.2.0 =
-* use composer package for API integration https://github.com/smtp2go-oss/smtp2go-php
-* fix sender domain validation check
-= v1.1.5 =
-* add sender domain verification tab
-* add uninstaller / clean up database
-= v1.1.4 =
-* check the enable/disable flag, plugin wasn't honouring the flag and sending out via API regardless
-= v1.1.3 =
-* HTML email handling issue
-* check variable for type instead of type hint
-= v1.1.2 =
-* support GravityForms multiple email recipients
-* handle plugin conflicts when admin sends a test email
-= v1.1.1 =
-* initMailer returns args for wp_mailer
-= v1.1.0 =
-* codebase updated, no longer override wp_mail, remove BC
-* updated unit tests
-* admin email test send updated
-= v1.0.10 =
-* revert depreciated mailer handling while we figure out how / if to implement backwards compatibility
-= v1.0.9 =
-* update Deprecated: class-phpmailer.php handling
-= v1.0.8 =
-* handle Deprecated: class-phpmailer.php is deprecated
-* handle php var not defined error
-= v1.0.7 =
-* hide API key in admin
-* don't pass empty BCC string to API call
-* text update
-* test on WordPress 5.5.1
-= v1.0.6 =
-* set from address from parsed headers if present / if other plugins are injecting headers like this
-= v1.0.5 =
-* Honor wp_mail_from and wp_mail_from_name filters
-* Test with 5.5
-= v1.0.4 =
-* Allow extra characters into Sender Name, quote field through send process
