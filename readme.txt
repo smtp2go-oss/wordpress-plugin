@@ -4,7 +4,7 @@ Tags: email, smtp, inbox, delivery, wp_mail
 Requires at least: 5.8
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.11.0
+Stable tag: 1.11.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -139,6 +139,8 @@ Our data centers are located around the world, meaning lightning-fast connection
 
 == Changelog ==
 
+= v1.11.1 =
+* update readme
 = v1.11.0 =
 * test with new WordPress version
 * add more API error handling
