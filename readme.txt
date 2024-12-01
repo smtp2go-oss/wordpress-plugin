@@ -139,6 +139,9 @@ Our data centers are located around the world, meaning lightning-fast connection
 
 == Changelog ==
 
+= v1.11.0 =
+* test with new WordPress version
+* add more API error handling
 = v1.10.1 =
 * update readme
 = v1.10.0 =
