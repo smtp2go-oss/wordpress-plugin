@@ -28,7 +28,7 @@ class Logger
         $wpdb->insert($wpdb->prefix . 'smtp2go_api_logs', $insertData);
 
         if ($wpdb->last_error) {
-            SMTP2GO_dd('SMTP2GO: Error while logging email: ' . $wpdb->last_error);
+            error_log('SMTP2GO: Error while logging email: ' . $wpdb->last_error);
         }
 
         return;
