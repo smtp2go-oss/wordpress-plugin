@@ -93,6 +93,7 @@ class SMTP2GOMailer extends PHPMailer
 
         $success = $client->consume($mailSendService);
         $this->last_request = $client;
+        Logger::logEmail($client, $mailSendService);
 
         $response = $client->getResponseBody();
 
@@ -104,7 +105,6 @@ class SMTP2GOMailer extends PHPMailer
         } elseif ($response->data->failed == true && !empty($response->data->failures)) {
             $reason = $response->data->failures[0];
         }
-        Logger::logEmail($client, $mailSendService);
 
         if (!isset($reason)) {
             return $success;
