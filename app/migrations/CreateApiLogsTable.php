@@ -24,10 +24,9 @@ final class CreateApiLogsTable
             `site_id` INT UNSIGNED NULL,
             `to` VARCHAR(255),
             `from` VARCHAR(255),
-            `subject` VARCHAR(255),
+            `subject` VARCHAR(255) NULL,
             `response` LONGTEXT NULL,
-            `created_at` TIMESTAMP NULL,
-            `updated_at` TIMESTAMP NULL
+            `created_at` TIMESTAMP NULL
         ) $charsetCollate;";
 
         \dbDelta($sql);
