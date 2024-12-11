@@ -18,7 +18,7 @@ class Logger
             'to'         => json_encode($mailSendService->getRecipients()),
             'from'       => $mailSendService->getSender(),
             'subject'    => $mailSendService->getSubject(),
-            'request'    => $apiClient->getLastRequest(),
+            'request'    => json_encode($mailSendService->buildRequestBody()),
             'response'   => $apiClient->getResponseBody(false),
             'created_at' => current_time('mysql'),
             'updated_at' => current_time('mysql'),
