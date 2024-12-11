@@ -20,7 +20,6 @@ class Logger
             'subject'    => $mailSendService->getSubject(),
             'response'   => $apiClient->getResponseBody(false),
             'created_at' => current_time('mysql'),
-            'updated_at' => current_time('mysql'),
         ];
 
         global $wpdb;
