@@ -9,7 +9,6 @@
                 <th>Subject</th>
                 <th>Response</th>
                 <th>Created</th>
-                <th>Updated</th>
             </tr>
         </thead>
         <tbody>
@@ -43,10 +42,12 @@
                         if (isset($res->data->email_id)) {
                             echo 'Email ID: ' . $res->data->email_id . '<br>';
                         }
+                        if (isset($res->data->failures[0])) {
+                            echo  $res->data->failures[0] . '<br>';
+                        }
                         ?>
                     </td>
                     <td><?php echo $log->created_at; ?></td>
-                    <td><?php echo $log->updated_at; ?></td>
                 </tr>
             <?php endforeach; ?>
     </table>
