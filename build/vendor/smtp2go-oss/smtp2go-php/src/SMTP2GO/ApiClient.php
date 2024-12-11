@@ -26,7 +26,7 @@ class ApiClient
      */
     protected $apiRegion = '';
     /**
-     * The last response recieved from the api as a json object
+     * The last response recieved from the api
      *
      * @var \Psr\Http\Message\ResponseInterface
      */
@@ -251,6 +251,28 @@ class ApiClient
     {
         $this->httpClient = $httpClient;
         return $this;
+    }
+    /**
+     * Get last response
+     *
+     * @return  \Psr\Http\Message\ResponseInterface
+     */
+    public function getLastResponse() : \SMTP2GOWPPlugin\Psr\Http\Message\ResponseInterface
+    {
+        return $this->lastResponse;
+    }
+    /**
+     * Get the status code from the last response,
+     * which is a 3-digit integer result code of the server's attempt to understand and satisfy the request.
+     *
+     * @return  int
+     */
+    public function getLastResponseStatusCode()
+    {
+        if ($this->lastResponse) {
+            return $this->lastResponse->getStatusCode();
+        }
+        return null;
     }
     /**
      * Get last request - only set in the event of a ClientException being thrown

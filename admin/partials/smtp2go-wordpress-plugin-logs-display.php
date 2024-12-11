@@ -1,4 +1,5 @@
 <div class="wrap smtp2go">
+    <?php if (!empty($logs)) : ?>
     <table class="smtp2go-logs-table">
         <thead>
             <tr>
@@ -6,7 +7,6 @@
                 <th>To</th>
                 <th>From</th>
                 <th>Subject</th>
-                <th width="20%">Request</th>
                 <th>Response</th>
                 <th>Created</th>
                 <th>Updated</th>
@@ -30,16 +30,7 @@
                         ?></td>
                     <td><?php echo htmlentities($log->from); ?></td>
                     <td><?php echo htmlentities($log->subject); ?></td>
-                    <td>
-                        <?php if (!empty($log->request) && strpos($log->request, '{') === 0) :
-                            $req = json_decode($log->request, true);
-                        ?>
-                            <pre style="height:200px;overflow:scroll;max-width: 400px;">
-                                <?php echo htmlentities(print_r($req, 1)); ?>
-                            </pre>
-                       
-                        <?php endif; ?>
-                    </td>
+                   
                     <td>
                         <?php
                         echo 'Request ID: ' . $res->request_id . '<br>';
@@ -59,4 +50,13 @@
                 </tr>
             <?php endforeach; ?>
     </table>
+    <p>Showing latest <?php echo count($logs); ?> logs out of a total of <?php echo $totalLogs ?></p>
+    <!-- download as csv button -->
+     <a href="<?php echo admin_url('admin.php?page='.$this->plugin_name.'&download=csv'); ?>" class="button button-primary">Download CSV</a>
+
+     <!-- truncate logs button -->
+        <a href="<?php echo admin_url('admin.php?page='.$this->plugin_name.'&truncate_logs=1'); ?>" class="button button-warning" onclick="return confirm('Are you sure you want to remove all log entries for SMT2GO?')">Truncate Logs</a>
+    <?php else : ?>
+        <p>No logs found</p>
+    <?php endif; ?>
 </div>

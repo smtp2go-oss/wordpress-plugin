@@ -18,7 +18,6 @@ class Logger
             'to'         => json_encode($mailSendService->getRecipients()),
             'from'       => $mailSendService->getSender(),
             'subject'    => $mailSendService->getSubject(),
-            'request'    => json_encode($mailSendService->buildRequestBody()),
             'response'   => $apiClient->getResponseBody(false),
             'created_at' => current_time('mysql'),
             'updated_at' => current_time('mysql'),
@@ -29,6 +28,13 @@ class Logger
 
         if ($wpdb->last_error) {
             error_log('SMTP2GO: Error while logging email: ' . $wpdb->last_error);
+        }
+
+        $totalLogs = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}smtp2go_api_logs");
+        if ($totalLogs > 5000) {
+            $wpdb->query("DELETE FROM `{$wpdb->prefix}smtp2go_api_logs` 
+            ORDER BY created_at 
+            ASC LIMIT 1");
         }
 
         return;

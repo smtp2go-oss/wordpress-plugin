@@ -25,7 +25,6 @@ final class CreateApiLogsTable
             `to` VARCHAR(255),
             `from` VARCHAR(255),
             `subject` VARCHAR(255),
-            `request` LONGTEXT NULL,            
             `response` LONGTEXT NULL,
             `created_at` TIMESTAMP NULL,
             `updated_at` TIMESTAMP NULL

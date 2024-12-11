@@ -60,6 +60,53 @@ class WordpressPluginAdmin
         $this->plugin_name = $plugin_name;
         $this->version     = $version;
         $this->checkForConflictingPlugins();
+
+        if (!empty($_GET['download']) && $_GET['download'] === 'csv') {
+            $this->downloadLogs();
+        }
+
+        if (!empty($_GET['truncate_logs'])) {
+            $this->truncateLogs();
+        }
+    }
+
+    public function truncateLogs()
+    {
+        global $wpdb;
+        $table = $wpdb->prefix . 'smtp2go_api_logs';
+        $wpdb->query("TRUNCATE TABLE $table");
+        $url = admin_url('admin.php?page=' . $this->plugin_name . '&tab=logs');
+        header('Location: ' . $url);
+        exit;
+    }
+
+    public function downloadLogs()
+    {
+        global $wpdb;
+        $table = $wpdb->prefix . 'smtp2go_api_logs';
+        $logs  = $wpdb->get_results("SELECT * FROM $table ORDER BY created_at DESC");
+        $filename = 'smtp2go-logs-' . date('Y-m-d') . '.csv';
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Pragma: no-cache');
+        header('Expires: 0');
+        $h = fopen('php://output', 'w');
+        fputcsv($h, ['Site ID', 'To', 'From', 'Subject', 'Response', 'Created At', 'Updated At']);
+        foreach ($logs as $logItem) {
+            fputcsv($h, [
+                $logItem->site_id,
+                $logItem->to,
+                $logItem->from,
+                $logItem->subject,
+                $logItem->response,
+                $logItem->created_at,
+                $logItem->updated_at,
+            ]);
+        }
+        fclose($h);
+
+
+        exit;
     }
 
     /**
@@ -175,7 +222,8 @@ class WordpressPluginAdmin
             $this->plugin_name,
             'smtp2go_settings_section',
             array(
-                'name' => 'smtp2go_enabled', 'label' => __(''),
+                'name' => 'smtp2go_enabled',
+                'label' => __(''),
 
             )
         );
@@ -192,9 +240,9 @@ class WordpressPluginAdmin
             $this->plugin_name,
             'smtp2go_settings_section',
             array(
-                'name' => 'smtp2go_enable_api_logs', 'label' => __(''),
-                'hint' => __('Enable logging to help diagnose issues with the plugin.'),
-            )            
+                'name' => 'smtp2go_enable_api_logs',
+                'label' => __(''),
+            )
         );
 
 
@@ -208,7 +256,7 @@ class WordpressPluginAdmin
 
         add_settings_field(
             'smtp2go_api_key',
-            __('API Key *', $this->plugin_name),
+            __('API key *', $this->plugin_name),
             array($this, 'outputApiKeyHtml'),
             $this->plugin_name,
             'smtp2go_settings_section',
@@ -223,12 +271,16 @@ class WordpressPluginAdmin
 
         add_settings_field(
             'smtp2go_from_address',
-            __('Sender Email Address *', $this->plugin_name),
+            __('Sender email address *', $this->plugin_name),
             [$this, 'outputTextFieldHtml'],
             $this->plugin_name,
             'smtp2go_settings_section',
             array(
-                'name' => 'smtp2go_from_address', 'label' => '<span style="cursor: default; font-weight: normal;">This is the default email address that your emails will be sent from.</span>', 'type' => 'email', 'required' => true, 'placeholder' => 'john@example.com'
+                'name' => 'smtp2go_from_address',
+                'label' => '<span style="cursor: default; font-weight: normal;">This is the default email address that your emails will be sent from.</span>',
+                'type' => 'email',
+                'required' => true,
+                'placeholder' => 'john@example.com'
             )
         );
 
@@ -241,13 +293,16 @@ class WordpressPluginAdmin
 
         add_settings_field(
             'smtp2go_from_name',
-            __('Sender Name *', $this->plugin_name),
+            __('Sender name *', $this->plugin_name),
             [$this, 'outputTextFieldHtml'],
             $this->plugin_name,
             'smtp2go_settings_section',
             array(
                 'name' => 'smtp2go_from_name',
-                'label'      => '<span style="cursor: default; font-weight: normal;">This is the default name that your emails will be sent from (no " or / allowed).</span>', 'required' => true, 'placeholder' => 'John Example', 'pattern' => '[^/\x22]+',
+                'label'      => '<span style="cursor: default; font-weight: normal;">This is the default name that your emails will be sent from (no " or / allowed).</span>',
+                'required' => true,
+                'placeholder' => 'John Example',
+                'pattern' => '[^/\x22]+',
             )
         );
 
@@ -522,7 +577,8 @@ class WordpressPluginAdmin
     {
         global $wpdb;
         $table = $wpdb->prefix . 'smtp2go_api_logs';
-        $logs  = $wpdb->get_results("SELECT * FROM $table ORDER BY created_at DESC LIMIT 100");
+        $logs  = $wpdb->get_results("SELECT * FROM $table ORDER BY created_at DESC LIMIT 20");
+        $totalLogs = $wpdb->get_var("SELECT COUNT(*) FROM $table");
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-logs-display.php';
     }
 
@@ -597,7 +653,7 @@ class WordpressPluginAdmin
             error_log('last request!' . print_r($request, 1));
             error_log('last response!' . print_r($response, 1));
         }
-        
+
         wp_send_json(array('success' => intval($success), 'reason' => $reason, 'response' => $response));
     }
 
