@@ -84,7 +84,7 @@ class SMTP2GOMailer extends PHPMailer
             $mailSendService->setSender(new Address($this->From, $this->FromName));
         }
 
-        $apiKey = get_option('smtp2go_api_key');
+        $apiKey = SettingsHelper::getOption('smtp2go_api_key');
 
         $keyHelper = new SecureApiKeyHelper();
         $client = $this->apiClient ?? new ApiClient($keyHelper->decryptKey($apiKey));
