@@ -109,9 +109,8 @@ class SMTP2GOMailer extends PHPMailer
         if (!isset($reason)) {
             return $success;
         }
-        if (defined('WP_DEBUG') && WP_DEBUG === true) {
-            error_log(print_r($response, true));
-        }
+        Logger::errorLog($response);
+
         $this->setError('SMTP2GO Error: ' . $reason);
         throw new \PHPMailer\PHPMailer\Exception($this->ErrorInfo, self::STOP_CRITICAL);
     }
