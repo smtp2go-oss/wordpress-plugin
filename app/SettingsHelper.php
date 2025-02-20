@@ -11,7 +11,7 @@ class SettingsHelper
 
     public static function settingHasDefinedConstant($field)
     {
-        if (!defined('SMTP2GO_USE_CONSTANTS') || defined('SMTP2GO_USE_CONSTANTS') && SMTP2GO_USE_CONSTANTS === false) {
+        if (!defined('SMTP2GO_USE_CONSTANTS') || defined('SMTP2GO_USE_CONSTANTS') && constant('SMTP2GO_USE_CONSTANTS') === false) {
             return false;
         }
 
