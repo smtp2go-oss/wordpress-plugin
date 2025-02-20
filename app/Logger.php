@@ -51,10 +51,14 @@ class Logger
             return;
         }
         if (defined('WP_DEBUG') && WP_DEBUG === true) {
+            $apiKey = get_option('smtp2go_api_key');
+            $keyHelper = new SecureApiKeyHelper();
+            $apiKey = $keyHelper->decryptKey($apiKey);
+
             if (!is_string($message)) {
                 $message = print_r($message, true);
             }
-            $apiKey = get_option('smtp2go_api_key');
+
             $message = str_replace($apiKey, substr($apiKey, 0, 7) . '****' . substr($apiKey, -3), $message);
 
             error_log('SMTP2GO: ' . $message);
