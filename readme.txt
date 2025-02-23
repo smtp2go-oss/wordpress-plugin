@@ -139,6 +139,9 @@ Our data centers are located around the world, meaning lightning-fast connection
 
 == Changelog ==
 
+= v1.12.0 =
+* add API request logging option
+* add insert API key into wp-config.php option
 = v1.11.1 =
 * update readme
 = v1.11.0 =
