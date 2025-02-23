@@ -180,7 +180,7 @@ class WordpressPlugin
             $phpmailer          = new SMTP2GOMailer;
             $phpmailer->wp_args = $args;
             if (defined('WP_HOME') && WP_HOME === 'http://localhost:8889') {
-                $phpmailer->setApiClient(new \SMTP2GO\App\MockApiClient(get_option('smtp2go_api_key')));
+                $phpmailer->setApiClient(new \SMTP2GO\App\MockApiClient(SettingsHelper::getOption('smtp2go_api_key')));
             }
         } else {
             $phpmailer->wp_args = $args;

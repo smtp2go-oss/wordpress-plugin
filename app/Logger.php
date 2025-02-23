@@ -20,7 +20,6 @@ class Logger
             'subject'    => $mailSendService->getSubject(),
             'response'   => $apiClient->getResponseBody(false),
             'created_at' => current_time('mysql'),
-            'updated_at' => current_time('mysql'),
         ];
 
         global $wpdb;
@@ -38,5 +37,31 @@ class Logger
         }
 
         return;
+    }
+
+    /**
+     * Log error messages to debug.log if WP_DEBUG is enabled
+     *
+     * @param string|array|object $message
+     * @return void
+     */
+    public static function errorLog($message)
+    {
+        if (!is_string($message) && !is_array($message) && !is_object($message)) {
+            return;
+        }
+        if (defined('WP_DEBUG') && WP_DEBUG === true) {
+            $apiKey = get_option('smtp2go_api_key');
+            $keyHelper = new SecureApiKeyHelper();
+            $apiKey = $keyHelper->decryptKey($apiKey);
+
+            if (!is_string($message)) {
+                $message = print_r($message, true);
+            }
+
+            $message = str_replace($apiKey, substr($apiKey, 0, 7) . '****' . substr($apiKey, -3), $message);
+
+            error_log('SMTP2GO: ' . $message);
+        }
     }
 }

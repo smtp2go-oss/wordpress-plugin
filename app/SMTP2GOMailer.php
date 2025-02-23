@@ -84,7 +84,7 @@ class SMTP2GOMailer extends PHPMailer
             $mailSendService->setSender(new Address($this->From, $this->FromName));
         }
 
-        $apiKey = get_option('smtp2go_api_key');
+        $apiKey = SettingsHelper::getOption('smtp2go_api_key');
 
         $keyHelper = new SecureApiKeyHelper();
         $client = $this->apiClient ?? new ApiClient($keyHelper->decryptKey($apiKey));
@@ -109,9 +109,8 @@ class SMTP2GOMailer extends PHPMailer
         if (!isset($reason)) {
             return $success;
         }
-        if (defined('WP_DEBUG') && WP_DEBUG === true) {
-            error_log(print_r($response, true));
-        }
+        Logger::errorLog($response);
+
         $this->setError('SMTP2GO Error: ' . $reason);
         throw new \PHPMailer\PHPMailer\Exception($this->ErrorInfo, self::STOP_CRITICAL);
     }

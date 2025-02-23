@@ -117,7 +117,7 @@ class WordpressPluginAdmin
      */
     private function isFreePlan()
     {
-        $apiKey = get_option('smtp2go_api_key');
+        $apiKey = SettingsHelper::getOption('smtp2go_api_key');
         if (empty($apiKey)) {
             return;
         }
@@ -184,6 +184,8 @@ class WordpressPluginAdmin
             });
         }
     }
+
+
 
     /**
      * Register all settings fields for the admin page
@@ -262,6 +264,7 @@ class WordpressPluginAdmin
             'smtp2go_settings_section',
             array()
         );
+
 
         /** from email address field */
         register_setting(
@@ -507,7 +510,12 @@ class WordpressPluginAdmin
 
     public function outputApiKeyHtml()
     {
-        $setting = get_option('smtp2go_api_key');
+        if (SettingsHelper::settingHasDefinedConstant('smtp2go_api_key')) {
+            echo '<span style="cursor: default; font-weight: normal;">The API key is defined as a constant in your wp-config.php file.</span>';
+            return;
+        }
+
+        $setting = SettingsHelper::getOption('smtp2go_api_key');
         $secureHelper = new SecureApiKeyHelper();
 
         $setting = $secureHelper->decryptKey($setting);
@@ -556,7 +564,7 @@ class WordpressPluginAdmin
 
     public function renderStatsPage()
     {
-        $apiKey = get_option('smtp2go_api_key');
+        $apiKey = SettingsHelper::getOption('smtp2go_api_key');
         $apiKeyHelper = new SecureApiKeyHelper();
         $client = new ApiClient($apiKeyHelper->decryptKey($apiKey));
         $stats   = null;
@@ -625,9 +633,7 @@ class WordpressPluginAdmin
 
         $success = wp_mail($to_email, __('Test Email Via SMTP2GO Wordpress Plugin', $this->plugin_name), $body);
 
-        if (defined('WP_DEBUG') && WP_DEBUG === true) {
-            error_log('PHPMAILER Instance:' . print_r($phpmailer, 1));
-        }
+        Logger::errorLog('PHPMAILER Instance: ' . print_r($phpmailer, 1));
 
         if (!$phpmailer || !$phpmailer instanceof SMTP2GOMailer) {
             $reason = 'Another plugin is conflicting with this one. Expected $phpmailer to be an instance of SMTP2GOMailer but it is ' . get_class($phpmailer);
@@ -649,10 +655,10 @@ class WordpressPluginAdmin
             wp_send_json(array('success' => 0, 'reason' => htmlentities($reason)));
             exit;
         }
-        if (defined('WP_DEBUG') && WP_DEBUG === true) {
-            error_log('last request!' . print_r($request, 1));
-            error_log('last response!' . print_r($response, 1));
-        }
+
+        Logger::errorLog('last request!' . print_r($request, 1));
+        Logger::errorLog('last response!' . print_r($response, 1));
+
 
         wp_send_json(array('success' => intval($success), 'reason' => $reason, 'response' => $response));
     }
@@ -676,7 +682,7 @@ class WordpressPluginAdmin
 
         // initial key input
         if (empty($input)) {
-            $input = get_option('smtp2go_api_key');
+            $input = SettingsHelper::getOption('smtp2go_api_key');
             $input = $keyHelper->decryptKey($input);
         }
 
@@ -691,13 +697,13 @@ class WordpressPluginAdmin
 
         if (!$key) {
             add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API key entered. The key should begin with "api-"', $this->plugin_name));
-            return get_option('smtp2go_api_key');
+            return SettingsHelper::getOption('smtp2go_api_key');
         }
         //make sure the key is valid
         $client = new ApiClient($key);
         if (!$client->consume(new Service('stats/email_summary', ['username' => substr($input, 0, 16)]))) {
             add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API key entered. Unable to make a successful call to the API with the provided key.', $this->plugin_name));
-            return get_option('smtp2go_api_key');
+            return SettingsHelper::getOption('smtp2go_api_key');
         }
 
 
