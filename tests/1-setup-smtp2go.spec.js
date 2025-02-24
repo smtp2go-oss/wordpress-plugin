@@ -24,6 +24,5 @@ test('Setup SMTP2GO Plugin', async ({ page, admin }) => {
   await page.getByPlaceholder('John Example').fill('Test Recipient');
   await page.getByRole('button', { name: 'Send Test Email' }).click();
   await page.getByText('Success! The test message was').click();
-  await page.getByText('Success! The test message was').click();
   await expect(page.getByText('Success! The test message was')).toBeVisible();
 });
