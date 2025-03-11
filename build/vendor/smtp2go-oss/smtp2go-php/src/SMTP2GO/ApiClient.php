@@ -94,9 +94,15 @@ class ApiClient
      * so that it can be ignored in subsequent requests
      */
     private $ipToIgnore = null;
+    /**
+     * Holds information about requests that resulted in RequestException | ConnectException exceptions
+     * This is useful for debugging and logging when utilising the retry feature, by setting maxSendAttempts > 1
+     * @var array
+     */
+    protected $failedAttemptInfo = [];
     public function __construct($apiKey)
     {
-        $this->setApiKey($apiKey);
+        $this->apiKey = $apiKey;
         $this->httpClient = new Client();
     }
     /**
@@ -160,6 +166,11 @@ class ApiClient
                 $shouldRetry = \false;
             } catch (RequestException|ConnectException $e) {
                 $this->failedAttempts++;
+                $this->lastRequest = $e->getRequest();
+                if ($e instanceof RequestException) {
+                    $this->lastResponse = $e->getResponse();
+                }
+                $this->failedAttemptInfo[] = ['ip' => $serverIpForRequest, 'error' => $e->getMessage()];
                 $this->setTimeout($this->getTimeout() + $this->getTimeoutIncrement());
                 if (empty($this->apiServerIps) && $this->maxSendAttempts > 1) {
                     $this->loadApiServerIps();
@@ -195,12 +206,18 @@ class ApiClient
     }
     private function loadApiServerIps()
     {
-        $ips = \gethostbynamel(static::HOST);
-        if (!empty($ips) && \is_array($ips)) {
-            $this->apiServerIps = \array_filter($ips, function ($ip) {
-                return $ip !== $this->ipToIgnore;
-            });
+        if (empty($this->getApiServerIps())) {
+            $ips = \gethostbynamel(static::HOST);
+            if (!empty($ips) && \is_array($ips)) {
+                $this->setApiServerIps(\array_filter($ips, function ($ip) {
+                    return $ip !== $this->ipToIgnore;
+                }));
+            }
         }
+    }
+    public function setApiServerIps(array $ips)
+    {
+        $this->apiServerIps = $ips;
     }
     /**
      * Return the response body as a json object or string
@@ -255,11 +272,11 @@ class ApiClient
     /**
      * Get last response
      *
-     * @return  \Psr\Http\Message\ResponseInterface
+     * @return  \Psr\Http\Message\ResponseInterface|null
      */
-    public function getLastResponse() : \SMTP2GOWPPlugin\Psr\Http\Message\ResponseInterface
+    public function getLastResponse() : ?\SMTP2GOWPPlugin\Psr\Http\Message\ResponseInterface
     {
-        return $this->lastResponse;
+        return $this->lastResponse ?? null;
     }
     /**
      * Get the status code from the last response,
@@ -387,11 +404,8 @@ class ApiClient
      *
      * @return  array
      */
-    public function getApiServerIps($loadIfEmpty = \true)
+    public function getApiServerIps()
     {
-        if ($loadIfEmpty && empty($this->getApiServerIps())) {
-            $this->loadApiServerIps();
-        }
         return $this->apiServerIps;
     }
     /**
@@ -402,5 +416,14 @@ class ApiClient
     public function getFailedAttempts()
     {
         return $this->failedAttempts;
+    }
+    /**
+     * Get the failed attempt info
+     *
+     * @return  array
+     */
+    public function getFailedAttemptInfo()
+    {
+        return $this->failedAttemptInfo;
     }
 }

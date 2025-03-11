@@ -143,6 +143,8 @@ class WordpressPlugin
 
         $this->loader->addAction('wp_ajax_smtp2go_send_email', $plugin_admin, 'sendTestEmail');
 
+        $this->loader->addAction('wp_ajax_smtp2go_clear_saved_api_key', $plugin_admin, 'clearSavedApiKey');
+
         $this->loader->addAction('phpmailer_init', $this, 'configurePhpmailer');
     }
 

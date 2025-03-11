@@ -2,6 +2,7 @@
 
 namespace SMTP2GO\App;
 
+use SMTP2GO\App\Migrations\CreateApiLogsTable;
 use SMTP2GOWPPlugin\SMTP2GO\ApiClient;
 use SMTP2GOWPPlugin\SMTP2GO\Service\Mail\Send;
 
@@ -12,6 +13,7 @@ class Logger
         if (!get_option('smtp2go_enable_api_logs')) {
             return;
         }
+        CreateApiLogsTable::run();
 
         $insertData = [
             'site_id'    => get_current_blog_id(),

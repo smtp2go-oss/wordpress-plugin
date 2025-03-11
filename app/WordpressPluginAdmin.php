@@ -109,6 +109,19 @@ class WordpressPluginAdmin
         exit;
     }
 
+    public function clearSavedApiKey()
+    {
+        ob_clean();
+        $success = delete_option('smtp2go_api_key');
+        $res = ['success' => $success];
+        if (!$success) {
+            $res['reason'] = 'Unable to delete the API key from the database.';
+        }
+        header("Constants-Type: application/json");
+        wp_send_json($res);
+        exit;
+    }
+
     /**
      * Check for send limit
      *
@@ -512,6 +525,10 @@ class WordpressPluginAdmin
     {
         if (SettingsHelper::settingHasDefinedConstant('smtp2go_api_key')) {
             echo '<span style="cursor: default; font-weight: normal;">The API key is defined as a constant in your wp-config.php file.</span>';
+            if (get_option('smtp2go_api_key')) {
+                //show a delete from db button
+                echo '<br/><a href="javascript:;" class="js-smtp2go_delete_api_key">Delete API Key from Database</a>';
+            }
             return;
         }
 
