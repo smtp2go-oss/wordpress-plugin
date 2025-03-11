@@ -39,6 +39,9 @@
                         if (isset($res->data->failed)) {
                             echo 'Failed: ' . $res->data->failed . '<br>';
                         }
+                        if (isset($res->data->error)) {
+                            echo 'Error: ' . $res->data->error . '<br>';
+                        }
                         if (isset($res->data->email_id)) {
                             echo 'Email ID: ' . $res->data->email_id . '<br>';
                         }
