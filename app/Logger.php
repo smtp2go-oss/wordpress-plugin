@@ -6,6 +6,8 @@ use SMTP2GO\App\Migrations\CreateApiLogsTable;
 use SMTP2GOWPPlugin\SMTP2GO\ApiClient;
 use SMTP2GOWPPlugin\SMTP2GO\Service\Mail\Send;
 
+require_once dirname(__FILE__) . '/migrations/CreateApiLogsTable.php';
+
 class Logger
 {
     public static function logEmail(ApiClient $apiClient, Send $mailSendService)
@@ -23,7 +25,6 @@ class Logger
             'response'   => $apiClient->getResponseBody(false),
             'created_at' => current_time('mysql'),
         ];
-
         global $wpdb;
         $wpdb->insert($wpdb->prefix . 'smtp2go_api_logs', $insertData);
 
