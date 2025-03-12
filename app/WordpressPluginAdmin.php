@@ -263,12 +263,14 @@ class WordpressPluginAdmin
 
 
         /** api key field */
-        register_setting(
-            'api_settings',
-            'smtp2go_api_key',
-            array($this, 'validateApiKey')
-        );
-
+        if (!SettingsHelper::settingHasDefinedConstant('smtp2go_api_key')) {
+            register_setting(
+                'api_settings',
+                'smtp2go_api_key',
+                array($this, 'validateApiKey')
+            );
+        }
+      
         add_settings_field(
             'smtp2go_api_key',
             __('API key *', $this->plugin_name),
@@ -690,6 +692,9 @@ class WordpressPluginAdmin
      */
     public function validateApiKey($input)
     {
+        if (SettingsHelper::settingHasDefinedConstant('smtp2go_api_key')) {
+            return;
+        }
         $keyHelper = new SecureApiKeyHelper();
 
         // click edit - replacing obsfucated key with new key
