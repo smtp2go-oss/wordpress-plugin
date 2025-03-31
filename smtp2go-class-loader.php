@@ -21,7 +21,7 @@ function SMTP2GOClassLoader($className)
     if (file_exists($fullFileName)) {
         require_once $fullFileName;
     } else {
-        exit('FAIL! Namespace: ' .$namespace .' Class "' . $className . '" wasn\'t found in ' . $includePath . ' as ' . $fileName);
+        error_log('SMTP2GO Class Loader Error - Namespace: ' . $namespace . ' Class "' . $className . '" wasn\'t found in ' . $includePath . ' as ' . $fileName);
     }
 }
 spl_autoload_register('SMTP2GOClassLoader');
