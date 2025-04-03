@@ -212,6 +212,22 @@ class WordpressPluginAdmin
             )
         );
 
+        register_setting(
+            'api_settings',
+            'smtp2go_force_from_address'
+        );
+
+        add_settings_field(
+            'smtp2go_force_from_address',
+            __('Force Sender Email Address', $this->plugin_name),
+            array($this, 'outputCheckboxHtml'),
+            $this->plugin_name,
+            'smtp2go_settings_section',
+            array(
+                'name' => 'smtp2go_force_from_address', 'label' => __('Ignores other plugin settings and forces the From address to be the one set above.', $this->plugin_name),
+            )
+        );
+
         /** from name field */
         register_setting(
             'api_settings',
@@ -230,6 +246,9 @@ class WordpressPluginAdmin
                 'label'      => '<span style="cursor: default; font-weight: normal;">This is the default name that your emails will be sent from (no " or / allowed).</span>', 'required' => true, 'placeholder' => 'John Example', 'pattern' => '[^/\x22]+',
             )
         );
+
+
+        
 
         /**custom headers in own section */
         register_setting(
@@ -422,7 +441,7 @@ class WordpressPluginAdmin
         if (!empty($args['label'])) {
             $label = $args['label'];
         }
-        echo '<div style="display:flex;align-items:center;"><input  id="' . $field_name . '" type="checkbox"' . $required . ' class="smtp2go_text_input" name="' . $field_name . '" value="1"' . $checked . '/> <label for="' . $field_name . '">' . $label . '</label></div>';
+        echo '<div style="display:flex;align-items:center;"><input style="margin-top:0;margin-bottom:0"  id="' . $field_name . '" type="checkbox"' . $required . ' class="smtp2go_text_input" name="' . $field_name . '" value="1"' . $checked . '/> <label for="' . $field_name . '">' . $label . '</label></div>';
     }
 
     public function outputApiKeyHtml()
