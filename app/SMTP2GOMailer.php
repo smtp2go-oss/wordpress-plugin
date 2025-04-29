@@ -197,20 +197,31 @@ class SMTP2GOMailer extends PHPMailer
             }
         }
         foreach ($replyTos as $replyToItem) {
-            $email = $replyToItem[0] ?? null;
-            $name = $replyToItem[1] ?? '';
-            if ($email) {
+            $replyToString = $this->formatReplyTo($replyToItem);
+            if ($replyToString) {
                 if (!$existing) {
-                    $existing = new CustomHeader('Reply-To', trim("$name <$email>"));
+                    $existing = new CustomHeader('Reply-To', $replyToString);
                     $mailSendService->addCustomHeader($existing);
                 } else {
                     /** @var CustomHeader $existing */
-                    $existing->setValue($existing->getValue() . ',' . trim("$name <$email>"));
+                    $existing->setValue($existing->getValue() . ',' . $replyToString);
                 }
             }
         }
     }
 
+    private function formatReplyTo($replyToItem)
+    {
+        $email = $replyToItem[0] ?? null;
+        $name  = $replyToItem[1] ?? null;
+        if (!$email) {
+            return false;
+        }
+        if ($email && !$name || $name === $email) {
+            return $email;
+        }
+        return trim("$name <$email>");
+    }
 
 
     public function getLastRequest()
