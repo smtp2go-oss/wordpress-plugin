@@ -118,6 +118,7 @@ class WordpressPluginAdmin
             'post-smtp',
             'wpsp',
             'sendwp',
+            'suremails',
         ];
 
         $conflicted = [];
