@@ -81,7 +81,13 @@ class SMTP2GOMailer extends PHPMailer
         only other plugins. There doesnt seem to be a nicer way to detect this.*/
 
         if ($this->FromName != 'WordPress' && !empty($this->From)) {
-            $mailSendService->setSender(new Address($this->From, $this->FromName));
+            //if the force from address is set, we need to use the configured 
+            //from address but allow the name to be customised
+            $mailSendService->setSender(new Address(
+                get_option('smtp2go_force_from_address')
+                    ?  $from[0] : $this->From,
+                $this->FromName
+            ));
         }
 
         $apiKey = SettingsHelper::getOption('smtp2go_api_key');

@@ -199,8 +199,6 @@ class WordpressPluginAdmin
         }
     }
 
-
-
     /**
      * Register all settings fields for the admin page
      *
@@ -271,16 +269,15 @@ class WordpressPluginAdmin
                 array($this, 'validateApiKey')
             );
         }
-      
+
         add_settings_field(
             'smtp2go_api_key',
-            __('API key *', $this->plugin_name),
+            __('API Key *', $this->plugin_name),
             array($this, 'outputApiKeyHtml'),
             $this->plugin_name,
             'smtp2go_settings_section',
             array()
         );
-
 
         /** from email address field */
         register_setting(
@@ -290,7 +287,7 @@ class WordpressPluginAdmin
 
         add_settings_field(
             'smtp2go_from_address',
-            __('Sender email address *', $this->plugin_name),
+            __('Sender Email Address *', $this->plugin_name),
             [$this, 'outputTextFieldHtml'],
             $this->plugin_name,
             'smtp2go_settings_section',
@@ -303,6 +300,22 @@ class WordpressPluginAdmin
             )
         );
 
+        register_setting(
+            'api_settings',
+            'smtp2go_force_from_address'
+        );
+
+        add_settings_field(
+            'smtp2go_force_from_address',
+            __('Force Sender Email Address', $this->plugin_name),
+            array($this, 'outputCheckboxHtml'),
+            $this->plugin_name,
+            'smtp2go_settings_section',
+            array(
+                'name' => 'smtp2go_force_from_address', 'label' => __('Ignores other plugin settings and forces the From address to be the one set above.', $this->plugin_name),
+            )
+        );
+
         /** from name field */
         register_setting(
             'api_settings',
@@ -312,7 +325,7 @@ class WordpressPluginAdmin
 
         add_settings_field(
             'smtp2go_from_name',
-            __('Sender name *', $this->plugin_name),
+            __('Sender Name *', $this->plugin_name),
             [$this, 'outputTextFieldHtml'],
             $this->plugin_name,
             'smtp2go_settings_section',
