@@ -40,7 +40,7 @@ class SMTP2GOMailer extends PHPMailer
     protected function mailSend($header, $body)
     {
 
-        $from = [get_option('smtp2go_from_address'), get_option('smtp2go_from_name')];
+        $from = [SettingsHelper::getOption('smtp2go_from_address'), SettingsHelper::getOption('smtp2go_from_name')];
 
         $addresses = [];
         foreach ($this->getToAddresses() as $addressItem) {
@@ -84,7 +84,7 @@ class SMTP2GOMailer extends PHPMailer
             //if the force from address is set, we need to use the configured 
             //from address but allow the name to be customised
             $mailSendService->setSender(new Address(
-                get_option('smtp2go_force_from_address')
+                SettingsHelper::getOption('smtp2go_force_from_address')
                     ?  $from[0] : $this->From,
                 $this->FromName
             ));
@@ -167,7 +167,7 @@ class SMTP2GOMailer extends PHPMailer
      */
     private function processCustomHeaders(Send $mailSendService)
     {
-        $raw_custom_headers =  get_option('smtp2go_custom_headers');
+        $raw_custom_headers =  \SMTP2GO\App\SettingsHelper::getOption('smtp2go_custom_headers');
 
         if (!empty($raw_custom_headers['header'])) {
             foreach ($raw_custom_headers['header'] as $index => $header) {

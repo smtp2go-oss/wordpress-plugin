@@ -166,8 +166,7 @@ class WordpressPluginAdmin
         }
 
         $plugins = get_plugins();
-        $active = get_option('active_plugins');
-
+        $active = \SMTP2GO\App\SettingsHelper::getOption('active_plugins');
         $conflicting = [
             'wp-mail-smtp',
             'post-smtp',
@@ -385,7 +384,7 @@ class WordpressPluginAdmin
 
     public function outputRadioOptionsHtml($args)
     {
-        $currentValue = get_option($args['name'], 1);
+        $currentValue = \SMTP2GO\App\SettingsHelper::getOption($args['name'], 1);
         foreach ($args['options'] as $value => $label) {
             $selected = $value == $currentValue ? 'checked="checked"' : '';
             echo '<input ' . $selected . ' type="radio" name="' . $args['name'] . '" value="' . $value . '">' . $label . PHP_EOL;
@@ -403,7 +402,7 @@ class WordpressPluginAdmin
     {
         $existing_fields = '';
 
-        $custom_headers = get_option('smtp2go_custom_headers');
+        $custom_headers = \SMTP2GO\App\SettingsHelper::getOption('smtp2go_custom_headers');
         $first_remove   = 'first-remove';
         $hidden         = '';
         if (!empty($custom_headers['header'])) {
@@ -470,7 +469,7 @@ class WordpressPluginAdmin
     {
         $field_name = $args['name'];
 
-        $setting = get_option($field_name);
+        $setting = \SMTP2GO\App\SettingsHelper::getOption($field_name);
 
         if (empty($setting)) {
             $setting = '';
@@ -508,7 +507,7 @@ class WordpressPluginAdmin
     {
         $field_name = $args['name'];
 
-        $setting = get_option($field_name);
+        $setting = \SMTP2GO\App\SettingsHelper::getOption($field_name);
         $checked = '';
         if (empty($setting)) {
             $setting = '';
@@ -752,7 +751,7 @@ class WordpressPluginAdmin
     {
         if (empty($input) || preg_match('|[/\x22]|', $input)) {
             add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid Sender Name entered.', $this->plugin_name));
-            return get_option('smtp2go_from_name');
+            return \SMTP2GO\App\SettingsHelper::getOption('smtp2go_from_name');
         }
 
         return sanitize_text_field($input);

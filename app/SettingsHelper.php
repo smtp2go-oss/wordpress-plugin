@@ -15,7 +15,7 @@ class SettingsHelper
             return false;
         }
 
-        if (defined(static::$fieldToConstantMapping[$field])) {
+        if (isset(static::$fieldToConstantMapping[$field]) && defined(static::$fieldToConstantMapping[$field])) {
             return true;
         }
 

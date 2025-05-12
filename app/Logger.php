@@ -12,7 +12,7 @@ class Logger
 {
     public static function logEmail(ApiClient $apiClient, Send $mailSendService)
     {
-        if (!get_option('smtp2go_enable_api_logs')) {
+        if (!\SMTP2GO\App\SettingsHelper::getOption('smtp2go_enable_api_logs')) {
             return;
         }
         CreateApiLogsTable::run();
@@ -54,7 +54,7 @@ class Logger
             return;
         }
         if (defined('WP_DEBUG') && WP_DEBUG === true) {
-            $apiKey = get_option('smtp2go_api_key');
+            $apiKey = \SMTP2GO\App\SettingsHelper::getOption('smtp2go_api_key');
             $keyHelper = new SecureApiKeyHelper();
             $apiKey = $keyHelper->decryptKey($apiKey);
 

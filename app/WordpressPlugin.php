@@ -150,7 +150,7 @@ class WordpressPlugin
 
     public function configurePhpmailer($phpmailer)
     {
-        if (!get_option('smtp2go_enabled')) {
+        if (!\SMTP2GO\App\SettingsHelper::getOption('smtp2go_enabled')) {
             return;
         }
         //ensures that mail goes through our extended mailSend method
@@ -174,7 +174,7 @@ class WordpressPlugin
     {
         global $phpmailer;
 
-        if (!get_option('smtp2go_enabled') && !defined('SMTP2GO_TEST_MAIL')) {
+        if (!\SMTP2GO\App\SettingsHelper::getOption('smtp2go_enabled') && !defined('SMTP2GO_TEST_MAIL')) {
             return $args;
         }
 
