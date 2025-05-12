@@ -2,7 +2,7 @@
 Contributors: 2050nz, greatsaltlake
 Tags: email, smtp, inbox, delivery, wp_mail
 Requires at least: 6.2
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 7.4
 Stable tag: 1.11.1
 License: GPLv2 or later
@@ -141,7 +141,11 @@ Our data centers are located around the world, meaning lightning-fast connection
 
 = v1.12.0 =
 * add API request logging option
-* add insert API key into wp-config.php option
+* add API key into wp-config.php option
+* improve reply-to header formatting logic
+* many automated test updates
+* refactor class loader error handling and improve namespace check
+* add setting to force sender email address in plugin configuration
 = v1.11.1 =
 * update readme
 = v1.11.0 =
