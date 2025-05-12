@@ -52,12 +52,18 @@ function SMTP2GO_tab_active($tab)
 
         <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'settings'), 'admin.php')) ?>" class="nav-tab <?php echo SMTP2GO_tab_active('settings') ?>"><?php _e('Settings', $this->plugin_name) ?></a>
         <?php
-        if (get_option('smtp2go_api_key')) :
+        if (\SMTP2GO\App\SettingsHelper::getOption('smtp2go_api_key')) :
         ?>
             <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'test'), 'admin.php')) ?>" class="nav-tab <?php echo SMTP2GO_tab_active('test') ?>">Test</a>
 
             <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'stats'), 'admin.php')) ?>" class="nav-tab <?php echo SMTP2GO_tab_active('stats') ?> js-stats-tab">Stats<span class="js-stats-tab-span spinner" style="float: none; display: none; margin: 0px 10px 2px ;"></span></a>
 
+        <?php endif; ?>
+
+        <?php
+        if (\SMTP2GO\App\SettingsHelper::getOption('smtp2go_enable_api_logs')) :
+        ?>
+            <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'logs'), 'admin.php')) ?>" class="nav-tab <?php echo SMTP2GO_tab_active('logs') ?>">Logs</a>
         <?php endif; ?>
 
     </div>
@@ -139,6 +145,11 @@ function SMTP2GO_tab_active($tab)
     endif;
     ?>
 
+    <?php if (!empty(SMTP2GO_tab_active('logs'))) :
+        $this->renderLogsPage();
+
+    endif;
+    ?>
 
 
 </div>

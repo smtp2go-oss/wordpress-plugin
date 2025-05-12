@@ -60,6 +60,66 @@ class WordpressPluginAdmin
         $this->plugin_name = $plugin_name;
         $this->version     = $version;
         $this->checkForConflictingPlugins();
+
+        if (!empty($_GET['download']) && $_GET['download'] === 'csv') {
+            $this->downloadLogs();
+        }
+
+        if (!empty($_GET['truncate_logs'])) {
+            $this->truncateLogs();
+        }
+    }
+
+    public function truncateLogs()
+    {
+        global $wpdb;
+        $table = $wpdb->prefix . 'smtp2go_api_logs';
+        $wpdb->query("TRUNCATE TABLE $table");
+        $url = admin_url('admin.php?page=' . $this->plugin_name . '&tab=logs');
+        header('Location: ' . $url);
+        exit;
+    }
+
+    public function downloadLogs()
+    {
+        global $wpdb;
+        $table = $wpdb->prefix . 'smtp2go_api_logs';
+        $logs  = $wpdb->get_results("SELECT * FROM $table ORDER BY created_at DESC");
+        $filename = 'smtp2go-logs-' . date('Y-m-d') . '.csv';
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Pragma: no-cache');
+        header('Expires: 0');
+        $h = fopen('php://output', 'w');
+        fputcsv($h, ['Site ID', 'To', 'From', 'Subject', 'Response', 'Created At', 'Updated At']);
+        foreach ($logs as $logItem) {
+            fputcsv($h, [
+                $logItem->site_id,
+                $logItem->to,
+                $logItem->from,
+                $logItem->subject,
+                $logItem->response,
+                $logItem->created_at,
+                $logItem->updated_at,
+            ]);
+        }
+        fclose($h);
+
+
+        exit;
+    }
+
+    public function clearSavedApiKey()
+    {
+        ob_clean();
+        $success = delete_option('smtp2go_api_key');
+        $res = ['success' => $success];
+        if (!$success) {
+            $res['reason'] = 'Unable to delete the API key from the database.';
+        }
+        header("Constants-Type: application/json");
+        wp_send_json($res);
+        exit;
     }
 
     /**
@@ -70,7 +130,7 @@ class WordpressPluginAdmin
      */
     private function isFreePlan()
     {
-        $apiKey = get_option('smtp2go_api_key');
+        $apiKey = SettingsHelper::getOption('smtp2go_api_key');
         if (empty($apiKey)) {
             return;
         }
@@ -106,8 +166,7 @@ class WordpressPluginAdmin
         }
 
         $plugins = get_plugins();
-        $active = get_option('active_plugins');
-
+        $active = \SMTP2GO\App\SettingsHelper::getOption('active_plugins');
         $conflicting = [
             'wp-mail-smtp',
             'post-smtp',
@@ -118,6 +177,7 @@ class WordpressPluginAdmin
             'post-smtp',
             'wpsp',
             'sendwp',
+            'suremails',
         ];
 
         $conflicted = [];
@@ -175,16 +235,39 @@ class WordpressPluginAdmin
             $this->plugin_name,
             'smtp2go_settings_section',
             array(
-                'name' => 'smtp2go_enabled', 'label' => __(''),
+                'name' => 'smtp2go_enabled',
+                'label' => __(''),
+
             )
         );
 
-        /** api key field */
         register_setting(
             'api_settings',
-            'smtp2go_api_key',
-            array($this, 'validateApiKey')
+            'smtp2go_enable_api_logs'
         );
+
+        add_settings_field(
+            'smtp2go_enable_api_logs',
+            __('Enable logging', $this->plugin_name),
+            array($this, 'outputCheckboxHtml'),
+            $this->plugin_name,
+            'smtp2go_settings_section',
+            array(
+                'name' => 'smtp2go_enable_api_logs',
+                'label' => __(''),
+            )
+        );
+
+
+
+        /** api key field */
+        if (!SettingsHelper::settingHasDefinedConstant('smtp2go_api_key')) {
+            register_setting(
+                'api_settings',
+                'smtp2go_api_key',
+                array($this, 'validateApiKey')
+            );
+        }
 
         add_settings_field(
             'smtp2go_api_key',
@@ -208,7 +291,27 @@ class WordpressPluginAdmin
             $this->plugin_name,
             'smtp2go_settings_section',
             array(
-                'name' => 'smtp2go_from_address', 'label' => '<span style="cursor: default; font-weight: normal;">This is the default email address that your emails will be sent from.</span>', 'type' => 'email', 'required' => true, 'placeholder' => 'john@example.com'
+                'name' => 'smtp2go_from_address',
+                'label' => '<span style="cursor: default; font-weight: normal;">This is the default email address that your emails will be sent from.</span>',
+                'type' => 'email',
+                'required' => true,
+                'placeholder' => 'john@example.com'
+            )
+        );
+
+        register_setting(
+            'api_settings',
+            'smtp2go_force_from_address'
+        );
+
+        add_settings_field(
+            'smtp2go_force_from_address',
+            __('Force Sender Email Address', $this->plugin_name),
+            array($this, 'outputCheckboxHtml'),
+            $this->plugin_name,
+            'smtp2go_settings_section',
+            array(
+                'name' => 'smtp2go_force_from_address', 'label' => __('Ignores other plugin settings and forces the From address to be the one set above.', $this->plugin_name),
             )
         );
 
@@ -227,7 +330,10 @@ class WordpressPluginAdmin
             'smtp2go_settings_section',
             array(
                 'name' => 'smtp2go_from_name',
-                'label'      => '<span style="cursor: default; font-weight: normal;">This is the default name that your emails will be sent from (no " or / allowed).</span>', 'required' => true, 'placeholder' => 'John Example', 'pattern' => '[^/\x22]+',
+                'label'      => '<span style="cursor: default; font-weight: normal;">This is the default name that your emails will be sent from (no " or / allowed).</span>',
+                'required' => true,
+                'placeholder' => 'John Example',
+                'pattern' => '[^/\x22]+',
             )
         );
 
@@ -278,7 +384,7 @@ class WordpressPluginAdmin
 
     public function outputRadioOptionsHtml($args)
     {
-        $currentValue = get_option($args['name'], 1);
+        $currentValue = \SMTP2GO\App\SettingsHelper::getOption($args['name'], 1);
         foreach ($args['options'] as $value => $label) {
             $selected = $value == $currentValue ? 'checked="checked"' : '';
             echo '<input ' . $selected . ' type="radio" name="' . $args['name'] . '" value="' . $value . '">' . $label . PHP_EOL;
@@ -296,7 +402,7 @@ class WordpressPluginAdmin
     {
         $existing_fields = '';
 
-        $custom_headers = get_option('smtp2go_custom_headers');
+        $custom_headers = \SMTP2GO\App\SettingsHelper::getOption('smtp2go_custom_headers');
         $first_remove   = 'first-remove';
         $hidden         = '';
         if (!empty($custom_headers['header'])) {
@@ -363,7 +469,7 @@ class WordpressPluginAdmin
     {
         $field_name = $args['name'];
 
-        $setting = get_option($field_name);
+        $setting = \SMTP2GO\App\SettingsHelper::getOption($field_name);
 
         if (empty($setting)) {
             $setting = '';
@@ -401,7 +507,7 @@ class WordpressPluginAdmin
     {
         $field_name = $args['name'];
 
-        $setting = get_option($field_name);
+        $setting = \SMTP2GO\App\SettingsHelper::getOption($field_name);
         $checked = '';
         if (empty($setting)) {
             $setting = '';
@@ -422,12 +528,26 @@ class WordpressPluginAdmin
         if (!empty($args['label'])) {
             $label = $args['label'];
         }
-        echo '<div style="display:flex;align-items:center;"><input  id="' . $field_name . '" type="checkbox"' . $required . ' class="smtp2go_text_input" name="' . $field_name . '" value="1"' . $checked . '/> <label for="' . $field_name . '">' . $label . '</label></div>';
+        $hint = '';
+        if (!empty($args['hint'])) {
+            $hint = '<p>' . $args['hint'] . '</p>';
+        }
+        echo '<div style="display:flex;align-items:center;"><input  id="' . $field_name . '" type="checkbox"' . $required . ' class="smtp2go_text_input" name="' . $field_name . '" value="1"' . $checked . '/> <label for="' . $field_name . '">' . $label . '</label>' . '</div>';
+        echo $hint;
     }
 
     public function outputApiKeyHtml()
     {
-        $setting = get_option('smtp2go_api_key');
+        if (SettingsHelper::settingHasDefinedConstant('smtp2go_api_key')) {
+            echo '<span style="cursor: default; font-weight: normal;">The API key is defined as a constant in your wp-config.php file.</span>';
+            if (get_option('smtp2go_api_key')) {
+                //show a delete from db button
+                echo '<br/><a href="javascript:;" class="js-smtp2go_delete_api_key">Delete API Key from Database</a>';
+            }
+            return;
+        }
+
+        $setting = SettingsHelper::getOption('smtp2go_api_key');
         $secureHelper = new SecureApiKeyHelper();
 
         $setting = $secureHelper->decryptKey($setting);
@@ -476,7 +596,7 @@ class WordpressPluginAdmin
 
     public function renderStatsPage()
     {
-        $apiKey = get_option('smtp2go_api_key');
+        $apiKey = SettingsHelper::getOption('smtp2go_api_key');
         $apiKeyHelper = new SecureApiKeyHelper();
         $client = new ApiClient($apiKeyHelper->decryptKey($apiKey));
         $stats   = null;
@@ -492,6 +612,16 @@ class WordpressPluginAdmin
 
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-admin-display.php';
     }
+
+    public function renderLogsPage()
+    {
+        global $wpdb;
+        $table = $wpdb->prefix . 'smtp2go_api_logs';
+        $logs  = $wpdb->get_results("SELECT * FROM $table ORDER BY created_at DESC LIMIT 20");
+        $totalLogs = $wpdb->get_var("SELECT COUNT(*) FROM $table");
+        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-logs-display.php';
+    }
+
     /**
      * Register the stylesheets for the admin area.
      *
@@ -535,9 +665,7 @@ class WordpressPluginAdmin
 
         $success = wp_mail($to_email, __('Test Email Via SMTP2GO Wordpress Plugin', $this->plugin_name), $body);
 
-        if (defined('WP_DEBUG') && WP_DEBUG === true) {
-            error_log('PHPMAILER Instance:' . print_r($phpmailer, 1));
-        }
+        Logger::errorLog('PHPMAILER Instance: ' . print_r($phpmailer, 1));
 
         if (!$phpmailer || !$phpmailer instanceof SMTP2GOMailer) {
             $reason = 'Another plugin is conflicting with this one. Expected $phpmailer to be an instance of SMTP2GOMailer but it is ' . get_class($phpmailer);
@@ -559,11 +687,11 @@ class WordpressPluginAdmin
             wp_send_json(array('success' => 0, 'reason' => htmlentities($reason)));
             exit;
         }
-        if (defined('WP_DEBUG') && WP_DEBUG === true) {
-            error_log('last request!' . print_r($request, 1));
-            error_log('last response!' . print_r($response, 1));
-        }
-        
+
+        Logger::errorLog('last request!' . print_r($request, 1));
+        Logger::errorLog('last response!' . print_r($response, 1));
+
+
         wp_send_json(array('success' => intval($success), 'reason' => $reason, 'response' => $response));
     }
 
@@ -577,6 +705,9 @@ class WordpressPluginAdmin
      */
     public function validateApiKey($input)
     {
+        if (SettingsHelper::settingHasDefinedConstant('smtp2go_api_key')) {
+            return;
+        }
         $keyHelper = new SecureApiKeyHelper();
 
         // click edit - replacing obsfucated key with new key
@@ -586,7 +717,7 @@ class WordpressPluginAdmin
 
         // initial key input
         if (empty($input)) {
-            $input = get_option('smtp2go_api_key');
+            $input = SettingsHelper::getOption('smtp2go_api_key');
             $input = $keyHelper->decryptKey($input);
         }
 
@@ -601,13 +732,13 @@ class WordpressPluginAdmin
 
         if (!$key) {
             add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API key entered. The key should begin with "api-"', $this->plugin_name));
-            return get_option('smtp2go_api_key');
+            return SettingsHelper::getOption('smtp2go_api_key');
         }
         //make sure the key is valid
         $client = new ApiClient($key);
         if (!$client->consume(new Service('stats/email_summary', ['username' => substr($input, 0, 16)]))) {
             add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API key entered. Unable to make a successful call to the API with the provided key.', $this->plugin_name));
-            return get_option('smtp2go_api_key');
+            return SettingsHelper::getOption('smtp2go_api_key');
         }
 
 
@@ -620,7 +751,7 @@ class WordpressPluginAdmin
     {
         if (empty($input) || preg_match('|[/\x22]|', $input)) {
             add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid Sender Name entered.', $this->plugin_name));
-            return get_option('smtp2go_from_name');
+            return \SMTP2GO\App\SettingsHelper::getOption('smtp2go_from_name');
         }
 
         return sanitize_text_field($input);

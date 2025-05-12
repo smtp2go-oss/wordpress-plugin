@@ -143,12 +143,14 @@ class WordpressPlugin
 
         $this->loader->addAction('wp_ajax_smtp2go_send_email', $plugin_admin, 'sendTestEmail');
 
+        $this->loader->addAction('wp_ajax_smtp2go_clear_saved_api_key', $plugin_admin, 'clearSavedApiKey');
+
         $this->loader->addAction('phpmailer_init', $this, 'configurePhpmailer');
     }
 
     public function configurePhpmailer($phpmailer)
     {
-        if (!get_option('smtp2go_enabled')) {
+        if (!\SMTP2GO\App\SettingsHelper::getOption('smtp2go_enabled')) {
             return;
         }
         //ensures that mail goes through our extended mailSend method
@@ -172,7 +174,7 @@ class WordpressPlugin
     {
         global $phpmailer;
 
-        if (!get_option('smtp2go_enabled') && !defined('SMTP2GO_TEST_MAIL')) {
+        if (!\SMTP2GO\App\SettingsHelper::getOption('smtp2go_enabled') && !defined('SMTP2GO_TEST_MAIL')) {
             return $args;
         }
 
@@ -180,7 +182,7 @@ class WordpressPlugin
             $phpmailer          = new SMTP2GOMailer;
             $phpmailer->wp_args = $args;
             if (defined('WP_HOME') && WP_HOME === 'http://localhost:8889') {
-                $phpmailer->setApiClient(new \SMTP2GO\App\MockApiClient(get_option('smtp2go_api_key')));
+                $phpmailer->setApiClient(new \SMTP2GO\App\MockApiClient(SettingsHelper::getOption('smtp2go_api_key')));
             }
         } else {
             $phpmailer->wp_args = $args;

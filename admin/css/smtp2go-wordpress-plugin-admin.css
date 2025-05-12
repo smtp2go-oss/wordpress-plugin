@@ -267,3 +267,16 @@
 .smtp2go-admin-spacing {
   margin: 20px 0;
 }
+
+.smtp2go-logs-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.smtp2go-logs-table th, .smtp2go-logs-table td {
+  text-align: left;
+  padding: 5px;
+  border-bottom: 1px solid #abd3ff;
+}
+.smtp2go-logs-table th {
+  background-color: #f1f1f1;
+}

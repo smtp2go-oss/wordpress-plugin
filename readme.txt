@@ -1,10 +1,10 @@
 === SMTP2GO for WordPress - Email Made Easy ===
 Contributors: 2050nz, greatsaltlake
 Tags: email, smtp, inbox, delivery, wp_mail
-Requires at least: 5.8
-Tested up to: 6.7
+Requires at least: 6.2
+Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.11.1
+Stable tag: 1.12.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -139,6 +139,13 @@ Our data centers are located around the world, meaning lightning-fast connection
 
 == Changelog ==
 
+= v1.12.0 =
+* add API request logging option
+* add API key into wp-config.php option
+* improve reply-to header formatting logic
+* many automated test updates
+* refactor class loader error handling and improve namespace check
+* add setting to force sender email address in plugin configuration
 = v1.11.1 =
 * update readme
 = v1.11.0 =

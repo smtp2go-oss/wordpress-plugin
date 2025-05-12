@@ -40,7 +40,7 @@ class SMTP2GOMailer extends PHPMailer
     protected function mailSend($header, $body)
     {
 
-        $from = [get_option('smtp2go_from_address'), get_option('smtp2go_from_name')];
+        $from = [SettingsHelper::getOption('smtp2go_from_address'), SettingsHelper::getOption('smtp2go_from_name')];
 
         $addresses = [];
         foreach ($this->getToAddresses() as $addressItem) {
@@ -81,10 +81,16 @@ class SMTP2GOMailer extends PHPMailer
         only other plugins. There doesnt seem to be a nicer way to detect this.*/
 
         if ($this->FromName != 'WordPress' && !empty($this->From)) {
-            $mailSendService->setSender(new Address($this->From, $this->FromName));
+            //if the force from address is set, we need to use the configured 
+            //from address but allow the name to be customised
+            $mailSendService->setSender(new Address(
+                SettingsHelper::getOption('smtp2go_force_from_address')
+                    ?  $from[0] : $this->From,
+                $this->FromName
+            ));
         }
 
-        $apiKey = get_option('smtp2go_api_key');
+        $apiKey = SettingsHelper::getOption('smtp2go_api_key');
 
         $keyHelper = new SecureApiKeyHelper();
         $client = $this->apiClient ?? new ApiClient($keyHelper->decryptKey($apiKey));
@@ -93,6 +99,7 @@ class SMTP2GOMailer extends PHPMailer
 
         $success = $client->consume($mailSendService);
         $this->last_request = $client;
+        Logger::logEmail($client, $mailSendService);
 
         $response = $client->getResponseBody();
 
@@ -108,9 +115,8 @@ class SMTP2GOMailer extends PHPMailer
         if (!isset($reason)) {
             return $success;
         }
-        if (defined('WP_DEBUG') && WP_DEBUG === true) {
-            error_log(print_r($response, true));
-        }
+        Logger::errorLog($response);
+
         $this->setError('SMTP2GO Error: ' . $reason);
         throw new \PHPMailer\PHPMailer\Exception($this->ErrorInfo, self::STOP_CRITICAL);
     }
@@ -161,7 +167,7 @@ class SMTP2GOMailer extends PHPMailer
      */
     private function processCustomHeaders(Send $mailSendService)
     {
-        $raw_custom_headers =  get_option('smtp2go_custom_headers');
+        $raw_custom_headers =  \SMTP2GO\App\SettingsHelper::getOption('smtp2go_custom_headers');
 
         if (!empty($raw_custom_headers['header'])) {
             foreach ($raw_custom_headers['header'] as $index => $header) {
@@ -197,20 +203,31 @@ class SMTP2GOMailer extends PHPMailer
             }
         }
         foreach ($replyTos as $replyToItem) {
-            $email = $replyToItem[0] ?? null;
-            $name = $replyToItem[1] ?? '';
-            if ($email) {
+            $replyToString = $this->formatReplyTo($replyToItem);
+            if ($replyToString) {
                 if (!$existing) {
-                    $existing = new CustomHeader('Reply-To', trim("$name <$email>"));
+                    $existing = new CustomHeader('Reply-To', $replyToString);
                     $mailSendService->addCustomHeader($existing);
                 } else {
                     /** @var CustomHeader $existing */
-                    $existing->setValue($existing->getValue() . ',' . trim("$name <$email>"));
+                    $existing->setValue($existing->getValue() . ',' . $replyToString);
                 }
             }
         }
     }
 
+    private function formatReplyTo($replyToItem)
+    {
+        $email = $replyToItem[0] ?? null;
+        $name  = $replyToItem[1] ?? null;
+        if (!$email) {
+            return false;
+        }
+        if ($email && !$name || $name === $email) {
+            return $email;
+        }
+        return trim("$name <$email>");
+    }
 
 
     public function getLastRequest()

@@ -80,8 +80,6 @@ class CaBundle
             // Debian, Ubuntu, Gentoo, Arch Linux (ca-certificates package)
             '/etc/ssl/ca-bundle.pem',
             // SUSE, openSUSE (ca-certificates package)
-            '/usr/local/share/certs/ca-root-nss.crt',
-            // FreeBSD (ca_root_nss_package)
             '/usr/ssl/certs/ca-bundle.crt',
             // Cygwin
             '/opt/local/share/curl/curl-ca-bundle.crt',
@@ -92,8 +90,6 @@ class CaBundle
             // Really old RedHat?
             '/etc/ssl/cert.pem',
             // OpenBSD
-            '/usr/local/etc/ssl/cert.pem',
-            // FreeBSD 10.x
             '/usr/local/etc/openssl/cert.pem',
             // OS X homebrew, openssl package
             '/usr/local/etc/openssl@1.1/cert.pem',
@@ -101,10 +97,10 @@ class CaBundle
             '/opt/homebrew/etc/openssl@3/cert.pem',
             // macOS silicon homebrew, openssl@3 package
             '/opt/homebrew/etc/openssl@1.1/cert.pem',
+            // macOS silicon homebrew, openssl@1.1 package
+            '/etc/pki/tls/certs',
+            '/etc/ssl/certs',
         );
-        foreach ($otherLocations as $location) {
-            $otherLocations[] = \dirname($location);
-        }
         $caBundlePaths = \array_merge($caBundlePaths, $otherLocations);
         foreach ($caBundlePaths as $caBundle) {
             if ($caBundle && self::caFileUsable($caBundle, $logger)) {
