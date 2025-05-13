@@ -61,11 +61,14 @@ class WordpressPluginAdmin
         $this->version     = $version;
         $this->checkForConflictingPlugins();
 
-        if (!empty($_GET['download']) && $_GET['download'] === 'csv') {
+        require_once(ABSPATH.'wp-includes/pluggable.php');
+        require_once(ABSPATH.'wp-includes/capabilities.php');
+
+        if (!empty($_GET['download']) && $_GET['download'] === 'csv' && current_user_can('administrator')) {
             $this->downloadLogs();
         }
 
-        if (!empty($_GET['truncate_logs'])) {
+        if (!empty($_GET['truncate_logs']) && current_user_can('administrator')) {
             $this->truncateLogs();
         }
     }
