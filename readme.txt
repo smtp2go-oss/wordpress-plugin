@@ -139,6 +139,8 @@ Our data centers are located around the world, meaning lightning-fast connection
 
 == Changelog ==
 
+= v1.12.1 =
+* lock down admin URL's
 = v1.12.0 =
 * add API request logging option
 * add API key into wp-config.php option
