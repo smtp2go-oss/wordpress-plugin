@@ -59,15 +59,10 @@ class WordpressPluginAdmin
     {
         $this->plugin_name = $plugin_name;
         $this->version     = $version;
+        //wrap in check is_admin() ?
         $this->checkForConflictingPlugins();
 
-        if (!empty($_GET['download']) && $_GET['download'] === 'csv' && (is_admin())) {
-            $this->downloadLogs();
-        }
 
-        if (!empty($_GET['truncate_logs']) && (is_admin())) {
-            $this->truncateLogs();
-        }
     }
 
     public function truncateLogs()
@@ -82,6 +77,7 @@ class WordpressPluginAdmin
 
     public function downloadLogs()
     {
+
         global $wpdb;
         $table = $wpdb->prefix . 'smtp2go_api_logs';
         $logs  = $wpdb->get_results("SELECT * FROM $table ORDER BY created_at DESC");
@@ -91,7 +87,7 @@ class WordpressPluginAdmin
         header('Pragma: no-cache');
         header('Expires: 0');
         $h = fopen('php://output', 'w');
-        fputcsv($h, ['Site ID', 'To', 'From', 'Subject', 'Response', 'Created At', 'Updated At']);
+        fputcsv($h, ['Site ID', 'To', 'From', 'Subject', 'Response', 'Created At']);
         foreach ($logs as $logItem) {
             fputcsv($h, [
                 $logItem->site_id,
@@ -100,7 +96,6 @@ class WordpressPluginAdmin
                 $logItem->subject,
                 $logItem->response,
                 $logItem->created_at,
-                $logItem->updated_at,
             ]);
         }
         fclose($h);
