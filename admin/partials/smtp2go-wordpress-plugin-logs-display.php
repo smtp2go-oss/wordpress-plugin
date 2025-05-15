@@ -56,10 +56,10 @@
     </table>
     <p>Showing latest <?php echo count($logs); ?> logs out of a total of <?php echo $totalLogs ?></p>
     <!-- download as csv button -->
-     <a href="<?php echo admin_url('admin.php?page='.$this->plugin_name.'&download=csv'); ?>" class="button button-primary">Download CSV</a>
+     <a href="<?php echo admin_url('admin.php?action=downloadSmtp2goLogs'); ?>" class="button button-primary">Download CSV</a>
 
      <!-- truncate logs button -->
-        <a href="<?php echo admin_url('admin.php?page='.$this->plugin_name.'&truncate_logs=1'); ?>" class="button button-warning" onclick="return confirm('Are you sure you want to remove all log entries for SMT2GO?')">Truncate Logs</a>
+        <a href="<?php echo admin_url('admin.php?action=truncateSmtp2goLogs'); ?>" class="button button-warning" onclick="return confirm('Are you sure you want to remove all log entries for SMT2GO?')">Truncate Logs</a>
     <?php else : ?>
         <p>No logs found</p>
     <?php endif; ?>

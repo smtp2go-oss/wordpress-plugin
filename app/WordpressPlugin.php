@@ -131,6 +131,9 @@ class WordpressPlugin
     private function defineAdminHooks()
     {
         $plugin_admin = new WordpressPluginAdmin($this->getPluginName(), $this->getVersion());
+        $this->loader->addAction('admin_action_downloadSmtp2goLogs', $plugin_admin, 'downloadLogs');
+        $this->loader->addAction('admin_action_truncateSmtp2goLogs', $plugin_admin, 'truncateLogs');
+
 
         $this->loader->addAction('admin_menu', $plugin_admin, 'addMenuPage');
 

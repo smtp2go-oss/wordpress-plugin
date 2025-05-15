@@ -62,7 +62,7 @@ class Logger
                 $message = print_r($message, true);
             }
 
-            $message = str_replace($apiKey, substr($apiKey, 0, 7) . '****' . substr($apiKey, -3), $message);
+            $message = str_replace($apiKey, 'api-' , $message);
 
             error_log('SMTP2GO: ' . $message);
         }
