@@ -46,8 +46,10 @@
       $(".js-send-test.spinner").addClass("is-active");
       $.post(
         ajaxurl, //from html header
+
         {
           action: "smtp2go_send_email",
+          _ajax_nonce: SMTP2GO_AJAX.send_test_email_nonce,
           to_email: $("#smtp2go_to_email").val(),
           to_name: $("#smtp2go_to_name").val(),
         },
@@ -76,6 +78,7 @@
           ajaxurl, //from html header
           {
             action: "smtp2go_clear_saved_api_key",
+            _ajax_nonce: SMTP2GO_AJAX.clear_key_nonce
           },
           function (response) {
             if (response) {

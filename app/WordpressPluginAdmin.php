@@ -61,8 +61,6 @@ class WordpressPluginAdmin
         $this->version     = $version;
         //wrap in check is_admin() ?
         $this->checkForConflictingPlugins();
-
-
     }
 
     public function truncateLogs()
@@ -106,6 +104,10 @@ class WordpressPluginAdmin
 
     public function clearSavedApiKey()
     {
+        if (!isset($_POST['_ajax_nonce']) || !wp_verify_nonce($_POST['_ajax_nonce'], 'smtp2go_clear_api_key')) {
+            wp_send_json_error(['reason' => 'Invalid nonce.'], 403);
+            exit;
+        }
         ob_clean();
         $success = delete_option('smtp2go_api_key');
         $res = ['success' => $success];
@@ -306,7 +308,8 @@ class WordpressPluginAdmin
             $this->plugin_name,
             'smtp2go_settings_section',
             array(
-                'name' => 'smtp2go_force_from_address', 'label' => __('Ignores other plugin settings and forces the From address to be the one set above.', $this->plugin_name),
+                'name' => 'smtp2go_force_from_address',
+                'label' => __('Ignores other plugin settings and forces the From address to be the one set above.', $this->plugin_name),
             )
         );
 
@@ -350,6 +353,8 @@ class WordpressPluginAdmin
         add_filter('pre_update_option_smtp2go_api_key_update', array($this, 'preUpdateApiKey'));
 
         add_filter('pre_update_option_smtp2go_custom_headers', array($this, 'cleanCustomHeaderOptions'));
+
+
     }
 
 
@@ -634,11 +639,25 @@ class WordpressPluginAdmin
      */
     public function enqueueScripts()
     {
-        wp_enqueue_script($this->plugin_name, dirname(plugin_dir_url(__FILE__)) . '/admin/js/smtp2go-wordpress-plugin-admin.js', array('jquery'), $this->version, false);
+
+        wp_enqueue_script($this->plugin_name, dirname(plugin_dir_url(__FILE__)) . '/admin/js/smtp2go-wordpress-plugin-admin.js', array('jquery'), $this->version, true);
+        wp_localize_script(
+            $this->plugin_name, // The handle used in wp_enqueue_script
+            'SMTP2GO_AJAX',
+            [
+                'clear_key_nonce' => wp_create_nonce('smtp2go_clear_api_key'),
+                'send_test_email_nonce' => wp_create_nonce('smtp2go_send_test_email'),
+            ]
+        );
     }
 
     public function sendTestEmail()
     {
+        if (!isset($_POST['_ajax_nonce']) || !wp_verify_nonce($_POST['_ajax_nonce'], 'smtp2go_send_test_email')) {
+            wp_send_json_error(['reason' => 'Invalid nonce.'], 403);
+            exit;
+        }
+
         define('SMTP2GO_TEST_MAIL', true);
         /** @var SMTP2GOMailer $phpmailer */
         global $phpmailer;
