@@ -104,7 +104,7 @@ class WordpressPluginAdmin
 
     public function clearSavedApiKey()
     {
-        if (!isset($_POST['_ajax_nonce']) || !wp_verify_nonce($_POST['_ajax_nonce'], 'smtp2go_clear_api_key')) {
+        if (!isset($_POST['_ajax_nonce']) || !wp_verify_nonce($_POST['_ajax_nonce'], 'smtp2go_clear_api_key') || !current_user_can('manage_options')) {
             wp_send_json_error(['reason' => 'Invalid nonce.'], 403);
             exit;
         }
@@ -653,7 +653,7 @@ class WordpressPluginAdmin
 
     public function sendTestEmail()
     {
-        if (!isset($_POST['_ajax_nonce']) || !wp_verify_nonce($_POST['_ajax_nonce'], 'smtp2go_send_test_email')) {
+        if (!isset($_POST['_ajax_nonce']) || !wp_verify_nonce($_POST['_ajax_nonce'], 'smtp2go_send_test_email') || !current_user_can('manage_options')) {
             wp_send_json_error(['reason' => 'Invalid nonce.'], 403);
             exit;
         }
