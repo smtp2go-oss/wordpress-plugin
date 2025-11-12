@@ -13,13 +13,13 @@
  *
  * @wordpress-plugin
  * Plugin Name:       SMTP2GO - Email Made Easy
- * Plugin URI:        https://github.com/thefold/smtp2go-wordpress-plugin
- * Description:       Send all email from WordPress via SMTP2GO. Scalable, reliable email delivery. https://www.smtp2go.com/.
+ * Plugin URI:        https://github.com/smtp2go-oss/wordpress-plugin
+ * Description:       Send all email from WordPress via SMTP2GO. Scalable, reliable email delivery.
  * Version:           1.12.2
  * Author:            SMTP2GO
- * Author URI:        https://www.smtp2go.com
+ * Author URI:        https://www.smtp2go.com/
  * License:           GPL-2.0+
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * License URI:       https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  * Text Domain:       SMTP2GO-wordpress-plugin
  * Domain Path:       /languages
  */
