@@ -12,16 +12,16 @@
   },
   "author": "SMTP2GO",
   "devDependencies": {
-    "@types/jest": "^29.5.14",
-    "@wordpress/e2e-test-utils": "^11.21.0",
-    "@wordpress/e2e-test-utils-playwright": "^1.21.0",
-    "@wordpress/env": "^10.21.0",
-    "@wordpress/jest-console": "^8.21.0",
-    "@wordpress/jest-puppeteer-axe": "^7.21.0",
-    "@wordpress/scripts": "^30.14.1",
-    "dotenv": "^16.4.7",
+    "@types/jest": "^30.0.0",
+    "@wordpress/e2e-test-utils": "^11.30.0",
+    "@wordpress/e2e-test-utils-playwright": "^1.30.0",
+    "@wordpress/env": "^10.30.0",
+    "@wordpress/jest-console": "^8.30.0",
+    "@wordpress/jest-puppeteer-axe": "^7.30.0",
+    "@wordpress/scripts": "^30.23.0",
+    "dotenv": "^17.2.2",
     "expect-puppeteer": "^11.0.0",
-    "puppeteer": "^24.5.0",
+    "puppeteer": "^24.20.0",
     "puppeteer-testing-library": "^0.6.0"
   }
 }

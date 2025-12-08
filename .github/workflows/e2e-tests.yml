@@ -5,58 +5,46 @@ name: End-To-End Tests
     branches:
       - master
       - prerelease
+      - prerelease-merge-kris-test-updates
       - feat_end_to_end_tests_with_github_actions
+
 jobs:
   test:
-    name: End-To-End Tests
+    name: End-To-End Tests (PHP ${{ matrix.php-version }})
     runs-on: ubuntu-22.04
     environment: Test
+    strategy:
+      max-parallel: 1
+      matrix:
+        php-version: [7.4, 8.1, 8.2, 8.3]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 21.x
+
       - name: Install dependencies
         run: npm ci
+
       - name: Install Playwright dependencies
-        run: |
-          npx playwright install chromium --with-deps
+        run: npx playwright install chromium --with-deps
+
       - name: Create .env file
+        run: echo "SMTP2GO_API_KEY=${{secrets.SMTP2GO_API_KEY}}" > .env
+
+      - name: Set PHP version in wp-env override
         run: |
-          echo "SMTP2GO_API_KEY=${{secrets.SMTP2GO_API_KEY}}" > .env
-      - name: Install WordPress and start the server
-        run: |
-          npm run wp-env start
-      - name: Running End-To-End Tests Against Default Config
-        env:
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
-        run: |
-          npm run test:playwright
-      - name: Create wp env override file
-        run: |
-          echo '{"phpVersion": "8.1", "config": {"SMTP2GO_USE_CONSTANTS": false, "SMTP2GO_API_KEY": ""}}' > .wp-env.override.json
-      - name: Running End-To-End Tests Against PHP 8.1
-        env:
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+          echo '{"phpVersion": "${{ matrix.php-version }}", "config": {"SMTP2GO_USE_CONSTANTS": false, "SMTP2GO_API_KEY": ""}}' > .wp-env.override.json
+
+      - name: Clean and start WordPress environment
         run: |
           npm run wp-env clean tests
           npm run wp-env start --update
-          npm run test:playwright
-      - name: Running End-To-End Tests Against PHP 8.2
+
+      - name: Run End-To-End Tests
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
-        run: |
-          echo '{"phpVersion": "8.2", "config": {"SMTP2GO_USE_CONSTANTS": false, "SMTP2GO_API_KEY": ""}}' > .wp-env.override.json
-          npm run wp-env clean tests
-          npm run wp-env start --update
-          npm run test:playwright
-      - name: Running End-To-End Tests Against PHP 8.3
-        env:
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
-        run: |
-          echo '{"phpVersion": "8.3", "config": {"SMTP2GO_USE_CONSTANTS": false, "SMTP2GO_API_KEY": ""}}' > .wp-env.override.json
-          npm run wp-env clean tests
-          npm run wp-env start --update
-          npm run test:playwright
+        run: npm run test:playwright

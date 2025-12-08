@@ -5,5 +5,6 @@ export default defineConfig({
   ...baseConfig,
   // Look for test files in the "tests" directory, relative to this configuration file.
   testDir: 'tests',
- 
+  globalSetup: require.resolve('./tests/global-setup.js'),
+  globalTeardown: require.resolve('./tests/global-teardown.js'),
 });

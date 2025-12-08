@@ -62,7 +62,10 @@ $bar_width = 580;
         //Tag the bounce rate and spam rate as either Poor, Fair or Good depending on their values as shown in the tables on this page:
         https://support.smtp2go.com/hc/en-gb/articles/223087727-Bounce-Spam-Percentages-and-Ratings
     -->
-       <?php else: ?>
+       <?php elseif (!$this->hasEndpointPermission('/stats/email_summary')): ?>
+            <h3>Unable to retrieve stats. Your API key does not have permission to access the /stats/email_summary API endpoint.</h3>
+
+        <?php else : ?>
 
     <h3>Unable to retrieve stats. Please wait a minute and try again.</h3>
     <?php endif;?>

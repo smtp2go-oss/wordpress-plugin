@@ -49,6 +49,14 @@ class WordpressPluginAdmin
     private $version;
 
     /**
+     * 
+     * @var \SMTP2GO\App\SecureApiKeyHelper
+     */
+    private $keyHelper;
+
+    private $keyPermissions = [];
+
+    /**
      * Initialize the class and set its properties.
      *
      * @since    1.0.1
@@ -59,6 +67,7 @@ class WordpressPluginAdmin
     {
         $this->plugin_name = $plugin_name;
         $this->version     = $version;
+        $this->keyHelper = new SecureApiKeyHelper();
         //wrap in check is_admin() ?
         $this->checkForConflictingPlugins();
     }
@@ -131,8 +140,10 @@ class WordpressPluginAdmin
         if (empty($apiKey)) {
             return;
         }
-        $keyHelper = new SecureApiKeyHelper();
-        $apiKey    = $keyHelper->decryptKey($apiKey);
+        if (!$this->hasEndpointPermission('/stats/email_cycle')) {
+            return;
+        }
+        $apiKey    = $this->keyHelper->decryptKey($apiKey);
         $client = new ApiClient($apiKey);
         $stats   = null;
         if ($client->consume(new Service('stats/email_cycle'))) {
@@ -353,8 +364,6 @@ class WordpressPluginAdmin
         add_filter('pre_update_option_smtp2go_api_key_update', array($this, 'preUpdateApiKey'));
 
         add_filter('pre_update_option_smtp2go_custom_headers', array($this, 'cleanCustomHeaderOptions'));
-
-
     }
 
 
@@ -551,7 +560,7 @@ class WordpressPluginAdmin
         $secureHelper = new SecureApiKeyHelper();
 
         $setting = $secureHelper->decryptKey($setting);
-        $hint    = '<span style="cursor: default; font-weight: normal;">The API key will need permissions <i>Emails</i> and <i>Statistics.</i></span>';
+        $hint    = '<span style="cursor: default; font-weight: normal;">The API key will need permissions <i>/email/send</i> and optionally <i>/stats/email_summary</i>.</span>';
         if (empty($setting)) {
             $this->outputTextFieldHtml(array(
                 'name'     => 'smtp2go_api_key',
@@ -598,9 +607,11 @@ class WordpressPluginAdmin
     {
         $apiKey = SettingsHelper::getOption('smtp2go_api_key');
         $apiKeyHelper = new SecureApiKeyHelper();
-        $client = new ApiClient($apiKeyHelper->decryptKey($apiKey));
+        $decryptedKey = $apiKeyHelper->decryptKey($apiKey);
+        $client = new ApiClient($decryptedKey);
         $stats   = null;
-        if ($client->consume(new Service('stats/email_summary', ['username' => substr($apiKey, 0, 16)]))) {
+
+        if ($this->hasEndpointPermission('/stats/email_summary') && $client->consume(new Service('stats/email_summary', ['username' => substr($decryptedKey, 0, 16)]))) {
             $stats = $client->getResponseBody()->data;
         }
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-stats-display.php';
@@ -709,6 +720,37 @@ class WordpressPluginAdmin
         wp_send_json(array('success' => intval($success), 'reason' => $reason, 'response' => $response));
     }
 
+    public function hasEndpointPermission($endpoint, $apiKey = '')
+    {
+        $permissions = $this->getApiKeyPermissions($apiKey);
+        return in_array($endpoint, $permissions);
+    }
+
+    public function getApiKeyPermissions($apiKey = '')
+    {
+        if ($apiKey === '') {
+            $apiKey = SettingsHelper::getOption('smtp2go_api_key');
+        }
+        $apiKey = $this->keyHelper->decryptKey($apiKey);
+
+        $client = new ApiClient($apiKey);
+
+        // what is this for?
+        if (empty($apiKey)) {
+            return [];
+        }
+        if (!empty($this->keyPermissions)) {
+            return $this->keyPermissions;
+        }
+
+        $client->consume(new Service('api_keys/permissions'));
+        $permissionData = $client->getResponseBody();
+        if (isset($permissionData->data) && is_array($permissionData->data)) {
+            $this->keyPermissions = $permissionData->data ?? [];
+        }
+        return $this->keyPermissions;
+    }
+
     /** input validations */
 
     /**
@@ -722,7 +764,6 @@ class WordpressPluginAdmin
         if (SettingsHelper::settingHasDefinedConstant('smtp2go_api_key')) {
             return;
         }
-        $keyHelper = new SecureApiKeyHelper();
 
         // click edit - replacing obsfucated key with new key
         if (!empty($_POST['smtp2go_api_key_update'])) {
@@ -732,14 +773,14 @@ class WordpressPluginAdmin
         // initial key input
         if (empty($input)) {
             $input = SettingsHelper::getOption('smtp2go_api_key');
-            $input = $keyHelper->decryptKey($input);
+            $input = $this->keyHelper->decryptKey($input);
         }
 
         // switch encrypted vs not keys
         if (strpos($input, 'api-') === 0) {
             $key = $input;
-        } elseif (strpos($keyHelper->decryptKey($input), 'api-') === 0) {
-            $key = $keyHelper->decryptKey($input);
+        } elseif (strpos($this->keyHelper->decryptKey($input), 'api-') === 0) {
+            $key = $this->keyHelper->decryptKey($input);
         } else {
             $key = false;
         }
@@ -749,16 +790,21 @@ class WordpressPluginAdmin
             return SettingsHelper::getOption('smtp2go_api_key');
         }
         //make sure the key is valid
-        $client = new ApiClient($key);
-        if (!$client->consume(new Service('stats/email_summary', ['username' => substr($input, 0, 16)]))) {
+        $apiPermissions = $this->getApiKeyPermissions($key);
+        if (empty($apiPermissions)) {
             add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API key entered. Unable to make a successful call to the API with the provided key.', $this->plugin_name));
+            return SettingsHelper::getOption('smtp2go_api_key');
+        }
+        if (!$this->hasEndpointPermission('/email/send', $key)) {
+            add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API key entered. The key does not have permission to send emails.', $this->plugin_name));
             return SettingsHelper::getOption('smtp2go_api_key');
         }
 
 
+
         $plain = sanitize_text_field($key);
 
-        return $keyHelper->encryptKey($plain);
+        return $this->keyHelper->encryptKey($plain);
     }
 
     public function validateSenderName($input)

@@ -2,9 +2,9 @@
 Contributors: 2050nz, greatsaltlake
 Tags: email, smtp, inbox, delivery, wp_mail
 Requires at least: 6.2
-Tested up to: 6.8
+Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.12.2
+Stable tag: 1.14.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -139,6 +139,14 @@ Our data centers are located around the world, meaning lightning-fast connection
 
 == Changelog ==
 
+= v1.14.0 =
+* check WordPress 6.9 compatibility
+= v1.13.1 =
+* remove unnecessary API key permission check
+= v1.13.0 =
+* better handling of API key permissions
+* make stats permission optional
+* update smtp2go composer package to better handle rate limiter and api authentication
 = v1.12.2 =
 * lock down admin URL's
 = v1.12.1 =

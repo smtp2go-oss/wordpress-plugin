@@ -2,6 +2,9 @@ require('dotenv').config();
 
 const { test, expect } = require('@wordpress/e2e-test-utils-playwright');
 
+
+
+
 test('Setup SMTP2GO Plugin', async ({ page, admin }) => {
   await admin.visitAdminPage('admin.php', 'page=smtp2go-wordpress-plugin');
 
@@ -12,8 +15,8 @@ test('Setup SMTP2GO Plugin', async ({ page, admin }) => {
   await page.getByPlaceholder('john@example.com').fill('test@2050.nz');
   await page.getByPlaceholder('John Example').fill('Test Person');
 
-  
-  
+
+
   await page.getByRole('button', { name: 'Save Settings' }).click();
   await expect(page.getByText('Settings SavedDismiss this')).toBeVisible();
   //Go to the "test" tab

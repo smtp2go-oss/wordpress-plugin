@@ -56,7 +56,11 @@ function SMTP2GO_tab_active($tab)
         ?>
             <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'test'), 'admin.php')) ?>" class="nav-tab <?php echo SMTP2GO_tab_active('test') ?>">Test</a>
 
-            <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'stats'), 'admin.php')) ?>" class="nav-tab <?php echo SMTP2GO_tab_active('stats') ?> js-stats-tab">Stats<span class="js-stats-tab-span spinner" style="float: none; display: none; margin: 0px 10px 2px ;"></span></a>
+            <?php
+            if ($this->hasEndpointPermission('/stats/email_summary')) :
+            ?>
+                <a href="<?php echo admin_url(add_query_arg(array('page' => 'smtp2go-wordpress-plugin', 'tab' => 'stats'), 'admin.php')) ?>" class="nav-tab <?php echo SMTP2GO_tab_active('stats') ?> js-stats-tab">Stats<span class="js-stats-tab-span spinner" style="float: none; display: none; margin: 0px 10px 2px ;"></span></a>
+            <?php endif; ?>
 
         <?php endif; ?>
 
@@ -73,15 +77,15 @@ function SMTP2GO_tab_active($tab)
         <h1><?php _e('General Settings', $this->plugin_name) ?></h1>
 
         <?php if (isset($onFreePlan) && $onFreePlan === true) : ?>
-                <div class="notice notice-info" style="padding:15px">
+            <div class="notice notice-info" style="padding:15px">
 
-                    <h3 style="line-height: 1.5;">You know our free plan is great, but our paid plans are even better!</h3>
-                    <h3>Send more emails with fewer restrictions, and access more features such as email-to-SMS, full reporting, archiving, and 24/7 support via phone, chat and email. Woohoo!  &#127881;</h3>
-                    <a class="button smtp2go-button-blue" target="_blank" href="https://app.smtp2go.com/account/changeplan/">Choose Your Plan</a>
+                <h3 style="line-height: 1.5;">You know our free plan is great, but our paid plans are even better!</h3>
+                <h3>Send more emails with fewer restrictions, and access more features such as email-to-SMS, full reporting, archiving, and 24/7 support via phone, chat and email. Woohoo! &#127881;</h3>
+                <a class="button smtp2go-button-blue" target="_blank" href="https://app.smtp2go.com/account/changeplan/">Choose Your Plan</a>
 
-                    <a class="button smtp2go-button-white" target="_blank" href="https://support.smtp2go.com/hc/en-gb/articles/20483715021081-Billing-Pricing-and-Plans-FAQ
+                <a class="button smtp2go-button-white" target="_blank" href="https://support.smtp2go.com/hc/en-gb/articles/20483715021081-Billing-Pricing-and-Plans-FAQ
 ">Learn More</a>
-                </div>
+            </div>
         <?php endif; ?>
 
 
