@@ -2,7 +2,7 @@
 
 namespace SMTP2GO\App\Migrations;
 
-require_once(ABSPATH.'wp-admin/includes/upgrade.php');
+require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
 
 final class CreateApiLogsTable
@@ -14,7 +14,7 @@ final class CreateApiLogsTable
 
         $table = $wpdb->prefix . 'smtp2go_api_logs';
 
-        if (!empty($wpdb->get_results("SHOW TABLES LIKE '$table'"))) {
+        if (!empty($wpdb->get_results($wpdb->prepare("SHOW TABLES LIKE %s", $table)))) {
             return;
         }
 

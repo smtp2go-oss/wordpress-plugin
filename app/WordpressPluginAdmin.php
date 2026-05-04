@@ -74,6 +74,7 @@ class WordpressPluginAdmin
 
     public function truncateLogs()
     {
+        wp_verify_nonce($_GET['_wpnonce'], 'truncate_smtp2go_logs') or die('Invalid nonce');
         global $wpdb;
         $table = $wpdb->prefix . 'smtp2go_api_logs';
         $wpdb->query("TRUNCATE TABLE $table");
@@ -84,7 +85,7 @@ class WordpressPluginAdmin
 
     public function downloadLogs()
     {
-
+        wp_verify_nonce($_GET['_wpnonce'], 'download_smtp2go_logs') or die('Invalid nonce');
         global $wpdb;
         $table = $wpdb->prefix . 'smtp2go_api_logs';
         $logs  = $wpdb->get_results("SELECT * FROM $table ORDER BY created_at DESC");
@@ -192,7 +193,7 @@ class WordpressPluginAdmin
 
         foreach ($plugins as $pluginFile => $pluginData) {
             if (in_array($pluginFile, $active) && in_array($pluginData['TextDomain'], $conflicting)) {
-                $conflicted[] = $pluginData['Name'];
+                $conflicted[] = esc_html($pluginData['Name']);
             }
         }
 
@@ -675,7 +676,7 @@ class WordpressPluginAdmin
 
         $to_email = $to_name = null;
 
-        if (!empty($_POST['to_email']) && filter_var($_POST['to_email'], FILTER_VALIDATE_EMAIL)) {
+        if (!empty($_POST['to_email']) && is_email($_POST['to_email'])) {
             $to_email = sanitize_email($_POST['to_email']);
         }
         if (!empty($_POST['to_name'])) {
@@ -767,7 +768,7 @@ class WordpressPluginAdmin
 
         // click edit - replacing obsfucated key with new key
         if (!empty($_POST['smtp2go_api_key_update'])) {
-            $input = $_POST['smtp2go_api_key_update'];
+            $input = sanitize_text_field($_POST['smtp2go_api_key_update']);
         }
 
         // initial key input

@@ -4,7 +4,7 @@ Tags: email, smtp, inbox, delivery, wp_mail
 Requires at least: 6.2
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.14.0
+Stable tag: 1.15.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -92,9 +92,8 @@ You will need to enable the plugin and enter the required details under the "Set
  **Note:**
  The API Key needs at least the following permissions:
 
-* Emails
-* Statistics
-* Sender Domains
+* Emails (/email/send)
+* Statistics (optional)
 
 3. Set the default From Email Address.
 4. Set the default From Name.
@@ -139,6 +138,10 @@ Our data centers are located around the world, meaning lightning-fast connection
 
 == Changelog ==
 
+= v1.15.0 =
+* security updates
+= v1.14.1 =
+* use WordPress's replacement PHPMailer verify email address function
 = v1.14.0 =
 * check WordPress 6.9 compatibility
 = v1.13.1 =

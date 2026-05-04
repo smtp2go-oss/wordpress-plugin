@@ -184,6 +184,10 @@ class WordpressPlugin
 
         if (!$phpmailer instanceof SMTP2GOMailer) {
             $phpmailer          = new SMTP2GOMailer;
+            $phpmailer::$validator = static function ($email) {
+                return (bool) is_email($email);
+            };
+
             $phpmailer->wp_args = $args;
             if (defined('WP_HOME') && WP_HOME === 'http://localhost:8889') {
                 $phpmailer->setApiClient(new \SMTP2GO\App\MockApiClient(SettingsHelper::getOption('smtp2go_api_key')));
