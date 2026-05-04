@@ -139,6 +139,8 @@ Our data centers are located around the world, meaning lightning-fast connection
 
 == Changelog ==
 
+= v1.15.0 =
+* security updates
 = v1.14.1 =
 * use WordPress's replacement PHPMailer verify email address function
 = v1.14.0 =
