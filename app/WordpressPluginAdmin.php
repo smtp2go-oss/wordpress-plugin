@@ -3,7 +3,6 @@
 namespace SMTP2GO\App;
 
 
-use SMTP2GOWPPlugin\SMTP2GO\ApiClient;
 use SMTP2GOWPPlugin\SMTP2GO\Service\Service;
 
 require_once dirname(__FILE__, 2) . '/build/vendor/autoload.php';
@@ -145,7 +144,7 @@ class WordpressPluginAdmin
             return;
         }
         $apiKey    = $this->keyHelper->decryptKey($apiKey);
-        $client = new ApiClient($apiKey);
+        $client = SettingsHelper::makeApiClient($apiKey);
         $stats   = null;
         if ($client->consume(new Service('stats/email_cycle'))) {
             $body = $client->getResponseBody();
@@ -282,6 +281,28 @@ class WordpressPluginAdmin
             'smtp2go_api_key',
             __('API Key *', $this->plugin_name),
             array($this, 'outputApiKeyHtml'),
+            $this->plugin_name,
+            'smtp2go_settings_section',
+            array()
+        );
+
+        /** api region field */
+        if (!SettingsHelper::settingHasDefinedConstant('smtp2go_api_region')) {
+            register_setting(
+                'api_settings',
+                'smtp2go_api_region',
+                array(
+                    'type'              => 'string',
+                    'sanitize_callback' => array($this, 'validateApiRegion'),
+                    'default'           => '',
+                )
+            );
+        }
+
+        add_settings_field(
+            'smtp2go_api_region',
+            __('API Region', $this->plugin_name),
+            array($this, 'outputRegionDropdownHtml'),
             $this->plugin_name,
             'smtp2go_settings_section',
             array()
@@ -546,6 +567,39 @@ class WordpressPluginAdmin
         echo $hint;
     }
 
+    /**
+     * Render the API region dropdown.
+     *
+     * Default ('') keeps the historical behaviour (global api.smtp2go.com
+     * endpoint). The other options pin requests to a specific regional
+     * endpoint via ApiClient::setApiRegion().
+     */
+    public function outputRegionDropdownHtml()
+    {
+        $field_name = 'smtp2go_api_region';
+        $current    = (string) SettingsHelper::getOption($field_name);
+        $options    = array(
+            ''   => __('Default (api.smtp2go.com)', $this->plugin_name),
+            'us' => __('United States (us-api.smtp2go.com)', $this->plugin_name),
+            'eu' => __('Europe (eu-api.smtp2go.com)', $this->plugin_name),
+            'au' => __('Australia (au-api.smtp2go.com)', $this->plugin_name),
+        );
+
+        echo '<select id="' . esc_attr($field_name) . '" name="' . esc_attr($field_name) . '" class="smtp2go_text_input">';
+        foreach ($options as $value => $label) {
+            printf(
+                '<option value="%s"%s>%s</option>',
+                esc_attr($value),
+                selected($current, $value, false),
+                esc_html($label)
+            );
+        }
+        echo '</select>';
+        echo '<br /><label for="' . esc_attr($field_name) . '"><span style="cursor: default; font-weight: normal;">'
+            . esc_html__('Pin API requests to a specific regional endpoint. Leave on Default unless you have a data residency requirement.', $this->plugin_name)
+            . '</span></label>';
+    }
+
     public function outputApiKeyHtml()
     {
         if (SettingsHelper::settingHasDefinedConstant('smtp2go_api_key')) {
@@ -609,7 +663,7 @@ class WordpressPluginAdmin
         $apiKey = SettingsHelper::getOption('smtp2go_api_key');
         $apiKeyHelper = new SecureApiKeyHelper();
         $decryptedKey = $apiKeyHelper->decryptKey($apiKey);
-        $client = new ApiClient($decryptedKey);
+        $client = SettingsHelper::makeApiClient($decryptedKey);
         $stats   = null;
 
         if ($this->hasEndpointPermission('/stats/email_summary') && $client->consume(new Service('stats/email_summary', ['username' => substr($decryptedKey, 0, 16)]))) {
@@ -734,7 +788,7 @@ class WordpressPluginAdmin
         }
         $apiKey = $this->keyHelper->decryptKey($apiKey);
 
-        $client = new ApiClient($apiKey);
+        $client = SettingsHelper::makeApiClient($apiKey);
 
         // what is this for?
         if (empty($apiKey)) {
@@ -816,6 +870,19 @@ class WordpressPluginAdmin
         }
 
         return sanitize_text_field($input);
+    }
+
+    /**
+     * Reject any region value that isn't one the SMTP2GO SDK supports.
+     * Falls back to empty string (= default global endpoint) on bad input.
+     */
+    public function validateApiRegion($input)
+    {
+        if (in_array($input, SettingsHelper::ALLOWED_API_REGIONS, true)) {
+            return $input;
+        }
+        add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API Region selected.', $this->plugin_name));
+        return '';
     }
 
     public function addSettingsLink($links)
