@@ -4,7 +4,7 @@ Tags: email, smtp, inbox, delivery, wp_mail
 Requires at least: 6.2
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.15.0
+Stable tag: 1.16.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -138,6 +138,10 @@ Our data centers are located around the world, meaning lightning-fast connection
 
 == Changelog ==
 
+= v1.16.0 =
+* add "API Region" setting to pin requests to a specific regional endpoint (US, EU, AU)
+* add `smtp2go_api_region` filter for programmatic per-environment overrides
+* add `SMTP2GO_API_REGION` constant support (when `SMTP2GO_USE_CONSTANTS` is true)
 = v1.15.0 =
 * security updates
 = v1.14.1 =
