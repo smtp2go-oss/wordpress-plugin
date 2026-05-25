@@ -13,7 +13,7 @@ class ComposerStaticInit3389f6bd0498f09b057338e2c1e45e24
     );
 
     public static $prefixLengthsPsr4 = array (
-        'S' => 
+        'S' =>
         array (
             'SMTP2GOWPPlugin\\SMTP2GO\\' => 24,
             'SMTP2GOWPPlugin\\Psr\\Http\\Message\\' => 33,
@@ -26,32 +26,32 @@ class ComposerStaticInit3389f6bd0498f09b057338e2c1e45e24
     );
 
     public static $prefixDirsPsr4 = array (
-        'SMTP2GOWPPlugin\\SMTP2GO\\' => 
+        'SMTP2GOWPPlugin\\SMTP2GO\\' =>
         array (
             0 => __DIR__ . '/..' . '/smtp2go-oss/smtp2go-php/src/SMTP2GO',
         ),
-        'SMTP2GOWPPlugin\\Psr\\Http\\Message\\' => 
+        'SMTP2GOWPPlugin\\Psr\\Http\\Message\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/http-factory/src',
             1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
-        'SMTP2GOWPPlugin\\Psr\\Http\\Client\\' => 
+        'SMTP2GOWPPlugin\\Psr\\Http\\Client\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/http-client/src',
         ),
-        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\' => 
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
         ),
-        'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\' => 
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/promises/src',
         ),
-        'SMTP2GOWPPlugin\\GuzzleHttp\\' => 
+        'SMTP2GOWPPlugin\\GuzzleHttp\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
         ),
-        'SMTP2GOWPPlugin\\Composer\\CaBundle\\' => 
+        'SMTP2GOWPPlugin\\Composer\\CaBundle\\' =>
         array (
             0 => __DIR__ . '/..' . '/composer/ca-bundle/src',
         ),
@@ -59,6 +59,124 @@ class ComposerStaticInit3389f6bd0498f09b057338e2c1e45e24
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'SMTP2GOWPPlugin\\Composer\\CaBundle\\CaBundle' => __DIR__ . '/..' . '/composer/ca-bundle/src/CaBundle.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\BodySummarizer' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/BodySummarizer.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\BodySummarizerInterface' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/BodySummarizerInterface.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Client' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Client.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\ClientInterface' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/ClientInterface.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\ClientTrait' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/ClientTrait.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Cookie\\CookieJar' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Cookie/CookieJar.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Cookie\\CookieJarInterface' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Cookie/CookieJarInterface.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Cookie\\FileCookieJar' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Cookie/FileCookieJar.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Cookie\\SessionCookieJar' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Cookie/SessionCookieJar.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Cookie\\SetCookie' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Cookie/SetCookie.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Exception\\BadResponseException' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Exception/BadResponseException.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Exception\\ClientException' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Exception/ClientException.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Exception\\ConnectException' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Exception/ConnectException.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Exception\\GuzzleException' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Exception/GuzzleException.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Exception\\InvalidArgumentException' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Exception/InvalidArgumentException.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Exception\\RequestException' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Exception/RequestException.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Exception\\ServerException' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Exception/ServerException.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Exception\\TooManyRedirectsException' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Exception/TooManyRedirectsException.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Exception\\TransferException' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Exception/TransferException.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\HandlerStack' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/HandlerStack.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Handler\\CurlFactory' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Handler/CurlFactory.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Handler\\CurlFactoryInterface' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Handler/CurlFactoryInterface.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Handler\\CurlHandler' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Handler/CurlHandler.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Handler\\CurlMultiHandler' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Handler/CurlMultiHandler.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Handler\\EasyHandle' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Handler/EasyHandle.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Handler\\HeaderProcessor' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Handler/HeaderProcessor.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Handler\\MockHandler' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Handler/MockHandler.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Handler\\Proxy' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Handler/Proxy.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Handler\\StreamHandler' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Handler/StreamHandler.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\MessageFormatter' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/MessageFormatter.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\MessageFormatterInterface' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/MessageFormatterInterface.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Middleware' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Middleware.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Pool' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Pool.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\PrepareBodyMiddleware' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/PrepareBodyMiddleware.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\AggregateException' => __DIR__ . '/..' . '/guzzlehttp/promises/src/AggregateException.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\CancellationException' => __DIR__ . '/..' . '/guzzlehttp/promises/src/CancellationException.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\Coroutine' => __DIR__ . '/..' . '/guzzlehttp/promises/src/Coroutine.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\Create' => __DIR__ . '/..' . '/guzzlehttp/promises/src/Create.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\Each' => __DIR__ . '/..' . '/guzzlehttp/promises/src/Each.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\EachPromise' => __DIR__ . '/..' . '/guzzlehttp/promises/src/EachPromise.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\FulfilledPromise' => __DIR__ . '/..' . '/guzzlehttp/promises/src/FulfilledPromise.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\Is' => __DIR__ . '/..' . '/guzzlehttp/promises/src/Is.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\Promise' => __DIR__ . '/..' . '/guzzlehttp/promises/src/Promise.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\PromiseInterface' => __DIR__ . '/..' . '/guzzlehttp/promises/src/PromiseInterface.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\PromisorInterface' => __DIR__ . '/..' . '/guzzlehttp/promises/src/PromisorInterface.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\RejectedPromise' => __DIR__ . '/..' . '/guzzlehttp/promises/src/RejectedPromise.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\RejectionException' => __DIR__ . '/..' . '/guzzlehttp/promises/src/RejectionException.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\TaskQueue' => __DIR__ . '/..' . '/guzzlehttp/promises/src/TaskQueue.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\TaskQueueInterface' => __DIR__ . '/..' . '/guzzlehttp/promises/src/TaskQueueInterface.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\Utils' => __DIR__ . '/..' . '/guzzlehttp/promises/src/Utils.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\AppendStream' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/AppendStream.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\BufferStream' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/BufferStream.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\CachingStream' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/CachingStream.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\DroppingStream' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/DroppingStream.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\Exception\\MalformedUriException' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/Exception/MalformedUriException.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\FnStream' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/FnStream.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\Header' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/Header.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\HttpFactory' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/HttpFactory.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\InflateStream' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/InflateStream.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\LazyOpenStream' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/LazyOpenStream.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\LimitStream' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/LimitStream.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\Message' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/Message.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\MessageTrait' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/MessageTrait.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\MimeType' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/MimeType.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\MultipartStream' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/MultipartStream.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\NoSeekStream' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/NoSeekStream.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\PumpStream' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/PumpStream.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\Query' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/Query.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\Request' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/Request.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\Response' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/Response.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\Rfc7230' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/Rfc7230.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\ServerRequest' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/ServerRequest.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\Stream' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/Stream.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\StreamDecoratorTrait' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/StreamDecoratorTrait.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\StreamWrapper' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/StreamWrapper.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\UploadedFile' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/UploadedFile.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\Uri' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/Uri.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\UriComparator' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/UriComparator.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\UriNormalizer' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/UriNormalizer.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\UriResolver' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/UriResolver.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Psr7\\Utils' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/Utils.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\RedirectMiddleware' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/RedirectMiddleware.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\RequestOptions' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/RequestOptions.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\RetryMiddleware' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/RetryMiddleware.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\TransferStats' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/TransferStats.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Utils' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Utils.php',
+        'SMTP2GOWPPlugin\\Psr\\Http\\Client\\ClientExceptionInterface' => __DIR__ . '/..' . '/psr/http-client/src/ClientExceptionInterface.php',
+        'SMTP2GOWPPlugin\\Psr\\Http\\Client\\ClientInterface' => __DIR__ . '/..' . '/psr/http-client/src/ClientInterface.php',
+        'SMTP2GOWPPlugin\\Psr\\Http\\Client\\NetworkExceptionInterface' => __DIR__ . '/..' . '/psr/http-client/src/NetworkExceptionInterface.php',
+        'SMTP2GOWPPlugin\\Psr\\Http\\Client\\RequestExceptionInterface' => __DIR__ . '/..' . '/psr/http-client/src/RequestExceptionInterface.php',
+        'SMTP2GOWPPlugin\\Psr\\Http\\Message\\MessageInterface' => __DIR__ . '/..' . '/psr/http-message/src/MessageInterface.php',
+        'SMTP2GOWPPlugin\\Psr\\Http\\Message\\RequestFactoryInterface' => __DIR__ . '/..' . '/psr/http-factory/src/RequestFactoryInterface.php',
+        'SMTP2GOWPPlugin\\Psr\\Http\\Message\\RequestInterface' => __DIR__ . '/..' . '/psr/http-message/src/RequestInterface.php',
+        'SMTP2GOWPPlugin\\Psr\\Http\\Message\\ResponseFactoryInterface' => __DIR__ . '/..' . '/psr/http-factory/src/ResponseFactoryInterface.php',
+        'SMTP2GOWPPlugin\\Psr\\Http\\Message\\ResponseInterface' => __DIR__ . '/..' . '/psr/http-message/src/ResponseInterface.php',
+        'SMTP2GOWPPlugin\\Psr\\Http\\Message\\ServerRequestFactoryInterface' => __DIR__ . '/..' . '/psr/http-factory/src/ServerRequestFactoryInterface.php',
+        'SMTP2GOWPPlugin\\Psr\\Http\\Message\\ServerRequestInterface' => __DIR__ . '/..' . '/psr/http-message/src/ServerRequestInterface.php',
+        'SMTP2GOWPPlugin\\Psr\\Http\\Message\\StreamFactoryInterface' => __DIR__ . '/..' . '/psr/http-factory/src/StreamFactoryInterface.php',
+        'SMTP2GOWPPlugin\\Psr\\Http\\Message\\StreamInterface' => __DIR__ . '/..' . '/psr/http-message/src/StreamInterface.php',
+        'SMTP2GOWPPlugin\\Psr\\Http\\Message\\UploadedFileFactoryInterface' => __DIR__ . '/..' . '/psr/http-factory/src/UploadedFileFactoryInterface.php',
+        'SMTP2GOWPPlugin\\Psr\\Http\\Message\\UploadedFileInterface' => __DIR__ . '/..' . '/psr/http-message/src/UploadedFileInterface.php',
+        'SMTP2GOWPPlugin\\Psr\\Http\\Message\\UriFactoryInterface' => __DIR__ . '/..' . '/psr/http-factory/src/UriFactoryInterface.php',
+        'SMTP2GOWPPlugin\\Psr\\Http\\Message\\UriInterface' => __DIR__ . '/..' . '/psr/http-message/src/UriInterface.php',
+        'SMTP2GOWPPlugin\\SMTP2GO\\ApiClient' => __DIR__ . '/..' . '/smtp2go-oss/smtp2go-php/src/SMTP2GO/ApiClient.php',
+        'SMTP2GOWPPlugin\\SMTP2GO\\Collections\\Collection' => __DIR__ . '/..' . '/smtp2go-oss/smtp2go-php/src/SMTP2GO/Collections/Collection.php',
+        'SMTP2GOWPPlugin\\SMTP2GO\\Collections\\Mail\\AddressCollection' => __DIR__ . '/..' . '/smtp2go-oss/smtp2go-php/src/SMTP2GO/Collections/Mail/AddressCollection.php',
+        'SMTP2GOWPPlugin\\SMTP2GO\\Collections\\Mail\\AttachmentCollection' => __DIR__ . '/..' . '/smtp2go-oss/smtp2go-php/src/SMTP2GO/Collections/Mail/AttachmentCollection.php',
+        'SMTP2GOWPPlugin\\SMTP2GO\\Collections\\Mail\\CustomHeaderCollection' => __DIR__ . '/..' . '/smtp2go-oss/smtp2go-php/src/SMTP2GO/Collections/Mail/CustomHeaderCollection.php',
+        'SMTP2GOWPPlugin\\SMTP2GO\\Contracts\\BuildsRequest' => __DIR__ . '/..' . '/smtp2go-oss/smtp2go-php/src/SMTP2GO/Contracts/BuildsRequest.php',
+        'SMTP2GOWPPlugin\\SMTP2GO\\Mime\\Detector' => __DIR__ . '/..' . '/smtp2go-oss/smtp2go-php/src/SMTP2GO/Mime/Detector.php',
+        'SMTP2GOWPPlugin\\SMTP2GO\\Service\\Mail\\Send' => __DIR__ . '/..' . '/smtp2go-oss/smtp2go-php/src/SMTP2GO/Service/Mail/Send.php',
+        'SMTP2GOWPPlugin\\SMTP2GO\\Service\\Service' => __DIR__ . '/..' . '/smtp2go-oss/smtp2go-php/src/SMTP2GO/Service/Service.php',
+        'SMTP2GOWPPlugin\\SMTP2GO\\Types\\Mail\\Address' => __DIR__ . '/..' . '/smtp2go-oss/smtp2go-php/src/SMTP2GO/Types/Mail/Address.php',
+        'SMTP2GOWPPlugin\\SMTP2GO\\Types\\Mail\\Attachment' => __DIR__ . '/..' . '/smtp2go-oss/smtp2go-php/src/SMTP2GO/Types/Mail/Attachment.php',
+        'SMTP2GOWPPlugin\\SMTP2GO\\Types\\Mail\\CustomHeader' => __DIR__ . '/..' . '/smtp2go-oss/smtp2go-php/src/SMTP2GO/Types/Mail/CustomHeader.php',
+        'SMTP2GOWPPlugin\\SMTP2GO\\Types\\Mail\\FileAttachment' => __DIR__ . '/..' . '/smtp2go-oss/smtp2go-php/src/SMTP2GO/Types/Mail/FileAttachment.php',
+        'SMTP2GOWPPlugin\\SMTP2GO\\Types\\Mail\\InlineAttachment' => __DIR__ . '/..' . '/smtp2go-oss/smtp2go-php/src/SMTP2GO/Types/Mail/InlineAttachment.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

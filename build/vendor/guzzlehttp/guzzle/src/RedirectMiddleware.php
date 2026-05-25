@@ -12,7 +12,7 @@ use SMTP2GOWPPlugin\Psr\Http\Message\UriInterface;
  * Request redirect middleware.
  *
  * Apply this middleware like other middleware using
- * {@see \GuzzleHttp\Middleware::redirect()}.
+ * {@see Middleware::redirect()}.
  *
  * @final
  */

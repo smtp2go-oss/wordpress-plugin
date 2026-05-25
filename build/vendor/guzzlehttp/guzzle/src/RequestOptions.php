@@ -234,7 +234,7 @@ final class RequestOptions
      */
     public const READ_TIMEOUT = 'read_timeout';
     /**
-     * version: (float) Specifies the HTTP protocol version to attempt to use.
+     * version: (string|float) Specifies the HTTP protocol version to attempt to use.
      */
     public const VERSION = 'version';
     /**

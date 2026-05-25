@@ -3,6 +3,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [1.2.0] - 2026-05-22
+- Make getRegionWithUrls static
+
+## [1.1.8] - 2026-05-12
+- Expand README examples
+- Improve test coverage
+- Fix Send@addAttachment not accepting the FileAttachment type
+- Add support for the new fastaccept parameter
+- Exclude tests from package distribution
+- code improvements from phpstan
+
 ## [1.1.7] - 2025-09-16
 - Fix getResponseBody() to try/catch JSON decode errors, return empty object on JSON decode error
 

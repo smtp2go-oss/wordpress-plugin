@@ -17,7 +17,7 @@ class FileAttachment
      * @var string The mimetype of the attachment based on the filename
      */
     protected $mimetype;
-    public function __construct($body, $filename)
+    public function __construct(string $body, string $filename)
     {
         $detector = new Detector();
         $this->body = $body;
@@ -40,7 +40,7 @@ class FileAttachment
      *
      * @return  self
      */
-    public function setBody($body)
+    public function setBody(string $body)
     {
         $this->body = $body;
         return $this;
@@ -50,7 +50,7 @@ class FileAttachment
      *
      * @return  self
      */
-    public function setFilename($filename)
+    public function setFilename(string $filename)
     {
         $this->filename = $filename;
         return $this;
@@ -74,7 +74,7 @@ class FileAttachment
      *
      * @return  self
      */
-    public function setMimetype($mimetype)
+    public function setMimetype(string $mimetype)
     {
         $this->mimetype = $mimetype;
         return $this;

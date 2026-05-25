@@ -58,6 +58,7 @@ final class EasyHandle
      */
     public function createResponse() : void
     {
+        $this->response = null;
         [$ver, $status, $reason, $headers] = HeaderProcessor::parseHeaders($this->headers);
         $normalizedKeys = Utils::normalizeHeaderKeys($headers);
         if (!empty($this->options['decode_content']) && isset($normalizedKeys['content-encoding'])) {
@@ -67,7 +68,7 @@ final class EasyHandle
                 $headers['x-encoded-content-length'] = $headers[$normalizedKeys['content-length']];
                 $bodyLength = (int) $this->sink->getSize();
                 if ($bodyLength) {
-                    $headers[$normalizedKeys['content-length']] = $bodyLength;
+                    $headers[$normalizedKeys['content-length']] = [(string) $bodyLength];
                 } else {
                     unset($headers[$normalizedKeys['content-length']]);
                 }

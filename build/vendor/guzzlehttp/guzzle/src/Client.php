@@ -85,7 +85,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
      * Asynchronously send an HTTP request.
      *
      * @param array $options Request options to apply to the given
-     *                       request and to the transfer. See \GuzzleHttp\RequestOptions.
+     *                       request and to the transfer. See {@see RequestOptions}.
      */
     public function sendAsync(RequestInterface $request, array $options = []) : PromiseInterface
     {
@@ -97,7 +97,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
      * Send an HTTP request.
      *
      * @param array $options Request options to apply to the given
-     *                       request and to the transfer. See \GuzzleHttp\RequestOptions.
+     *                       request and to the transfer. See {@see RequestOptions}.
      *
      * @throws GuzzleException
      */
@@ -128,7 +128,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
      *
      * @param string              $method  HTTP method
      * @param string|UriInterface $uri     URI object or string.
-     * @param array               $options Request options to apply. See \GuzzleHttp\RequestOptions.
+     * @param array               $options Request options to apply. See {@see RequestOptions}.
      */
     public function requestAsync(string $method, $uri = '', array $options = []) : PromiseInterface
     {
@@ -136,7 +136,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
         // Remove request modifying parameter because it can be done up-front.
         $headers = $options['headers'] ?? [];
         $body = $options['body'] ?? null;
-        $version = $options['version'] ?? '1.1';
+        $version = self::normalizeProtocolVersion($options['version'] ?? '1.1');
         // Merge the URI into the base URI.
         $uri = $this->buildUri(Psr7\Utils::uriFor($uri), $options);
         if (\is_array($body)) {
@@ -156,7 +156,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
      *
      * @param string              $method  HTTP method.
      * @param string|UriInterface $uri     URI object or string.
-     * @param array               $options Request options to apply. See \GuzzleHttp\RequestOptions.
+     * @param array               $options Request options to apply. See {@see RequestOptions}.
      *
      * @throws GuzzleException
      */
@@ -270,11 +270,14 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
      * The URI of the request is not modified and the request options are used
      * as-is without merging in default options.
      *
-     * @param array $options See \GuzzleHttp\RequestOptions.
+     * @param array $options See {@see RequestOptions}.
      */
     private function transfer(RequestInterface $request, array $options) : PromiseInterface
     {
         $request = $this->applyOptions($request, $options);
+        if ('' === $request->getProtocolVersion()) {
+            $request = Psr7\Utils::modifyRequest($request, ['version' => '1.1']);
+        }
         /** @var HandlerStack $handler */
         $handler = $options['handler'];
         try {
@@ -320,7 +323,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
         if (!empty($options['decode_content']) && $options['decode_content'] !== \true) {
             // Ensure that we don't have the header in different case and set the new value.
             $options['_conditional'] = Psr7\Utils::caselessRemove(['Accept-Encoding'], $options['_conditional']);
-            $modify['set_headers']['Accept-Encoding'] = $options['decode_content'];
+            $modify['set_headers']['Accept-Encoding'] = (string) $options['decode_content'];
         }
         if (isset($options['body'])) {
             if (\is_array($options['body'])) {
@@ -368,7 +371,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
             }
         }
         if (isset($options['version'])) {
-            $modify['version'] = $options['version'];
+            $modify['version'] = self::normalizeProtocolVersion($options['version']);
         }
         $request = Psr7\Utils::modifyRequest($request, $modify);
         if ($request->getBody() instanceof Psr7\MultipartStream) {
@@ -391,6 +394,16 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
             unset($options['_conditional']);
         }
         return $request;
+    }
+    /**
+     * @param string|float $version
+     */
+    private static function normalizeProtocolVersion($version) : string
+    {
+        if ('' === $version) {
+            return '1.1';
+        }
+        return \is_float($version) ? \number_format($version, 1, '.', '') : (string) $version;
     }
     /**
      * Return an InvalidArgumentException with pre-set message.

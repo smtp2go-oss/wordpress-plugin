@@ -9,3 +9,4 @@ artifacts
 test-results
 .wp-env.override.json
 artifacts/storage-states/admin.json
+php-scoper-latest.phar

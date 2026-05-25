@@ -2,7 +2,6 @@
 
 namespace SMTP2GOWPPlugin\SMTP2GO\Service\Mail;
 
-use SMTP2GOWPPlugin\SMTP2GO\Mime\Detector;
 use InvalidArgumentException;
 use SMTP2GOWPPlugin\SMTP2GO\Types\Mail\Address;
 use SMTP2GOWPPlugin\SMTP2GO\Types\Mail\Attachment;
@@ -12,6 +11,7 @@ use SMTP2GOWPPlugin\SMTP2GO\Types\Mail\InlineAttachment;
 use SMTP2GOWPPlugin\SMTP2GO\Collections\Mail\AddressCollection;
 use SMTP2GOWPPlugin\SMTP2GO\Collections\Mail\AttachmentCollection;
 use SMTP2GOWPPlugin\SMTP2GO\Types\Mail\CustomHeader;
+use SMTP2GOWPPlugin\SMTP2GO\Types\Mail\FileAttachment;
 /**
  * Constructs the payload for sending email through the SMTP2GO Api
  */
@@ -68,7 +68,7 @@ class Send implements BuildsRequest
     /**
      * The template data to use which is key value pairs of [placeholder => replacement]
      * @link https://app-us.smtp2go.com/settings/templates/
-     * @var array
+     * @var array|null
      */
     protected $template_data;
     /**
@@ -89,13 +89,23 @@ class Send implements BuildsRequest
      * @var AttachmentCollection
      */
     protected $inlines;
-    /**
+    /**      
      * @var int version
-     * The version parameter specifies which version (structure) to use when generating the email
-     * @see https://apidoc.smtp2go.com/documentation/#/POST%20/email/send
+     * @deprecated 
      * 
      */
     protected $version = 1;
+    /**
+     * @var int scheduleAt
+     * A unix timestamp to schedule the email for sending in the future.
+     * 
+     */
+    protected $scheduleAt = null;
+    /**
+     * If true, the email will be accepted immediately and sent in a background process. Use webhooks if you need information about final delivery to the recipient. This will soon become the default method of sending via API.
+     * @var bool
+     */
+    protected $fastaccept = \false;
     /**
      * endpoint to send to
      *
@@ -143,7 +153,17 @@ class Send implements BuildsRequest
         $body['template_id'] = $this->template_id ?? null;
         $body['template_data'] = $this->template_data ?? null;
         $body['version'] = $this->version;
+        $body['schedule'] = $this->scheduleAt;
+        $body['fastaccept'] = $this->fastaccept;
         return \array_filter($body);
+    }
+    public function scheduleAt(int $timestamp)
+    {
+        if ($timestamp < \time() || $timestamp > \time() + 3 * 24 * 60 * 60) {
+            throw new \InvalidArgumentException('The timestamp must be a valid unix timestamp in the future, and no more than 3 days from now.');
+        }
+        $this->scheduleAt = $timestamp;
+        return $this;
     }
     public function buildCustomHeaders()
     {
@@ -161,7 +181,7 @@ class Send implements BuildsRequest
      */
     public function buildAttachments() : array
     {
-        if (empty($this->attachments)) {
+        if ($this->attachments->count() === 0) {
             return [];
         }
         $attachments = [];
@@ -177,7 +197,7 @@ class Send implements BuildsRequest
      */
     public function buildInlines() : array
     {
-        if (empty($this->inlines)) {
+        if ($this->inlines->count() === 0) {
             return [];
         }
         $inlines = [];
@@ -218,9 +238,8 @@ class Send implements BuildsRequest
     /**
      * Add a custom header
      *
-     * @param string $headerName
-     * @param string $headerValue
-     * @return void
+     * @param  CustomHeader $header
+     * @return Send
      */
     public function addCustomHeader(CustomHeader $header) : Send
     {
@@ -230,7 +249,7 @@ class Send implements BuildsRequest
     /**
      * Get sender
      *
-     * @return  string
+     * @return string
      */
     public function getSender() : string
     {
@@ -288,7 +307,7 @@ class Send implements BuildsRequest
     /**
      * Set the email message
      *
-     * @param  string  $message  The email message
+     * @param  string  $htmlBody  The email message
      *
      * @return Send
      */
@@ -323,7 +342,7 @@ class Send implements BuildsRequest
      * add multiple addresses of a specified type
      *
      * @param string $addressType either 'to', 'cc', 'bcc'
-     * @param array $addresses the array should contain multiple arrays with 1 or 2 values with email address and optional name
+     * @param AddressCollection $addresses the array should contain multiple arrays with 1 or 2 values with email address and optional name
      * @return Send
      */
     public function addAddresses(string $addressType, AddressCollection $addresses) : Send
@@ -337,8 +356,7 @@ class Send implements BuildsRequest
      * add a single addresses of a specified type
      *
      * @param string $addressType either 'to', 'cc', 'bcc'
-     * @param string $email
-     * @param string $name
+     * @param Address $address
      * @return Send
      */
     public function addAddress(string $addressType, Address $address) : Send
@@ -381,9 +399,9 @@ class Send implements BuildsRequest
     /**
      * Get the CC'd recipients. This clears any previously added CC addresses
      *
-     * @return  AddressCollection
+     * @return array
      */
-    public function getCc()
+    public function getCc() : array
     {
         return $this->cc;
     }
@@ -409,11 +427,11 @@ class Send implements BuildsRequest
     {
         return $this->attachments;
     }
-    public function addAttachment(Attachment $attachment) : Send
+    public function addAttachment($attachment) : Send
     {
         if (\is_a($attachment, InlineAttachment::class)) {
             $this->inlines[] = $attachment;
-        } else {
+        } elseif (\is_a($attachment, FileAttachment::class) || \is_a($attachment, Attachment::class)) {
             $this->attachments[] = $attachment;
         }
         return $this;
@@ -541,6 +559,27 @@ class Send implements BuildsRequest
     public function setVersion(int $version)
     {
         $this->version = $version;
+        return $this;
+    }
+    /**
+     * 
+     *
+     * @return  bool
+     */
+    public function getFastaccept()
+    {
+        return $this->fastaccept;
+    }
+    /**
+     * 
+     *
+     * @param  bool  $fastaccept
+     *
+     * @return  self
+     */
+    public function setFastaccept(bool $fastaccept)
+    {
+        $this->fastaccept = $fastaccept;
         return $this;
     }
 }

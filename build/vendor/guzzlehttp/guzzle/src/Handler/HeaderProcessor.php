@@ -31,6 +31,11 @@ final class HeaderProcessor
         if ($status === null) {
             throw new \RuntimeException('HTTP status code missing from header data');
         }
+        foreach ($headers as $header) {
+            if (\strpos($header, ':') === \false) {
+                throw new \RuntimeException('HTTP header line is invalid');
+            }
+        }
         return [$version, (int) $status, $parts[2] ?? null, Utils::headersFromLines($headers)];
     }
 }

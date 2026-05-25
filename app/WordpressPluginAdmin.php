@@ -2,7 +2,6 @@
 
 namespace SMTP2GO\App;
 
-
 use SMTP2GOWPPlugin\SMTP2GO\ApiClient;
 use SMTP2GOWPPlugin\SMTP2GO\Service\Service;
 
@@ -74,7 +73,13 @@ class WordpressPluginAdmin
 
     public function truncateLogs()
     {
-        wp_verify_nonce($_GET['_wpnonce'], 'truncate_smtp2go_logs') or die('Invalid nonce');
+        if (
+            !current_user_can('manage_options')
+            || !isset($_GET['_wpnonce'])
+            || !wp_verify_nonce($_GET['_wpnonce'], 'truncate_smtp2go_logs')
+        ) {
+            wp_die('Unauthorized', 403);
+        }
         global $wpdb;
         $table = $wpdb->prefix . 'smtp2go_api_logs';
         $wpdb->query("TRUNCATE TABLE $table");
@@ -85,7 +90,13 @@ class WordpressPluginAdmin
 
     public function downloadLogs()
     {
-        wp_verify_nonce($_GET['_wpnonce'], 'download_smtp2go_logs') or die('Invalid nonce');
+        if (
+            !current_user_can('manage_options')
+            || !isset($_GET['_wpnonce'])
+            || !wp_verify_nonce($_GET['_wpnonce'], 'download_smtp2go_logs')
+        ) {
+            wp_die('Unauthorized', 403);
+        }
         global $wpdb;
         $table = $wpdb->prefix . 'smtp2go_api_logs';
         $logs  = $wpdb->get_results("SELECT * FROM $table ORDER BY created_at DESC");
@@ -114,7 +125,11 @@ class WordpressPluginAdmin
 
     public function clearSavedApiKey()
     {
-        if (!isset($_POST['_ajax_nonce']) || !wp_verify_nonce($_POST['_ajax_nonce'], 'smtp2go_clear_api_key') || !current_user_can('manage_options')) {
+        if (
+            !isset($_POST['_ajax_nonce'])
+            || !wp_verify_nonce($_POST['_ajax_nonce'], 'smtp2go_clear_api_key')
+            || !current_user_can('manage_options')
+        ) {
             wp_send_json_error(['reason' => 'Invalid nonce.'], 403);
             exit;
         }
@@ -145,9 +160,9 @@ class WordpressPluginAdmin
             return;
         }
         $apiKey    = $this->keyHelper->decryptKey($apiKey);
-        $client = new ApiClient($apiKey);
+        $client = ApiClientFactory::create();
         $stats   = null;
-        if ($client->consume(new Service('stats/email_cycle'))) {
+        if ($client && $client->consume(new Service('stats/email_cycle'))) {
             $body = $client->getResponseBody();
             if (empty($body->data)) {
                 return false;
@@ -192,7 +207,10 @@ class WordpressPluginAdmin
         $conflicted = [];
 
         foreach ($plugins as $pluginFile => $pluginData) {
-            if (in_array($pluginFile, $active) && in_array($pluginData['TextDomain'], $conflicting)) {
+            if (
+                in_array($pluginFile, $active)
+                && in_array($pluginData['TextDomain'], $conflicting)
+            ) {
                 $conflicted[] = esc_html($pluginData['Name']);
             }
         }
@@ -287,6 +305,28 @@ class WordpressPluginAdmin
             array()
         );
 
+        /** api region field */
+        if (!SettingsHelper::settingHasDefinedConstant('smtp2go_api_region')) {
+            register_setting(
+                'api_settings',
+                'smtp2go_api_region',
+                array(
+                    'type'              => 'string',
+                    'sanitize_callback' => array($this, 'validateApiRegion'),
+                    'default'           => '',
+                )
+            );
+        }
+
+        add_settings_field(
+            'smtp2go_api_region',
+            __('API Region', $this->plugin_name),
+            array($this, 'outputRegionDropdownHtml'),
+            $this->plugin_name,
+            'smtp2go_settings_section',
+            array()
+        );
+
         /** from email address field */
         register_setting(
             'api_settings',
@@ -343,7 +383,7 @@ class WordpressPluginAdmin
                 'label'      => '<span style="cursor: default; font-weight: normal;">This is the default name that your emails will be sent from (no " or / allowed).</span>',
                 'required' => true,
                 'placeholder' => 'John Example',
-                'pattern' => '[^/\x22]+',
+                'pattern' => '[^/"]+',
             )
         );
 
@@ -501,7 +541,7 @@ class WordpressPluginAdmin
 
         $pattern = '';
         if (!empty($args['pattern'])) {
-            $pattern = ' pattern="' . $args['pattern'] . '"';
+            $pattern = ' pattern="' . esc_attr($args['pattern']) . '"';
         }
 
         echo '<input type="' . $type . '"' . $required . ' class="smtp2go_text_input" name="' . $field_name . '"';
@@ -544,6 +584,45 @@ class WordpressPluginAdmin
         }
         echo '<div style="display:flex;align-items:center;"><input  id="' . $field_name . '" type="checkbox"' . $required . ' class="smtp2go_text_input" name="' . $field_name . '" value="1"' . $checked . '/> <label for="' . $field_name . '">' . $label . '</label>' . '</div>';
         echo $hint;
+    }
+
+    /**
+     * Render the API region dropdown.
+     *
+     * Default ('') keeps the historical behaviour (global api.smtp2go.com
+     * endpoint). The other options pin requests to a specific regional
+     * endpoint via ApiClient::setApiRegion().
+     */
+    public function outputRegionDropdownHtml()
+    {
+        $regionsWithUrls = ApiClient::getRegionsWithUrls();
+        $regionsCountries = ['au' => 'Australia', 'eu' => 'Europe', 'us' => 'United States'];
+        $field_name = 'smtp2go_api_region';
+        $current    = (string) SettingsHelper::getOption($field_name);
+        $options = [
+            '' => __('Default', $this->plugin_name),
+        ];
+        foreach ($regionsWithUrls as $key => $url) {
+            $options[$key] = sprintf(
+                __('%s ', $this->plugin_name),
+                $regionsCountries[$key] ?? strtoupper($key),
+
+            );
+        }
+
+        echo '<select id="' . esc_attr($field_name) . '" name="' . esc_attr($field_name) . '" class="smtp2go_text_input">';
+        foreach ($options as $value => $label) {
+            printf(
+                '<option value="%s"%s>%s</option>',
+                esc_attr($value),
+                selected($current, $value, false),
+                esc_html($label)
+            );
+        }
+        echo '</select>';
+        echo '<br /><label for="' . esc_attr($field_name) . '"><span style="cursor: default; font-weight: normal;">'
+            . '<br/>Pin API requests to a specific regional endpoint. <a href="https://developers.smtp2go.com/docs/endpoints" target="_blank">See docs here.</a>'
+            . '</span></label>';
     }
 
     public function outputApiKeyHtml()
@@ -609,10 +688,16 @@ class WordpressPluginAdmin
         $apiKey = SettingsHelper::getOption('smtp2go_api_key');
         $apiKeyHelper = new SecureApiKeyHelper();
         $decryptedKey = $apiKeyHelper->decryptKey($apiKey);
-        $client = new ApiClient($decryptedKey);
+        $client = ApiClientFactory::create();
         $stats   = null;
 
-        if ($this->hasEndpointPermission('/stats/email_summary') && $client->consume(new Service('stats/email_summary', ['username' => substr($decryptedKey, 0, 16)]))) {
+        if (
+            $client && $this->hasEndpointPermission('/stats/email_summary')
+            && $client->consume(new Service(
+                'stats/email_summary',
+                ['username' => substr($decryptedKey, 0, 16)]
+            ))
+        ) {
             $stats = $client->getResponseBody()->data;
         }
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/partials/smtp2go-wordpress-plugin-stats-display.php';
@@ -665,7 +750,11 @@ class WordpressPluginAdmin
 
     public function sendTestEmail()
     {
-        if (!isset($_POST['_ajax_nonce']) || !wp_verify_nonce($_POST['_ajax_nonce'], 'smtp2go_send_test_email') || !current_user_can('manage_options')) {
+        if (
+            !isset($_POST['_ajax_nonce'])
+            || !wp_verify_nonce($_POST['_ajax_nonce'], 'smtp2go_send_test_email')
+            || !current_user_can('manage_options')
+        ) {
             wp_send_json_error(['reason' => 'Invalid nonce.'], 403);
             exit;
         }
@@ -734,11 +823,13 @@ class WordpressPluginAdmin
         }
         $apiKey = $this->keyHelper->decryptKey($apiKey);
 
-        $client = new ApiClient($apiKey);
-
-        // what is this for?
         if (empty($apiKey)) {
             return [];
+        }
+
+        $client = new ApiClient($apiKey);
+        if ($region = SettingsHelper::getApiRegion()) {
+            $client->setApiRegion($region);
         }
         if (!empty($this->keyPermissions)) {
             return $this->keyPermissions;
@@ -787,17 +878,29 @@ class WordpressPluginAdmin
         }
 
         if (!$key) {
-            add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API key entered. The key should begin with "api-"', $this->plugin_name));
+            add_settings_error(
+                'smtp2go_messages',
+                'smtp2go_message',
+                __('Invalid API key entered. The key should begin with "api-"', $this->plugin_name)
+            );
             return SettingsHelper::getOption('smtp2go_api_key');
         }
         //make sure the key is valid
         $apiPermissions = $this->getApiKeyPermissions($key);
         if (empty($apiPermissions)) {
-            add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API key entered. Unable to make a successful call to the API with the provided key.', $this->plugin_name));
+            add_settings_error(
+                'smtp2go_messages',
+                'smtp2go_message',
+                __('Invalid API key entered. Unable to make a successful call to the API with the provided key.', $this->plugin_name)
+            );
             return SettingsHelper::getOption('smtp2go_api_key');
         }
         if (!$this->hasEndpointPermission('/email/send', $key)) {
-            add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid API key entered. The key does not have permission to send emails.', $this->plugin_name));
+            add_settings_error(
+                'smtp2go_messages',
+                'smtp2go_message',
+                __('Invalid API key entered. The key does not have permission to send emails.', $this->plugin_name)
+            );
             return SettingsHelper::getOption('smtp2go_api_key');
         }
 
@@ -811,11 +914,32 @@ class WordpressPluginAdmin
     public function validateSenderName($input)
     {
         if (empty($input) || preg_match('|[/\x22]|', $input)) {
-            add_settings_error('smtp2go_messages', 'smtp2go_message', __('Invalid Sender Name entered.', $this->plugin_name));
+            add_settings_error(
+                'smtp2go_messages',
+                'smtp2go_message',
+                __('Invalid Sender Name entered.', $this->plugin_name)
+            );
             return \SMTP2GO\App\SettingsHelper::getOption('smtp2go_from_name');
         }
 
         return sanitize_text_field($input);
+    }
+
+    /**
+     * Reject any region value that isn't one the SMTP2GO SDK supports.
+     * Falls back to empty string (= default global endpoint) on bad input.
+     */
+    public function validateApiRegion($input)
+    {
+        if ($input === '' || in_array($input, ApiClient::VALID_REGIONS, true)) {
+            return $input;
+        }
+        add_settings_error(
+            'smtp2go_messages',
+            'smtp2go_message',
+            __('Invalid API Region selected.', $this->plugin_name)
+        );
+        return '';
     }
 
     public function addSettingsLink($links)

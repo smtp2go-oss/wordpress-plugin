@@ -67,9 +67,13 @@ final class Utils
     {
         try {
             return ['state' => PromiseInterface::FULFILLED, 'value' => $promise->wait()];
-        } catch (RejectionException $e) {
-            return ['state' => PromiseInterface::REJECTED, 'reason' => $e->getReason()];
         } catch (\Throwable $e) {
+            if ($e instanceof AggregateException) {
+                return ['state' => PromiseInterface::REJECTED, 'reason' => $e];
+            }
+            if ($e instanceof RejectionException) {
+                return ['state' => PromiseInterface::REJECTED, 'reason' => $e->getReason()];
+            }
             return ['state' => PromiseInterface::REJECTED, 'reason' => $e];
         }
     }

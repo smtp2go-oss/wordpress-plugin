@@ -42,6 +42,10 @@ class CurlFactory implements CurlFactoryInterface
     public function create(RequestInterface $request, array $options) : EasyHandle
     {
         $protocolVersion = $request->getProtocolVersion();
+        if ('' === $protocolVersion) {
+            $protocolVersion = '1.1';
+            $request = \SMTP2GOWPPlugin\GuzzleHttp\Psr7\Utils::modifyRequest($request, ['version' => $protocolVersion]);
+        }
         if ('2' === $protocolVersion || '2.0' === $protocolVersion) {
             if (!self::supportsHttp2()) {
                 throw new ConnectException('HTTP/2 is supported by the cURL handler, however libcurl is built without HTTP/2 support.', $request);
@@ -66,9 +70,63 @@ class CurlFactory implements CurlFactoryInterface
             $conf = \array_replace($conf, $options['curl']);
         }
         $conf[\CURLOPT_HEADERFUNCTION] = $this->createHeaderFn($easy);
-        $easy->handle = $this->handles ? \array_pop($this->handles) : \curl_init();
-        \curl_setopt_array($easy->handle, $conf);
+        $handle = $this->handles ? \array_pop($this->handles) : \curl_init();
+        if (\false === $handle) {
+            throw new \RuntimeException('Can not initialize cURL handle.');
+        }
+        $easy->handle = $handle;
+        try {
+            $this->applyCurlOptions($handle, $conf);
+        } catch (\Throwable $e) {
+            if (\PHP_VERSION_ID < 80000 && \is_resource($handle)) {
+                \curl_close($handle);
+            }
+            unset($easy->handle);
+            throw $e;
+        }
         return $easy;
+    }
+    /**
+     * @param resource|\CurlHandle     $handle
+     * @param array<int|string, mixed> $conf
+     */
+    private function applyCurlOptions($handle, array $conf) : void
+    {
+        foreach ($conf as $option => $value) {
+            if (!\is_int($option)) {
+                throw new \InvalidArgumentException(\sprintf('Invalid cURL option %s.', self::formatCurlOption($option)));
+            }
+            try {
+                $success = \curl_setopt($handle, $option, $value);
+            } catch (\Throwable $e) {
+                throw new \InvalidArgumentException(\sprintf('Unable to set cURL option %s: %s', self::formatCurlOption($option), $e->getMessage()), 0, $e);
+            }
+            if (!$success) {
+                throw new \InvalidArgumentException(\sprintf('Unable to set cURL option %s.', self::formatCurlOption($option)));
+            }
+        }
+    }
+    /**
+     * @param int|string $option
+     */
+    private static function formatCurlOption($option) : string
+    {
+        if (!\is_int($option)) {
+            return \sprintf('"%s"', $option);
+        }
+        static $names = null;
+        if (null === $names) {
+            $names = [];
+            foreach (\get_defined_constants(\true)['curl'] ?? [] as $name => $value) {
+                if (\is_int($value) && \strpos($name, 'CURLOPT_') === 0 && !isset($names[$value])) {
+                    $names[$value] = $name;
+                }
+            }
+        }
+        if (isset($names[$option])) {
+            return \sprintf('%s (%d)', $names[$option], $option);
+        }
+        return (string) $option;
     }
     private static function supportsHttp2() : bool
     {
@@ -173,7 +231,7 @@ class CurlFactory implements CurlFactoryInterface
     {
         static $connectionErrors = [\CURLE_OPERATION_TIMEOUTED => \true, \CURLE_COULDNT_RESOLVE_HOST => \true, \CURLE_COULDNT_CONNECT => \true, \CURLE_SSL_CONNECT_ERROR => \true, \CURLE_GOT_NOTHING => \true];
         if ($easy->createResponseException) {
-            return P\Create::rejectionFor(new RequestException('An error was encountered while creating the response', $easy->request, $easy->response, $easy->createResponseException, $ctx));
+            return P\Create::rejectionFor(new RequestException('An error was encountered while creating the response', $easy->request, null, $easy->createResponseException, $ctx));
         }
         // If an exception was encountered during the onHeaders event, then
         // return a rejected promise that wraps that exception.
@@ -439,8 +497,19 @@ class CurlFactory implements CurlFactoryInterface
         if (isset($options['cert'])) {
             $cert = $options['cert'];
             if (\is_array($cert)) {
-                $conf[\CURLOPT_SSLCERTPASSWD] = $cert[1];
+                if (!isset($cert[0]) || !\is_string($cert[0])) {
+                    throw new \InvalidArgumentException('Invalid cert request option');
+                }
+                if (isset($cert[1])) {
+                    if (!\is_string($cert[1])) {
+                        throw new \InvalidArgumentException('Invalid cert request option');
+                    }
+                    $conf[\CURLOPT_SSLCERTPASSWD] = $cert[1];
+                }
                 $cert = $cert[0];
+            }
+            if (!\is_string($cert)) {
+                throw new \InvalidArgumentException('Invalid cert request option');
             }
             if (!\file_exists($cert)) {
                 throw new \InvalidArgumentException("SSL certificate not found: {$cert}");

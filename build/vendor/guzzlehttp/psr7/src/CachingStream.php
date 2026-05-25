@@ -19,6 +19,8 @@ final class CachingStream implements StreamInterface
      * @var StreamInterface
      */
     private $stream;
+    /** @var bool */
+    private $detached = \false;
     /**
      * We will treat the buffer object as the body of the stream
      *
@@ -32,6 +34,9 @@ final class CachingStream implements StreamInterface
     }
     public function getSize() : ?int
     {
+        if ($this->detached) {
+            return null;
+        }
         $remoteSize = $this->remoteStream->getSize();
         if (null === $remoteSize) {
             return null;
@@ -108,6 +113,18 @@ final class CachingStream implements StreamInterface
     {
         return $this->stream->eof() && $this->remoteStream->eof();
     }
+    public function detach()
+    {
+        if ($this->detached) {
+            return null;
+        }
+        $position = $this->tell();
+        $this->cacheEntireStream();
+        $this->stream->seek($position);
+        $resource = $this->stream->detach();
+        $this->detached = \true;
+        return $resource;
+    }
     /**
      * Close both the remote stream and buffer stream
      */
@@ -115,6 +132,7 @@ final class CachingStream implements StreamInterface
     {
         $this->remoteStream->close();
         $this->stream->close();
+        $this->detached = \true;
     }
     private function cacheEntireStream() : int
     {
