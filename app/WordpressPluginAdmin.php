@@ -833,13 +833,13 @@ class WordpressPluginAdmin
 
         if (!$phpmailer || !$phpmailer instanceof SMTP2GOMailer) {
             $reason = 'Another plugin is conflicting with this one. Expected $phpmailer to be an instance of SMTP2GOMailer but it is ' . get_class($phpmailer);
-            wp_send_json(array('success' => 0, 'reason' => htmlentities($reason)));
+            wp_send_json(array('success' => 0, 'reason' => $reason));
             exit;
         }
 
         if ($phpmailer->isError()) {
             $reason = 'PHPMailer Error: ' . $phpmailer->ErrorInfo;
-            wp_send_json(array('success' => 0, 'reason' => htmlentities($reason)));
+            wp_send_json(array('success' => 0, 'reason' => $reason));
             exit;
         }
 
@@ -847,7 +847,7 @@ class WordpressPluginAdmin
         $reason = null;
         if (empty($request)) {
             $reason = 'Unable to find the request made to the SMTP2GO API. The most likely cause is a conflict with another plugin.';
-            wp_send_json(array('success' => 0, 'reason' => htmlentities($reason)));
+            wp_send_json(array('success' => 0, 'reason' => $reason));
             exit;
         }
         $response = $request->getResponseBody();
