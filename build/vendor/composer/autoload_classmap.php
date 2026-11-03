@@ -62,6 +62,7 @@ return array(
     'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\PromisorInterface' => $vendorDir . '/guzzlehttp/promises/src/PromisorInterface.php',
     'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\RejectedPromise' => $vendorDir . '/guzzlehttp/promises/src/RejectedPromise.php',
     'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\RejectionException' => $vendorDir . '/guzzlehttp/promises/src/RejectionException.php',
+    'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\State' => $vendorDir . '/guzzlehttp/promises/src/State.php',
     'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\TaskQueue' => $vendorDir . '/guzzlehttp/promises/src/TaskQueue.php',
     'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\TaskQueueInterface' => $vendorDir . '/guzzlehttp/promises/src/TaskQueueInterface.php',
     'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\Utils' => $vendorDir . '/guzzlehttp/promises/src/Utils.php',
