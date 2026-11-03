@@ -18,4 +18,5 @@ if (\PHP_VERSION_ID < 80000) {
          */
         public function __toString();
     }
+    \class_alias('SMTP2GOWPPlugin\Stringable', 'Stringable', \false);
 }

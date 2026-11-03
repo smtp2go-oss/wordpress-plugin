@@ -23,7 +23,7 @@ final class Utils
      *
      * @deprecated Utils::describeType() will be removed in guzzlehttp/guzzle:8.0. Use get_debug_type() instead.
      */
-    public static function describeType($input) : string
+    public static function describeType($input): string
     {
         \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/guzzle', '7.12', '%s() is deprecated and will be removed in 8.0. Use get_debug_type() instead.', __METHOD__);
         switch (\gettype($input)) {
@@ -46,7 +46,7 @@ final class Utils
      * @param iterable $lines Header lines array of strings in the following
      *                        format: "Name: Value"
      */
-    public static function headersFromLines(iterable $lines) : array
+    public static function headersFromLines(iterable $lines): array
     {
         $headers = [];
         foreach ($lines as $line) {
@@ -83,7 +83,7 @@ final class Utils
      *
      * @throws \RuntimeException if no viable Handler is available.
      */
-    public static function chooseHandler(array $handlerOptions = []) : callable
+    public static function chooseHandler(array $handlerOptions = []): callable
     {
         $sharingMode = CurlShareHandleState::normalizeMode($handlerOptions['transport_sharing'] ?? null, 'transport_sharing');
         $sharingRequired = self::isTransportSharingRequired($sharingMode);
@@ -103,14 +103,14 @@ final class Utils
         }
         throw new \RuntimeException('GuzzleHttp requires cURL, the allow_url_fopen ini setting, or a custom HTTP handler.');
     }
-    private static function isTransportSharingRequired(string $sharingMode) : bool
+    private static function isTransportSharingRequired(string $sharingMode): bool
     {
         return $sharingMode === TransportSharing::HANDLER_REQUIRE;
     }
     /**
      * @param array{max_host_connections?: mixed, max_total_connections?: mixed} $handlerOptions
      */
-    private static function hasConnectionCapOptions(array $handlerOptions) : bool
+    private static function hasConnectionCapOptions(array $handlerOptions): bool
     {
         return self::connectionCapOptions($handlerOptions) !== [];
     }
@@ -119,7 +119,7 @@ final class Utils
      *
      * @return (callable(RequestInterface, array): Promise\PromiseInterface)|null
      */
-    private static function createCurlHandler(string $sharingMode, array $handlerOptions) : ?callable
+    private static function createCurlHandler(string $sharingMode, array $handlerOptions): ?callable
     {
         if (!\defined('CURLOPT_CUSTOMREQUEST') || !CurlVersion::supportsCurlHandler()) {
             return null;
@@ -156,7 +156,7 @@ final class Utils
     /**
      * @return array<string, mixed>
      */
-    private static function createCurlHandlerOptions(string $sharingMode) : array
+    private static function createCurlHandlerOptions(string $sharingMode): array
     {
         if ($sharingMode === TransportSharing::NONE) {
             return [];
@@ -169,7 +169,7 @@ final class Utils
      *
      * @return array{max_host_connections?: int, max_total_connections?: int}
      */
-    private static function connectionCapOptions(array $handlerOptions) : array
+    private static function connectionCapOptions(array $handlerOptions): array
     {
         $options = [];
         foreach (['max_host_connections', 'max_total_connections'] as $capOption) {
@@ -190,7 +190,7 @@ final class Utils
      *
      * @return callable(RequestInterface, array): Promise\PromiseInterface
      */
-    private static function addStreamHandler(?callable $handler, string $sharingMode, bool $sharingRequired, array $connectionCapOptions) : callable
+    private static function addStreamHandler(?callable $handler, string $sharingMode, bool $sharingRequired, array $connectionCapOptions): callable
     {
         $streamHandler = new StreamHandler(['transport_sharing' => $sharingMode] + $connectionCapOptions);
         if ($handler === null) {
@@ -204,9 +204,9 @@ final class Utils
     /**
      * Get the default User-Agent string to use with Guzzle.
      */
-    public static function defaultUserAgent() : string
+    public static function defaultUserAgent(): string
     {
-        return \sprintf('GuzzleHttp/%d', ClientInterface::MAJOR_VERSION);
+        return sprintf('GuzzleHttp/%d', ClientInterface::MAJOR_VERSION);
     }
     /**
      * Returns the default cacert bundle for the current system.
@@ -223,7 +223,7 @@ final class Utils
      *
      * @deprecated Utils::defaultCaBundle will be removed in guzzlehttp/guzzle:8.0. This method is not needed in PHP 5.6+.
      */
-    public static function defaultCaBundle() : string
+    public static function defaultCaBundle(): string
     {
         \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/guzzle', '7.1', '%s() is deprecated and will be removed in 8.0. This method is not needed in PHP 5.6+.', __METHOD__);
         static $cached = null;
@@ -241,8 +241,8 @@ final class Utils
             // Google app engine
             '/etc/ca-certificates.crt',
             // Windows?
-            'C:\\windows\\system32\\curl-ca-bundle.crt',
-            'C:\\windows\\curl-ca-bundle.crt',
+            'C:\windows\system32\curl-ca-bundle.crt',
+            'C:\windows\curl-ca-bundle.crt',
         ];
         if ($cached) {
             return $cached;
@@ -277,7 +277,7 @@ EOT
      * Creates an associative array of lowercase header names to the actual
      * header casing.
      */
-    public static function normalizeHeaderKeys(array $headers) : array
+    public static function normalizeHeaderKeys(array $headers): array
     {
         $result = [];
         foreach (\array_keys($headers) as $key) {
@@ -292,7 +292,7 @@ EOT
      *
      * @throws InvalidArgumentException
      */
-    public static function normalizeProtocols($protocols) : array
+    public static function normalizeProtocols($protocols): array
     {
         if (!\is_array($protocols) || $protocols === []) {
             throw new InvalidArgumentException('protocols must be a non-empty array of "http" and/or "https"');
@@ -331,7 +331,7 @@ EOT
      *
      * @throws InvalidArgumentException
      */
-    public static function isHostInNoProxy(string $host, array $noProxyArray) : bool
+    public static function isHostInNoProxy(string $host, array $noProxyArray): bool
     {
         if (\strlen($host) === 0) {
             throw new InvalidArgumentException('Empty host provided');
@@ -354,7 +354,7 @@ EOT
      *
      * @internal
      */
-    public static function isUriInNoProxy(UriInterface $uri, $noProxy) : bool
+    public static function isUriInNoProxy(UriInterface $uri, $noProxy): bool
     {
         if (\is_string($noProxy)) {
             $noProxy = \explode(',', $noProxy);
@@ -372,7 +372,7 @@ EOT
      * @param array{type: string, value: string, port: int|null, matchesRoot: bool} $target
      * @param array<array-key, mixed>                                               $noProxy
      */
-    private static function matchesNoProxyList(array $target, array $noProxy) : bool
+    private static function matchesNoProxyList(array $target, array $noProxy): bool
     {
         foreach ($noProxy as $area) {
             if (!\is_string($area)) {
@@ -393,7 +393,7 @@ EOT
     /**
      * @return array{type: string, value: string, port: int|null, matchesRoot: bool}|null
      */
-    private static function parseNoProxyTarget(UriInterface $uri) : ?array
+    private static function parseNoProxyTarget(UriInterface $uri): ?array
     {
         $host = $uri->getHost();
         if ($host === '') {
@@ -404,7 +404,7 @@ EOT
     /**
      * @return array{type: string, value: string, port: int|null, matchesRoot: bool}|null
      */
-    private static function parseNoProxyHostString(string $host) : ?array
+    private static function parseNoProxyHostString(string $host): ?array
     {
         $hostAndPort = self::splitNoProxyHostAndPort($host);
         if ($hostAndPort === null) {
@@ -416,7 +416,7 @@ EOT
     /**
      * @return array{type: string, value: string, port: int|null, matchesRoot: bool}|array{type: string, value: string, prefix: int}|null
      */
-    private static function parseNoProxyRule(string $area) : ?array
+    private static function parseNoProxyRule(string $area): ?array
     {
         $area = \trim($area, " \n\r\t\x00\v");
         if ($area === '' || $area === '*') {
@@ -450,7 +450,7 @@ EOT
     /**
      * @return array{type: string, value: string, port: int|null, matchesRoot: bool}|null
      */
-    private static function parseNoProxyHost(string $host, ?int $port, bool $matchesRoot) : ?array
+    private static function parseNoProxyHost(string $host, ?int $port, bool $matchesRoot): ?array
     {
         if ($host !== '' && $host[0] === '[') {
             if (\substr($host, -1) !== ']') {
@@ -481,7 +481,7 @@ EOT
     /**
      * @return array{0: string, 1: int|null}|null
      */
-    private static function splitNoProxyHostAndPort(string $area) : ?array
+    private static function splitNoProxyHostAndPort(string $area): ?array
     {
         if ($area !== '' && $area[0] === '[') {
             $closingBracket = \strpos($area, ']');
@@ -512,14 +512,14 @@ EOT
         }
         return [\substr($area, 0, $colon), $port];
     }
-    private static function parseNoProxyPort(string $port) : ?int
+    private static function parseNoProxyPort(string $port): ?int
     {
         return self::parseBoundedUnsignedInteger($port, 65535);
     }
     /**
      * @return array{type: string, value: string, prefix: int}|null
      */
-    private static function parseNoProxyCidrRule(string $area) : ?array
+    private static function parseNoProxyCidrRule(string $area): ?array
     {
         $slash = \strpos($area, '/');
         if ($slash === \false) {
@@ -540,7 +540,7 @@ EOT
         }
         return ['type' => 'cidr', 'value' => $network, 'prefix' => $prefix];
     }
-    private static function parseBoundedUnsignedInteger(string $value, int $max) : ?int
+    private static function parseBoundedUnsignedInteger(string $value, int $max): ?int
     {
         if ($value === '' || !\ctype_digit($value)) {
             return null;
@@ -557,7 +557,7 @@ EOT
      * @param array{type: string, value: string, port: int|null, matchesRoot: bool}                      $target
      * @param array{type: string, value: string, port?: int|null, matchesRoot?: bool, prefix?: int|null} $rule
      */
-    private static function noProxyRuleMatches(array $target, array $rule) : bool
+    private static function noProxyRuleMatches(array $target, array $rule): bool
     {
         if ($rule['type'] === 'wildcard') {
             return ($rule['port'] ?? null) === null || $rule['port'] === $target['port'];
@@ -596,7 +596,7 @@ EOT
         }
         return \inet_pton($ip);
     }
-    private static function ipMatchesPrefix(string $address, string $network, int $prefix) : bool
+    private static function ipMatchesPrefix(string $address, string $network, int $prefix): bool
     {
         $fullBytes = \intdiv($prefix, 8);
         $remainingBits = $prefix % 8;
@@ -609,7 +609,7 @@ EOT
         $mask = 0xff << 8 - $remainingBits & 0xff;
         return (\ord($address[$fullBytes]) & $mask) === (\ord($network[$fullBytes]) & $mask);
     }
-    private static function getDefaultPort(string $scheme) : ?int
+    private static function getDefaultPort(string $scheme): ?int
     {
         if ($scheme === 'http') {
             return 80;
@@ -659,7 +659,7 @@ EOT
      * @see https://www.php.net/manual/en/function.json-encode.php
      * @deprecated Utils::jsonEncode() will be removed in guzzlehttp/guzzle:8.0. Use PHP's json_encode() instead.
      */
-    public static function jsonEncode($value, int $options = 0, int $depth = 512) : string
+    public static function jsonEncode($value, int $options = 0, int $depth = 512): string
     {
         \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/guzzle', '7.15', '%s() is deprecated and will be removed in 8.0. Use PHP\'s json_encode() instead.', __METHOD__);
         $json = \json_encode($value, $options, $depth);
@@ -677,7 +677,7 @@ EOT
      *
      * @internal
      */
-    public static function currentTime() : float
+    public static function currentTime(): float
     {
         return (float) \function_exists('hrtime') ? \hrtime(\true) / 1000000000.0 : \microtime(\true);
     }
@@ -686,7 +686,7 @@ EOT
      *
      * @internal
      */
-    public static function normalizeIdnConversionOption($value) : ?int
+    public static function normalizeIdnConversionOption($value): ?int
     {
         if ($value === null || $value === \false) {
             return null;
@@ -708,24 +708,24 @@ EOT
      *
      * @internal
      */
-    public static function idnUriConvert(UriInterface $uri, int $options = 0) : UriInterface
+    public static function idnUriConvert(UriInterface $uri, int $options = 0): UriInterface
     {
         if ($uri->getHost()) {
             $asciiHost = self::idnToAsci($uri->getHost(), $options, $info);
             if ($asciiHost === \false) {
                 $errorBitSet = $info['errors'] ?? 0;
-                $errorConstants = \array_filter(\array_keys(\get_defined_constants()), static function (string $name) : bool {
-                    return \substr($name, 0, 11) === 'IDNA_ERROR_';
+                $errorConstants = array_filter(array_keys(get_defined_constants()), static function (string $name): bool {
+                    return substr($name, 0, 11) === 'IDNA_ERROR_';
                 });
                 $errors = [];
                 foreach ($errorConstants as $errorConstant) {
-                    if ($errorBitSet & \constant($errorConstant)) {
+                    if ($errorBitSet & constant($errorConstant)) {
                         $errors[] = $errorConstant;
                     }
                 }
                 $errorMessage = 'IDN conversion failed';
                 if ($errors) {
-                    $errorMessage .= ' (errors: ' . \implode(', ', $errors) . ')';
+                    $errorMessage .= ' (errors: ' . implode(', ', $errors) . ')';
                 }
                 throw new InvalidArgumentException($errorMessage);
             }
@@ -739,7 +739,7 @@ EOT
     /**
      * @internal
      */
-    public static function getenv(string $name) : ?string
+    public static function getenv(string $name): ?string
     {
         if (isset($_SERVER[$name])) {
             return (string) $_SERVER[$name];

@@ -11,20 +11,20 @@ class Address
         $this->email = $email;
         $this->name = $name;
     }
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
-    public function setName(string $name) : Address
+    public function setName(string $name): Address
     {
         $this->name = $name;
         return $this;
     }
-    public function getEmail() : string
+    public function getEmail(): string
     {
         return $this->email;
     }
-    public function setEmail(string $email) : Address
+    public function setEmail(string $email): Address
     {
         $this->email = $email;
         return $this;
@@ -34,17 +34,17 @@ class Address
      * that commas, quotes, colons etc. cannot break the header:
      * "Smith, John" <john@example.com>
      */
-    public function toString() : string
+    public function toString(): string
     {
         $name = $this->stripControlCharacters($this->name);
-        $email = \str_replace(['<', '>'], '', $this->stripControlCharacters($this->email));
+        $email = str_replace(['<', '>'], '', $this->stripControlCharacters($this->email));
         if ($name === '') {
             return $email;
         }
-        return '"' . \addcslashes($name, '"\\') . '" <' . $email . '>';
+        return '"' . addcslashes($name, '"\\') . '" <' . $email . '>';
     }
-    private function stripControlCharacters(string $value) : string
+    private function stripControlCharacters(string $value): string
     {
-        return \preg_replace('/[[:cntrl:]]/', '', $value) ?? "";
+        return preg_replace('/[[:cntrl:]]/', '', $value) ?? "";
     }
 }

@@ -40,7 +40,7 @@ class HandlerStack
      *                                                                            handler is provided, the best handler for your
      *                                                                            system will be utilized.
      */
-    public static function create(?callable $handler = null) : self
+    public static function create(?callable $handler = null): self
     {
         $stack = new self($handler ?: Utils::chooseHandler());
         $stack->push(Middleware::httpErrors(), 'http_errors');
@@ -97,7 +97,7 @@ class HandlerStack
      * @param callable(RequestInterface, array): PromiseInterface $handler Accepts a request and array of options and
      *                                                                     returns a Promise.
      */
-    public function setHandler(callable $handler) : void
+    public function setHandler(callable $handler): void
     {
         $this->handler = $handler;
         $this->cached = null;
@@ -105,7 +105,7 @@ class HandlerStack
     /**
      * Returns true if the builder has a handler.
      */
-    public function hasHandler() : bool
+    public function hasHandler(): bool
     {
         return $this->handler !== null;
     }
@@ -115,7 +115,7 @@ class HandlerStack
      * @param callable(callable): callable $middleware Middleware function
      * @param string                       $name       Name to register for this middleware.
      */
-    public function unshift(callable $middleware, ?string $name = null) : void
+    public function unshift(callable $middleware, ?string $name = null): void
     {
         \array_unshift($this->stack, [$middleware, $name]);
         $this->cached = null;
@@ -126,7 +126,7 @@ class HandlerStack
      * @param callable(callable): callable $middleware Middleware function
      * @param string                       $name       Name to register for this middleware.
      */
-    public function push(callable $middleware, string $name = '') : void
+    public function push(callable $middleware, string $name = ''): void
     {
         $this->stack[] = [$middleware, $name];
         $this->cached = null;
@@ -138,7 +138,7 @@ class HandlerStack
      * @param callable(callable): callable $middleware Middleware function
      * @param string                       $withName   Name to register for this middleware.
      */
-    public function before(string $findName, callable $middleware, string $withName = '') : void
+    public function before(string $findName, callable $middleware, string $withName = ''): void
     {
         $this->splice($findName, $withName, $middleware, \true);
     }
@@ -149,7 +149,7 @@ class HandlerStack
      * @param callable(callable): callable $middleware Middleware function
      * @param string                       $withName   Name to register for this middleware.
      */
-    public function after(string $findName, callable $middleware, string $withName = '') : void
+    public function after(string $findName, callable $middleware, string $withName = ''): void
     {
         $this->splice($findName, $withName, $middleware, \false);
     }
@@ -158,22 +158,22 @@ class HandlerStack
      *
      * @param callable|string $remove Middleware to remove by instance or name.
      */
-    public function remove($remove) : void
+    public function remove($remove): void
     {
-        if (!\is_string($remove) && !\is_callable($remove)) {
+        if (!is_string($remove) && !is_callable($remove)) {
             \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/guzzle', '7.4', 'Not passing a callable or string to %s::%s() is deprecated and will cause an error in 8.0.', __CLASS__, __FUNCTION__);
         }
         $this->cached = null;
         if (\is_string($remove)) {
             $count = \count($this->stack);
-            $this->stack = \array_values(\array_filter($this->stack, static function ($tuple) use($remove) {
+            $this->stack = \array_values(\array_filter($this->stack, static function ($tuple) use ($remove) {
                 return $tuple[1] !== $remove;
             }));
             if ($count !== \count($this->stack) || !\is_callable($remove)) {
                 return;
             }
         }
-        $this->stack = \array_values(\array_filter($this->stack, static function ($tuple) use($remove) {
+        $this->stack = \array_values(\array_filter($this->stack, static function ($tuple) use ($remove) {
             return $tuple[0] !== $remove;
         }));
     }
@@ -182,7 +182,7 @@ class HandlerStack
      *
      * @return callable(RequestInterface, array): PromiseInterface
      */
-    public function resolve() : callable
+    public function resolve(): callable
     {
         if ($this->cached === null) {
             if (($prev = $this->handler) === null) {
@@ -196,7 +196,7 @@ class HandlerStack
         }
         return $this->cached;
     }
-    private function findByName(string $name) : int
+    private function findByName(string $name): int
     {
         foreach ($this->stack as $k => $v) {
             if ($v[1] === $name) {
@@ -208,7 +208,7 @@ class HandlerStack
     /**
      * Splices a function into the middleware list at a specific position.
      */
-    private function splice(string $findName, string $withName, callable $middleware, bool $before) : void
+    private function splice(string $findName, string $withName, callable $middleware, bool $before): void
     {
         $this->cached = null;
         $idx = $this->findByName($findName);
@@ -232,7 +232,7 @@ class HandlerStack
      *
      * @param callable|string $fn Function to write as a string.
      */
-    private function debugCallable($fn) : string
+    private function debugCallable($fn): string
     {
         if (\is_string($fn)) {
             return "callable({$fn})";

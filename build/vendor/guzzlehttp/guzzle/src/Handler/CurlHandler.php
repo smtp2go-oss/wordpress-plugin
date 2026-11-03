@@ -51,7 +51,7 @@ class CurlHandler
         $this->shareHandleState = $sharingMode !== TransportSharing::NONE ? CurlShareHandleState::fromOption($transportSharing) : null;
         $this->factory = $this->shareHandleState !== null ? new CurlFactory(3, $this->shareHandleState->mode, $this->shareHandleState) : new CurlFactory(3);
     }
-    public function __invoke(RequestInterface $request, array $options) : PromiseInterface
+    public function __invoke(RequestInterface $request, array $options): PromiseInterface
     {
         HostValidator::assertRequestHost($request);
         if (isset($options['delay'])) {

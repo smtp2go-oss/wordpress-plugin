@@ -12,7 +12,7 @@ final class NoSeekStream implements StreamInterface
     use StreamDecoratorTrait;
     /** @var StreamInterface */
     private $stream;
-    public function seek($offset, $whence = \SEEK_SET) : void
+    public function seek($offset, $whence = \SEEK_SET): void
     {
         if (!\is_int($offset)) {
             \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/psr7', '2.11', 'Passing %s to StreamInterface::seek() is deprecated; guzzlehttp/psr7 3.0 requires int for $offset.', \get_debug_type($offset));
@@ -22,7 +22,7 @@ final class NoSeekStream implements StreamInterface
         }
         throw new \RuntimeException('Cannot seek a NoSeekStream');
     }
-    public function isSeekable() : bool
+    public function isSeekable(): bool
     {
         return \false;
     }

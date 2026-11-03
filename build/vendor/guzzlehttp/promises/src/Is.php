@@ -14,7 +14,7 @@ final class Is
      * @deprecated Is::pending() will be removed in guzzlehttp/promises:4.0. Use
      *             State::isPending() instead.
      */
-    public static function pending(PromiseInterface $promise) : bool
+    public static function pending(PromiseInterface $promise): bool
     {
         \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/promises', '2.6', '%s() is deprecated and will be removed in 4.0. Use %s::isPending() instead.', __METHOD__, State::class);
         return State::isPending($promise);
@@ -25,7 +25,7 @@ final class Is
      * @deprecated Is::settled() will be removed in guzzlehttp/promises:4.0. Use
      *             State::isSettled() instead.
      */
-    public static function settled(PromiseInterface $promise) : bool
+    public static function settled(PromiseInterface $promise): bool
     {
         \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/promises', '2.6', '%s() is deprecated and will be removed in 4.0. Use %s::isSettled() instead.', __METHOD__, State::class);
         return State::isSettled($promise);
@@ -36,7 +36,7 @@ final class Is
      * @deprecated Is::fulfilled() will be removed in guzzlehttp/promises:4.0.
      *             Use State::isFulfilled() instead.
      */
-    public static function fulfilled(PromiseInterface $promise) : bool
+    public static function fulfilled(PromiseInterface $promise): bool
     {
         \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/promises', '2.6', '%s() is deprecated and will be removed in 4.0. Use %s::isFulfilled() instead.', __METHOD__, State::class);
         return State::isFulfilled($promise);
@@ -47,7 +47,7 @@ final class Is
      * @deprecated Is::rejected() will be removed in guzzlehttp/promises:4.0.
      *             Use State::isRejected() instead.
      */
-    public static function rejected(PromiseInterface $promise) : bool
+    public static function rejected(PromiseInterface $promise): bool
     {
         \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/promises', '2.6', '%s() is deprecated and will be removed in 4.0. Use %s::isRejected() instead.', __METHOD__, State::class);
         return State::isRejected($promise);

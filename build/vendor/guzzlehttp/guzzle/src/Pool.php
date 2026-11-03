@@ -52,14 +52,14 @@ class Pool implements PromisorInterface
             $requests = [$requests];
         }
         $iterable = P\Create::iterFor($requests);
-        $requests = static function () use($iterable, $client, $opts) {
+        $requests = static function () use ($iterable, $client, $opts) {
             foreach ($iterable as $key => $rfn) {
                 if ($rfn instanceof RequestInterface) {
-                    (yield $key => $client->sendAsync($rfn, $opts));
+                    yield $key => $client->sendAsync($rfn, $opts);
                 } elseif (\is_callable($rfn)) {
-                    (yield $key => $rfn($opts));
+                    yield $key => $rfn($opts);
                 } else {
-                    throw new \InvalidArgumentException('Each value yielded by the iterator must be a Psr\\Http\\Message\\RequestInterface or a callable that returns a promise that fulfills with a Psr\\Http\\Message\\ResponseInterface object.');
+                    throw new \InvalidArgumentException('Each value yielded by the iterator must be a Psr\Http\Message\RequestInterface or a callable that returns a promise that fulfills with a Psr\Http\Message\ResponseInterface object.');
                 }
             }
         };
@@ -68,7 +68,7 @@ class Pool implements PromisorInterface
     /**
      * Get promise
      */
-    public function promise() : PromiseInterface
+    public function promise(): PromiseInterface
     {
         return $this->each->promise();
     }
@@ -90,7 +90,7 @@ class Pool implements PromisorInterface
      *
      * @throws \InvalidArgumentException if the event format is incorrect.
      */
-    public static function batch(ClientInterface $client, $requests, array $options = []) : array
+    public static function batch(ClientInterface $client, $requests, array $options = []): array
     {
         $res = [];
         self::cmpCallback($options, 'fulfilled', $res);
@@ -103,15 +103,15 @@ class Pool implements PromisorInterface
     /**
      * Execute callback(s)
      */
-    private static function cmpCallback(array &$options, string $name, array &$results) : void
+    private static function cmpCallback(array &$options, string $name, array &$results): void
     {
         if (!isset($options[$name])) {
-            $options[$name] = static function ($v, $k) use(&$results) {
+            $options[$name] = static function ($v, $k) use (&$results) {
                 $results[$k] = $v;
             };
         } else {
             $currentFn = $options[$name];
-            $options[$name] = static function ($v, $k) use(&$results, $currentFn) {
+            $options[$name] = static function ($v, $k) use (&$results, $currentFn) {
                 $currentFn($v, $k);
                 $results[$k] = $v;
             };

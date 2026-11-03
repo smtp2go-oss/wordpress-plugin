@@ -13,7 +13,7 @@ namespace SMTP2GOWPPlugin\GuzzleHttp;
  *
  * @deprecated describe_type will be removed in guzzlehttp/guzzle:8.0. Use get_debug_type() instead.
  */
-function describe_type($input) : string
+function describe_type($input): string
 {
     \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/guzzle', '7.1', '%s() is deprecated and will be removed in 8.0. Use get_debug_type() instead.', __FUNCTION__);
     switch (\gettype($input)) {
@@ -38,7 +38,7 @@ function describe_type($input) : string
  *
  * @deprecated headers_from_lines will be removed in guzzlehttp/guzzle:8.0. Use Utils::headersFromLines instead.
  */
-function headers_from_lines(iterable $lines) : array
+function headers_from_lines(iterable $lines): array
 {
     \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/guzzle', '7.1', '%s() is deprecated and will be removed in 8.0. Use Utils::headersFromLines() instead.', __FUNCTION__);
     return Utils::headersFromLines($lines);
@@ -68,7 +68,7 @@ function debug_resource($value = null)
  *
  * @deprecated choose_handler will be removed in guzzlehttp/guzzle:8.0. Use Utils::chooseHandler instead.
  */
-function choose_handler() : callable
+function choose_handler(): callable
 {
     \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/guzzle', '7.1', '%s() is deprecated and will be removed in 8.0. Use Utils::chooseHandler() instead.', __FUNCTION__);
     return Utils::chooseHandler();
@@ -78,7 +78,7 @@ function choose_handler() : callable
  *
  * @deprecated default_user_agent will be removed in guzzlehttp/guzzle:8.0. Use Utils::defaultUserAgent instead.
  */
-function default_user_agent() : string
+function default_user_agent(): string
 {
     \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/guzzle', '7.1', '%s() is deprecated and will be removed in 8.0. Use Utils::defaultUserAgent() instead.', __FUNCTION__);
     return Utils::defaultUserAgent();
@@ -98,7 +98,7 @@ function default_user_agent() : string
  *
  * @deprecated default_ca_bundle will be removed in guzzlehttp/guzzle:8.0. This function is not needed in PHP 5.6+.
  */
-function default_ca_bundle() : string
+function default_ca_bundle(): string
 {
     \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/guzzle', '7.1', '%s() is deprecated and will be removed in 8.0. This function is not needed in PHP 5.6+.', __FUNCTION__);
     static $cached = null;
@@ -116,8 +116,8 @@ function default_ca_bundle() : string
         // Google app engine
         '/etc/ca-certificates.crt',
         // Windows?
-        'C:\\windows\\system32\\curl-ca-bundle.crt',
-        'C:\\windows\\curl-ca-bundle.crt',
+        'C:\windows\system32\curl-ca-bundle.crt',
+        'C:\windows\curl-ca-bundle.crt',
     ];
     if ($cached) {
         return $cached;
@@ -154,7 +154,7 @@ EOT
  *
  * @deprecated normalize_header_keys will be removed in guzzlehttp/guzzle:8.0. Use Utils::normalizeHeaderKeys instead.
  */
-function normalize_header_keys(array $headers) : array
+function normalize_header_keys(array $headers): array
 {
     \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/guzzle', '7.1', '%s() is deprecated and will be removed in 8.0. Use Utils::normalizeHeaderKeys() instead.', __FUNCTION__);
     return Utils::normalizeHeaderKeys($headers);
@@ -180,7 +180,7 @@ function normalize_header_keys(array $headers) : array
  *
  * @deprecated is_host_in_noproxy will be removed in guzzlehttp/guzzle:8.0. Use Utils::isHostInNoProxy instead.
  */
-function is_host_in_noproxy(string $host, array $noProxyArray) : bool
+function is_host_in_noproxy(string $host, array $noProxyArray): bool
 {
     \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/guzzle', '7.1', '%s() is deprecated and will be removed in 8.0. Use Utils::isHostInNoProxy() instead.', __FUNCTION__);
     return Utils::isHostInNoProxy($host, $noProxyArray);
@@ -226,7 +226,7 @@ function json_decode(string $json, bool $assoc = \false, int $depth = 512, int $
  * @see https://www.php.net/manual/en/function.json-encode.php
  * @deprecated json_encode will be removed in guzzlehttp/guzzle:8.0. Use PHP's json_encode() instead.
  */
-function json_encode($value, int $options = 0, int $depth = 512) : string
+function json_encode($value, int $options = 0, int $depth = 512): string
 {
     \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/guzzle', '7.1', '%s() is deprecated and will be removed in 8.0. Use PHP\'s json_encode() instead.', __FUNCTION__);
     /** @var positive-int $depth */

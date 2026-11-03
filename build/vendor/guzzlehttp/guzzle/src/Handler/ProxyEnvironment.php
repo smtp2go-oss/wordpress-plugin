@@ -26,7 +26,7 @@ final class ProxyEnvironment
      * @return string|null The proxy to use; null when the environment
      *                     configures none.
      */
-    public static function getProxyForScheme(string $scheme) : ?string
+    public static function getProxyForScheme(string $scheme): ?string
     {
         $scheme = Psr7\Utils::asciiToLower($scheme);
         $candidates = [$scheme . '_proxy'];
@@ -49,7 +49,7 @@ final class ProxyEnvironment
     /**
      * @return string|null The no-proxy list; null when nothing is set.
      */
-    public static function getNoProxy() : ?string
+    public static function getNoProxy(): ?string
     {
         foreach (['no_proxy', 'NO_PROXY'] as $name) {
             $value = self::getenv($name);
@@ -68,10 +68,10 @@ final class ProxyEnvironment
      *
      * @return string[]
      */
-    public static function splitNoProxy(string $noProxy) : array
+    public static function splitNoProxy(string $noProxy): array
     {
         $entries = [];
-        $split = \preg_split('/[\\s,]+/', $noProxy);
+        $split = \preg_split('/[\s,]+/', $noProxy);
         if ($split === \false) {
             throw new \RuntimeException('Unable to split the no_proxy value: ' . \preg_last_error_msg());
         }
@@ -85,7 +85,7 @@ final class ProxyEnvironment
         }
         return $entries;
     }
-    private static function getenv(string $name) : ?string
+    private static function getenv(string $name): ?string
     {
         // Windows environment variables are case-insensitive, so the
         // lowercase-only httpoxy defence does not hold there. Outside the

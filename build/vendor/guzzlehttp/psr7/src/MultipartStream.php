@@ -40,14 +40,14 @@ final class MultipartStream implements StreamInterface
         if ($boundary !== null && !self::isValidBoundary($boundary)) {
             \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/psr7', '2.11', 'Passing an invalid multipart boundary to MultipartStream::__construct() is deprecated; guzzlehttp/psr7 3.0 rejects invalid multipart boundaries.');
         }
-        $this->boundary = $boundary ?: \bin2hex(\random_bytes(20));
+        $this->boundary = $boundary ?: bin2hex(random_bytes(20));
         $this->stream = $this->createStream($elements);
     }
-    public function getBoundary() : string
+    public function getBoundary(): string
     {
         return $this->boundary;
     }
-    public function isWritable() : bool
+    public function isWritable(): bool
     {
         return \false;
     }
@@ -56,23 +56,23 @@ final class MultipartStream implements StreamInterface
      *
      * @param array<array-key, string> $headers
      */
-    private function getHeaders(array $headers) : string
+    private function getHeaders(array $headers): string
     {
         $str = '';
         foreach ($headers as $key => $value) {
             $key = (string) $key;
             $str .= "{$key}: {$value}\r\n";
         }
-        return "--{$this->boundary}\r\n" . \trim($str, " \n\r\t\x00\v") . "\r\n\r\n";
+        return "--{$this->boundary}\r\n" . trim($str, " \n\r\t\x00\v") . "\r\n\r\n";
     }
     /**
      * Create the aggregate stream that will be used to upload the POST data
      */
-    protected function createStream(array $elements = []) : StreamInterface
+    protected function createStream(array $elements = []): StreamInterface
     {
         $stream = new AppendStream();
         foreach ($elements as $element) {
-            if (!\is_array($element)) {
+            if (!is_array($element)) {
                 throw new \UnexpectedValueException('An array is expected');
             }
             $this->addElement($stream, $element);
@@ -81,34 +81,34 @@ final class MultipartStream implements StreamInterface
         $stream->addStream(Utils::streamFor("--{$this->boundary}--\r\n"));
         return $stream;
     }
-    private function addElement(AppendStream $stream, array $element) : void
+    private function addElement(AppendStream $stream, array $element): void
     {
         foreach (['contents', 'name'] as $key) {
-            if (!\array_key_exists($key, $element)) {
+            if (!array_key_exists($key, $element)) {
                 throw new \InvalidArgumentException("A '{$key}' key is required");
             }
         }
-        if (!\is_string($element['name']) && !\is_int($element['name'])) {
+        if (!is_string($element['name']) && !is_int($element['name'])) {
             throw new \InvalidArgumentException("The 'name' key must be a string or integer");
         }
-        if (\is_array($element['contents'])) {
-            if (\array_key_exists('filename', $element) || \array_key_exists('headers', $element)) {
+        if (is_array($element['contents'])) {
+            if (array_key_exists('filename', $element) || array_key_exists('headers', $element)) {
                 throw new \InvalidArgumentException("The 'filename' and 'headers' options cannot be used when 'contents' is an array");
             }
             $this->addNestedElements($stream, $element['contents'], (string) $element['name']);
             return;
         }
         $contents = $element['contents'];
-        if (\is_scalar($contents) && !\is_string($contents)) {
+        if (is_scalar($contents) && !is_string($contents)) {
             // Multipart field values are byte strings on the wire, so finite
             // numeric and boolean field values are cast to string here rather
             // than tripping streamFor()'s non-string-scalar deprecation. Non-finite
             // floats are deprecated and normalized here too, so the deprecation is
             // reported against MultipartStream instead of transitively through
             // streamFor().
-            if (\is_float($contents) && !\is_finite($contents)) {
+            if (is_float($contents) && !is_finite($contents)) {
                 \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/psr7', '2.12', 'Passing a non-finite float as multipart contents is deprecated; guzzlehttp/psr7 3.0 rejects non-finite floats.');
-                $contents = \is_nan($contents) ? 'NAN' : ($contents > 0 ? 'INF' : '-INF');
+                $contents = is_nan($contents) ? 'NAN' : ($contents > 0 ? 'INF' : '-INF');
             }
             $contents = (string) $contents;
         }
@@ -129,11 +129,11 @@ final class MultipartStream implements StreamInterface
      *
      * @param array<array-key, mixed> $contents
      */
-    private function addNestedElements(AppendStream $stream, array $contents, string $root) : void
+    private function addNestedElements(AppendStream $stream, array $contents, string $root): void
     {
         foreach ($contents as $key => $value) {
-            $fieldName = $root === '' ? \sprintf('[%s]', (string) $key) : \sprintf('%s[%s]', $root, (string) $key);
-            if (\is_array($value)) {
+            $fieldName = $root === '' ? sprintf('[%s]', (string) $key) : sprintf('%s[%s]', $root, (string) $key);
+            if (is_array($value)) {
                 $this->addNestedElements($stream, $value, $fieldName);
             } else {
                 $this->addElement($stream, ['name' => $fieldName, 'contents' => $value]);
@@ -145,13 +145,13 @@ final class MultipartStream implements StreamInterface
      *
      * @return array{0: StreamInterface, 1: array<array-key, string>}
      */
-    private function createElement(string $name, StreamInterface $stream, ?string $filename, array $headers) : array
+    private function createElement(string $name, StreamInterface $stream, ?string $filename, array $headers): array
     {
         $headers = self::normalizePartHeaders($headers);
         // Set a default content-disposition header if one was no provided
         $disposition = self::getHeader($headers, 'content-disposition');
         if (!$disposition) {
-            $headers['Content-Disposition'] = $filename === '0' || $filename ? \sprintf('form-data; name="%s"; filename="%s"', $name, \basename($filename)) : "form-data; name=\"{$name}\"";
+            $headers['Content-Disposition'] = $filename === '0' || $filename ? sprintf('form-data; name="%s"; filename="%s"', $name, basename($filename)) : "form-data; name=\"{$name}\"";
         }
         // Set a default content-length header if one was no provided
         $length = self::getHeader($headers, 'content-length');
@@ -170,7 +170,7 @@ final class MultipartStream implements StreamInterface
     /**
      * @param array<array-key, string> $headers
      */
-    private static function getHeader(array $headers, string $key) : ?string
+    private static function getHeader(array $headers, string $key): ?string
     {
         $lowercaseHeader = Utils::asciiToLower($key);
         foreach ($headers as $k => $v) {
@@ -180,27 +180,27 @@ final class MultipartStream implements StreamInterface
         }
         return null;
     }
-    private static function isValidBoundary(string $boundary) : bool
+    private static function isValidBoundary(string $boundary): bool
     {
-        $length = \strlen($boundary);
+        $length = strlen($boundary);
         if ($length < 1 || $length > 70 || $boundary[$length - 1] === ' ') {
             return \false;
         }
-        return \strspn($boundary, self::BOUNDARY_CHARS) === $length;
+        return strspn($boundary, self::BOUNDARY_CHARS) === $length;
     }
     /**
      * @param array<array-key, mixed> $headers
      *
      * @return array<array-key, string>
      */
-    private static function normalizePartHeaders(array $headers) : array
+    private static function normalizePartHeaders(array $headers): array
     {
         $normalized = [];
         foreach ($headers as $key => $value) {
             self::deprecateInvalidPartHeaderName((string) $key);
-            if (!\is_string($value)) {
-                if (!\is_scalar($value) && $value !== null && !(\is_object($value) && \method_exists($value, '__toString'))) {
-                    throw new \InvalidArgumentException(\sprintf('Multipart part header value must be a string or stringable value but %s provided.', \get_debug_type($value)));
+            if (!is_string($value)) {
+                if (!is_scalar($value) && $value !== null && !(is_object($value) && method_exists($value, '__toString'))) {
+                    throw new \InvalidArgumentException(sprintf('Multipart part header value must be a string or stringable value but %s provided.', \get_debug_type($value)));
                 }
                 \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/psr7', '2.11', 'Passing %s as a multipart part header value is deprecated; guzzlehttp/psr7 3.0 requires string multipart part header values.', \get_debug_type($value));
             }
@@ -210,15 +210,15 @@ final class MultipartStream implements StreamInterface
         }
         return $normalized;
     }
-    private static function deprecateInvalidPartHeaderName(string $name) : void
+    private static function deprecateInvalidPartHeaderName(string $name): void
     {
-        if (!\preg_match('/^[a-zA-Z0-9\'`#$%&*+.^_|~!-]+$/D', $name)) {
+        if (!preg_match('/^[a-zA-Z0-9\'`#$%&*+.^_|~!-]+$/D', $name)) {
             \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/psr7', '2.11', 'Passing an invalid multipart part header name to MultipartStream is deprecated; guzzlehttp/psr7 3.0 rejects invalid multipart part header names.');
         }
     }
-    private static function deprecateInvalidPartHeaderValue(string $value) : void
+    private static function deprecateInvalidPartHeaderValue(string $value): void
     {
-        if (!\preg_match('/^[\\x20\\x09\\x21-\\x7E\\x80-\\xFF]*$/D', $value)) {
+        if (!preg_match('/^[\x20\x09\x21-\x7E\x80-\xFF]*$/D', $value)) {
             \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/psr7', '2.11', 'Passing an invalid multipart part header value to MultipartStream is deprecated; guzzlehttp/psr7 3.0 rejects invalid multipart part header values.');
         }
     }

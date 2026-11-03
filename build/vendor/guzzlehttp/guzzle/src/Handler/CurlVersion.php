@@ -63,32 +63,32 @@ final class CurlVersion
     private function __construct()
     {
     }
-    public static function supportsCurlHandler() : bool
+    public static function supportsCurlHandler(): bool
     {
         $version = self::getVersion();
         return $version !== null && \version_compare($version, self::MIN_VERSION, '>=');
     }
-    public static function supportsTls12() : bool
+    public static function supportsTls12(): bool
     {
         $version = self::getVersion();
         return self::supportsSsl() && \defined('CURL_SSLVERSION_TLSv1_2') && $version !== null && \version_compare($version, self::TLS_12_VERSION, '>=');
     }
-    public static function supportsTls13() : bool
+    public static function supportsTls13(): bool
     {
         $version = self::getVersion();
         return self::supportsSsl() && \defined('CURL_SSLVERSION_TLSv1_3') && $version !== null && \version_compare($version, self::TLS_13_VERSION, '>=');
     }
-    public static function supportsHttp2() : bool
+    public static function supportsHttp2(): bool
     {
         $versionInfo = self::getVersionInfo();
         return self::supportsTls12() && \defined('CURL_VERSION_HTTP2') && $versionInfo !== null && 0 !== (\CURL_VERSION_HTTP2 & $versionInfo['features']);
     }
-    public static function supportsMultiplex() : bool
+    public static function supportsMultiplex(): bool
     {
         $version = self::getVersion();
         return \defined('CURLOPT_PIPEWAIT') && $version !== null && \version_compare($version, self::MULTIPLEX_VERSION, '>=');
     }
-    public static function supportsHttpVersionReuseMatching() : bool
+    public static function supportsHttpVersionReuseMatching(): bool
     {
         $version = self::getVersion();
         if ($version === null || \version_compare($version, self::HTTP_VERSION_REUSE_MATCH_VERSION, '<')) {
@@ -96,24 +96,24 @@ final class CurlVersion
         }
         return \version_compare($version, self::HTTP_VERSION_REUSE_MATCH_REGRESSION, '<') || \version_compare($version, self::HTTP_VERSION_REUSE_MATCH_RESTORED, '>=');
     }
-    public static function supportsConnectionCaps() : bool
+    public static function supportsConnectionCaps(): bool
     {
         $version = self::getVersion();
         return \defined('CURLMOPT_MAX_HOST_CONNECTIONS') && \defined('CURLMOPT_MAX_TOTAL_CONNECTIONS') && $version !== null && \version_compare($version, self::CONNECTION_CAP_VERSION, '>=');
     }
-    public static function ensureConnectionCapsSupported(string $option) : void
+    public static function ensureConnectionCapsSupported(string $option): void
     {
         if (self::supportsConnectionCaps()) {
             return;
         }
         throw new \InvalidArgumentException(\sprintf('The "%s" option requires PHP cURL support for CURLMOPT_MAX_HOST_CONNECTIONS and CURLMOPT_MAX_TOTAL_CONNECTIONS with libcurl %s or newer.', $option, self::CONNECTION_CAP_VERSION));
     }
-    public static function supportsRequiredMultiplex() : bool
+    public static function supportsRequiredMultiplex(): bool
     {
         $version = self::getVersion();
         return \defined('CURL_HTTP_VERSION_2_PRIOR_KNOWLEDGE') && $version !== null && self::supportsHttp2() && \version_compare($version, self::REQUIRED_MULTIPLEX_VERSION, '>=');
     }
-    public static function supportsHttpsProxy() : bool
+    public static function supportsHttpsProxy(): bool
     {
         $versionInfo = self::getVersionInfo();
         // CURL_VERSION_HTTPS_PROXY is not defined on every supported PHP
@@ -121,7 +121,7 @@ final class CurlVersion
         $httpsProxyFeature = \defined('CURL_VERSION_HTTPS_PROXY') ? \CURL_VERSION_HTTPS_PROXY : 1 << 21;
         return $versionInfo !== null && \version_compare($versionInfo['version'], self::HTTPS_PROXY_VERSION, '>=') && 0 !== ($httpsProxyFeature & $versionInfo['features']);
     }
-    public static function supportsNtlm() : bool
+    public static function supportsNtlm(): bool
     {
         $versionInfo = self::getVersionInfo();
         // CURL_VERSION_NTLM is not defined on every supported PHP version; fall
@@ -129,61 +129,61 @@ final class CurlVersion
         $ntlmFeature = \defined('CURL_VERSION_NTLM') ? \CURL_VERSION_NTLM : 1 << 4;
         return \defined('CURLAUTH_NTLM') && $versionInfo !== null && 0 !== ($ntlmFeature & $versionInfo['features']);
     }
-    public static function supportsHandlerSharing() : bool
+    public static function supportsHandlerSharing(): bool
     {
         $version = self::getVersion();
         return $version !== null && \version_compare($version, self::HANDLER_SHARING_VERSION, '>=');
     }
-    public static function ensureHandlerSharingSupported() : void
+    public static function ensureHandlerSharingSupported(): void
     {
         if (!self::supportsHandlerSharing()) {
             throw new \InvalidArgumentException(\sprintf('The "transport_sharing" option requires libcurl %s or higher for cURL share handles.', self::HANDLER_SHARING_VERSION));
         }
     }
-    public static function supportsSslSessionSharing() : bool
+    public static function supportsSslSessionSharing(): bool
     {
         $version = self::getVersion();
         return self::supportsSsl() && $version !== null && \version_compare($version, self::SSL_SESSION_SHARING_VERSION, '>=');
     }
-    public static function ensureSslSessionSharingSupported() : void
+    public static function ensureSslSessionSharingSupported(): void
     {
         if (!self::supportsSslSessionSharing()) {
             throw new \InvalidArgumentException(\sprintf('The "transport_sharing" option requires libcurl %s or higher with SSL support for SSL session sharing.', self::SSL_SESSION_SHARING_VERSION));
         }
     }
-    public static function supportsShareConnectionCaches() : bool
+    public static function supportsShareConnectionCaches(): bool
     {
         $version = self::getVersion();
         // An undetectable libcurl version is treated as capable so the
         // opaque share safeguards fail closed.
         return $version === null || \version_compare($version, self::SHARE_CONNECTION_CACHE_VERSION, '>=');
     }
-    public static function supportsProxyTlsCredentialAwareConnectionReuse() : bool
+    public static function supportsProxyTlsCredentialAwareConnectionReuse(): bool
     {
         $version = self::getVersion();
         return $version !== null && \version_compare($version, self::PROXY_TLS_CREDENTIAL_REUSE_VERSION, '>=');
     }
-    public static function supportsProxyCredentialAwareConnectionReuse() : bool
+    public static function supportsProxyCredentialAwareConnectionReuse(): bool
     {
         $version = self::getVersion();
         return $version !== null && \version_compare($version, self::PROXY_CREDENTIAL_REUSE_VERSION, '>=');
     }
-    public static function supportsSocksProxyCredentialAwareConnectionReuse() : bool
+    public static function supportsSocksProxyCredentialAwareConnectionReuse(): bool
     {
         $version = self::getVersion();
         return $version !== null && \version_compare($version, self::SOCKS_PROXY_CREDENTIAL_REUSE_VERSION, '>=');
     }
-    public static function supportsProxyHeaderSeparation() : bool
+    public static function supportsProxyHeaderSeparation(): bool
     {
         $version = self::getVersion();
         return $version !== null && \version_compare($version, self::PROXY_HEADER_SEPARATION_VERSION, '>=') && \defined('CURLOPT_PROXYHEADER') && \defined('CURLOPT_HEADEROPT') && \defined('CURLHEADER_SEPARATE');
     }
-    private static function supportsSsl() : bool
+    private static function supportsSsl(): bool
     {
         $versionInfo = self::getVersionInfo();
         return \defined('CURL_VERSION_SSL') && $versionInfo !== null && 0 !== (\CURL_VERSION_SSL & $versionInfo['features']);
     }
-    public static function getVersion() : ?string
+    public static function getVersion(): ?string
     {
         $versionInfo = self::getVersionInfo();
         return $versionInfo === null ? null : $versionInfo['version'];
@@ -191,10 +191,10 @@ final class CurlVersion
     /**
      * @return array{version: string, features: int}|null
      */
-    private static function getVersionInfo() : ?array
+    private static function getVersionInfo(): ?array
     {
         if (self::$versionInfo === null) {
-            if (!\function_exists('curl_version')) {
+            if (!\function_exists('curl_version') && !\function_exists('SMTP2GOWPPlugin\curl_version')) {
                 self::$versionInfo = \false;
             } else {
                 $versionInfo = \curl_version();

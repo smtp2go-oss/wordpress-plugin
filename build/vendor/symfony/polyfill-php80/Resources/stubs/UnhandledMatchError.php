@@ -14,4 +14,5 @@ if (\PHP_VERSION_ID < 80000) {
     class UnhandledMatchError extends \Error
     {
     }
+    \class_alias('SMTP2GOWPPlugin\UnhandledMatchError', 'UnhandledMatchError', \false);
 }

@@ -89,8 +89,8 @@ class CaBundle
         // If SSL_CERT_DIR env variable points to a valid certificate/bundle, use that.
         // This mimics how OpenSSL uses the SSL_CERT_FILE env variable.
         $caBundlePaths[] = self::getEnvVariable('SSL_CERT_DIR');
-        $caBundlePaths[] = \ini_get('openssl.cafile');
-        $caBundlePaths[] = \ini_get('openssl.capath');
+        $caBundlePaths[] = ini_get('openssl.cafile');
+        $caBundlePaths[] = ini_get('openssl.capath');
         $otherLocations = array(
             '/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem',
             // Fedora, RHEL, CentOS (ca-certificates package) - NEW
@@ -121,7 +121,7 @@ class CaBundle
             '/etc/pki/tls/certs',
             '/etc/ssl/certs',
         );
-        $caBundlePaths = \array_merge($caBundlePaths, $otherLocations);
+        $caBundlePaths = array_merge($caBundlePaths, $otherLocations);
         foreach ($caBundlePaths as $caBundle) {
             if ($caBundle && self::caFileUsable($caBundle, $logger)) {
                 return self::$caPath = $caBundle;
@@ -145,14 +145,14 @@ class CaBundle
         $caBundleFile = __DIR__ . '/../res/cacert.pem';
         // cURL does not understand 'phar://' paths
         // see https://github.com/composer/ca-bundle/issues/10
-        if (0 === \strpos($caBundleFile, 'phar://')) {
-            $tempCaBundleFile = \tempnam(\sys_get_temp_dir(), 'openssl-ca-bundle-');
+        if (0 === strpos($caBundleFile, 'phar://')) {
+            $tempCaBundleFile = tempnam(sys_get_temp_dir(), 'openssl-ca-bundle-');
             if (\false === $tempCaBundleFile) {
                 throw new \RuntimeException('Could not create a temporary file to store the bundled CA file');
             }
-            \file_put_contents($tempCaBundleFile, \file_get_contents($caBundleFile));
-            \register_shutdown_function(function () use($tempCaBundleFile) {
-                @\unlink($tempCaBundleFile);
+            file_put_contents($tempCaBundleFile, file_get_contents($caBundleFile));
+            register_shutdown_function(function () use ($tempCaBundleFile) {
+                @unlink($tempCaBundleFile);
             });
             $caBundleFile = $tempCaBundleFile;
         }
@@ -172,20 +172,20 @@ class CaBundle
         if (isset(self::$caFileValidity[$filename])) {
             return self::$caFileValidity[$filename];
         }
-        $contents = \file_get_contents($filename);
-        if (\is_string($contents) && \strlen($contents) > 0) {
-            $contents = \preg_replace("/^(\\-+(?:BEGIN|END))\\s+TRUSTED\\s+(CERTIFICATE\\-+)\$/m", '$1 $2', $contents);
+        $contents = file_get_contents($filename);
+        if (is_string($contents) && strlen($contents) > 0) {
+            $contents = preg_replace("/^(\\-+(?:BEGIN|END))\\s+TRUSTED\\s+(CERTIFICATE\\-+)\$/m", '$1 $2', $contents);
             if (null === $contents) {
                 // regex extraction failed
                 $isValid = \false;
             } else {
-                $isValid = (bool) \openssl_x509_parse($contents);
+                $isValid = (bool) openssl_x509_parse($contents);
             }
         } else {
             $isValid = \false;
         }
         if ($logger) {
-            $logger->debug('Checked CA file ' . \realpath($filename) . ': ' . ($isValid ? 'valid' : 'invalid'));
+            $logger->debug('Checked CA file ' . realpath($filename) . ': ' . ($isValid ? 'valid' : 'invalid'));
         }
         return self::$caFileValidity[$filename] = $isValid;
     }
@@ -213,16 +213,16 @@ class CaBundle
     {
         foreach ($chain as $cert) {
             if (self::isX509Certificate($cert)) {
-                if (!\function_exists('openssl_x509_export') || !\openssl_x509_export($cert, $pem)) {
+                if (!function_exists('openssl_x509_export') || !openssl_x509_export($cert, $pem)) {
                     continue;
                 }
                 $cert = $pem;
-            } elseif (!\is_string($cert)) {
+            } elseif (!is_string($cert)) {
                 continue;
             }
             foreach (self::pemToDer($cert) as $der) {
                 $spki = self::extractSpki($der);
-                if (null !== $spki && isset(self::$distrustedSpkiSha256[$hash = \hash('sha256', $spki)])) {
+                if (null !== $spki && isset(self::$distrustedSpkiSha256[$hash = hash('sha256', $spki)])) {
                     return self::$distrustedSpkiSha256[$hash];
                 }
             }
@@ -237,7 +237,7 @@ class CaBundle
      */
     private static function isX509Certificate($cert)
     {
-        return $cert instanceof \OpenSSLCertificate || \is_resource($cert) && \get_resource_type($cert) === 'OpenSSL X.509';
+        return $cert instanceof \OpenSSLCertificate || is_resource($cert) && get_resource_type($cert) === 'OpenSSL X.509';
     }
     /**
      * @param  string       $pem one or more PEM encoded certificates
@@ -247,14 +247,14 @@ class CaBundle
     {
         $ders = array();
         $offset = 0;
-        while (\false !== ($start = \strpos($pem, '-----BEGIN CERTIFICATE-----', $offset))) {
-            $start += \strlen('-----BEGIN CERTIFICATE-----');
-            $end = \strpos($pem, '-----END CERTIFICATE-----', $start);
+        while (\false !== $start = strpos($pem, '-----BEGIN CERTIFICATE-----', $offset)) {
+            $start += strlen('-----BEGIN CERTIFICATE-----');
+            $end = strpos($pem, '-----END CERTIFICATE-----', $start);
             if (\false === $end) {
                 break;
             }
-            $offset = $end + \strlen('-----END CERTIFICATE-----');
-            $der = \base64_decode(\substr($pem, $start, $end - $start), \true);
+            $offset = $end + strlen('-----END CERTIFICATE-----');
+            $der = base64_decode(substr($pem, $start, $end - $start), \true);
             if (\false !== $der) {
                 $ders[] = $der;
             }
@@ -278,7 +278,7 @@ class CaBundle
                 return null;
             }
         }
-        $fieldsToSkip = isset($der[$offset]) && \ord($der[$offset]) === 0xa0 ? 6 : 5;
+        $fieldsToSkip = isset($der[$offset]) && ord($der[$offset]) === 0xa0 ? 6 : 5;
         for ($i = 0; $i < $fieldsToSkip; $i++) {
             $length = self::readDerHeader($der, $offset);
             if (null === $length) {
@@ -294,7 +294,7 @@ class CaBundle
         if (null === $length) {
             return null;
         }
-        return \substr($der, $start, $offset - $start + $length);
+        return substr($der, $start, $offset - $start + $length);
     }
     /**
      * @param  string $der
@@ -303,7 +303,7 @@ class CaBundle
      */
     private static function isSequenceAt($der, $offset)
     {
-        return isset($der[$offset]) && \ord($der[$offset]) === 0x30;
+        return isset($der[$offset]) && ord($der[$offset]) === 0x30;
     }
     /**
      * Reads the tag and length at $offset, moving $offset to the start of the contents
@@ -316,10 +316,10 @@ class CaBundle
     private static function readDerHeader($der, &$offset)
     {
         // high tag numbers (multi-byte tags) do not occur in the fields we walk
-        if (!isset($der[$offset + 1]) || (\ord($der[$offset]) & 0x1f) === 0x1f) {
+        if (!isset($der[$offset + 1]) || (ord($der[$offset]) & 0x1f) === 0x1f) {
             return null;
         }
-        $length = \ord($der[$offset + 1]);
+        $length = ord($der[$offset + 1]);
         $offset += 2;
         if (($length & 0x80) !== 0) {
             // max 3 length bytes (16MB) so the length cannot overflow on 32-bit PHP
@@ -329,10 +329,10 @@ class CaBundle
             }
             $length = 0;
             for ($i = 0; $i < $bytes; $i++) {
-                $length = $length << 8 | \ord($der[$offset++]);
+                $length = $length << 8 | ord($der[$offset++]);
             }
         }
-        return $offset + $length <= \strlen($der) ? $length : null;
+        return $offset + $length <= strlen($der) ? $length : null;
     }
     /**
      * Resets the static caches
@@ -352,7 +352,7 @@ class CaBundle
         if (isset($_SERVER[$name])) {
             return (string) $_SERVER[$name];
         }
-        if (\PHP_SAPI === 'cli' && ($value = \getenv($name)) !== \false && $value !== null) {
+        if (\PHP_SAPI === 'cli' && ($value = getenv($name)) !== \false && $value !== null) {
             return (string) $value;
         }
         return \false;
@@ -382,9 +382,9 @@ class CaBundle
      */
     private static function isFile($certFile, ?LoggerInterface $logger = null)
     {
-        $isFile = @\is_file($certFile);
+        $isFile = @is_file($certFile);
         if (!$isFile && $logger) {
-            $logger->debug(\sprintf('Checked CA file %s does not exist or it is not a file.', $certFile));
+            $logger->debug(sprintf('Checked CA file %s does not exist or it is not a file.', $certFile));
         }
         return $isFile;
     }
@@ -395,9 +395,9 @@ class CaBundle
      */
     private static function isDir($certDir, ?LoggerInterface $logger = null)
     {
-        $isDir = @\is_dir($certDir);
+        $isDir = @is_dir($certDir);
         if (!$isDir && $logger) {
-            $logger->debug(\sprintf('Checked directory %s does not exist or it is not a directory.', $certDir));
+            $logger->debug(sprintf('Checked directory %s does not exist or it is not a directory.', $certDir));
         }
         return $isDir;
     }
@@ -408,9 +408,9 @@ class CaBundle
      */
     private static function isReadable($certFileOrDir, ?LoggerInterface $logger = null)
     {
-        $isReadable = @\is_readable($certFileOrDir);
+        $isReadable = @is_readable($certFileOrDir);
         if (!$isReadable && $logger) {
-            $logger->debug(\sprintf('Checked file or directory %s is not readable.', $certFileOrDir));
+            $logger->debug(sprintf('Checked file or directory %s is not readable.', $certFileOrDir));
         }
         return $isReadable;
     }
@@ -421,16 +421,16 @@ class CaBundle
      */
     private static function glob($pattern, ?LoggerInterface $logger = null)
     {
-        $certs = \glob($pattern);
+        $certs = glob($pattern);
         if ($certs === \false) {
             if ($logger) {
-                $logger->debug(\sprintf("An error occurred while trying to find certificates for pattern: %s", $pattern));
+                $logger->debug(sprintf("An error occurred while trying to find certificates for pattern: %s", $pattern));
             }
             return \false;
         }
-        if (\count($certs) === 0) {
+        if (count($certs) === 0) {
             if ($logger) {
-                $logger->debug(\sprintf("No CA files found for pattern: %s", $pattern));
+                $logger->debug(sprintf("No CA files found for pattern: %s", $pattern));
             }
             return \false;
         }

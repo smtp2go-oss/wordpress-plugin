@@ -26,7 +26,7 @@ final class HostValidator
      *
      * @throws RequestException
      */
-    public static function assertRequestHost(RequestInterface $request) : void
+    public static function assertRequestHost(RequestInterface $request): void
     {
         $host = $request->getUri()->getHost();
         self::assertUriHostValue($host, $request);
@@ -39,7 +39,7 @@ final class HostValidator
     /**
      * @throws RequestException
      */
-    private static function assertUriHostValue(string $value, RequestInterface $request) : void
+    private static function assertUriHostValue(string $value, RequestInterface $request): void
     {
         if (!self::isPrintableAscii($value)) {
             throw new RequestException(\sprintf('The request URI host "%s" must contain only printable ASCII characters, because a handler can otherwise connect to a host that differs from the one the request names. An internationalized host name has an A-label form that this rule accepts.', self::escape($value)), $request);
@@ -54,7 +54,7 @@ final class HostValidator
      *
      * @throws RequestException
      */
-    private static function assertHostHeaderValue(string $value, RequestInterface $request) : void
+    private static function assertHostHeaderValue(string $value, RequestInterface $request): void
     {
         if (!self::isPrintableAscii($value)) {
             throw new RequestException(\sprintf('The request Host header "%s" must contain only printable ASCII characters, because an intermediary or an origin server can otherwise read it as an authority that differs from the one the request names. An internationalized host name has an A-label form that this rule accepts.', self::escape($value)), $request);
@@ -66,9 +66,9 @@ final class HostValidator
     /**
      * Matches the accepted shape positively so a PCRE failure rejects.
      */
-    private static function isPrintableAscii(string $value) : bool
+    private static function isPrintableAscii(string $value): bool
     {
-        return \preg_match('/\\A[\\x21-\\x7E]*\\z/D', $value) === 1;
+        return \preg_match('/\A[\x21-\x7E]*\z/D', $value) === 1;
     }
     /**
      * Rejects a delimiter the transport could treat as the end of the URI host.
@@ -79,11 +79,11 @@ final class HostValidator
      *
      * @throws RequestException
      */
-    private static function assertNoAuthorityDelimiter(string $host, RequestInterface $request) : void
+    private static function assertNoAuthorityDelimiter(string $host, RequestInterface $request): void
     {
         $message = 'The request URI host "%s" must not contain a URI authority delimiter, because a handler reparses the URI and can then connect to a host that differs from the one the request names.';
         // Match the accepted shape positively so a PCRE engine failure rejects.
-        if (\preg_match('/\\A[^\\/?#@\\\\]*\\z/D', $host) !== 1) {
+        if (\preg_match('/\A[^\/?#@\\\\]*\z/D', $host) !== 1) {
             throw new RequestException(\sprintf($message, self::escape($host)), $request);
         }
         if (\strpos($host, '[') !== \false || \strpos($host, ']') !== \false) {
@@ -107,7 +107,7 @@ final class HostValidator
      *
      * @throws RequestException
      */
-    private static function assertNotADottedAddress(string $host, RequestInterface $request) : void
+    private static function assertNotADottedAddress(string $host, RequestInterface $request): void
     {
         if (\substr($host, -1) !== '.') {
             return;
@@ -125,7 +125,7 @@ final class HostValidator
      * reject a trailing-dot spelling the transport reads as a name, but avoids
      * missing one it resolves as an address. No PCRE is used.
      */
-    public static function isNumericIpv4Host(string $host) : bool
+    public static function isNumericIpv4Host(string $host): bool
     {
         if ($host === '') {
             return \false;
@@ -141,7 +141,7 @@ final class HostValidator
         }
         return \true;
     }
-    private static function isNumericIpv4Part(string $part) : bool
+    private static function isNumericIpv4Part(string $part): bool
     {
         if ($part === '') {
             return \false;
@@ -157,12 +157,12 @@ final class HostValidator
      * Printable delimiters and dots stay visible. The result is not a
      * reversible encoding.
      */
-    private static function escape(string $value) : string
+    private static function escape(string $value): string
     {
         $escaped = '';
         for ($offset = 0, $length = \strlen($value); $offset < $length; ++$offset) {
             $byte = \ord($value[$offset]);
-            $escaped .= $byte >= 0x21 && $byte <= 0x7e ? $value[$offset] : \sprintf('\\x%02X', $byte);
+            $escaped .= $byte >= 0x21 && $byte <= 0x7e ? $value[$offset] : \sprintf('\x%02X', $byte);
         }
         return $escaped;
     }

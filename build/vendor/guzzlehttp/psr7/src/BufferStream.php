@@ -29,17 +29,17 @@ final class BufferStream implements StreamInterface
     {
         $this->hwm = $hwm;
     }
-    public function __toString() : string
+    public function __toString(): string
     {
         return $this->getContents();
     }
-    public function getContents() : string
+    public function getContents(): string
     {
         $buffer = $this->buffer;
         $this->buffer = '';
         return $buffer;
     }
-    public function close() : void
+    public function close(): void
     {
         $this->buffer = '';
     }
@@ -48,27 +48,27 @@ final class BufferStream implements StreamInterface
         $this->close();
         return null;
     }
-    public function getSize() : ?int
+    public function getSize(): ?int
     {
-        return \strlen($this->buffer);
+        return strlen($this->buffer);
     }
-    public function isReadable() : bool
-    {
-        return \true;
-    }
-    public function isWritable() : bool
+    public function isReadable(): bool
     {
         return \true;
     }
-    public function isSeekable() : bool
+    public function isWritable(): bool
+    {
+        return \true;
+    }
+    public function isSeekable(): bool
     {
         return \false;
     }
-    public function rewind() : void
+    public function rewind(): void
     {
         $this->seek(0);
     }
-    public function seek($offset, $whence = \SEEK_SET) : void
+    public function seek($offset, $whence = \SEEK_SET): void
     {
         if (!\is_int($offset)) {
             \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/psr7', '2.11', 'Passing %s to StreamInterface::seek() is deprecated; guzzlehttp/psr7 3.0 requires int for $offset.', \get_debug_type($offset));
@@ -78,47 +78,47 @@ final class BufferStream implements StreamInterface
         }
         throw new \RuntimeException('Cannot seek a BufferStream');
     }
-    public function eof() : bool
+    public function eof(): bool
     {
-        return \strlen($this->buffer) === 0;
+        return strlen($this->buffer) === 0;
     }
-    public function tell() : int
+    public function tell(): int
     {
         throw new \RuntimeException('Cannot determine the position of a BufferStream');
     }
     /**
      * Reads data from the buffer.
      */
-    public function read($length) : string
+    public function read($length): string
     {
         if (!\is_int($length)) {
             \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/psr7', '2.11', 'Passing %s to StreamInterface::read() is deprecated; guzzlehttp/psr7 3.0 requires int for $length.', \get_debug_type($length));
         }
-        $currentLength = \strlen($this->buffer);
+        $currentLength = strlen($this->buffer);
         if ($length >= $currentLength) {
             // No need to slice the buffer because we don't have enough data.
             $result = $this->buffer;
             $this->buffer = '';
         } else {
             // Slice up the result to provide a subset of the buffer.
-            $result = \substr($this->buffer, 0, $length);
-            $this->buffer = \substr($this->buffer, $length);
+            $result = substr($this->buffer, 0, $length);
+            $this->buffer = substr($this->buffer, $length);
         }
         return $result;
     }
     /**
      * Writes data to the buffer.
      */
-    public function write($string) : int
+    public function write($string): int
     {
         if (!\is_string($string)) {
             \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/psr7', '2.11', 'Passing %s to StreamInterface::write() is deprecated; guzzlehttp/psr7 3.0 requires string for $string.', \get_debug_type($string));
         }
         $this->buffer .= $string;
-        if (\strlen($this->buffer) >= $this->hwm) {
+        if (strlen($this->buffer) >= $this->hwm) {
             return 0;
         }
-        return \strlen($string);
+        return strlen($string);
     }
     /**
      * @return mixed

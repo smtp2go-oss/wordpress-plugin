@@ -29,7 +29,7 @@ final class LimitStream implements StreamInterface
         $this->setLimit($limit);
         $this->setOffset($offset);
     }
-    public function eof() : bool
+    public function eof(): bool
     {
         // Always return true if the underlying stream is EOF
         if ($this->stream->eof()) {
@@ -44,21 +44,21 @@ final class LimitStream implements StreamInterface
     /**
      * Returns the size of the limited subset of data
      */
-    public function getSize() : ?int
+    public function getSize(): ?int
     {
-        if (null === ($length = $this->stream->getSize())) {
+        if (null === $length = $this->stream->getSize()) {
             return null;
         }
         $size = $length - $this->offset;
         if ($this->limit !== -1) {
-            $size = \min($this->limit, $size);
+            $size = min($this->limit, $size);
         }
-        return \max(0, $size);
+        return max(0, $size);
     }
     /**
      * Allow for a bounded seek on the read limited stream
      */
-    public function seek($offset, $whence = \SEEK_SET) : void
+    public function seek($offset, $whence = \SEEK_SET): void
     {
         if (!\is_int($offset)) {
             \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/psr7', '2.11', 'Passing %s to StreamInterface::seek() is deprecated; guzzlehttp/psr7 3.0 requires int for $offset.', \get_debug_type($offset));
@@ -67,7 +67,7 @@ final class LimitStream implements StreamInterface
             \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/psr7', '2.11', 'Passing %s to StreamInterface::seek() is deprecated; guzzlehttp/psr7 3.0 requires int for $whence.', \get_debug_type($whence));
         }
         if ($whence !== \SEEK_SET || $offset < 0) {
-            throw new \RuntimeException(\sprintf('Cannot seek to offset %s with whence %s', $offset, $whence));
+            throw new \RuntimeException(sprintf('Cannot seek to offset %s with whence %s', $offset, $whence));
         }
         $offset += $this->offset;
         if ($this->limit !== -1) {
@@ -80,7 +80,7 @@ final class LimitStream implements StreamInterface
     /**
      * Give a relative tell()
      */
-    public function tell() : int
+    public function tell(): int
     {
         return $this->stream->tell() - $this->offset;
     }
@@ -91,7 +91,7 @@ final class LimitStream implements StreamInterface
      *
      * @throws \RuntimeException if the stream cannot be seeked.
      */
-    public function setOffset(int $offset) : void
+    public function setOffset(int $offset): void
     {
         $current = $this->stream->tell();
         if ($current !== $offset) {
@@ -113,11 +113,11 @@ final class LimitStream implements StreamInterface
      * @param int $limit Number of bytes to allow to be read from the stream.
      *                   Use -1 for no limit.
      */
-    public function setLimit(int $limit) : void
+    public function setLimit(int $limit): void
     {
         $this->limit = $limit;
     }
-    public function read($length) : string
+    public function read($length): string
     {
         if (!\is_int($length)) {
             \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/psr7', '2.11', 'Passing %s to StreamInterface::read() is deprecated; guzzlehttp/psr7 3.0 requires int for $length.', \get_debug_type($length));
@@ -131,7 +131,7 @@ final class LimitStream implements StreamInterface
         if ($remaining > 0) {
             // Only return the amount of requested data, ensuring that the byte
             // limit is not exceeded
-            return $this->stream->read(\min($remaining, $length));
+            return $this->stream->read(min($remaining, $length));
         }
         return '';
     }

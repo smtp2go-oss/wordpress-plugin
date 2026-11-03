@@ -9,17 +9,17 @@ interface BuildsRequest
      *
      * @return string
      */
-    public function getMethod() : string;
+    public function getMethod(): string;
     /**
      * Returns the endpoint to the service
      *
      * @return string
      */
-    public function getEndpoint() : string;
+    public function getEndpoint(): string;
     /**
      * Builds the request body to send
      *
      * @return array
      */
-    public function buildRequestBody() : array;
+    public function buildRequestBody(): array;
 }
