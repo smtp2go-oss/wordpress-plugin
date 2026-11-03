@@ -120,6 +120,7 @@ class ComposerStaticInit3389f6bd0498f09b057338e2c1e45e24
         'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\PromisorInterface' => __DIR__ . '/..' . '/guzzlehttp/promises/src/PromisorInterface.php',
         'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\RejectedPromise' => __DIR__ . '/..' . '/guzzlehttp/promises/src/RejectedPromise.php',
         'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\RejectionException' => __DIR__ . '/..' . '/guzzlehttp/promises/src/RejectionException.php',
+        'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\State' => __DIR__ . '/..' . '/guzzlehttp/promises/src/State.php',
         'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\TaskQueue' => __DIR__ . '/..' . '/guzzlehttp/promises/src/TaskQueue.php',
         'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\TaskQueueInterface' => __DIR__ . '/..' . '/guzzlehttp/promises/src/TaskQueueInterface.php',
         'SMTP2GOWPPlugin\\GuzzleHttp\\Promise\\Utils' => __DIR__ . '/..' . '/guzzlehttp/promises/src/Utils.php',
