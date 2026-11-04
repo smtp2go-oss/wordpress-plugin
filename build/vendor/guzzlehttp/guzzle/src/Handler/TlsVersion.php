@@ -10,7 +10,7 @@ final class TlsVersion
     /**
      * @param mixed $value
      */
-    public static function ordinal(string $option, $value) : int
+    public static function ordinal(string $option, $value): int
     {
         if ($value === \STREAM_CRYPTO_METHOD_TLSv1_0_CLIENT) {
             return 10;
@@ -30,7 +30,7 @@ final class TlsVersion
      * @param mixed $min
      * @param mixed $max
      */
-    public static function assertRange($min, $max) : void
+    public static function assertRange($min, $max): void
     {
         if ($min === null || $max === null) {
             return;
@@ -42,7 +42,7 @@ final class TlsVersion
     /**
      * @param mixed $value
      */
-    public static function streamProtocolVersion(string $option, $value) : int
+    public static function streamProtocolVersion(string $option, $value): int
     {
         if ($value === \STREAM_CRYPTO_METHOD_TLSv1_0_CLIENT) {
             return self::requireStreamProto('STREAM_CRYPTO_PROTO_TLSv1_0', $option);
@@ -63,7 +63,7 @@ final class TlsVersion
      * context option and these constants were added in PHP 7.3.0 (TLS 1.3 in
      * 7.4.0); on older runtimes the option cannot be honored, so reject loudly.
      */
-    private static function requireStreamProto(string $constant, string $option) : int
+    private static function requireStreamProto(string $constant, string $option): int
     {
         if (\defined($constant)) {
             /** @var int */

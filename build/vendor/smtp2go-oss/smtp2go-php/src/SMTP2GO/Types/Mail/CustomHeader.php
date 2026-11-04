@@ -37,7 +37,7 @@ class CustomHeader
      */
     public function setValue(string $value)
     {
-        $this->value = \trim(\preg_replace('/[[:cntrl:]]/', '', $value) ?? '');
+        $this->value = trim(preg_replace('/[[:cntrl:]]/', '', $value) ?? '');
         return $this;
     }
     /**

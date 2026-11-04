@@ -16,10 +16,10 @@ class AttachmentCollection extends Collection
     }
     public function add($attachment)
     {
-        if (\is_a($attachment, Attachment::class) || \is_a($attachment, FileAttachment::class)) {
+        if (is_a($attachment, Attachment::class) || is_a($attachment, FileAttachment::class)) {
             $this->items[] = $attachment;
         } else {
-            throw new \InvalidArgumentException('This collection expects objects of type ' . Attachment::class, ' but received ' . \get_class($attachment));
+            throw new \InvalidArgumentException('This collection expects objects of type ' . Attachment::class, ' but received ' . get_class($attachment));
         }
         return $this;
     }

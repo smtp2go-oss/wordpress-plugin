@@ -76,7 +76,7 @@ final class EasyHandle
      * @throws \RuntimeException if no headers have been received or the first
      *                           header line is invalid.
      */
-    public function createResponse() : void
+    public function createResponse(): void
     {
         $this->response = null;
         [$ver, $status, $reason, $headers] = HeaderProcessor::parseHeaders($this->headers);

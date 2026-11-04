@@ -136,7 +136,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
      * @param array $options Request options to apply to the given
      *                       request and to the transfer. See {@see RequestOptions}.
      */
-    public function sendAsync(RequestInterface $request, array $options = []) : PromiseInterface
+    public function sendAsync(RequestInterface $request, array $options = []): PromiseInterface
     {
         // Merge the base URI into the request URI if needed.
         $options = $this->prepareDefaults($options);
@@ -150,7 +150,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
      *
      * @throws GuzzleException
      */
-    public function send(RequestInterface $request, array $options = []) : ResponseInterface
+    public function send(RequestInterface $request, array $options = []): ResponseInterface
     {
         $options[RequestOptions::SYNCHRONOUS] = \true;
         return $this->sendAsync($request, $options)->wait();
@@ -160,7 +160,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
      *
      * {@inheritDoc}
      */
-    public function sendRequest(RequestInterface $request) : ResponseInterface
+    public function sendRequest(RequestInterface $request): ResponseInterface
     {
         $options[RequestOptions::SYNCHRONOUS] = \true;
         $options[RequestOptions::ALLOW_REDIRECTS] = \false;
@@ -179,7 +179,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
      * @param string|UriInterface $uri     URI object or string.
      * @param array               $options Request options to apply. See {@see RequestOptions}.
      */
-    public function requestAsync(string $method, $uri = '', array $options = []) : PromiseInterface
+    public function requestAsync(string $method, $uri = '', array $options = []): PromiseInterface
     {
         $normalizedMethod = Psr7\Utils::asciiToUpper($method);
         if ($method !== $normalizedMethod) {
@@ -219,7 +219,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
      *
      * @throws GuzzleException
      */
-    public function request(string $method, $uri = '', array $options = []) : ResponseInterface
+    public function request(string $method, $uri = '', array $options = []): ResponseInterface
     {
         $normalizedMethod = Psr7\Utils::asciiToUpper($method);
         if ($method !== $normalizedMethod) {
@@ -244,7 +244,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
     {
         return $option === null ? $this->config : $this->config[$option] ?? null;
     }
-    private function buildUri(UriInterface $uri, array $config) : UriInterface
+    private function buildUri(UriInterface $uri, array $config): UriInterface
     {
         if (isset($config['base_uri'])) {
             $uri = Psr7\UriResolver::resolve(Psr7\Utils::uriFor($config['base_uri']), $uri);
@@ -265,7 +265,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
      * regenerated after base URI resolution or IDN conversion. Other values
      * are preserved as deliberate overrides, as PSR-7 requires.
      */
-    private static function shouldPreserveHost(RequestInterface $request) : bool
+    private static function shouldPreserveHost(RequestInterface $request): bool
     {
         if (!$request->hasHeader('Host')) {
             return \false;
@@ -281,14 +281,14 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
     /**
      * Configures the default options for a client.
      */
-    private function configureDefaults(array $config) : void
+    private function configureDefaults(array $config): void
     {
         $defaults = ['allow_redirects' => RedirectMiddleware::$defaultSettings, 'http_errors' => \true, 'decode_content' => \true, 'verify' => \true, 'cookies' => \false, 'idn_conversion' => \false, 'protocols' => ['http', 'https']];
         // Use the standard Linux HTTP_PROXY and HTTPS_PROXY if set.
         // We can only trust the HTTP_PROXY environment variable in a CLI
         // process due to the fact that PHP has no reliable mechanism to
         // get environment variables that start with "HTTP_".
-        if (\PHP_SAPI === 'cli' && ($proxy = Utils::getenv('HTTP_PROXY'))) {
+        if (\PHP_SAPI === 'cli' && $proxy = Utils::getenv('HTTP_PROXY')) {
             $defaults['proxy']['http'] = $proxy;
         }
         if ($proxy = Utils::getenv('HTTPS_PROXY')) {
@@ -328,7 +328,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
      *
      * @param array $options Options to modify by reference
      */
-    private function prepareDefaults(array $options) : array
+    private function prepareDefaults(array $options): array
     {
         self::warnAboutRequestLevelHandler($options);
         $defaults = $this->config;
@@ -367,7 +367,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
      *
      * @return array<string, mixed>
      */
-    private static function normalizeDeprecatedRequestOptionValues(array $options) : array
+    private static function normalizeDeprecatedRequestOptionValues(array $options): array
     {
         self::normalizeDeprecatedAuthOptionValues($options);
         self::normalizeDeprecatedTlsFileOptionValues($options, 'cert');
@@ -380,14 +380,14 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
     /**
      * @param mixed $value
      */
-    private static function canStringifyDeprecatedValue($value) : bool
+    private static function canStringifyDeprecatedValue($value): bool
     {
         return $value === null || \is_scalar($value) || \is_object($value) && \method_exists($value, '__toString');
     }
     /**
      * @param mixed $value
      */
-    private static function stringifyDeprecatedValue($value) : string
+    private static function stringifyDeprecatedValue($value): string
     {
         if (\is_float($value) && !\is_finite($value)) {
             return \is_nan($value) ? 'NAN' : ($value > 0 ? 'INF' : '-INF');
@@ -406,7 +406,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
     /**
      * @param array<string, mixed> $options
      */
-    private static function normalizeDeprecatedAuthOptionValues(array &$options) : void
+    private static function normalizeDeprecatedAuthOptionValues(array &$options): void
     {
         if (!isset($options['auth']) || !\is_array($options['auth']) || $options['auth'] === []) {
             return;
@@ -423,7 +423,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
     /**
      * @param array<string, mixed> $options
      */
-    private static function normalizeDeprecatedTlsFileOptionValues(array &$options, string $option) : void
+    private static function normalizeDeprecatedTlsFileOptionValues(array &$options, string $option): void
     {
         if (!isset($options[$option]) || !\is_array($options[$option])) {
             return;
@@ -437,7 +437,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
     /**
      * @param array<string, mixed> $options
      */
-    private static function normalizeDeprecatedStringOptionValues(array &$options) : void
+    private static function normalizeDeprecatedStringOptionValues(array &$options): void
     {
         foreach (['cert_type', 'force_ip_resolve', 'ssl_key_type'] as $option) {
             if (\array_key_exists($option, $options) && !\is_string($options[$option]) && self::canStringifyDeprecatedValue($options[$option])) {
@@ -448,7 +448,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
     /**
      * @param array<string, mixed> $options
      */
-    private static function normalizeDeprecatedNumericOptionValues(array &$options) : void
+    private static function normalizeDeprecatedNumericOptionValues(array &$options): void
     {
         foreach (['connect_timeout', 'delay', 'read_timeout', 'timeout'] as $option) {
             if (\array_key_exists($option, $options) && \is_string($options[$option]) && \is_numeric($options[$option])) {
@@ -459,27 +459,27 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
     /**
      * @param array<string, mixed> $options
      */
-    private static function normalizeDeprecatedIntegerOptionValues(array &$options) : void
+    private static function normalizeDeprecatedIntegerOptionValues(array &$options): void
     {
         foreach (['crypto_method', 'crypto_method_max', 'retries'] as $option) {
             if (!\array_key_exists($option, $options)) {
                 continue;
             }
-            if (\is_string($options[$option]) && \preg_match('/^-?\\d+$/D', $options[$option]) === 1) {
+            if (\is_string($options[$option]) && \preg_match('/^-?\d+$/D', $options[$option]) === 1) {
                 $options[$option] = (int) $options[$option];
             } elseif (\is_float($options[$option]) && \is_finite($options[$option]) && $options[$option] === (float) (int) $options[$option]) {
                 $options[$option] = (int) $options[$option];
             }
         }
     }
-    private static function warnAboutRequestLevelHandler(array $options) : void
+    private static function warnAboutRequestLevelHandler(array $options): void
     {
         if (!\array_key_exists('handler', $options)) {
             return;
         }
         \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/guzzle', '7.12', 'Passing the "handler" request option is deprecated; guzzlehttp/guzzle 8.0 will ignore request-level handlers. Configure the handler when creating the Client, or use a separate Client instance for requests that need a different handler.');
     }
-    private static function warnAboutInvalidRequestOptionTypes(array $options) : void
+    private static function warnAboutInvalidRequestOptionTypes(array $options): void
     {
         if (isset($options['handler']) && !\is_callable($options['handler'])) {
             self::warnInvalidRequestOptionType('handler', 'callable', $options['handler']);
@@ -493,7 +493,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
             self::warnAboutInvalidAuthOptionTypes($options['auth']);
         }
         if (isset($options['body']) && \is_array($options['body'])) {
-            self::warnInvalidRequestOptionType('body', 'resource|string|null|int|float|bool|StreamInterface|(callable&object)|\\Iterator|\\Stringable', $options['body']);
+            self::warnInvalidRequestOptionType('body', 'resource|string|null|int|float|bool|StreamInterface|(callable&object)|\Iterator|\Stringable', $options['body']);
         }
         self::warnAboutInvalidTlsFileOptionTypes($options, 'cert');
         self::warnIfPresentAndNotString($options, 'cert_type');
@@ -554,7 +554,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
             self::warnInvalidRequestOptionType('cookies', 'false|CookieJarInterface', $options['cookies'], '7.13');
         }
     }
-    private static function warnAboutInvalidAllowRedirectsOptionTypes(array $allowRedirects) : void
+    private static function warnAboutInvalidAllowRedirectsOptionTypes(array $allowRedirects): void
     {
         self::warnIfPresentAndNotInt($allowRedirects, 'max', 'allow_redirects.max');
         self::warnIfPresentAndNotBool($allowRedirects, 'strict', 'allow_redirects.strict');
@@ -567,7 +567,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
     /**
      * @param mixed $auth
      */
-    private static function warnAboutInvalidAuthOptionTypes($auth) : void
+    private static function warnAboutInvalidAuthOptionTypes($auth): void
     {
         if ($auth === \false || \is_string($auth) || $auth === []) {
             return;
@@ -589,7 +589,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
     /**
      * @param mixed $value
      */
-    private static function warnAboutInvalidFormParamTypes($value) : void
+    private static function warnAboutInvalidFormParamTypes($value): void
     {
         if (!\is_array($value)) {
             self::warnInvalidRequestOptionType('form_params', 'array<array-key, string|int|float|bool|null|array>', $value);
@@ -597,7 +597,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
         }
         self::warnAboutInvalidFormParamArray($value, 'form_params');
     }
-    private static function warnAboutInvalidFormParamArray(array $values, string $path) : bool
+    private static function warnAboutInvalidFormParamArray(array $values, string $path): bool
     {
         foreach ($values as $key => $item) {
             $itemPath = $path . '.' . (string) $key;
@@ -617,7 +617,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
     /**
      * @param mixed $headers
      */
-    private static function warnAboutInvalidHeaderOptionTypes($headers) : void
+    private static function warnAboutInvalidHeaderOptionTypes($headers): void
     {
         if (!\is_array($headers)) {
             self::warnInvalidRequestOptionType('headers', 'array<array-key, string|non-empty-array<array-key, string>>|null', $headers);
@@ -645,7 +645,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
     /**
      * @param mixed $multipart
      */
-    private static function warnAboutInvalidMultipartOptionTypes($multipart) : void
+    private static function warnAboutInvalidMultipartOptionTypes($multipart): void
     {
         if (!\is_array($multipart)) {
             self::warnInvalidRequestOptionType('multipart', 'array<array-key, array{name: string|int, contents: mixed, headers?: array<array-key, string>, filename?: string}>', $multipart);
@@ -680,7 +680,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
             }
         }
     }
-    private static function warnAboutInvalidProxyOptionTypes(array $options) : void
+    private static function warnAboutInvalidProxyOptionTypes(array $options): void
     {
         if (!isset($options['proxy'])) {
             return;
@@ -714,7 +714,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
             }
         }
     }
-    private static function warnAboutInvalidTlsFileOptionTypes(array $options, string $option) : void
+    private static function warnAboutInvalidTlsFileOptionTypes(array $options, string $option): void
     {
         if (!isset($options[$option])) {
             return;
@@ -733,61 +733,61 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
             self::warnInvalidRequestOptionType($option . '.1', 'string|null', $options[$option][1]);
         }
     }
-    private static function warnIfPresentAndNotArray(array $options, string $option, string $expected) : void
+    private static function warnIfPresentAndNotArray(array $options, string $option, string $expected): void
     {
         if (\array_key_exists($option, $options) && !\is_array($options[$option])) {
             self::warnInvalidRequestOptionType($option, $expected, $options[$option]);
         }
     }
-    private static function warnIfPresentAndNotBool(array $options, string $option, ?string $path = null) : void
+    private static function warnIfPresentAndNotBool(array $options, string $option, ?string $path = null): void
     {
         if (\array_key_exists($option, $options) && !\is_bool($options[$option])) {
             self::warnInvalidRequestOptionType($path ?? $option, 'bool', $options[$option]);
         }
     }
-    private static function warnIfPresentAndNotBoolOrInt(array $options, string $option) : void
+    private static function warnIfPresentAndNotBoolOrInt(array $options, string $option): void
     {
         if (\array_key_exists($option, $options) && !\is_bool($options[$option]) && !\is_int($options[$option])) {
             self::warnInvalidRequestOptionType($option, 'bool|int', $options[$option]);
         }
     }
-    private static function warnIfPresentAndNotBoolOrResource(array $options, string $option) : void
+    private static function warnIfPresentAndNotBoolOrResource(array $options, string $option): void
     {
         if (\array_key_exists($option, $options) && !\is_bool($options[$option]) && !\is_resource($options[$option])) {
             self::warnInvalidRequestOptionType($option, 'bool|resource', $options[$option]);
         }
     }
-    private static function warnIfPresentAndNotBoolOrString(array $options, string $option) : void
+    private static function warnIfPresentAndNotBoolOrString(array $options, string $option): void
     {
         if (\array_key_exists($option, $options) && !\is_bool($options[$option]) && !\is_string($options[$option])) {
             self::warnInvalidRequestOptionType($option, 'bool|string', $options[$option]);
         }
     }
-    private static function warnIfPresentAndNotCallable(array $options, string $option, ?string $path = null, string $since = '7.11') : void
+    private static function warnIfPresentAndNotCallable(array $options, string $option, ?string $path = null, string $since = '7.11'): void
     {
         if (\array_key_exists($option, $options) && !\is_callable($options[$option])) {
             self::warnInvalidRequestOptionType($path ?? $option, 'callable', $options[$option], $since);
         }
     }
-    private static function warnIfPresentAndNotInt(array $options, string $option, ?string $path = null, string $since = '7.11') : void
+    private static function warnIfPresentAndNotInt(array $options, string $option, ?string $path = null, string $since = '7.11'): void
     {
         if (\array_key_exists($option, $options) && !\is_int($options[$option])) {
             self::warnInvalidRequestOptionType($path ?? $option, 'int', $options[$option], $since);
         }
     }
-    private static function warnIfPresentAndNotNumber(array $options, string $option) : void
+    private static function warnIfPresentAndNotNumber(array $options, string $option): void
     {
         if (\array_key_exists($option, $options) && !\is_int($options[$option]) && !\is_float($options[$option])) {
             self::warnInvalidRequestOptionType($option, 'int|float', $options[$option]);
         }
     }
-    private static function warnIfPresentAndNotString(array $options, string $option) : void
+    private static function warnIfPresentAndNotString(array $options, string $option): void
     {
         if (\array_key_exists($option, $options) && !\is_string($options[$option])) {
             self::warnInvalidRequestOptionType($option, 'string', $options[$option]);
         }
     }
-    private static function warnIfPresentAndNotStringArray(array $options, string $option, bool $nonEmpty, ?string $path = null) : void
+    private static function warnIfPresentAndNotStringArray(array $options, string $option, bool $nonEmpty, ?string $path = null): void
     {
         if (!\array_key_exists($option, $options)) {
             return;
@@ -808,7 +808,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
     /**
      * @param array<array-key, mixed> $options
      */
-    private static function warnAboutInvalidProtocolValues(array $options, string $option, ?string $path = null) : void
+    private static function warnAboutInvalidProtocolValues(array $options, string $option, ?string $path = null): void
     {
         if (!isset($options[$option]) || !\is_array($options[$option])) {
             return;
@@ -820,7 +820,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
             }
         }
     }
-    private static function warnIfPresentAndNotStringOrNumber(array $options, string $option) : void
+    private static function warnIfPresentAndNotStringOrNumber(array $options, string $option): void
     {
         if (\array_key_exists($option, $options) && !\is_string($options[$option]) && !\is_int($options[$option]) && !\is_float($options[$option])) {
             self::warnInvalidRequestOptionType($option, 'string|int|float', $options[$option]);
@@ -829,7 +829,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
     /**
      * @param mixed $value
      */
-    private static function warnInvalidRequestOptionType(string $option, string $expected, $value, string $since = '7.11') : void
+    private static function warnInvalidRequestOptionType(string $option, string $expected, $value, string $since = '7.11'): void
     {
         \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/guzzle', $since, 'Passing %s to request option "%s" is deprecated; guzzlehttp/guzzle 8.0 requires %s.', \get_debug_type($value), $option, $expected);
     }
@@ -841,7 +841,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
      *
      * @param array $options See {@see RequestOptions}.
      */
-    private function transfer(RequestInterface $request, array $options) : PromiseInterface
+    private function transfer(RequestInterface $request, array $options): PromiseInterface
     {
         $request = $this->applyOptions($request, $options);
         $protocolVersion = $request->getProtocolVersion();
@@ -862,11 +862,11 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
     /**
      * Applies the array of request options to a request.
      */
-    private function applyOptions(RequestInterface $request, array &$options) : RequestInterface
+    private function applyOptions(RequestInterface $request, array &$options): RequestInterface
     {
         $modify = ['set_headers' => []];
         if (isset($options['headers'])) {
-            if (\array_keys($options['headers']) === \range(0, \count($options['headers']) - 1)) {
+            if (array_keys($options['headers']) === range(0, count($options['headers']) - 1)) {
                 throw new InvalidArgumentException('The headers array must have header name as keys.');
             }
             $headers = $options['headers'];
@@ -988,7 +988,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
      *
      * @return list<string>
      */
-    private static function castDeprecatedHeaderOptionValues(array &$headers) : array
+    private static function castDeprecatedHeaderOptionValues(array &$headers): array
     {
         $droppedHeaderNames = [];
         foreach ($headers as $name => $value) {
@@ -1021,7 +1021,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
     /**
      * @param mixed $body
      */
-    private static function createBodyStream($body) : StreamInterface
+    private static function createBodyStream($body): StreamInterface
     {
         if ($body instanceof StreamInterface) {
             return $body;
@@ -1044,7 +1044,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
     /**
      * @param bool|float|int|string $value
      */
-    private static function stringifyScalar($value) : string
+    private static function stringifyScalar($value): string
     {
         // Normalize non-finite floats to dodge PHP 8.5's (string) NAN
         // coercion warning while the value is still accepted.
@@ -1057,7 +1057,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
      * Converts non-finite floats in the array to the strings PHP coerces
      * them to, as implicit coercion of NAN emits a warning on PHP 8.5.
      */
-    private static function normalizeNonFiniteFloats(array $values, string $option) : array
+    private static function normalizeNonFiniteFloats(array $values, string $option): array
     {
         foreach ($values as $key => $value) {
             if (\is_array($value)) {
@@ -1072,7 +1072,7 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
     /**
      * @param string|int|float $version
      */
-    private static function normalizeProtocolVersion($version) : string
+    private static function normalizeProtocolVersion($version): string
     {
         if ('' === $version) {
             \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/guzzle', '7.11', 'Passing an empty "version" request option is deprecated; guzzlehttp/guzzle 8.0 will reject empty protocol versions.');
@@ -1080,14 +1080,14 @@ class Client implements ClientInterface, \SMTP2GOWPPlugin\Psr\Http\Client\Client
         }
         return \is_float($version) ? \number_format($version, 1, '.', '') : (string) $version;
     }
-    private static function isProtocolVersionValid(string $version) : bool
+    private static function isProtocolVersionValid(string $version): bool
     {
-        return 1 === \preg_match('/^\\d+(?:\\.\\d+)?$/D', $version);
+        return 1 === \preg_match('/^\d+(?:\.\d+)?$/D', $version);
     }
     /**
      * Return an InvalidArgumentException with pre-set message.
      */
-    private function invalidBody() : InvalidArgumentException
+    private function invalidBody(): InvalidArgumentException
     {
         return new InvalidArgumentException('Passing in the "body" request ' . 'option as an array to send a request is not supported. ' . 'Please use the "form_params" request option to send a ' . 'application/x-www-form-urlencoded request, or the "multipart" ' . 'request option to send a multipart/form-data request.');
     }

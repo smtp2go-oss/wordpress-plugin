@@ -14,15 +14,15 @@ class Collection implements \ArrayAccess, \Iterator, \Countable
     {
         $this->items[] = $item;
     }
-    public function offsetSet($offset, $value) : void
+    public function offsetSet($offset, $value): void
     {
-        if (\is_null($offset)) {
+        if (is_null($offset)) {
             $this->items[] = $value;
         } else {
             $this->items[$offset] = $value;
         }
     }
-    public function offsetExists($offset) : bool
+    public function offsetExists($offset): bool
     {
         return isset($this->items[$offset]);
     }
@@ -30,7 +30,7 @@ class Collection implements \ArrayAccess, \Iterator, \Countable
      * @param mixed $offset 
      * @return void 
      */
-    public function offsetUnset($offset) : void
+    public function offsetUnset($offset): void
     {
         unset($this->items[$offset]);
     }
@@ -51,7 +51,7 @@ class Collection implements \ArrayAccess, \Iterator, \Countable
         return $this->items;
     }
     /** @return void  */
-    public function rewind() : void
+    public function rewind(): void
     {
         $this->position = 0;
     }
@@ -68,18 +68,18 @@ class Collection implements \ArrayAccess, \Iterator, \Countable
         return $this->position;
     }
     /** @return void  */
-    public function next() : void
+    public function next(): void
     {
         ++$this->position;
     }
     /** @return bool  */
-    public function valid() : bool
+    public function valid(): bool
     {
         return isset($this->items[$this->position]);
     }
     /** @return int  */
-    public function count() : int
+    public function count(): int
     {
-        return \count($this->items);
+        return count($this->items);
     }
 }

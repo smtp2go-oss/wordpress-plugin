@@ -26,7 +26,7 @@ class FileAttachment
     }
     public function toArray()
     {
-        return array('filename' => $this->getFileName(), 'fileblob' => \base64_encode($this->getBody()), 'mimetype' => $this->getMimetype());
+        return array('filename' => $this->getFileName(), 'fileblob' => base64_encode($this->getBody()), 'mimetype' => $this->getMimetype());
     }
     /**
      * Get the value of body

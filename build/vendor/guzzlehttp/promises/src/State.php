@@ -11,28 +11,28 @@ final class State
     /**
      * Returns true if a promise is pending.
      */
-    public static function isPending(PromiseInterface $promise) : bool
+    public static function isPending(PromiseInterface $promise): bool
     {
         return $promise->getState() === PromiseInterface::PENDING;
     }
     /**
      * Returns true if a promise is fulfilled or rejected.
      */
-    public static function isSettled(PromiseInterface $promise) : bool
+    public static function isSettled(PromiseInterface $promise): bool
     {
         return $promise->getState() !== PromiseInterface::PENDING;
     }
     /**
      * Returns true if a promise is fulfilled.
      */
-    public static function isFulfilled(PromiseInterface $promise) : bool
+    public static function isFulfilled(PromiseInterface $promise): bool
     {
         return $promise->getState() === PromiseInterface::FULFILLED;
     }
     /**
      * Returns true if a promise is rejected.
      */
-    public static function isRejected(PromiseInterface $promise) : bool
+    public static function isRejected(PromiseInterface $promise): bool
     {
         return $promise->getState() === PromiseInterface::REJECTED;
     }

@@ -49,7 +49,7 @@ final class PumpStream implements StreamInterface
         $this->metadata = $options['metadata'] ?? [];
         $this->buffer = new BufferStream();
     }
-    public function __toString() : string
+    public function __toString(): string
     {
         try {
             return Utils::copyToString($this);
@@ -57,11 +57,11 @@ final class PumpStream implements StreamInterface
             if (\PHP_VERSION_ID >= 70400) {
                 throw $e;
             }
-            \trigger_error(\sprintf('%s::__toString exception: %s', self::class, (string) $e), \E_USER_ERROR);
+            trigger_error(sprintf('%s::__toString exception: %s', self::class, (string) $e), \E_USER_ERROR);
             return '';
         }
     }
-    public function close() : void
+    public function close(): void
     {
         $this->detach();
     }
@@ -71,27 +71,27 @@ final class PumpStream implements StreamInterface
         $this->source = null;
         return null;
     }
-    public function getSize() : ?int
+    public function getSize(): ?int
     {
         return $this->size;
     }
-    public function tell() : int
+    public function tell(): int
     {
         return $this->tellPos;
     }
-    public function eof() : bool
+    public function eof(): bool
     {
         return $this->source === null;
     }
-    public function isSeekable() : bool
+    public function isSeekable(): bool
     {
         return \false;
     }
-    public function rewind() : void
+    public function rewind(): void
     {
         $this->seek(0);
     }
-    public function seek($offset, $whence = \SEEK_SET) : void
+    public function seek($offset, $whence = \SEEK_SET): void
     {
         if (!\is_int($offset)) {
             \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/psr7', '2.11', 'Passing %s to StreamInterface::seek() is deprecated; guzzlehttp/psr7 3.0 requires int for $offset.', \get_debug_type($offset));
@@ -101,38 +101,38 @@ final class PumpStream implements StreamInterface
         }
         throw new \RuntimeException('Cannot seek a PumpStream');
     }
-    public function isWritable() : bool
+    public function isWritable(): bool
     {
         return \false;
     }
-    public function write($string) : int
+    public function write($string): int
     {
         if (!\is_string($string)) {
             \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/psr7', '2.11', 'Passing %s to StreamInterface::write() is deprecated; guzzlehttp/psr7 3.0 requires string for $string.', \get_debug_type($string));
         }
         throw new \RuntimeException('Cannot write to a PumpStream');
     }
-    public function isReadable() : bool
+    public function isReadable(): bool
     {
         return \true;
     }
-    public function read($length) : string
+    public function read($length): string
     {
         if (!\is_int($length)) {
             \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/psr7', '2.11', 'Passing %s to StreamInterface::read() is deprecated; guzzlehttp/psr7 3.0 requires int for $length.', \get_debug_type($length));
         }
         $data = $this->buffer->read($length);
-        $readLen = \strlen($data);
+        $readLen = strlen($data);
         $this->tellPos += $readLen;
         $remaining = $length - $readLen;
         if ($remaining) {
             $this->pump($remaining);
             $data .= $this->buffer->read($remaining);
-            $this->tellPos += \strlen($data) - $readLen;
+            $this->tellPos += strlen($data) - $readLen;
         }
         return $data;
     }
-    public function getContents() : string
+    public function getContents(): string
     {
         $result = '';
         while (!$this->eof()) {
@@ -153,7 +153,7 @@ final class PumpStream implements StreamInterface
         }
         return $this->metadata[$key] ?? null;
     }
-    private function pump(int $length) : void
+    private function pump(int $length): void
     {
         if ($this->source !== null) {
             do {
@@ -163,7 +163,7 @@ final class PumpStream implements StreamInterface
                     return;
                 }
                 $this->buffer->write($data);
-                $length -= \strlen($data);
+                $length -= strlen($data);
             } while ($length > 0);
         }
     }

@@ -27,7 +27,7 @@ final class CurlShareHandleState
     /**
      * @param mixed $sharing
      */
-    public static function fromOption($sharing) : ?self
+    public static function fromOption($sharing): ?self
     {
         if ($sharing instanceof self) {
             return $sharing;
@@ -44,7 +44,7 @@ final class CurlShareHandleState
     /**
      * @param mixed $sharing
      */
-    public static function normalizeMode($sharing, string $option) : string
+    public static function normalizeMode($sharing, string $option): string
     {
         if ($sharing instanceof self) {
             return $sharing->mode;
@@ -55,9 +55,9 @@ final class CurlShareHandleState
         if ($sharing === TransportSharing::HANDLER_PREFER || $sharing === TransportSharing::HANDLER_REQUIRE) {
             return $sharing;
         }
-        throw new \InvalidArgumentException(\sprintf('The "%s" option must be null or a GuzzleHttp\\TransportSharing::* constant; received %s.', $option, \get_debug_type($sharing)));
+        throw new \InvalidArgumentException(\sprintf('The "%s" option must be null or a GuzzleHttp\TransportSharing::* constant; received %s.', $option, \get_debug_type($sharing)));
     }
-    public static function assertNoRequiredSharingCustomFactoryConflict(array $options, string $handlerName) : void
+    public static function assertNoRequiredSharingCustomFactoryConflict(array $options, string $handlerName): void
     {
         if (!\array_key_exists('handle_factory', $options) || $options['handle_factory'] === null) {
             return;
@@ -68,7 +68,7 @@ final class CurlShareHandleState
         }
         throw new \InvalidArgumentException(\sprintf('The "transport_sharing" %s option cannot require sharing with a custom "handle_factory" because Guzzle cannot ensure that the custom factory applies CURLOPT_SHARE.', $handlerName));
     }
-    private static function createHandlerShareOrNull(string $mode) : ?self
+    private static function createHandlerShareOrNull(string $mode): ?self
     {
         try {
             return self::createHandlerShare($mode);
@@ -76,19 +76,19 @@ final class CurlShareHandleState
             return null;
         }
     }
-    private static function createHandlerShare(string $mode) : self
+    private static function createHandlerShare(string $mode): self
     {
-        if (!\function_exists('curl_share_init') || !\function_exists('curl_share_setopt')) {
+        if (!\function_exists('curl_share_init') || !\function_exists('curl_share_setopt') && !\function_exists('SMTP2GOWPPlugin\curl_share_setopt')) {
             throw new \InvalidArgumentException('The "transport_sharing" option requires cURL share support.');
         }
         self::requireCurlConstant('CURLOPT_SHARE');
         $shareOption = self::requireCurlConstant('CURLSHOPT_SHARE');
         $locks = self::handlerLocks($mode);
-        $handle = \curl_share_init();
+        $handle = curl_share_init();
         try {
             foreach ($locks as $lock) {
                 try {
-                    $success = \curl_share_setopt($handle, $shareOption, $lock);
+                    $success = curl_share_setopt($handle, $shareOption, $lock);
                 } catch (\Throwable $e) {
                     throw new \InvalidArgumentException('Unable to configure cURL share handle: ' . $e->getMessage(), 0, $e);
                 }
@@ -105,7 +105,7 @@ final class CurlShareHandleState
     /**
      * @return int[]
      */
-    private static function handlerLocks(string $mode) : array
+    private static function handlerLocks(string $mode): array
     {
         CurlVersion::ensureHandlerSharingSupported();
         if ($mode === TransportSharing::HANDLER_REQUIRE) {
@@ -117,7 +117,7 @@ final class CurlShareHandleState
         }
         return $locks;
     }
-    private static function requireCurlConstant(string $constant) : int
+    private static function requireCurlConstant(string $constant): int
     {
         if (!\defined($constant)) {
             throw new \InvalidArgumentException(\sprintf('The "transport_sharing" option requires %s, but it is not available in the installed PHP cURL extension.', $constant));
@@ -131,10 +131,10 @@ final class CurlShareHandleState
     /**
      * @param resource|\CurlShareHandle $handle
      */
-    private static function closeHandlerShareHandleOnPhp7($handle) : void
+    private static function closeHandlerShareHandleOnPhp7($handle): void
     {
         if (\PHP_VERSION_ID < 80000 && \is_resource($handle)) {
-            \curl_share_close($handle);
+            curl_share_close($handle);
         }
     }
 }
