@@ -68,6 +68,16 @@ Absolutely! The SMTP2GO support team has agents located in the US, EU, UK, and t
 
 If you're needing extra help, our support team has lots of tips and tricks to help you out. You can find the support tab in your SMTP2GO dashboard.
 
+= Why am I being asked to re-enter my API key? =
+
+Your stored API key is encrypted using your site's WordPress salts. If those salts are changed, the key can no longer be decrypted. Re-enter your API key to fix this. To stop it happening again, define a dedicated SMTP2GO_ENCRYPTION_KEY constant in wp-config.php. See "API Key Encryption" in the Installation section.
+
+= Should I enable Fast Accept? =
+
+If sending email makes your site feel slow, Fast Accept can help, because SMTP2GO responds as soon as it accepts the email rather than after processing it. The trade-off is that WordPress won't know about problems that happen after the email is accepted, so check your SMTP2GO reports or set up webhooks to monitor delivery.
+
+
+
 == Installation ==
 
 If you are not an existing customer, you will need an SMTP2GO account - [a free plan is available!](https://www.smtp2go.com)
@@ -122,6 +132,31 @@ And that's it! If any problem occurs, please contact us via the "Support" tab wi
 
 Note: The default From Email Address and From Name is only used if these are not specified by any other Wordpress function or plugin that is trying to send an email.
 
+**API Key Encryption:**
+
+When you save your API key in the plugin settings, it is encrypted before being stored in the database (this requires the OpenSSL PHP extension, which most hosts provide).
+
+By default the key is encrypted using your site's WordPress AUTH_KEY salt. If those salts ever change (for example, some security plugins and hosts rotate them automatically), the stored API key can no longer be decrypted and you will be asked to re-enter it.
+
+To avoid this, you can define your own encryption key in wp-config.php:
+
+`define('SMTP2GO_ENCRYPTION_KEY', 'your-long-random-string');`
+
+Use a long, random value. You can generate one with `openssl rand -base64 32`. Keep it safe and don't change it once it's set.
+
+When SMTP2GO_ENCRYPTION_KEY is added, an API key that has already been saved will be re-encrypted with it the next time it's decrypted, so you don't need to re-enter your key. If you later remove or change this constant, the plugin will not be able to decrypt the stored key and will show a notice asking you to enter it again.
+
+If you store your API key in wp-config.php instead (using SMTP2GO_USE_CONSTANTS and SMTP2GO_API_KEY), it is never saved to the database, so this encryption setting doesn't apply.
+
+**Fast Accept:**
+
+The "Use Fast Accept" setting makes sending quicker. When it is enabled, SMTP2GO accepts each email immediately and processes it in the background, instead of waiting until processing is finished before responding to your site. This can noticeably speed up pages and forms that send email, such as contact forms and checkout pages.
+
+Because the response comes back before the email has been fully processed, a successful send in WordPress only means SMTP2GO has accepted the email, not that it has been delivered. Use your SMTP2GO reports or [webhooks](https://developers.smtp2go.com/docs/webhooks-overview) if you need to track final delivery.
+
+
+
+
 == Support ==
 
 If you have questions or need assistance then feel free to contact the support team by logging into your [SMTP2GO dashboard](https://app.smtp2go.com) and clicking the support icon on the top right navigation bar.
@@ -149,7 +184,7 @@ Our data centers are located around the world, meaning lightning-fast connection
 * fix usage bar display and failed-response handling
 * fix sender name field pattern validation in Chromium
 * only check for conflicting plugins in the admin
-* update smtp2go-php to 1.3
+* update smtp2go-php to 1.3.2
 = v1.17.1 =
 * test against version 7.1
 = v1.17.0 =
