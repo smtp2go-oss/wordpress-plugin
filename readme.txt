@@ -70,7 +70,7 @@ If you're needing extra help, our support team has lots of tips and tricks to he
 
 = Why am I being asked to re-enter my API key? =
 
-Your stored API key is encrypted using your site's WordPress salts. If those salts are changed, the key can no longer be decrypted. Re-enter your API key to fix this. To stop it happening again, define a dedicated SMTP2GO_ENCRYPTION_KEY constant in wp-config.php. See "API Key Encryption" in the Installation section.
+Your stored API key is encrypted using your site's WordPress salts. If those salts are changed, the key can no longer be decrypted. Re-enter your API key to fix this. To stop it happening again, define a dedicated SMTP2GO_ENCRYPTION_KEY constant in wp-config.php. See "API Key Management" in the Installation section.
 
 = Should I enable Fast Accept? =
 
@@ -132,7 +132,35 @@ And that's it! If any problem occurs, please contact us via the "Support" tab wi
 
 Note: The default From Email Address and From Name is only used if these are not specified by any other Wordpress function or plugin that is trying to send an email.
 
-**API Key Encryption:**
+**API Key Management:**
+
+There are three ways to give the plugin your API key. From most to least secure:
+
+1. An environment variable, read in wp-config.php
+2. A constant in wp-config.php
+3. The plugin settings page (the key is encrypted and stored in the database)
+
+*Using an environment variable (most secure):*
+
+If your host lets you set server environment variables (for example in your hosting control panel, your web server or PHP-FPM config, or a Docker or container setting), store the key in a variable called SMTP2GO_API_KEY and read it with PHP's getenv() function. Add these lines to wp-config.php, above the line that says "That's all, stop editing!":
+
+    define('SMTP2GO_USE_CONSTANTS', true);
+    define('SMTP2GO_API_KEY', getenv('SMTP2GO_API_KEY'));
+
+The key is never written to wp-config.php or the database, so it can't leak from a copied file or a database backup, and you can change it without editing any site files.
+
+If the environment variable isn't set, or PHP can't see it, the plugin shows a notice saying the SMTP2GO_API_KEY constant is empty and emails won't be sent until it's fixed. Some PHP-FPM setups hide environment variables from PHP by default (`clear_env = yes`). If so, ask your host to pass the variable through to PHP.
+
+*Using a constant in wp-config.php:*
+
+You can also put the key in wp-config.php directly:
+
+    define('SMTP2GO_USE_CONSTANTS', true);
+    define('SMTP2GO_API_KEY', 'api-XXXXXXXXXXXXXXXXXXXXXXXX');
+
+SMTP2GO_USE_CONSTANTS must be set to true, or the plugin ignores SMTP2GO_API_KEY and uses the key saved in the settings. While the constant is in use, the settings page shows "The API key is defined as a constant in your wp-config.php file" instead of the API key field. If a key was saved in the settings earlier, a "Delete API Key from Database" link lets you remove it. Because the key sits in plain text in wp-config.php, keep that file out of version control and backups that others can access.
+
+*Saving the key in the plugin settings:*
 
 When you save your API key in the plugin settings, it is encrypted before being stored in the database (this requires the OpenSSL PHP extension, which most hosts provide).
 
