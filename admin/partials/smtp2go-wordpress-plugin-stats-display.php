@@ -36,13 +36,16 @@ $bar_width = 580;
             <div class="smtp2go-usage-bar">
                 <!-- a bar showing their current billing period's usage -->
                 <?php
-                
+            if ($stats->email_count === 0) {
+                $progress_bar_width = 0;
+            } else {
                 $progress_bar_width = ($stats->email_count / $stats->cycle_max) * $bar_width;
                 if ($progress_bar_width < 10) {
                     $progress_bar_width = 10;
                 } else if ($progress_bar_width > $bar_width) {
                     $progress_bar_width = $bar_width;
                 }
+            }
                 ?>
 
 
