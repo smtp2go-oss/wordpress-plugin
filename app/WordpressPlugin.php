@@ -140,7 +140,10 @@ class WordpressPlugin
 
         $this->loader->addFilter('plugin_action_links_' . SMTP2GO_PLUGIN_BASENAME, $plugin_admin, 'addSettingsLink');
 
+        $this->loader->addAction('admin_init', $this, 'maybeUpgradeKeyEncryption');
         $this->loader->addAction('admin_init', $plugin_admin, 'registerSettings');
+        $this->loader->addAction('admin_init', $plugin_admin, 'maybeShowApiKeyNotice');
+
 
         $this->loader->addAction('admin_enqueue_scripts', $plugin_admin, 'enqueueStyles');
         $this->loader->addAction('admin_enqueue_scripts', $plugin_admin, 'enqueueScripts');
@@ -150,6 +153,32 @@ class WordpressPlugin
         $this->loader->addAction('wp_ajax_smtp2go_clear_saved_api_key', $plugin_admin, 'clearSavedApiKey');
 
         $this->loader->addAction('phpmailer_init', $this, 'configurePhpmailer');
+    }
+
+    public function maybeUpgradeKeyEncryption()
+    {
+        $secureHelper = new SecureApiKeyHelper();
+        if (!$secureHelper->canEncrypt()) {
+            return;
+        }
+        //skip if the key comes from a constant, the database value isn't in use
+        if (
+            defined("SMTP2GO_ENCRYPTION_KEY")
+            && !empty(constant("SMTP2GO_ENCRYPTION_KEY"))
+            && !SettingsHelper::settingHasDefinedConstant('smtp2go_api_key')
+        ) {
+            $setting = SettingsHelper::getOption('smtp2go_api_key');
+
+            $dec = $secureHelper->decryptKey($setting);
+            if (
+                $secureHelper->isDecrypted($dec)
+                && $secureHelper->getLastUsedKey() !== constant("SMTP2GO_ENCRYPTION_KEY")
+            ) {
+
+                $newEncrypted = $secureHelper->encryptKey($dec);
+                update_option('smtp2go_api_key', $newEncrypted);
+            }
+        }
     }
 
     public function configurePhpmailer($phpmailer)
@@ -183,7 +212,7 @@ class WordpressPlugin
         }
 
         if (!$phpmailer instanceof SMTP2GOMailer) {
-            $phpmailer          = new SMTP2GOMailer;
+            $phpmailer          = new SMTP2GOMailer(true);
             $phpmailer::$validator = static function ($email) {
                 return (bool) is_email($email);
             };

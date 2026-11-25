@@ -18,7 +18,7 @@ use SMTP2GOWPPlugin\SMTP2GO\Types\Mail\FileAttachment;
 class Send implements BuildsRequest
 {
     /**
-     * Sender RFC-822 formatted email "John Smith <john@example.com>"
+     * Sender RFC-5322 formatted email "John Smith <john@example.com>"
      *
      * @var string
      */
@@ -136,7 +136,7 @@ class Send implements BuildsRequest
      *
      * @return array
      */
-    public function buildRequestBody() : array
+    public function buildRequestBody(): array
     {
         /** the body of the request which will be sent as json */
         $body = [];
@@ -155,11 +155,11 @@ class Send implements BuildsRequest
         $body['version'] = $this->version;
         $body['schedule'] = $this->scheduleAt;
         $body['fastaccept'] = $this->fastaccept;
-        return \array_filter($body);
+        return array_filter($body);
     }
     public function scheduleAt(int $timestamp)
     {
-        if ($timestamp < \time() || $timestamp > \time() + 3 * 24 * 60 * 60) {
+        if ($timestamp < time() || $timestamp > time() + 3 * 24 * 60 * 60) {
             throw new \InvalidArgumentException('The timestamp must be a valid unix timestamp in the future, and no more than 3 days from now.');
         }
         $this->scheduleAt = $timestamp;
@@ -179,7 +179,7 @@ class Send implements BuildsRequest
      *
      * @return array
      */
-    public function buildAttachments() : array
+    public function buildAttachments(): array
     {
         if ($this->attachments->count() === 0) {
             return [];
@@ -195,7 +195,7 @@ class Send implements BuildsRequest
      *
      * @return array
      */
-    public function buildInlines() : array
+    public function buildInlines(): array
     {
         if ($this->inlines->count() === 0) {
             return [];
@@ -211,7 +211,7 @@ class Send implements BuildsRequest
      *
      * @return string
      */
-    public function getEndpoint() : string
+    public function getEndpoint(): string
     {
         return Send::ENDPOINT;
     }
@@ -220,7 +220,7 @@ class Send implements BuildsRequest
      *
      * @return string
      */
-    public function getMethod() : string
+    public function getMethod(): string
     {
         return Send::HTTP_METHOD;
     }
@@ -230,7 +230,7 @@ class Send implements BuildsRequest
      * @param  CustomHeaderCollection $headers
      * @return Send
      */
-    public function setCustomHeaders(CustomHeaderCollection $headers) : Send
+    public function setCustomHeaders(CustomHeaderCollection $headers): Send
     {
         $this->custom_headers = $headers;
         return $this;
@@ -241,7 +241,7 @@ class Send implements BuildsRequest
      * @param  CustomHeader $header
      * @return Send
      */
-    public function addCustomHeader(CustomHeader $header) : Send
+    public function addCustomHeader(CustomHeader $header): Send
     {
         $this->custom_headers->add($header);
         return $this;
@@ -251,27 +251,20 @@ class Send implements BuildsRequest
      *
      * @return string
      */
-    public function getSender() : string
+    public function getSender(): string
     {
         return $this->sender;
     }
     /**
-     * Set sender as RFC-822 formatted email "John Smith <john@example.com>"
+     * Set sender as RFC-5322 formatted email "John Smith <john@example.com>"
      *
      * @param Address $address
      *
      * @return Send
      */
-    public function setSender(Address $address) : Send
+    public function setSender(Address $address): Send
     {
-        $name = $address->getName();
-        $email = $address->getEmail();
-        if (!empty($name)) {
-            $email = \str_replace(['<', '>'], '', $email);
-            $this->sender = "\"{$name}\" <{$email}>";
-        } else {
-            $this->sender = "{$email}";
-        }
+        $this->sender = $address->toString();
         return $this;
     }
     /**
@@ -279,7 +272,7 @@ class Send implements BuildsRequest
      *
      * @return  string
      */
-    public function getSubject() : string
+    public function getSubject(): string
     {
         return $this->subject;
     }
@@ -290,7 +283,7 @@ class Send implements BuildsRequest
      *
      * @return Send
      */
-    public function setSubject(string $subject) : Send
+    public function setSubject(string $subject): Send
     {
         $this->subject = $subject;
         return $this;
@@ -300,7 +293,7 @@ class Send implements BuildsRequest
      *
      * @return  string
      */
-    public function getHtmlBody() : string
+    public function getHtmlBody(): string
     {
         return $this->html_body;
     }
@@ -311,7 +304,7 @@ class Send implements BuildsRequest
      *
      * @return Send
      */
-    public function setHtmlBody(string $htmlBody) : Send
+    public function setHtmlBody(string $htmlBody): Send
     {
         $this->html_body = $htmlBody;
         return $this;
@@ -321,7 +314,7 @@ class Send implements BuildsRequest
      *
      * @return  array
      */
-    public function getRecipients() : array
+    public function getRecipients(): array
     {
         return $this->to;
     }
@@ -332,7 +325,7 @@ class Send implements BuildsRequest
      *
      * @return  Send
      */
-    public function setRecipients(AddressCollection $recipients) : Send
+    public function setRecipients(AddressCollection $recipients): Send
     {
         $this->to = [];
         $this->addAddresses('to', $recipients);
@@ -345,7 +338,7 @@ class Send implements BuildsRequest
      * @param AddressCollection $addresses the array should contain multiple arrays with 1 or 2 values with email address and optional name
      * @return Send
      */
-    public function addAddresses(string $addressType, AddressCollection $addresses) : Send
+    public function addAddresses(string $addressType, AddressCollection $addresses): Send
     {
         foreach ($addresses as $addressesItem) {
             $this->addAddress($addressType, $addressesItem);
@@ -359,19 +352,12 @@ class Send implements BuildsRequest
      * @param Address $address
      * @return Send
      */
-    public function addAddress(string $addressType, Address $address) : Send
+    public function addAddress(string $addressType, Address $address): Send
     {
-        if (!\in_array($addressType, ['to', 'cc', 'bcc'])) {
+        if (!in_array($addressType, ['to', 'cc', 'bcc'])) {
             throw new InvalidArgumentException('$addressType must be one of either "to", "cc" or "bcc"');
         }
-        $name = $address->getName();
-        $email = $address->getEmail();
-        if (!empty($name)) {
-            $email = \str_replace(['<', '>'], '', $email);
-            $this->{$addressType}[] = "{$name} <{$email}>";
-        } else {
-            $this->{$addressType}[] = "{$email}";
-        }
+        $this->{$addressType}[] = $address->toString();
         return $this;
     }
     /**
@@ -379,7 +365,7 @@ class Send implements BuildsRequest
      *
      * @return  array
      */
-    public function getBcc() : array
+    public function getBcc(): array
     {
         return $this->bcc;
     }
@@ -390,7 +376,7 @@ class Send implements BuildsRequest
      *
      * @return  Send
      */
-    public function setBcc(AddressCollection $bcc) : Send
+    public function setBcc(AddressCollection $bcc): Send
     {
         $this->bcc = [];
         $this->addAddresses('bcc', $bcc);
@@ -401,7 +387,7 @@ class Send implements BuildsRequest
      *
      * @return array
      */
-    public function getCc() : array
+    public function getCc(): array
     {
         return $this->cc;
     }
@@ -412,7 +398,7 @@ class Send implements BuildsRequest
      *
      * @return  Send
      */
-    public function setCc(AddressCollection $cc) : Send
+    public function setCc(AddressCollection $cc): Send
     {
         $this->cc = [];
         $this->addAddresses('cc', $cc);
@@ -423,15 +409,15 @@ class Send implements BuildsRequest
      *
      * @return  AttachmentCollection
      */
-    public function getAttachments() : AttachmentCollection
+    public function getAttachments(): AttachmentCollection
     {
         return $this->attachments;
     }
-    public function addAttachment($attachment) : Send
+    public function addAttachment($attachment): Send
     {
-        if (\is_a($attachment, InlineAttachment::class)) {
+        if (is_a($attachment, InlineAttachment::class)) {
             $this->inlines[] = $attachment;
-        } elseif (\is_a($attachment, FileAttachment::class) || \is_a($attachment, Attachment::class)) {
+        } elseif (is_a($attachment, FileAttachment::class) || is_a($attachment, Attachment::class)) {
             $this->attachments[] = $attachment;
         }
         return $this;
@@ -443,7 +429,7 @@ class Send implements BuildsRequest
      *
      * @return  Send
      */
-    public function setAttachments(AttachmentCollection $attachments) : Send
+    public function setAttachments(AttachmentCollection $attachments): Send
     {
         $this->attachments = $attachments;
         return $this;
@@ -453,7 +439,7 @@ class Send implements BuildsRequest
      *
      * @return AttachmentCollection
      */
-    public function getInlines() : AttachmentCollection
+    public function getInlines(): AttachmentCollection
     {
         return $this->inlines;
     }
@@ -464,7 +450,7 @@ class Send implements BuildsRequest
      *
      * @return  Send
      */
-    public function setInlines(AttachmentCollection $inlines) : Send
+    public function setInlines(AttachmentCollection $inlines): Send
     {
         $this->inlines = $inlines;
         return $this;
@@ -474,7 +460,7 @@ class Send implements BuildsRequest
      *
      * @return  string
      */
-    public function getTextBody() : string
+    public function getTextBody(): string
     {
         return $this->text_body;
     }
@@ -485,7 +471,7 @@ class Send implements BuildsRequest
      *
      * @return  Send
      */
-    public function setTextBody(string $text_body) : Send
+    public function setTextBody(string $text_body): Send
     {
         $this->text_body = $text_body;
         return $this;
@@ -497,11 +483,11 @@ class Send implements BuildsRequest
      * @param string $body
      * @return Send
      */
-    public function setBody(string $body) : Send
+    public function setBody(string $body): Send
     {
         $this->html_body = '';
         $this->text_body = '';
-        if (\preg_match('/(\\<(\\/?[^\\>]+)\\>)/', $body)) {
+        if (preg_match('/(\<(\/?[^\>]+)\>)/', $body)) {
             $this->html_body = $body;
         } else {
             $this->text_body = $body;
@@ -513,7 +499,7 @@ class Send implements BuildsRequest
      *
      * @return  CustomHeaderCollection
      */
-    public function getCustomHeaders() : CustomHeaderCollection
+    public function getCustomHeaders(): CustomHeaderCollection
     {
         return $this->custom_headers;
     }

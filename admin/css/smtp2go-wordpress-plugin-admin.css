@@ -10,6 +10,10 @@
   width: 450px;
 }
 
+.smtp2go_description label {
+  cursor: default;
+}
+
 .smtp2go_help_text {
   display: block;
   margin: 0.2rem 0;

@@ -17,7 +17,7 @@
                 $res = json_decode($log->response);
             ?>
                 <tr>
-                    <td><?php echo $log->site_id; ?></td>
+                    <td><?php echo esc_html($log->site_id); ?></td>
                     <td><?php
                         if (is_array($to)) {
                             foreach ($to as $recipient) {
@@ -32,7 +32,9 @@
                    
                     <td>
                         <?php
-                        echo esc_html('Request ID: ' . $res->request_id) . '<br>';
+                        if (isset($res->request_id)) {
+                            echo esc_html('Request ID: ' . $res->request_id) . '<br>';
+                        }
                         if (isset($res->data->succeeded)) {
                             echo esc_html('Success: ' . $res->data->succeeded) . '<br>';
                         }
@@ -53,13 +55,14 @@
                     <td><?php echo esc_html($log->created_at); ?></td>
                 </tr>
             <?php endforeach; ?>
+        </tbody>
     </table>
-    <p>Showing latest <?php echo count($logs); ?> logs out of a total of <?php echo $totalLogs ?></p>
+    <p>Showing latest <?php echo count($logs); ?> logs out of a total of <?php echo esc_html($totalLogs ?? 0) ?></p>
     <!-- download as csv button -->
      <a href="<?php echo wp_nonce_url(admin_url('admin.php?action=downloadSmtp2goLogs',),'download_smtp2go_logs'); ?>" class="button button-primary">Download CSV</a>
 
      <!-- truncate logs button -->
-        <a href="<?php echo wp_nonce_url(admin_url('admin.php?action=truncateSmtp2goLogs'),'truncate_smtp2go_logs'); ?>" class="button button-warning" onclick="return confirm('Are you sure you want to remove all log entries for SMT2GO?')">Truncate Logs</a>
+        <a href="<?php echo wp_nonce_url(admin_url('admin.php?action=truncateSmtp2goLogs'),'truncate_smtp2go_logs'); ?>" class="button button-warning" onclick="return confirm('Are you sure you want to remove all log entries for SMTP2GO?')">Truncate Logs</a>
     <?php else : ?>
         <p>No logs found</p>
     <?php endif; ?>

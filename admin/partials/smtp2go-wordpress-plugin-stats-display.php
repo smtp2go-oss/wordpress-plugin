@@ -30,19 +30,22 @@ $bar_width = 580;
         </div>
 
         </div>
-
+        <?php if (isset($stats->email_count, $stats->cycle_max, $stats->cycle_end)) : ?>
         <div class="smtp2go-stat-box">
 
             <div class="smtp2go-usage-bar">
                 <!-- a bar showing their current billing period's usage -->
                 <?php
-
+            if ($stats->email_count === 0) {
+                $progress_bar_width = 0;
+            } else {
                 $progress_bar_width = ($stats->email_count / $stats->cycle_max) * $bar_width;
                 if ($progress_bar_width < 10) {
                     $progress_bar_width = 10;
                 } else if ($progress_bar_width > $bar_width) {
                     $progress_bar_width = $bar_width;
                 }
+            }
                 ?>
 
 
@@ -54,6 +57,7 @@ $bar_width = 580;
             <p><?php echo __('Plugin emails sent this billing month. Resets') ?> <?php echo date('F jS', strtotime($stats->cycle_end)); ?>.</p>
 
         </div>
+        <?php endif; ?>
 
         <a href="https://support.smtp2go.com/hc/en-gb/articles/223087727-Bounce-Spam-Percentages-and-Ratings" target="_blank">What do these numbers mean?</a>
         <!--

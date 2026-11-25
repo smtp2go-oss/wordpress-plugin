@@ -8,7 +8,6 @@ use SMTP2GOWPPlugin\GuzzleHttp\Exception\ConnectException;
 use SMTP2GOWPPlugin\GuzzleHttp\Exception\RequestException;
 use SMTP2GOWPPlugin\GuzzleHttp\Psr7\Message;
 use SMTP2GOWPPlugin\GuzzleHttp\Psr7\Request;
-use SMTP2GOWPPlugin\GuzzleHttp\Utils;
 use SMTP2GOWPPlugin\SMTP2GO\Contracts\BuildsRequest;
 class ApiClient
 {
@@ -135,7 +134,7 @@ class ApiClient
      * @since 1.0.0
      * @return bool
      */
-    public function consume(BuildsRequest $service) : bool
+    public function consume(BuildsRequest $service): bool
     {
         $body = [];
         $body = $service->buildRequestBody();
@@ -150,13 +149,13 @@ class ApiClient
             try {
                 $serverIpForRequest = $this->getServerIpForRequest();
                 if (!empty($serverIpForRequest)) {
-                    $curlOpts = ['curl' => [\CURLOPT_RESOLVE => [static::HOST . ':443:' . $serverIpForRequest]]];
+                    $curlOpts = ['curl' => [\CURLOPT_RESOLVE => [$this->getHost() . ':443:' . $serverIpForRequest]]];
                 }
                 $this->lastResponse = $this->httpClient->request(
                     $service->getMethod(),
                     $this->getApiUrl() . $service->getEndpoint(),
                     //ensures user options can overwrite these defaults
-                    $this->requestOptions + ['json' => $body, 'verify' => $caPathOrFile, 'headers' => ['host' => static::HOST], 'timeout' => $this->getTimeout(), $curlOpts, 'on_stats' => function (\SMTP2GOWPPlugin\GuzzleHttp\TransferStats $stats) {
+                    $this->requestOptions + $curlOpts + ['json' => $body, 'verify' => $caPathOrFile, 'timeout' => $this->getTimeout(), 'on_stats' => function (\SMTP2GOWPPlugin\GuzzleHttp\TransferStats $stats) {
                         $handlerStats = $stats->getHandlerStats();
                         $this->ipToIgnore = $handlerStats['primary_ip'] ?? null;
                     }]
@@ -196,22 +195,34 @@ class ApiClient
         if ($this->getApiRegion() === '') {
             return static::API_URL;
         }
-        return \sprintf('https://%s-api.smtp2go.com/v3/', $this->getApiRegion());
+        return sprintf('https://%s-api.smtp2go.com/v3/', $this->getApiRegion());
+    }
+    /**
+     * Get the host to use for the api request, based on the region set by the user
+     *
+     * @return string
+     */
+    public function getHost(): string
+    {
+        if ($this->getApiRegion() === '') {
+            return static::HOST;
+        }
+        return sprintf('%s-api.smtp2go.com', $this->getApiRegion());
     }
     protected function getServerIpForRequest()
     {
         if (empty($this->apiServerIps)) {
             return;
         }
-        $next = \array_pop($this->apiServerIps);
+        $next = array_pop($this->apiServerIps);
         return $next;
     }
     private function loadApiServerIps()
     {
         if (empty($this->getApiServerIps())) {
-            $ips = \gethostbynamel(static::HOST);
+            $ips = gethostbynamel($this->getHost());
             if (!empty($ips)) {
-                $this->setApiServerIps(\array_filter($ips, function ($ip) {
+                $this->setApiServerIps(array_filter($ips, function ($ip) {
                     return $ip !== $this->ipToIgnore;
                 }));
             }
@@ -234,18 +245,18 @@ class ApiClient
         if (!$asJson) {
             return (string) $this->lastResponse->getBody();
         }
-        try {
-            return Utils::jsonDecode((string) $this->lastResponse->getBody());
-        } catch (\Exception $e) {
+        $response = json_decode((string) $this->lastResponse->getBody());
+        if (json_last_error() !== \JSON_ERROR_NONE) {
             return (object) [];
         }
+        return $response;
     }
     /**
      * Return the headers from the last response
      *
      * @return array
      */
-    public function getResponseHeaders() : array
+    public function getResponseHeaders(): array
     {
         if ($this->lastResponse) {
             return $this->lastResponse->getHeaders();
@@ -257,7 +268,7 @@ class ApiClient
      *
      * @return  \GuzzleHttp\Client
      */
-    public function getClient() : Client
+    public function getClient(): Client
     {
         return $this->httpClient;
     }
@@ -268,7 +279,7 @@ class ApiClient
      *
      * @return  ApiClient
      */
-    public function setHttpClient(Client $httpClient) : ApiClient
+    public function setHttpClient(Client $httpClient): ApiClient
     {
         $this->httpClient = $httpClient;
         return $this;
@@ -278,7 +289,7 @@ class ApiClient
      *
      * @return  \Psr\Http\Message\ResponseInterface|null
      */
-    public function getLastResponse() : ?\SMTP2GOWPPlugin\Psr\Http\Message\ResponseInterface
+    public function getLastResponse(): ?\SMTP2GOWPPlugin\Psr\Http\Message\ResponseInterface
     {
         return $this->lastResponse ?? null;
     }
@@ -312,7 +323,7 @@ class ApiClient
      *
      * @return  array
      */
-    public function getrequestOptions() : array
+    public function getrequestOptions(): array
     {
         return $this->requestOptions;
     }
@@ -321,7 +332,7 @@ class ApiClient
      *
      * @return  string
      */
-    public function getApiRegion() : string
+    public function getApiRegion(): string
     {
         return $this->apiRegion;
     }
@@ -334,8 +345,8 @@ class ApiClient
      */
     public function setApiRegion(string $apiRegion)
     {
-        if (!\in_array($apiRegion, static::VALID_REGIONS)) {
-            throw new \InvalidArgumentException('Invalid region provided. Must be one of ' . \implode(', ', static::VALID_REGIONS));
+        if (!in_array($apiRegion, static::VALID_REGIONS)) {
+            throw new \InvalidArgumentException('Invalid region provided. Must be one of ' . implode(', ', static::VALID_REGIONS));
         }
         $this->apiRegion = $apiRegion;
         return $this;
@@ -343,11 +354,11 @@ class ApiClient
     /**
      * Get the valid regions with their corresponding api urls
      */
-    public static function getRegionsWithUrls() : array
+    public static function getRegionsWithUrls(): array
     {
         $regionsWithUrls = [];
         foreach (static::VALID_REGIONS as $region) {
-            $regionsWithUrls[$region] = \sprintf('https://%s-api.smtp2go.com/v3/', $region);
+            $regionsWithUrls[$region] = sprintf('https://%s-api.smtp2go.com/v3/', $region);
         }
         return $regionsWithUrls;
     }

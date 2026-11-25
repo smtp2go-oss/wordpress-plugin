@@ -13,20 +13,20 @@ final class Header
      *
      * @param string|array $header Header to parse into components.
      */
-    public static function parse($header) : array
+    public static function parse($header): array
     {
         static $trimmed = "\"'  \n\t\r";
         $params = $matches = [];
         foreach ((array) $header as $value) {
             foreach (self::splitList($value) as $val) {
                 $part = [];
-                foreach (\preg_split('/;(?=([^"]*"[^"]*")*[^"]*$)/', $val) ?: [] as $kvp) {
-                    if (\preg_match_all('/<[^>]+>|[^=]+/', $kvp, $matches)) {
+                foreach (self::splitParameters($val) as $kvp) {
+                    if (preg_match_all('/<[^>]+>|[^=]+/', $kvp, $matches)) {
                         $m = $matches[0];
                         if (isset($m[1])) {
-                            $part[\trim($m[0], $trimmed)] = \trim($m[1], $trimmed);
+                            $part[trim($m[0], $trimmed)] = trim($m[1], $trimmed);
                         } else {
-                            $part[] = \trim($m[0], $trimmed);
+                            $part[] = trim($m[0], $trimmed);
                         }
                     }
                 }
@@ -38,6 +38,39 @@ final class Header
         return $params;
     }
     /**
+     * Split a header value into semicolon-separated parameters.
+     *
+     * @return string[]
+     */
+    private static function splitParameters(string $value): array
+    {
+        $values = [];
+        $start = 0;
+        $isQuoted = \false;
+        $isEscaped = \false;
+        for ($i = 0, $max = \strlen($value); $i < $max; ++$i) {
+            $char = $value[$i];
+            if ($isEscaped) {
+                $isEscaped = \false;
+                continue;
+            }
+            if ($isQuoted && $char === '\\') {
+                $isEscaped = \true;
+                continue;
+            }
+            if ($char === '"') {
+                $isQuoted = !$isQuoted;
+                continue;
+            }
+            if (!$isQuoted && $char === ';') {
+                $values[] = \substr($value, $start, $i - $start);
+                $start = $i + 1;
+            }
+        }
+        $values[] = \substr($value, $start);
+        return $values;
+    }
+    /**
      * Converts an array of header values that may contain comma separated
      * headers into an array of headers with no comma separated values.
      *
@@ -45,8 +78,9 @@ final class Header
      *
      * @deprecated Use self::splitList() instead.
      */
-    public static function normalize($header) : array
+    public static function normalize($header): array
     {
+        \SMTP2GOWPPlugin\trigger_deprecation('guzzlehttp/psr7', '2.3', 'Header::normalize() is deprecated and will be removed in guzzlehttp/psr7 3.0. Use Header::splitList() instead.');
         $result = [];
         foreach ((array) $header as $value) {
             foreach (self::splitList($value) as $parsed) {
@@ -68,7 +102,7 @@ final class Header
      *
      * @return string[]
      */
-    public static function splitList($values) : array
+    public static function splitList($values): array
     {
         if (!\is_array($values)) {
             $values = [$values];
@@ -88,7 +122,7 @@ final class Header
                     continue;
                 }
                 if (!$isQuoted && $value[$i] === ',') {
-                    $v = \trim($v);
+                    $v = \trim($v, " \n\r\t\x00\v");
                     if ($v !== '') {
                         $result[] = $v;
                     }
@@ -107,7 +141,7 @@ final class Header
                 }
                 $v .= $value[$i];
             }
-            $v = \trim($v);
+            $v = \trim($v, " \n\r\t\x00\v");
             if ($v !== '') {
                 $result[] = $v;
             }

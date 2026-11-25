@@ -6,7 +6,7 @@ use SMTP2GOWPPlugin\SMTP2GO\Mime\Detector;
 class Attachment
 {
     /**
-     * The patch to the the attachment
+     * The path to the the attachment
      * @var string
      */
     protected $filepath;
@@ -34,8 +34,8 @@ class Attachment
     public function __construct(string $filepath, string $filename = '')
     {
         $this->filepath = $filepath;
-        $this->fileblob = \base64_encode(\file_get_contents($filepath));
-        $this->filename = $filename != '' ? $filename : \basename($this->filepath);
+        $this->fileblob = base64_encode(file_get_contents($filepath));
+        $this->filename = $filename != '' ? $filename : basename($this->filepath);
         $detector = new Detector();
         $this->mimetype = $detector->detectMimeType($this->filepath);
     }

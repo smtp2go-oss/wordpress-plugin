@@ -42,6 +42,8 @@ class SMTP2GOMailer extends PHPMailer
 
         $from = [SettingsHelper::getOption('smtp2go_from_address'), SettingsHelper::getOption('smtp2go_from_name')];
 
+        $fastAccept = SettingsHelper::getOption('smtp2go_use_fast_accept') ?? false;
+
         $addresses = [];
         foreach ($this->getToAddresses() as $addressItem) {
             $addresses[] = new Address(...$addressItem);
@@ -54,6 +56,10 @@ class SMTP2GOMailer extends PHPMailer
         );
 
         $mailSendService->addCustomHeader(new CustomHeader('X-Smtp2go-WP', SMTP2GO_WORDPRESS_PLUGIN_VERSION));
+
+        if ($fastAccept) {
+            $mailSendService->setFastaccept(true);
+        }
 
         $this->processCustomHeaders($mailSendService);
         $this->processReplyTos($mailSendService);
@@ -95,6 +101,14 @@ class SMTP2GOMailer extends PHPMailer
         // `smtp2go_api_region` filter) to the new client. If a client has
         // already been injected via setApiClient() we leave it alone.
         $client = $this->apiClient ?? ApiClientFactory::create();
+
+        // create() returns null when no API key is available (e.g. the
+        // SMTP2GO_API_KEY constant resolves to an empty env var)
+        if (!$client) {
+            $this->setError('SMTP2GO Error: No API key is configured. Please check your SMTP2GO plugin settings.');
+            throw new \PHPMailer\PHPMailer\Exception($this->ErrorInfo, self::STOP_CRITICAL);
+        }
+
         $client->setMaxSendAttempts(2);
         $client->setTimeoutIncrement(0);
 
@@ -108,8 +122,8 @@ class SMTP2GOMailer extends PHPMailer
         if (!empty($response->data->field_validation_errors->message)) {
             $reason = $response->data->field_validation_errors->message;
         } elseif (!empty($response->data->error) && !empty($response->data->error_code)) {
-            $reason = $response->data->error . '<br />' . $response->data->error_code;
-        } elseif ($response->data->failed == true && !empty($response->data->failures)) {
+            $reason = $response->data->error . ' (' . $response->data->error_code . ')';
+        } elseif (!empty($response->data->failed) && $response->data->failed == true && !empty($response->data->failures)) {
             $reason = $response->data->failures[0];
         }
 

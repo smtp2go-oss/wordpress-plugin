@@ -23,15 +23,15 @@ class CustomHeaderCollection extends Collection
     }
     public function add($header)
     {
-        if (\is_a($header, CustomHeader::class)) {
+        if (is_a($header, CustomHeader::class)) {
             /** @var CustomHeader $header */
-            if (\in_array(\strtolower($header->getHeader()), static::ALLOWED_MULTIPLE_HEADERS)) {
+            if (in_array(strtolower($header->getHeader()), static::ALLOWED_MULTIPLE_HEADERS)) {
                 $this->items[] = $header;
             } else {
                 $found = \false;
                 foreach ($this->items as $customHeader) {
                     /** @var CustomHeader $customHeader */
-                    if (\strtolower($header->getHeader()) === \strtolower($customHeader->getHeader())) {
+                    if (strtolower($header->getHeader()) === strtolower($customHeader->getHeader())) {
                         $customHeader->setValue($header->getValue());
                         $found = \true;
                         break;
@@ -42,7 +42,7 @@ class CustomHeaderCollection extends Collection
                 }
             }
         } else {
-            throw new \InvalidArgumentException('This collection expects objects of type ' . CustomHeader::class, ' but received ' . \get_class($header));
+            throw new \InvalidArgumentException('This collection expects objects of type ' . CustomHeader::class, ' but received ' . get_class($header));
         }
         return $this;
     }

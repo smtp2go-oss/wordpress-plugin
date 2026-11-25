@@ -25,18 +25,18 @@ class Service implements BuildsRequest
         $this->setEndpoint($endpoint);
         $this->setRequestBody($requestBody);
     }
-    public function getEndpoint() : string
+    public function getEndpoint(): string
     {
         return $this->endpoint;
     }
     public function setEndpoint(string $endpoint)
     {
-        if (\strpos($endpoint, '/') === 0) {
-            $endpoint = \substr($endpoint, 1);
+        if (strpos($endpoint, '/') === 0) {
+            $endpoint = substr($endpoint, 1);
         }
         $this->endpoint = $endpoint;
     }
-    public function getMethod() : string
+    public function getMethod(): string
     {
         return $this->method;
     }
@@ -53,7 +53,7 @@ class Service implements BuildsRequest
     /**
      * Get the value of RequestBody
      */
-    public function getRequestBody() : array
+    public function getRequestBody(): array
     {
         return $this->requestBody;
     }
@@ -62,7 +62,7 @@ class Service implements BuildsRequest
      *
      * @return  Service
      */
-    public function setRequestBody(array $requestBody) : Service
+    public function setRequestBody(array $requestBody): Service
     {
         $this->requestBody = $requestBody;
         return $this;
@@ -72,7 +72,7 @@ class Service implements BuildsRequest
      *
      * @return array
      */
-    public function buildRequestBody() : array
+    public function buildRequestBody(): array
     {
         return $this->requestBody;
     }

@@ -6,8 +6,6 @@ use SMTP2GOWPPlugin\Psr\Http\Client\NetworkExceptionInterface;
 use SMTP2GOWPPlugin\Psr\Http\Message\RequestInterface;
 /**
  * Exception thrown when a connection cannot be established.
- *
- * Note that no response is present for a ConnectException
  */
 class ConnectException extends TransferException implements NetworkExceptionInterface
 {
@@ -28,7 +26,7 @@ class ConnectException extends TransferException implements NetworkExceptionInte
     /**
      * Get the request that caused the exception
      */
-    public function getRequest() : RequestInterface
+    public function getRequest(): RequestInterface
     {
         return $this->request;
     }
@@ -40,7 +38,7 @@ class ConnectException extends TransferException implements NetworkExceptionInte
      * couple you to a specific handler, but can give more debug information
      * when needed.
      */
-    public function getHandlerContext() : array
+    public function getHandlerContext(): array
     {
         return $this->handlerContext;
     }

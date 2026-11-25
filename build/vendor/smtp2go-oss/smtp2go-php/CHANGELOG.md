@@ -3,6 +3,32 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [1.3.2] - 2026-11-04
+
+### Changed
+
+- Replaced deprecated GuzzleHttp Utils::jsonDecode with native json_decode call
+
+
+## [1.3.1] - 2026-11-03
+
+### Changed
+
+- Revert CustomHeader throwing `InvalidArgumentException`. Invalid headers are dropped upstream.
+
+## [1.3.0] - 2026-09-17
+
+### Fixed
+
+- Incorrect setting of cURL options in `ApiClient`
+
+### Changed
+
+- Strip control characters from addresses and custom header values
+- Quote and escape display names in `to`, `cc` and `bcc`, matching the existing `sender` behaviour
+- Trim custom header values
+- **BC**: `CustomHeader` now throws `InvalidArgumentException` when given a header name containing a colon, whitespace, or any other character not permitted by RFC 5322. Such names previously produced a malformed header
+
 ## [1.2.0] - 2026-05-22
 - Make getRegionWithUrls static
 

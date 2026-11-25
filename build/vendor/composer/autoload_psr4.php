@@ -6,6 +6,7 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'SMTP2GOWPPlugin\\Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),
     'SMTP2GOWPPlugin\\SMTP2GO\\' => array($vendorDir . '/smtp2go-oss/smtp2go-php/src/SMTP2GO'),
     'SMTP2GOWPPlugin\\Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-factory/src', $vendorDir . '/psr/http-message/src'),
     'SMTP2GOWPPlugin\\Psr\\Http\\Client\\' => array($vendorDir . '/psr/http-client/src'),

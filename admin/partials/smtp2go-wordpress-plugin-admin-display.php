@@ -122,10 +122,10 @@ function SMTP2GO_tab_active($tab)
 
             <div class="smtp2go-admin-spacing">
                 <div>
-                    <input type="text" class="smtp2go_text_input" name="smtp2go_to_name" id="smtp2go_to_name" placeholder="John Example" pattern="[a-zA-Z0-9 ]+" required>
+                    <input type="text" class="smtp2go_text_input" name="smtp2go_to_name" id="smtp2go_to_name" placeholder="John Example"  required>
                 </div>
                 <div>
-                    <label for="smtp2go_to_name"><span style="cursor: default; font-weight: normal;">The email to name (alpha numeric characters only).</span></label>
+                    <label for="smtp2go_to_name"><span style="cursor: default; font-weight: normal;">The email to name.</span></label>
                 </div>
             </div>
 
